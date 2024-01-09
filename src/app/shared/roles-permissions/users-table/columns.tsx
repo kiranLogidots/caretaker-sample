@@ -66,32 +66,32 @@ export const getColumns = ({
   handleSelectAll,
   onChecked,
 }: Columns) => [
-  {
-    title: (
-      <div className="flex items-center gap-3 whitespace-nowrap ps-3">
-        <Checkbox
-          title={'Select All'}
-          onChange={handleSelectAll}
-          checked={checkedItems.length === data.length}
-          className="cursor-pointer"
-        />
-        User ID
-      </div>
-    ),
-    dataIndex: 'checked',
-    key: 'checked',
-    width: 30,
-    render: (_: any, row: User) => (
-      <div className="inline-flex ps-3">
-        <Checkbox
-          className="cursor-pointer"
-          checked={checkedItems.includes(row.id)}
-          {...(onChecked && { onChange: () => onChecked(row.id) })}
-          label={`#${row.id}`}
-        />
-      </div>
-    ),
-  },
+  // {
+  //   title: (
+  //     <div className="flex items-center gap-3 whitespace-nowrap ps-3">
+  //       <Checkbox
+  //         title={'Select All'}
+  //         onChange={handleSelectAll}
+  //         checked={checkedItems.length === data.length}
+  //         className="cursor-pointer"
+  //       />
+  //       User ID
+  //     </div>
+  //   ),
+  //   dataIndex: 'checked',
+  //   key: 'checked',
+  //   width: 30,
+  //   render: (_: any, row: User) => (
+  //     <div className="inline-flex ps-3">
+  //       <Checkbox
+  //         className="cursor-pointer"
+  //         checked={checkedItems.includes(row.id)}
+  //         {...(onChecked && { onChange: () => onChecked(row.id) })}
+  //         label={`#${row.id}`}
+  //       />
+  //     </div>
+  //   ),
+  // },
   {
     title: <HeaderCell title="Name" />,
     dataIndex: 'fullName',
@@ -106,22 +106,24 @@ export const getColumns = ({
       />
     ),
   },
-  {
-    title: (
-      <HeaderCell
-        title="Role"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'role'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('role'),
-    dataIndex: 'role',
-    key: 'role',
-    width: 250,
-    render: (role: string) => role,
-  },
+
+ 
+  // {
+  //   title: (
+  //     <HeaderCell
+  //       title="Role"
+  //       sortable
+  //       ascending={
+  //         sortConfig?.direction === 'asc' && sortConfig?.key === 'role'
+  //       }
+  //     />
+  //   ),
+  //   onHeaderCell: () => onHeaderCellClick('role'),
+  //   dataIndex: 'role',
+  //   key: 'role',
+  //   width: 250,
+  //   render: (role: string) => role,
+  // },
   {
     title: (
       <HeaderCell
@@ -138,40 +140,40 @@ export const getColumns = ({
     width: 200,
     render: (value: Date) => <DateCell date={value} />,
   },
-  {
-    title: <HeaderCell title="Permissions" />,
-    dataIndex: 'permissions',
-    key: 'permissions',
-    width: 200,
-    render: (permissions: User['permissions'][]) => (
-      <div className="flex items-center gap-2">
-        {permissions.map((permission) => (
-          <Badge
-            key={permission}
-            rounded="lg"
-            variant="outline"
-            className="border-muted font-normal text-gray-500"
-          >
-            {permission}
-          </Badge>
-        ))}
-      </div>
-    ),
-  },
-  {
-    title: <HeaderCell title="Status" />,
-    dataIndex: 'status',
-    key: 'status',
-    width: 120,
-    render: (status: User['status']) => getStatusBadge(status),
-  },
+  // {
+  //   title: <HeaderCell title="Permissions" />,
+  //   dataIndex: 'permissions',
+  //   key: 'permissions',
+  //   width: 200,
+  //   render: (permissions: User['permissions'][]) => (
+  //     <div className="flex items-center gap-2">
+  //       {permissions.map((permission) => (
+  //         <Badge
+  //           key={permission}
+  //           rounded="lg"
+  //           variant="outline"
+  //           className="border-muted font-normal text-gray-500"
+  //         >
+  //           {permission}
+  //         </Badge>
+  //       ))}
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   title: <HeaderCell title="Status" />,
+  //   dataIndex: 'status',
+  //   key: 'status',
+  //   width: 120,
+  //   render: (status: User['status']) => getStatusBadge(status),
+  // },
   {
     title: <></>,
     dataIndex: 'action',
     key: 'action',
     width: 140,
     render: (_: string, user: User) => (
-      <div className="flex items-center justify-end gap-3 pe-3">
+      <div className="flex items-center justify-en gap-3 pe-3">
         <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
           <ActionIcon
             as="span"
@@ -182,7 +184,7 @@ export const getColumns = ({
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip>
-        <Tooltip size="sm" content={'View User'} placement="top" color="invert">
+        {/* <Tooltip size="sm" content={'View User'} placement="top" color="invert">
           <ActionIcon
             as="span"
             size="sm"
@@ -191,7 +193,7 @@ export const getColumns = ({
           >
             <EyeIcon className="h-4 w-4" />
           </ActionIcon>
-        </Tooltip>
+        </Tooltip> */}
         <DeletePopover
           title={`Delete this user`}
           description={`Are you sure you want to delete this #${user.id} user?`}

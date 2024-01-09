@@ -1,6 +1,6 @@
 'use client';
 
-import logoImg from '@public/logo-short.svg';
+import logoImg from '@public/logo-short.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Title } from '@/components/ui/text';

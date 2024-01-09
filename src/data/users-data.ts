@@ -7,6 +7,9 @@ export type User = {
   avatar: string;
   fullName: string;
   email: string;
+  phoneNumber:number;
+  address:string;
+  age:number;
   role: keyof typeof ROLES;
   createdAt: Date;
   permissions: keyof typeof PERMISSIONS;

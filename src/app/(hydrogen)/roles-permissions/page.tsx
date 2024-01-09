@@ -6,14 +6,14 @@ import UsersTable from '@/app/shared/roles-permissions/users-table';
 import CreateRole from '@/app/shared/roles-permissions/create-role';
 
 const pageHeader = {
-  title: 'Roles and Permissions ',
+  title: 'Haritha Karma Sena ',
   breadcrumb: [
     {
       href: '/',
       name: 'Dashboard',
     },
     {
-      name: 'Role Management & Permission',
+      name: 'Haritha Karma Sena',
     },
   ],
 };
@@ -24,7 +24,7 @@ export default function BlankPage() {
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
         <ModalButton label="Add New Role" view={<CreateRole />} />
       </PageHeader>
-      <RolesGrid />
+      {/* <RolesGrid /> */}
       <UsersTable data={usersData} />
     </>
   );
