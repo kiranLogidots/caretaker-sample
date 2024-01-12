@@ -1,12 +1,13 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/roles-permissions/users-table/columns';
+import { listHKS } from '@/service/page';
 const FilterElement = dynamic(
   () => import('@/app/shared/roles-permissions/users-table/filter-element'),
   { ssr: false }
@@ -22,7 +23,7 @@ const filterState = {
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
-
+  const [tableData, setTableData] = useState([]);
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
@@ -37,7 +38,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const {
     isLoading,
     isFiltered,
-    tableData,
+    // tableData,
     currentPage,
     totalItems,
     handlePaginate,
@@ -54,7 +55,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     handleDelete,
     handleReset,
   } = useTable(data, pageSize, filterState);
-
+  console.log('TABLE DATA', tableData);
   const columns = useMemo(
     () =>
       getColumns({
@@ -80,6 +81,20 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
 
   const { visibleColumns, checkedColumns, setCheckedColumns } =
     useColumn(columns);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resultData = await listHKS();
+        console.log('result data',resultData) // Fetch data from the listHKS API
+        setTableData(resultData.data); // Update the table data state with the fetched data
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); // Call fetchData when the component mounts
+  }, []);
 
   return (
     <div className="mt-14">

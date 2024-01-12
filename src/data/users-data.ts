@@ -7,9 +7,9 @@ export type User = {
   avatar: string;
   fullName: string;
   email: string;
-  phoneNumber:number;
-  address:string;
-  age:number;
+  phone: string;
+  address: string;
+  age: number;
   role: keyof typeof ROLES;
   createdAt: Date;
   permissions: keyof typeof PERMISSIONS;
@@ -35,8 +35,8 @@ export const usersData = [
       avatarIds
     )}.webp`,
     fullName: 'Bessie Beatty',
-    phoneNumber:'9076543522',
-    age:'24',
+    phoneNumber: '9076543522',
+    age: '24',
     email: 'christophe78@gmail.com',
     role: ROLES.Manager,
     createdAt: '2029-10-14T16:01:40.021Z',

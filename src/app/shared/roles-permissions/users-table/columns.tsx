@@ -94,7 +94,7 @@ export const getColumns = ({
   // },
   {
     title: <HeaderCell title="Name" />,
-    dataIndex: 'fullName',
+    dataIndex: 'name',
     key: 'fullName',
     width: 250,
     hidden: 'fullName',
@@ -106,14 +106,22 @@ export const getColumns = ({
     //   />
     // ),
   },
+  {
+    title: <HeaderCell title="Age" />,
+    onHeaderCell: () => onHeaderCellClick('age'),
+    dataIndex: 'age',
+    key: 'age',
+    width: 250,
+    render: (age: number) => age,
+  },
 
   {
     title: <HeaderCell title="Phone" />,
-    onHeaderCell: () => onHeaderCellClick('phoneNumber'),
-    dataIndex: 'phoneNumber',
-    key: 'phoneNumber',
+    onHeaderCell: () => onHeaderCellClick('phone'),
+    dataIndex: 'phone',
+    key: 'phone',
     width: 250,
-    render: (phoneNumber: number) => phoneNumber,
+    render: (phone: string) => phone,
   },
   {
     title: (
@@ -131,14 +139,6 @@ export const getColumns = ({
     width: 250,
     render: (address: string) => address,
   },
-  {
-    title: <HeaderCell title="Age" />,
-    onHeaderCell: () => onHeaderCellClick('age'),
-    dataIndex: 'age',
-    key: 'age',
-    width: 250,
-    render: (age: number) => age,
-  },
 
   {
     title: (
@@ -150,9 +150,9 @@ export const getColumns = ({
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('createdAt'),
-    dataIndex: 'createdAt',
-    key: 'createdAt',
+    onHeaderCell: () => onHeaderCellClick('created_at'),
+    dataIndex: 'created_at',
+    key: 'created_at',
     width: 200,
     render: (value: Date) => <DateCell date={value} />,
   },
@@ -184,7 +184,7 @@ export const getColumns = ({
   //   render: (status: User['status']) => getStatusBadge(status),
   // },
   {
-    title: <></>,
+    title: <HeaderCell title="Actions" />,
     dataIndex: 'action',
     key: 'action',
     width: 140,
@@ -200,7 +200,7 @@ export const getColumns = ({
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip>
-        {/* <Tooltip size="sm" content={'View User'} placement="top" color="invert">
+        <Tooltip size="sm" content={'View User'} placement="top" color="invert">
           <ActionIcon
             as="span"
             size="sm"
@@ -209,7 +209,7 @@ export const getColumns = ({
           >
             <EyeIcon className="h-4 w-4" />
           </ActionIcon>
-        </Tooltip> */}
+        </Tooltip>
         <DeletePopover
           title={`Delete this user`}
           description={`Are you sure you want to delete this #${user.id} user?`}

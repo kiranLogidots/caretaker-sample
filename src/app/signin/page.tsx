@@ -3,7 +3,7 @@ import AuthWrapperOne from '@/app/shared/auth-layout/auth-wrapper-one';
 import Image from 'next/image';
 import UnderlineShape from '@/components/shape/underline';
 import { metaObject } from '@/config/site.config';
-
+import SideImage from '../../../public/sideimage.png'
 export const metadata = {
   ...metaObject('Sign In'),
 };
@@ -23,19 +23,19 @@ export default function SignIn() {
       }
       description="
       "
-      bannerTitle="The simplest way to manage your workspace."
-      bannerDescription="."
+      // bannerTitle="Let's Unwaste"
+      // bannerDescription=""
       // isSocialLoginActive={true}
       pageImage={
-        <div className="relative mx-auto w-[500px] xl:w-[620px] 2xl:w-[820px]">
+        <div className="relative mx-auto w-[500px] xl:w-[620px] 2xl:w-[800px]">
           <Image
-            src={
-              'https://isomorphic-furyroad.s3.amazonaws.com/public/auth/sign-up.webp'
+            src={SideImage
+              // 'https://isomorphic-furyroad.s3.amazonaws.com/public/auth/sign-up.webp'
             }
             alt="Sign Up Thumbnail"
-            fill
+            // fill
             priority
-            sizes="(max-width: 768px) 100vw"
+            // sizes="(max-width: 768px) 100vw"
             className="object-cover"
           />
         </div>

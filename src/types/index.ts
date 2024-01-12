@@ -1,5 +1,9 @@
 import { CouponType } from '@/config/enums';
 
+export interface AdminLogin {
+  PhoneOrEmail: string;
+  password: string;
+}
 export interface CreateHSK {
   user_type: string;
   name: string;
