@@ -13,36 +13,77 @@ import {
 } from '@/utils/validators/create-user.schema';
 import { Title } from '@/components/ui/text';
 import { Select } from '@/components/ui/select';
+import { Password } from '@/components/ui/password';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import {
   permissions,
   roles,
   statuses,
 } from '@/app/shared/roles-permissions/utils';
+import { createHSK } from '@/service/page';
 export default function CreateUser() {
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<CreateUserInput> = (data) => {
+  const onSubmit: SubmitHandler<CreateUserInput> = async (data) => {
     // set timeout ony required to display loading state of the create category button
+    // const formattedData = {
+    //   ...data,
+    //   createdAt: new Date(),
+    // };
+
     const formattedData = {
-      ...data,
-      createdAt: new Date(),
+      user_type: 'hks_users',
+      name: data.fullName,
+      age: parseInt(data.age),
+      address: data.address,
+      phone: data.phone,
+      password: data.password,
+      confirm_password: data.confirmPassword,
     };
+
     setLoading(true);
-    setTimeout(() => {
-      console.log('formattedData', formattedData);
+
+    try {
+      const resultData = (await createHSK(formattedData)) as {
+        status: boolean;
+      };
+      console.log('API Response:', resultData);
+      if (resultData.status == true) {
+        setReset({
+          fullName: '',
+          email: '',
+          phone: '',
+          age: '',
+          address: '',
+          role: '',
+          permissions: '',
+          status: '',
+        });
+        closeModal();
+      }
+      // setTimeout(() => {
+      //   console.log('formattedData', formattedData);
+      //   setLoading(false);
+      //   setReset({
+      //     fullName: '',
+      //     email: '',
+      //     phone: '',
+      //     age: '',
+      //     address: '',
+      //     role: '',
+      //     permissions: '',
+      //     status: '',
+      //   });
+      //   closeModal();
+      // }, 600);
+    } catch (error) {
+      console.error('Error creating user:', error);
+      // Handle error (e.g., display an error message to the user)
+    } finally {
       setLoading(false);
-      setReset({
-        fullName: '',
-        email: '',
-        role: '',
-        permissions: '',
-        status: '',
-      });
-      closeModal();
-    }, 600);
+    }
   };
 
   return (
@@ -79,7 +120,48 @@ export default function CreateUser() {
               error={errors.email?.message}
             />
 
-            <Controller
+            <Input
+              label="Phone"
+              placeholder="Enter your phone number..."
+              labelClassName="font-medium text-gray-900 dark:text-white"
+              {...register('phone')}
+              error={errors.phone?.message}
+            />
+
+            <Input
+              label="Address"
+              placeholder="Enter user's Address"
+              className="col-span-full"
+              {...register('address')}
+              error={errors.address?.message}
+            />
+
+            <Input
+              label="Age"
+              placeholder="Enter user's age"
+              className="col-span-full"
+              {...register('age')}
+              error={errors.age?.message}
+            />
+
+            <Password
+              label="Password"
+              placeholder="Enter your password"
+              labelClassName="font-medium text-gray-900 dark:text-white"
+              {...register('password')}
+              error={errors.password?.message}
+            />
+            <Password
+              label="Confirm Password"
+              placeholder="Enter your password"
+              labelClassName="font-medium text-gray-900 dark:text-white"
+              {...register('confirmPassword')}
+              error={errors.confirmPassword?.message}
+            />
+
+          
+
+            {/* <Controller
               name="role"
               control={control}
               render={({ field: { name, onChange, value } }) => (
@@ -99,9 +181,9 @@ export default function CreateUser() {
                   dropdownClassName={'z-[9999]'}
                 />
               )}
-            />
+            /> */}
 
-            <Controller
+            {/* <Controller
               name="status"
               control={control}
               render={({ field: { name, onChange, value } }) => (
@@ -120,9 +202,9 @@ export default function CreateUser() {
                   dropdownClassName={'z-[9999]'}
                 />
               )}
-            />
+            /> */}
 
-            <Controller
+            {/* <Controller
               name="permissions"
               control={control}
               render={({ field: { name, onChange, value } }) => (
@@ -141,7 +223,7 @@ export default function CreateUser() {
                   dropdownClassName={'z-[9999]'}
                 />
               )}
-            />
+            /> */}
 
             <div className="col-span-full flex items-center justify-end gap-4">
               <Button

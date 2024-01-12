@@ -38,6 +38,7 @@ export const messages = {
   catNameIsRequired: 'Category name is required',
   slugIsRequired: 'Slug is required',
   addressIsRequired: 'Address is required',
+  ageIsRequired:'Age is required',
   createDateIsRequired: 'Create Date is required',
   dueDateIsRequired: 'Due Date is required',
   statusIsRequired: 'Status is required',

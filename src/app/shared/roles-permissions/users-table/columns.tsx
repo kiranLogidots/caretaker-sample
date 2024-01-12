@@ -98,32 +98,48 @@ export const getColumns = ({
     key: 'fullName',
     width: 250,
     hidden: 'fullName',
-    render: (_: string, user: User) => (
-      <AvatarCard
-        src={user.avatar}
-        name={user.fullName}
-        description={user.email}
-      />
-    ),
+    // render: (_: string, user: User) => (
+    //   <AvatarCard
+    //     src={user.avatar}
+    //     name={user.fullName}
+    //     description={user.email}
+    //   />
+    // ),
   },
 
- 
-  // {
-  //   title: (
-  //     <HeaderCell
-  //       title="Role"
-  //       sortable
-  //       ascending={
-  //         sortConfig?.direction === 'asc' && sortConfig?.key === 'role'
-  //       }
-  //     />
-  //   ),
-  //   onHeaderCell: () => onHeaderCellClick('role'),
-  //   dataIndex: 'role',
-  //   key: 'role',
-  //   width: 250,
-  //   render: (role: string) => role,
-  // },
+  {
+    title: <HeaderCell title="Phone" />,
+    onHeaderCell: () => onHeaderCellClick('phoneNumber'),
+    dataIndex: 'phoneNumber',
+    key: 'phoneNumber',
+    width: 250,
+    render: (phoneNumber: number) => phoneNumber,
+  },
+  {
+    title: (
+      <HeaderCell
+        title="Address"
+        // sortable
+        // ascending={
+        //   sortConfig?.direction === 'asc' && sortConfig?.key === 'role'
+        // }
+      />
+    ),
+    onHeaderCell: () => onHeaderCellClick('address'),
+    dataIndex: 'address',
+    key: 'address',
+    width: 250,
+    render: (address: string) => address,
+  },
+  {
+    title: <HeaderCell title="Age" />,
+    onHeaderCell: () => onHeaderCellClick('age'),
+    dataIndex: 'age',
+    key: 'age',
+    width: 250,
+    render: (age: number) => age,
+  },
+
   {
     title: (
       <HeaderCell
@@ -173,7 +189,7 @@ export const getColumns = ({
     key: 'action',
     width: 140,
     render: (_: string, user: User) => (
-      <div className="flex items-center justify-en gap-3 pe-3">
+      <div className="justify-en flex items-center gap-3 pe-3">
         <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
           <ActionIcon
             as="span"

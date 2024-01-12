@@ -35,6 +35,8 @@ export const usersData = [
       avatarIds
     )}.webp`,
     fullName: 'Bessie Beatty',
+    phoneNumber:'9076543522',
+    age:'24',
     email: 'christophe78@gmail.com',
     role: ROLES.Manager,
     createdAt: '2029-10-14T16:01:40.021Z',

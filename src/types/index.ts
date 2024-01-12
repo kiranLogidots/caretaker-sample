@@ -1,5 +1,29 @@
 import { CouponType } from '@/config/enums';
 
+export interface CreateHSK {
+  user_type: string;
+  name: string;
+  age: number;
+  address: string;
+  phone: string;
+  password: string;
+  confirm_password: string;
+}
+export interface CreateCluster {
+  user_type: string;
+  name: string;
+  age: number;
+  address: string;
+  phone: number;
+  password: string;
+  confirm_password: string;
+}
+export interface CreateEvent {
+  name: string;
+  expense: number;
+  date: Date;
+}
+
 export interface Coupon {
   id: string;
   name: string;
@@ -101,26 +125,26 @@ export interface FlightingCardProps {
   bucket: {
     luggage?: string;
     bag?: string;
-  },
+  };
   airlines?: string;
   routes?: {
-    arrivalDate: Date | string,
-    arrivalTime: Date | string,
-    departureDate: Date | string,
-    departureTime: Date | string,
-    departureCityCode: string,
-    departureCity: string,
-    departureTerminal: string,
-    arrivalCityCode: string,
-    arrivalCity: string,
-    arrivalTerminal: string,
+    arrivalDate: Date | string;
+    arrivalTime: Date | string;
+    departureDate: Date | string;
+    departureTime: Date | string;
+    departureCityCode: string;
+    departureCity: string;
+    departureTerminal: string;
+    arrivalCityCode: string;
+    arrivalCity: string;
+    arrivalTerminal: string;
     layover: {
-      layoverCityCode: string,
-      layoverCity: string,
-      layoverTerminal: string,
-      layoverTime: string,
-    }[],
-  },
+      layoverCityCode: string;
+      layoverCity: string;
+      layoverTerminal: string;
+      layoverTime: string;
+    }[];
+  };
   cheapest?: boolean;
   best?: boolean;
   quickest?: boolean;
