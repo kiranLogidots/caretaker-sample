@@ -88,8 +88,6 @@ export default function CreateUser() {
     setLoading(true);
 
     try {
-      const accessToken = sessionStorage.getItem('accessToken');
-      const response = await createHSK(formattedData);
       // const response = await axios.post(
       //   'https://api.greenworms.alpha.logidots.com/api/users',
       //   formattedData,
@@ -102,6 +100,8 @@ export default function CreateUser() {
       //   }
       // );
       // // )) as CreateUserResponse;
+      const response = await createHSK(formattedData);
+
       const resultData = response.data as CreateUserResponse;
 
       console.log('API Response:', resultData);

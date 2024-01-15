@@ -88,7 +88,10 @@ export default function CreateUser() {
     setLoading(true);
 
     try {
-      const resultData = (await createHSK(formattedData)) as CreateUserResponse;
+      // const resultData = (await createHSK(formattedData)) as CreateUserResponse;
+      const response = await createHSK(formattedData);
+      const resultData = response.data as CreateUserResponse;
+
       console.log('API Response:', resultData);
       if (resultData.status == true) {
         setReset({

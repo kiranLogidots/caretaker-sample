@@ -17,6 +17,7 @@ import { useModal } from '@/app/shared/modal-views/use-modal';
 import {
   assignCollectionPoints,
   createCluster,
+  createHSK,
   listCollection,
 } from '@/service/page';
 import Select from 'react-select';
@@ -81,9 +82,12 @@ export default function CreateUser() {
     setLoading(true);
 
     try {
-      const resultData = (await createCluster(
-        formattedData
-      )) as CreateUserResponse;
+      // const resultData = (await createCluster(
+      //   formattedData
+      // )) as CreateUserResponse;
+      const response = await createHSK(formattedData);
+
+      const resultData = response.data as CreateUserResponse;
       console.log('Cluster Data API Response:', resultData);
       if (resultData.status == true) {
         setReset({

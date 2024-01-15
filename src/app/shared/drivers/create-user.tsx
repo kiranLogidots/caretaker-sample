@@ -18,6 +18,7 @@ import { permissions, roles, statuses } from '@/app/shared/drivers/utils';
 import {
   assignCollectionPoints,
   createDriver,
+  createHSK,
   listCollection,
 } from '@/service/page';
 import Select from 'react-select';
@@ -82,9 +83,12 @@ export default function CreateUser() {
     setLoading(true);
 
     try {
-      const resultData = (await createDriver(
-        formattedData
-      )) as CreateUserResponse;
+      // const resultData = (await createDriver(
+      //   formattedData
+      // )) as CreateUserResponse;
+      const response = await createHSK(formattedData);
+
+      const resultData = response.data as CreateUserResponse;
       console.log('Driver creation API Response:', resultData);
       if (resultData.status == true) {
         setReset({
