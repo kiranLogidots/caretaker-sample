@@ -234,15 +234,14 @@ export default function CreateUser() {
 
             <label
               htmlFor="collectionPoints"
-              className="block text-sm font-medium text-gray-700"
+              className=" text-sm font-medium text-gray-700 col-span-full flex flex-col gap-2"
             >
               Collection Points
-            </label>
-            <Select
+              <Select
               id="collectionPoints"
               placeholder="Select collection points"
               isMulti
-              className="col-span-full "
+              className=""
               options={collectionPointsOptions}
               {...register('collectionPoints')}
               value={watch('collectionPoints')}
@@ -250,7 +249,8 @@ export default function CreateUser() {
                 setValue('collectionPoints', selectedOptions)
               }
             />
-
+            </label>
+          
             <Password
               label="Password"
               placeholder="Enter your password"
