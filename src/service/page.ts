@@ -1,4 +1,5 @@
 import { CreateCluster, CreateHSK, CreateEvent, AdminLogin, CreateDriver, CreatePA, AssignCollectionPoints } from '@/types';
+import axios from 'axios';
 
 const accessToken = sessionStorage.getItem("accessToken");
 // console.log("Access Token", accessToken)
@@ -27,22 +28,22 @@ export const superAdminLogin = async (details: AdminLogin) => {
 //HKS
 
 export const createHSK = async (details: CreateHSK) => {
-  let response = await fetch(
-    'https://api.greenworms.alpha.logidots.com/api/users',
+  let response = await axios.post(
+    'https://api.greenworms.alpha.logidots.com/api/users',details,
     {
-      method: 'POST',
+      // method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(details),
+      // body: JSON.stringify(details),
     }
   );
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+  // if (!response.ok) {
+  //   throw new Error('Something wrong on network connection');
+  // }
+  // let result = await response.json();
+  return response;
 };
 
 export const listHKS = async () => {

@@ -1,5 +1,54 @@
 import { CouponType } from '@/config/enums';
 
+export interface CreateUserResponse {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: ResponseData[];
+}
+
+export interface ResponseData {
+  id: number;
+  user_type: string;
+  name: string;
+  phone: string;
+  age: number;
+  password: string;
+  created_by: number;
+  roles: RolesResponse[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RolesResponse {
+  id: number;
+  name: string;
+}
+
+export interface ListCollectionInterface {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: ListData[];
+  pagination: Pagination[];
+}
+export interface ListData {
+  id: number;
+  name: string;
+  point_type: string;
+  district_id: number;
+}
+
+export interface Pagination {
+  totalCount: number;
+  currentPage: number;
+  perPage: number;
+  totalPage: number;
+}
+export interface CollectionPointOption {
+  value: number;
+  label: string;
+}
 export interface AdminLogin {
   PhoneOrEmail: string;
   password: string;
