@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PiXBold } from 'react-icons/pi';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -12,118 +12,33 @@ import {
   createUserSchema,
 } from '@/utils/validators/create-user.schema';
 import { Title } from '@/components/ui/text';
-// import { Select } from '@/components/ui/select';
+import { Select } from '@/components/ui/select';
 import { Password } from '@/components/ui/password';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-// import {
-//   permissions,
-//   roles,
-//   statuses,
-// } from '@/app/shared/roles-permissions/utils';
 import {
-  assignCollectionPoints,
-  createHSK,
-  listCollection,
-} from '@/service/page';
-import { Dropdown } from 'rizzui';
-import Select from 'react-select';
-
-interface CreateUserResponse {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: ResponseData[];
-}
-
-interface ResponseData {
-  id: number;
-  user_type: string;
-  name: string;
-  phone: string;
-  age: number;
-  password: string;
-  created_by: number;
-  roles: RolesResponse[];
-  created_at: string;
-  updated_at: string;
-}
-
-interface RolesResponse {
-  id: number;
-  name: string;
-}
-
-interface ListCollectionInterface {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: ListData[];
-  pagination: Pagination[];
-}
-interface ListData {
-  id: number;
-  name: string;
-  point_type: string;
-  district_id: number;
-}
-
-interface Pagination {
-  totalCount: number;
-  currentPage: number;
-  perPage: number;
-  totalPage: number;
-}
-interface CollectionPointOption {
-  value: number;
-  label: string;
-}
+  permissions,
+  roles,
+  statuses,
+} from '@/app/shared/drivers/utils';
+import { createDriver } from '@/service/page';
 export default function CreateUser() {
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [collectionPointsOptions, setCollectionPointsOptions] = useState<
-    CollectionPointOption[]
-  >([]);
-
-  const {
-    register,
-    control,
-    watch,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const selectedCollectionPoints = watch('collectionPoints', []);
-  console.log('CP SELECTED ARE ', selectedCollectionPoints);
-
-  useEffect(() => {
-    const fetchCollectionPoints = async () => {
-      try {
-        const result = (await listCollection()) as ListCollectionInterface;
-        console.log('Result of CP API', result);
-        setCollectionPointsOptions(
-          result.data.map((point) => ({
-            value: point.id,
-            label: point.name,
-          }))
-        );
-      } catch (error) {
-        console.error('Error fetching collection points:', error);
-      }
-    };
-
-    fetchCollectionPoints();
-  }, []);
 
   const onSubmit: SubmitHandler<CreateUserInput> = async (data) => {
+    // set timeout ony required to display loading state of the create category button
+    // const formattedData = {
+    //   ...data,
+    //   createdAt: new Date(),
+    // };
 
     const formattedData = {
-      user_type: 'hks_users',
+      user_type: 'drivers',
       name: data.fullName,
       age: parseInt(data.age),
       address: data.address,
+      email:data.email,
       phone: data.phone,
       password: data.password,
       confirm_password: data.confirmPassword,
@@ -132,10 +47,10 @@ export default function CreateUser() {
     setLoading(true);
 
     try {
-      const resultData = (await createHSK(formattedData)) as CreateUserResponse;
-
-      console.log('API Response:', resultData);
-
+      const resultData = (await createDriver(formattedData)) as {
+        status: boolean;
+      };
+      console.log('Driver creation API Response:', resultData);
       if (resultData.status == true) {
         setReset({
           fullName: '',
@@ -146,32 +61,27 @@ export default function CreateUser() {
           role: '',
           permissions: '',
           status: '',
-          collectionPoints: '',
         });
         closeModal();
       }
-
-      const user_id = resultData.data.id;
-
-      const collectionPointsData = {
-        user_id: user_id,
-        collectionPointIds: selectedCollectionPoints.map(
-          (point: { value: number }) => point.value
-        ),
-      };
-      const assignPointsResult =
-        await assignCollectionPoints(collectionPointsData);
-        console.log('Assign Points', assignPointsResult);
-
+      // setTimeout(() => {
+      //   console.log('formattedData', formattedData);
+      //   setLoading(false);
+      //   setReset({
+      //     fullName: '',
+      //     email: '',
+      //     phone: '',
+      //     age: '',
+      //     address: '',
+      //     role: '',
+      //     permissions: '',
+      //     status: '',
+      //   });
+      //   closeModal();
+      // }, 600);
     } catch (error) {
-      console.error('Error while calling the api:', error);
-      // if (error.response && error.response.status === 400) {
-      //   setErrorMessage(error.response.data.message);
-      // } else {
-      //   setErrorMessage(
-      //     'An unexpected error occurred. Please try again later.'
-      //   );
-      // }
+      console.error('Error creating user:', error);
+      // Handle error (e.g., display an error message to the user)
     } finally {
       setLoading(false);
     }
@@ -199,29 +109,24 @@ export default function CreateUser() {
               label="Full Name"
               placeholder="Enter user's full name"
               {...register('fullName')}
+              className="col-span-full"
               error={errors.fullName?.message}
             />
 
             <Input
               label="Email"
               placeholder="Enter user's Email Address"
+              className="col-span-full"
               {...register('email')}
               error={errors.email?.message}
             />
 
             <Input
               label="Phone"
-              placeholder="Enter phone number"
+              placeholder="Enter your phone number..."
               labelClassName="font-medium text-gray-900 dark:text-white"
               {...register('phone')}
               error={errors.phone?.message}
-            />
-
-            <Input
-              label="Age"
-              placeholder="Enter user's age"
-              {...register('age')}
-              error={errors.age?.message}
             />
 
             <Input
@@ -232,23 +137,12 @@ export default function CreateUser() {
               error={errors.address?.message}
             />
 
-            <label
-              htmlFor="collectionPoints"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Collection Points
-            </label>
-            <Select
-              id="collectionPoints"
-              placeholder="Select collection points"
-              isMulti
-              className="col-span-full "
-              options={collectionPointsOptions}
-              {...register('collectionPoints')}
-              value={watch('collectionPoints')}
-              onChange={(selectedOptions) =>
-                setValue('collectionPoints', selectedOptions)
-              }
+            <Input
+              label="Age"
+              placeholder="Enter user's age"
+              className="col-span-full"
+              {...register('age')}
+              error={errors.age?.message}
             />
 
             <Password
@@ -265,9 +159,72 @@ export default function CreateUser() {
               {...register('confirmPassword')}
               error={errors.confirmPassword?.message}
             />
-            {errorMessage && (
-              <div className="col-span-full text-red-500">{errorMessage}</div>
-            )}
+
+          
+
+            {/* <Controller
+              name="role"
+              control={control}
+              render={({ field: { name, onChange, value } }) => (
+                <Select
+                  options={roles}
+                  value={value}
+                  onChange={onChange}
+                  name={name}
+                  label="Role"
+                  className="col-span-full"
+                  error={errors?.status?.message}
+                  getOptionValue={(option) => option.value}
+                  displayValue={(selected: string) =>
+                    roles.find((option) => option.value === selected)?.label ??
+                    selected
+                  }
+                  dropdownClassName={'z-[9999]'}
+                />
+              )}
+            /> */}
+
+            {/* <Controller
+              name="status"
+              control={control}
+              render={({ field: { name, onChange, value } }) => (
+                <Select
+                  options={statuses}
+                  value={value}
+                  onChange={onChange}
+                  name={name}
+                  label="Status"
+                  error={errors?.status?.message}
+                  getOptionValue={(option) => option.value}
+                  displayValue={(selected: string) =>
+                    statuses.find((option) => option.value === selected)
+                      ?.label ?? ''
+                  }
+                  dropdownClassName={'z-[9999]'}
+                />
+              )}
+            /> */}
+
+            {/* <Controller
+              name="permissions"
+              control={control}
+              render={({ field: { name, onChange, value } }) => (
+                <Select
+                  options={permissions}
+                  value={value}
+                  onChange={onChange}
+                  name={name}
+                  label="Permissions"
+                  error={errors?.status?.message}
+                  getOptionValue={(option) => option.value}
+                  displayValue={(selected: string) =>
+                    permissions.find((option) => option.value === selected)
+                      ?.label ?? ''
+                  }
+                  dropdownClassName={'z-[9999]'}
+                />
+              )}
+            /> */}
 
             <div className="col-span-full flex items-center justify-end gap-4">
               <Button

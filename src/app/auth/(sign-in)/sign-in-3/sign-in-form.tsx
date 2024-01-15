@@ -13,8 +13,8 @@ import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 
 const initialValues: LoginSchema = {
-  email: 'admin@admin.com',
-  password: 'admin',
+  email: 'superadmin@greenworms.com',
+  password: 'adminPassword',
   rememberMe: true,
 };
 

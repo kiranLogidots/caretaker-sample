@@ -26,7 +26,7 @@ export const createUserSchema = z.object({
   // .string()
   // .refine((data) => data === data.password, { message: messages.passwordsDidNotMatch
   // }),
-  // role: z.string().min(1, { message: messages.roleIsRequired }),
+  // collectionPoints: z.string().min(1, { message: messages.collectionPointsIsRequired }),
   // permissions: z.string().min(1, { message: messages.permissionIsRequired }),
   // status: z.string().min(1, { message: messages.statusIsRequired }),
 });

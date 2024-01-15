@@ -34,11 +34,11 @@ function DropdownMenu() {
           src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
           name="Albert Flores"
         />
-        <div className="ms-3">
-          <Title as="h6" className="font-semibold">
-            Albert Flores
+        <div className="ms-3 flex flex-col flex-wrap text-wrap">
+          <Title as="h6" className="font-semibold"> Super Admin
+            {/* Albert Flores */}
           </Title>
-          <Text className="text-gray-600">flores@doe.io</Text>
+          {/* <Text className="text-gray-600">superadmin@greenworms.com</Text> */}
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">

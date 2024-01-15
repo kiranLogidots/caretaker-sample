@@ -75,6 +75,7 @@
     "react-player": "^2.13.0",
     "react-quill": "^2.0.0",
     "react-scroll": "^1.9.0",
+    "react-select": "^5.8.0",
     "react-svg-worldmap": "2.0.0-alpha.16",
     "react-use": "^17.4.2",
     "recharts": "^2.10.3",

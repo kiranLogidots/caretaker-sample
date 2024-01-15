@@ -6,10 +6,10 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/roles-permissions/users-table/columns';
-import { listHKS } from '@/service/page';
+import { getColumns } from '@/app/shared/drivers/users-table/columns';
+import { listDrivers, listHKS } from '@/service/page';
 const FilterElement = dynamic(
-  () => import('@/app/shared/roles-permissions/users-table/filter-element'),
+  () => import('@/app/shared/drivers/users-table/filter-element'),
   { ssr: false }
 );
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
@@ -20,8 +20,7 @@ const filterState = {
   role: '',
   status: '',
 };
-
-interface HKSUsers {
+interface Driver {
   id: number;
   user_type: string;
   name: string;
@@ -35,11 +34,11 @@ interface HKSUsers {
   created_by: number;
 }
 
-interface HKSUsersResponse {
+interface DriverResponse {
   status: boolean;
   message: string;
   statusCode: number;
-  data: HKSUsers[];
+  data: Driver[];
   pagination: {
     totalCount: number;
     currentPage: number;
@@ -47,9 +46,10 @@ interface HKSUsersResponse {
     totalPage: number;
   };
 }
+
 export default function UsersTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
-  const [tableData, setTableData] = useState<HKSUsers[]>([]);
+  const [tableData, setTableData] = useState<Driver[]>([]);
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
@@ -81,7 +81,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     handleDelete,
     handleReset,
   } = useTable(data, pageSize, filterState);
-  console.log('TABLE DATA', tableData);
+  console.log('DRIVERS TABLE DATA', tableData);
   const columns = useMemo(
     () =>
       getColumns({
@@ -111,8 +111,8 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = await listHKS() as HKSUsersResponse;
-        console.log('result data',resultData) // Fetch data from the listHKS API
+        const resultData = await listDrivers() as DriverResponse;
+        console.log('Drivers result data',resultData) // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
       } catch (error) {
         console.error('Error fetching data:', error);

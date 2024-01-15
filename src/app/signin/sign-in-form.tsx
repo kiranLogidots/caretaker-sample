@@ -13,21 +13,64 @@ import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
+import { superAdminLogin } from '@/service/page';
+import { useRouter } from 'next/navigation';
 
+interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface SAUser {
+  id: number;
+  user_type: string;
+  name: string;
+  phone: string;
+  age: number;
+  email: string;
+  address: string;
+  password: string;
+  created_at: string;
+  updated_at: string;
+  created_by: string;
+}
+interface SALoginInterface {
+  message: string;
+  tokens: Tokens[];
+  user: SAUser[];
+}
 const initialValues: LoginSchema = {
-  email: 'admin@admin.com',
-  password: 'admin',
+  email: 'superadmin@greenworms.com',
+  password: 'adminPassword',
   rememberMe: true,
+  // email: 'admin@admin.com',
+  // password: 'admin',
+  // rememberMe: true,
 };
 
 export default function SignInForm() {
   //TODO: why we need to reset it here
   const [reset, setReset] = useState({});
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<LoginSchema> = (data) => {
+  const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
+    const formattedData = {
+      PhoneOrEmail: data.email,
+      password: data.password,
+    };
+    try {
+      const result = (await superAdminLogin(formattedData)) as SALoginInterface;
+      const { accessToken, refreshToken }  = result.tokens;
+      console.log('RESULT OF SA LOGIN API', result);
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
+    } catch {}
     console.log(data);
     signIn('credentials', {
       ...data,
+      onSuccess: () => {
+        router.push('/');
+      },
     });
   };
 

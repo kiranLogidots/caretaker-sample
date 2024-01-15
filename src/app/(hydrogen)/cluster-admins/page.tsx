@@ -1,19 +1,19 @@
 import { usersData } from '@/data/users-data';
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
-import RolesGrid from '@/app/shared/roles-permissions/roles-grid';
-import UsersTable from '@/app/shared/roles-permissions/users-table';
-import CreateRole from '@/app/shared/roles-permissions/create-role';
+import RolesGrid from '@/app/shared/cluster-admins/roles-grid';
+import UsersTable from '@/app/shared/cluster-admins/users-table';
+import CreateRole from '@/app/shared/cluster-admins/create-role';
 
 const pageHeader = {
-  title: 'Haritha Karma Sena ',
+  title: 'Cluster Admins',
   breadcrumb: [
     {
       href: '/',
       name: 'Users',
     },
     {
-      name: 'Haritha Karma Sena',
+      name: 'Cluster Admins',
     },
   ],
 };

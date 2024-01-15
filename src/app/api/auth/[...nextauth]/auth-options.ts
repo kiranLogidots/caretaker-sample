@@ -52,8 +52,8 @@ export const authOptions: NextAuthOptions = {
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid
         const user = {
-          email: 'admin@admin.com',
-          password: 'admin',
+          email: 'superadmin@greenworms.com',
+          password: 'adminPassword',
         };
 
         if (

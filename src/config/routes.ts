@@ -64,6 +64,9 @@ export const routes = {
   },
   eventCalendar: '/event-calendar',
   rolesPermissions: '/roles-permissions',
+  clusterAdmins:'/cluster-admins',
+  drivers:'/drivers',
+  projectAssociates:'/project-associates',
   invoice: {
     home: '/invoice',
     create: '/invoice/create',

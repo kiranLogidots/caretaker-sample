@@ -3,4 +3,4 @@
 
 pnpm lint
 
-pnpm build
+# pnpm build

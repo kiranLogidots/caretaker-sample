@@ -251,6 +251,21 @@ export const menuItems = [
     href: routes.rolesPermissions,
     icon: <PiFolderLockDuotone />,
   },
+  {
+    name: 'Cluster Admins',
+    href: routes.clusterAdmins,
+    icon: <PiFolderLockDuotone />,
+  },
+  {
+    name: 'Project Associates',
+    href: routes.projectAssociates,
+    icon: <PiFolderLockDuotone />,
+  },
+  {
+    name: 'Drivers',
+    href: routes.drivers,
+    icon: <PiFolderLockDuotone />,
+  },
   // {
   //   name: 'Point of Sale',
   //   href: routes.pos.index,
@@ -258,282 +273,282 @@ export const menuItems = [
   //   badge: 'Update',
   // },
   // label start
-  {
-    name: 'Search & Filters',
-  },
-  {
-    name: 'Real Estate',
-    href: routes.searchAndFilter.realEstate,
-    icon: <PiHouseLineDuotone />,
-  },
-  {
-    name: 'Flight Booking',
-    href: routes.searchAndFilter.flight,
-    icon: <PiAirplaneTiltDuotone />,
-    badge: 'Update',
-  },
-  {
-    name: 'NFT',
-    href: routes.searchAndFilter.nft,
-    icon: <PiCoinDuotone />,
-  },
+  // {
+  //   name: 'Search & Filters',
+  // },
+  // {
+  //   name: 'Real Estate',
+  //   href: routes.searchAndFilter.realEstate,
+  //   icon: <PiHouseLineDuotone />,
+  // },
+  // {
+  //   name: 'Flight Booking',
+  //   href: routes.searchAndFilter.flight,
+  //   icon: <PiAirplaneTiltDuotone />,
+  //   badge: 'Update',
+  // },
+  // {
+  //   name: 'NFT',
+  //   href: routes.searchAndFilter.nft,
+  //   icon: <PiCoinDuotone />,
+  // },
   // label end
   // label start
-  {
-    name: 'Widgets',
-  },
-  // label end
-  {
-    name: 'Cards',
-    href: routes.widgets.cards,
-    icon: <PiSquaresFourDuotone />,
-  },
-  {
-    name: 'Icons',
-    href: routes.widgets.icons,
-    icon: <PiFeatherDuotone />,
-  },
-  {
-    name: 'Charts',
-    href: routes.widgets.charts,
-    icon: <PiChartLineUpDuotone />,
-  },
+  // {
+  //   name: 'Widgets',
+  // },
+  // // label end
+  // {
+  //   name: 'Cards',
+  //   href: routes.widgets.cards,
+  //   icon: <PiSquaresFourDuotone />,
+  // },
+  // {
+  //   name: 'Icons',
+  //   href: routes.widgets.icons,
+  //   icon: <PiFeatherDuotone />,
+  // },
+  // {
+  //   name: 'Charts',
+  //   href: routes.widgets.charts,
+  //   icon: <PiChartLineUpDuotone />,
+  // },
   // {
   //   name: 'Banners',
   //   href: routes.widgets.banners,
   //   icon: <PiImageDuotone />,
   // },
-  {
-    name: 'Maps',
-    href: routes.widgets.maps,
-    icon: <PiMapPinLineDuotone />,
-  },
-  {
-    name: 'Email Templates',
-    href: routes.emailTemplates,
-    icon: <PiEnvelopeDuotone />,
-  },
-  // label start
-  {
-    name: 'Forms',
-  },
+  // {
+  //   name: 'Maps',
+  //   href: routes.widgets.maps,
+  //   icon: <PiMapPinLineDuotone />,
+  // },
+  // {
+  //   name: 'Email Templates',
+  //   href: routes.emailTemplates,
+  //   icon: <PiEnvelopeDuotone />,
+  // },
+  // // label start
+  // {
+  //   name: 'Forms',
+  // },
   // label end
-  {
-    name: 'Account Settings',
-    href: routes.forms.profileSettings,
-    icon: <PiUserGearDuotone />,
-  },
-  {
-    name: 'Notification Preference',
-    href: routes.forms.notificationPreference,
-    icon: <PiBellSimpleRingingDuotone />,
-  },
-  {
-    name: 'Personal Information',
-    href: routes.forms.personalInformation,
-    icon: <PiUserDuotone />,
-  },
-  {
-    name: 'Newsletter',
-    href: routes.forms.newsletter,
-    icon: <PiEnvelopeSimpleOpenDuotone />,
-  },
-  {
-    name: 'Multi Step',
-    href: routes.multiStep,
-    icon: <PiStepsDuotone />,
-  },
-  {
-    name: 'Payment Checkout',
-    href: routes.eCommerce.checkout,
-    icon: <PiCreditCardDuotone />,
-  },
+  // {
+  //   name: 'Account Settings',
+  //   href: routes.forms.profileSettings,
+  //   icon: <PiUserGearDuotone />,
+  // },
+  // {
+  //   name: 'Notification Preference',
+  //   href: routes.forms.notificationPreference,
+  //   icon: <PiBellSimpleRingingDuotone />,
+  // },
+  // {
+  //   name: 'Personal Information',
+  //   href: routes.forms.personalInformation,
+  //   icon: <PiUserDuotone />,
+  // },
+  // {
+  //   name: 'Newsletter',
+  //   href: routes.forms.newsletter,
+  //   icon: <PiEnvelopeSimpleOpenDuotone />,
+  // },
+  // {
+  //   name: 'Multi Step',
+  //   href: routes.multiStep,
+  //   icon: <PiStepsDuotone />,
+  // },
+  // {
+  //   name: 'Payment Checkout',
+  //   href: routes.eCommerce.checkout,
+  //   icon: <PiCreditCardDuotone />,
+  // },
   // label start
-  {
-    name: 'Tables',
-  },
-  // label end
-  {
-    name: 'Basic',
-    href: routes.tables.basic,
-    icon: <PiGridFourDuotone />,
-  },
-  {
-    name: 'Collapsible',
-    href: routes.tables.collapsible,
-    icon: <PiCaretCircleUpDownDuotone />,
-  },
-  {
-    name: 'Enhanced',
-    href: routes.tables.enhanced,
-    icon: <PiTableDuotone />,
-  },
-  {
-    name: 'Sticky Header',
-    href: routes.tables.stickyHeader,
-    icon: <PiBrowserDuotone />,
-  },
-  {
-    name: 'Pagination',
-    href: routes.tables.pagination,
-    icon: <PiListNumbersDuotone />,
-  },
-  {
-    name: 'Search',
-    href: routes.tables.search,
-    icon: <PiHourglassSimpleDuotone />,
-  },
-  // label start
-  {
-    name: 'Pages',
-  },
-  {
-    name: 'Profile',
-    href: routes.profile,
-    icon: <PiUserCircleDuotone />,
-  },
-  {
-    name: 'Welcome',
-    href: routes.welcome,
-    icon: <PiShootingStarDuotone />,
-  },
-  {
-    name: 'Coming soon',
-    href: routes.comingSoon,
-    icon: <PiRocketLaunchDuotone />,
-  },
-  {
-    name: 'Access Denied',
-    href: routes.accessDenied,
-    icon: <PiFolderLockDuotone />,
-  },
-  {
-    name: 'Not Found',
-    href: routes.notFound,
-    icon: <PiBinocularsDuotone />,
-  },
-  {
-    name: 'Maintenance',
-    href: routes.maintenance,
-    icon: <PiHammerDuotone />,
-  },
-  {
-    name: 'Blank',
-    href: routes.blank,
-    icon: <PiNoteBlankDuotone />,
-  },
+  // {
+  //   name: 'Tables',
+  // },
+  // // label end
+  // {
+  //   name: 'Basic',
+  //   href: routes.tables.basic,
+  //   icon: <PiGridFourDuotone />,
+  // },
+  // {
+  //   name: 'Collapsible',
+  //   href: routes.tables.collapsible,
+  //   icon: <PiCaretCircleUpDownDuotone />,
+  // },
+  // {
+  //   name: 'Enhanced',
+  //   href: routes.tables.enhanced,
+  //   icon: <PiTableDuotone />,
+  // },
+  // {
+  //   name: 'Sticky Header',
+  //   href: routes.tables.stickyHeader,
+  //   icon: <PiBrowserDuotone />,
+  // },
+  // {
+  //   name: 'Pagination',
+  //   href: routes.tables.pagination,
+  //   icon: <PiListNumbersDuotone />,
+  // },
+  // {
+  //   name: 'Search',
+  //   href: routes.tables.search,
+  //   icon: <PiHourglassSimpleDuotone />,
+  // },
+  // // label start
+  // {
+  //   name: 'Pages',
+  // },
+  // {
+  //   name: 'Profile',
+  //   href: routes.profile,
+  //   icon: <PiUserCircleDuotone />,
+  // },
+  // {
+  //   name: 'Welcome',
+  //   href: routes.welcome,
+  //   icon: <PiShootingStarDuotone />,
+  // },
+  // {
+  //   name: 'Coming soon',
+  //   href: routes.comingSoon,
+  //   icon: <PiRocketLaunchDuotone />,
+  // },
+  // {
+  //   name: 'Access Denied',
+  //   href: routes.accessDenied,
+  //   icon: <PiFolderLockDuotone />,
+  // },
+  // {
+  //   name: 'Not Found',
+  //   href: routes.notFound,
+  //   icon: <PiBinocularsDuotone />,
+  // },
+  // {
+  //   name: 'Maintenance',
+  //   href: routes.maintenance,
+  //   icon: <PiHammerDuotone />,
+  // },
+  // {
+  //   name: 'Blank',
+  //   href: routes.blank,
+  //   icon: <PiNoteBlankDuotone />,
+  // },
 
   // label start
-  {
-    name: 'Authentication',
-  },
-  // label end
-  {
-    name: 'Sign Up',
-    href: '#',
-    icon: <PiUserPlusDuotone />,
-    dropdownItems: [
-      {
-        name: 'Modern Sign up',
-        href: routes.auth.signUp1,
-      },
-      {
-        name: 'Vintage Sign up',
-        href: routes.auth.signUp2,
-      },
-      {
-        name: 'Trendy Sign up',
-        href: routes.auth.signUp3,
-      },
-      {
-        name: 'Elegant Sign up',
-        href: routes.auth.signUp4,
-      },
-      {
-        name: 'Classic Sign up',
-        href: routes.auth.signUp5,
-      },
-    ],
-  },
-  {
-    name: 'Sign In',
-    href: '#',
-    icon: <PiShieldCheckDuotone />,
-    dropdownItems: [
-      {
-        name: 'Modern Sign in',
-        href: routes.auth.signIn1,
-      },
-      {
-        name: 'Vintage Sign in',
-        href: routes.auth.signIn2,
-      },
-      {
-        name: 'Trendy Sign in',
-        href: routes.auth.signIn3,
-      },
-      {
-        name: 'Elegant Sign in',
-        href: routes.auth.signIn4,
-      },
-      {
-        name: 'Classic Sign in',
-        href: routes.auth.signIn5,
-      },
-    ],
-  },
-  {
-    name: 'Forgot Password',
-    href: '#',
-    icon: <PiLockKeyDuotone />,
-    dropdownItems: [
-      {
-        name: 'Modern Forgot password',
-        href: routes.auth.forgotPassword1,
-      },
-      {
-        name: 'Vintage Forgot password',
-        href: routes.auth.forgotPassword2,
-      },
-      {
-        name: 'Trendy Forgot password',
-        href: routes.auth.forgotPassword3,
-      },
-      {
-        name: 'Elegant Forgot password',
-        href: routes.auth.forgotPassword4,
-      },
-      {
-        name: 'Classic Forgot password',
-        href: routes.auth.forgotPassword5,
-      },
-    ],
-  },
-  {
-    name: 'OTP Pages',
-    href: '#',
-    icon: <PiChatCenteredDotsDuotone />,
-    dropdownItems: [
-      {
-        name: 'Modern OTP page',
-        href: routes.auth.otp1,
-      },
-      {
-        name: 'Vintage OTP page',
-        href: routes.auth.otp2,
-      },
-      {
-        name: 'Trendy OTP page',
-        href: routes.auth.otp3,
-      },
-      {
-        name: 'Elegant OTP page',
-        href: routes.auth.otp4,
-      },
-      {
-        name: 'Classic OTP page',
-        href: routes.auth.otp5,
-      },
-    ],
-  },
+  // {
+  //   name: 'Authentication',
+  // },
+  // // label end
+  // {
+  //   name: 'Sign Up',
+  //   href: '#',
+  //   icon: <PiUserPlusDuotone />,
+  //   dropdownItems: [
+  //     {
+  //       name: 'Modern Sign up',
+  //       href: routes.auth.signUp1,
+  //     },
+  //     {
+  //       name: 'Vintage Sign up',
+  //       href: routes.auth.signUp2,
+  //     },
+  //     {
+  //       name: 'Trendy Sign up',
+  //       href: routes.auth.signUp3,
+  //     },
+  //     {
+  //       name: 'Elegant Sign up',
+  //       href: routes.auth.signUp4,
+  //     },
+  //     {
+  //       name: 'Classic Sign up',
+  //       href: routes.auth.signUp5,
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'Sign In',
+  //   href: '#',
+  //   icon: <PiShieldCheckDuotone />,
+  //   dropdownItems: [
+  //     {
+  //       name: 'Modern Sign in',
+  //       href: routes.auth.signIn1,
+  //     },
+  //     {
+  //       name: 'Vintage Sign in',
+  //       href: routes.auth.signIn2,
+  //     },
+  //     {
+  //       name: 'Trendy Sign in',
+  //       href: routes.auth.signIn3,
+  //     },
+  //     {
+  //       name: 'Elegant Sign in',
+  //       href: routes.auth.signIn4,
+  //     },
+  //     {
+  //       name: 'Classic Sign in',
+  //       href: routes.auth.signIn5,
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'Forgot Password',
+  //   href: '#',
+  //   icon: <PiLockKeyDuotone />,
+  //   dropdownItems: [
+  //     {
+  //       name: 'Modern Forgot password',
+  //       href: routes.auth.forgotPassword1,
+  //     },
+  //     {
+  //       name: 'Vintage Forgot password',
+  //       href: routes.auth.forgotPassword2,
+  //     },
+  //     {
+  //       name: 'Trendy Forgot password',
+  //       href: routes.auth.forgotPassword3,
+  //     },
+  //     {
+  //       name: 'Elegant Forgot password',
+  //       href: routes.auth.forgotPassword4,
+  //     },
+  //     {
+  //       name: 'Classic Forgot password',
+  //       href: routes.auth.forgotPassword5,
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'OTP Pages',
+  //   href: '#',
+  //   icon: <PiChatCenteredDotsDuotone />,
+  //   dropdownItems: [
+  //     {
+  //       name: 'Modern OTP page',
+  //       href: routes.auth.otp1,
+  //     },
+  //     {
+  //       name: 'Vintage OTP page',
+  //       href: routes.auth.otp2,
+  //     },
+  //     {
+  //       name: 'Trendy OTP page',
+  //       href: routes.auth.otp3,
+  //     },
+  //     {
+  //       name: 'Elegant OTP page',
+  //       href: routes.auth.otp4,
+  //     },
+  //     {
+  //       name: 'Classic OTP page',
+  //       href: routes.auth.otp5,
+  //     },
+  //   ],
+  // },
 ];

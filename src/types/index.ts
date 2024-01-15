@@ -18,14 +18,61 @@ export interface CreateCluster {
   name: string;
   age: number;
   address: string;
-  phone: number;
+  phone: string;
   password: string;
   confirm_password: string;
+}
+export interface CreateDriver {
+  user_type: string;
+  name: string;
+  age: number;
+  address: string;
+  phone: string;
+  password: string;
+  confirm_password: string;
+}
+export interface CreatePA {
+  user_type: string;
+  name: string;
+  age: number;
+  address: string;
+  phone: string;
+  password: string;
+  confirm_password: string;
+}
+export interface AssignCollectionPoints{
+  user_id:number;
+  collectionPointIds:number[];
 }
 export interface CreateEvent {
   name: string;
   expense: number;
   date: Date;
+}
+
+export interface CreateUserResponse{
+  status:boolean;
+  message:string;
+  statusCode:number;
+  data:ResponseData[];
+}
+
+export interface ResponseData{
+  id:number;
+  user_type:string;
+  name:string;
+  phone:string;
+  age:number;
+  password:string;
+  created_by:number;
+  roles:RolesResponse[];
+  created_at:string;
+  updated_at:string;
+}
+
+export interface RolesResponse{
+  id:number;
+  name:string;
 }
 
 export interface Coupon {
