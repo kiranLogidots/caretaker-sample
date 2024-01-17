@@ -16,10 +16,6 @@ import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import { superAdminLogin } from '@/service/page';
 import { useRouter } from 'next/navigation';
 
-interface Tokens {
-  accessToken: string;
-  refreshToken: string;
-}
 
 interface SAUser {
   id: number;
@@ -36,7 +32,10 @@ interface SAUser {
 }
 interface SALoginInterface {
   message: string;
-  tokens: Tokens[];
+  tokens: {
+    accessToken: string;
+    refreshToken: string;
+  };
   user: SAUser[];
 }
 const initialValues: LoginSchema = {
@@ -62,7 +61,7 @@ export default function SignInForm() {
       const response = await superAdminLogin(formattedData);
 
       const resultData = response.data as SALoginInterface;
-      const { accessToken, refreshToken }  = resultData.tokens;
+      const { accessToken, refreshToken } = resultData.tokens;
       console.log('RESULT OF SA LOGIN API', resultData);
       sessionStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('refreshToken', refreshToken);
