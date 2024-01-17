@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import {
   CreateUserInput,
+  combinedSchema,
   createUserSchema,
 } from '@/utils/validators/create-user.schema';
 import { Title } from '@/components/ui/text';
@@ -152,7 +153,7 @@ export default function CreateUser() {
       <Form<CreateUserInput>
         resetValues={reset}
         onSubmit={onSubmit}
-        validationSchema={createUserSchema}
+        validationSchema={combinedSchema}
         className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {

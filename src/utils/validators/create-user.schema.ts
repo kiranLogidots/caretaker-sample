@@ -22,7 +22,6 @@ export const createUserSchema = z.object({
     .refine((data) => /\d/.test(data), { message: messages.passwordOneNumeric })
     .refine((data) => data.length > 0, { message: messages.passwordRequired }),
   confirmPassword: z.string(),
- 
   // confirmPassword: z
   // .string()
   // .refine((data) => data === data.password, { message: messages.passwordsDidNotMatch
@@ -37,4 +36,17 @@ createUserSchema.refine((data) => data.password === data.confirmPassword, {
 
 
 // generate form types from zod validation schema
-export type CreateUserInput = z.infer<typeof createUserSchema>;
+// export type CreateUserInput = z.infer<typeof createUserSchema>;
+
+export const collectionPointsSchema = z.array(z.object({
+  label: z.string(),
+  value: z.number(),
+}))
+
+// export type CollectionPointsInput = z.infer<typeof collectionPointsSchema>;
+export const combinedSchema = createUserSchema.extend({
+  collectionPoints: collectionPointsSchema,
+});
+
+// generate form types from combined validation schema
+export type CreateUserInput = z.infer<typeof combinedSchema>;
