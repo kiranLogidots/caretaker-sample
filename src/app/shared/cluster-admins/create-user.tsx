@@ -48,7 +48,7 @@ export default function CreateUser() {
 
   const selectedCollectionPoints = watch('collectionPoints', []);
   // Convert the CollectionPointOption objects to strings.
-const collectionPointStrings = selectedCollectionPoints.map((option) => option.label);
+const collectionPointStrings = selectedCollectionPoints.map((option: { label: any; }) => option.label);
 
   console.log('CP SELECTED ARE ', selectedCollectionPoints);
 

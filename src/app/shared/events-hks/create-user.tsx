@@ -18,7 +18,7 @@ import { createEvent } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import { CreateEventResponse } from '@/types';
 import axios from 'axios';
-import { EventHKSFormInput } from '@/utils/validators/create-event-hks.schema';
+import { EventHKSFormInput, eventHKSFormSchema } from '@/utils/validators/create-event-hks.schema';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
@@ -68,10 +68,10 @@ export default function CreateUser() {
     <>
       {' '}
       <Toaster position="top-right" />
-      <Form<CreateUserInput>
+      <Form<EventHKSFormInput>
         resetValues={reset}
         onSubmit={onSubmit}
-        validationSchema={createUserSchema}
+        validationSchema={eventHKSFormSchema}
         className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
