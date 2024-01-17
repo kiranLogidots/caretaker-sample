@@ -22,10 +22,7 @@ export const createUserSchema = z.object({
     .refine((data) => /\d/.test(data), { message: messages.passwordOneNumeric })
     .refine((data) => data.length > 0, { message: messages.passwordRequired }),
   confirmPassword: z.string(),
-  collectionPoints: z.array(z.object({
-    label: z.string(),
-    value: z.number(),
-  })),
+ 
   // confirmPassword: z
   // .string()
   // .refine((data) => data === data.password, { message: messages.passwordsDidNotMatch

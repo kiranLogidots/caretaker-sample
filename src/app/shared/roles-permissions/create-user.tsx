@@ -135,8 +135,8 @@ export default function CreateUser() {
       console.log('Assign Points', assignPointsResult);
     } catch (err: any) {
       console.log('Error message ', err.message);
-      if (err.response.data) {
-        setErrorMessage(err.response.data.message);
+      if (err.response?.data) {
+        setErrorMessage(err.response?.data?.message);
       } else {
         setErrorMessage('Please try again');
       }

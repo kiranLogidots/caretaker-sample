@@ -12,19 +12,7 @@ import { menuItems } from '@/layouts/hydrogen/menu-items';
 import Logo from '@/components/logo';
 import StatusBadge from '@/components/get-status-badge';
 
-type MenuItem = {
-  name: string;
-  href?: string;
-  icon?: Element;
-} | {
-  name: string;
-  dropdownItems: {
-    name: string;
-    href: string;
-    badge?: string[];
-  }[];
-  icon?: Element;
-};
+
 export default function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
   return (
