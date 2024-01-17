@@ -1,12 +1,5 @@
 import { CouponType } from '@/config/enums';
 
-export interface CreateUserResponse {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: ResponseData[];
-}
-
 export interface ResponseData {
   id: number;
   user_type: string;
@@ -89,9 +82,9 @@ export interface CreatePA {
   password: string;
   confirm_password: string;
 }
-export interface AssignCollectionPoints{
-  user_id:number;
-  collectionPointIds:number[];
+export interface AssignCollectionPoints {
+  user_id: number;
+  collectionPointIds: number[];
 }
 export interface CreateEvent {
   name: string;
@@ -99,36 +92,36 @@ export interface CreateEvent {
   date: Date;
 }
 
-export interface CreateUserResponse{
-  status:boolean;
-  message:string;
-  statusCode:number;
-  data:ResponseData[];
+export interface CreateUserResponse {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: {
+    id: number;
+    user_type: string;
+    name: string;
+    phone: string;
+    age: number;
+    password: string;
+    created_by: number;
+    roles: RolesResponse[];
+    created_at: string;
+    updated_at: string;
+  };
 }
 
-export interface CreateEventResponse{
-  status:boolean;
-  message:string;
-  statusCode:number;
-  data:ResponseData[];
+export interface CreateEventResponse {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: ResponseData;
 }
 
-export interface ResponseData{
-  id:number;
-  user_type:string;
-  name:string;
-  phone:string;
-  age:number;
-  password:string;
-  created_by:number;
-  roles:RolesResponse[];
-  created_at:string;
-  updated_at:string;
-}
 
-export interface RolesResponse{
-  id:number;
-  name:string;
+
+export interface RolesResponse {
+  id: number;
+  name: string;
 }
 
 export interface Coupon {

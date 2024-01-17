@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import {
   CreateUserInput,
-  combinedSchema,
   createUserSchema,
 } from '@/utils/validators/create-user.schema';
 import { Title } from '@/components/ui/text';
@@ -54,6 +53,10 @@ export default function CreateUser() {
   } = useForm();
 
   const selectedCollectionPoints = watch('collectionPoints', []);
+  // Convert the CollectionPointOption objects to strings.
+  //  const collectionPointStrings = selectedCollectionPoints.map(
+  //   (option: { label: any }) => option.label
+  // );
   console.log('CP SELECTED ARE ', selectedCollectionPoints);
 
   useEffect(() => {
@@ -76,6 +79,8 @@ export default function CreateUser() {
   }, []);
 
   const onSubmit: SubmitHandler<CreateUserInput> = async (data) => {
+    console.log('The create user button is clicked', data);
+
     const formattedData = {
       user_type: 'hks_users',
       name: data.fullName,
@@ -89,22 +94,8 @@ export default function CreateUser() {
     setLoading(true);
 
     try {
-      // const response = await axios.post(
-      //   'https://api.greenworms.alpha.logidots.com/api/users',
-      //   formattedData,
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       Authorization: `Bearer ${accessToken}`,
-      //     },
-      //     // body: JSON.stringify(formattedData),
-      //   }
-      // );
-      // // )) as CreateUserResponse;
       const response = await createHSK(formattedData);
-
       const resultData = response.data as CreateUserResponse;
-
       console.log('API Response:', resultData);
 
       if (resultData.status == true) {
@@ -124,7 +115,7 @@ export default function CreateUser() {
           position: 'top-right',
         });
       }
-      const user_id = resultData.data[0].id;
+      const user_id = resultData.data.id;
       const collectionPointsData = {
         user_id: user_id,
         collectionPointIds: selectedCollectionPoints.map(
@@ -153,7 +144,7 @@ export default function CreateUser() {
       <Form<CreateUserInput>
         resetValues={reset}
         onSubmit={onSubmit}
-        validationSchema={combinedSchema}
+        validationSchema={createUserSchema}
         className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
@@ -204,24 +195,27 @@ export default function CreateUser() {
                 error={errors.address?.message}
               />
 
-              <label
-                htmlFor="collectionPoints"
-                className=" col-span-full flex flex-col gap-2 text-sm font-medium text-gray-700"
-              >
-                Collection Points
-                <Select
-                  id="collectionPoints"
-                  placeholder="Select collection points"
-                  isMulti
-                  className=""
-                  options={collectionPointsOptions}
-                  {...register('collectionPoints')}
-                  value={watch('collectionPoints')}
-                  onChange={(selectedOptions) =>
-                    setValue('collectionPoints', selectedOptions)
-                  }
-                />
-              </label>
+              <Controller
+                name="collectionPoints"               
+                control={control}
+                render={({ field: { name, onChange, value } }) => (
+                  <Select
+                    options={collectionPointsOptions}
+                    value={value}
+                    className="col-span-full"
+                    onChange={onChange}
+                    name={name}
+                    isMulti
+                    // label="Collection Points"
+                    // error={errors?.status?.message}
+                    // getOptionValue={(option) => option.value}
+                    // displayValue={(selected: string) =>
+                    //   permissions.find((option) => option.value === selected)    ?.label ?? ''
+                    // }
+                    // dropdownClassName={'z-[9999]'}
+                  />
+                )}
+              />
 
               <Password
                 label="Password"

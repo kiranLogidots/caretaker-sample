@@ -49,3 +49,4 @@ export const validateConfirmPassword = z
     message: messages.passwordOneLowercase,
   })
   .regex(new RegExp('.*\\d.*'), { message: messages.passwordOneNumeric });
+
