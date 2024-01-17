@@ -109,7 +109,7 @@ export default function CreateUser() {
           position: 'top-right',
         });
       }
-      const user_id = resultData.data.id;
+      const user_id = resultData.data[0].id;
 
       const collectionPointsData = {
         user_id: user_id,
