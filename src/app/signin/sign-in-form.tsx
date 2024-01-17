@@ -59,9 +59,11 @@ export default function SignInForm() {
       password: data.password,
     };
     try {
-      const result = (await superAdminLogin(formattedData)) as SALoginInterface;
-      const { accessToken, refreshToken }  = result.tokens;
-      console.log('RESULT OF SA LOGIN API', result);
+      const response = await superAdminLogin(formattedData);
+
+      const resultData = response.data as SALoginInterface;
+      const { accessToken, refreshToken }  = resultData.tokens;
+      console.log('RESULT OF SA LOGIN API', resultData);
       sessionStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('refreshToken', refreshToken);
     } catch {}

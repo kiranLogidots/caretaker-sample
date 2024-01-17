@@ -106,6 +106,13 @@ export interface CreateUserResponse{
   data:ResponseData[];
 }
 
+export interface CreateEventResponse{
+  status:boolean;
+  message:string;
+  statusCode:number;
+  data:ResponseData[];
+}
+
 export interface ResponseData{
   id:number;
   user_type:string;

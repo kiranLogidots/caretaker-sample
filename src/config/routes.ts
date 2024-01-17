@@ -67,6 +67,7 @@ export const routes = {
   clusterAdmins:'/cluster-admins',
   drivers:'/drivers',
   projectAssociates:'/project-associates',
+  events:'/events-hks',
   invoice: {
     home: '/invoice',
     create: '/invoice/create',

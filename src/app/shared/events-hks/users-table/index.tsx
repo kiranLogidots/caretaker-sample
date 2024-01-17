@@ -6,10 +6,10 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/cluster-admins/users-table/columns';
-import { listClusterCreation } from '@/service/page';
+import { getColumns } from '@/app/shared/events-hks/users-table/columns';
+import { listEventsHKS, listHKS } from '@/service/page';
 const FilterElement = dynamic(
-  () => import('@/app/shared/cluster-admins/users-table/filter-element'),
+  () => import('@/app/shared/events-hks/users-table/filter-element'),
   { ssr: false }
 );
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
@@ -21,25 +21,18 @@ const filterState = {
   status: '',
 };
 
-interface ClusterAdmin {
+interface HKSEvents {
   id: number;
-  user_type: string;
   name: string;
-  phone: string;
-  age: number;
-  email: string;
-  address: string;
-  password: string;
-  created_at: string;
-  updated_at: string;
-  created_by: number;
+  expense: string;
+  date: Date;
 }
 
-interface ClusterCreationResponse {
+interface HKSEventsResponse {
   status: boolean;
   message: string;
   statusCode: number;
-  data: ClusterAdmin[];
+  data: HKSEvents[];
   pagination: {
     totalCount: number;
     currentPage: number;
@@ -47,10 +40,9 @@ interface ClusterCreationResponse {
     totalPage: number;
   };
 }
-
 export default function UsersTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
-  const [tableData, setTableData] = useState<ClusterAdmin[]>([]);
+  const [tableData, setTableData] = useState<HKSEvents[]>([]);
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
@@ -82,7 +74,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     handleDelete,
     handleReset,
   } = useTable(data, pageSize, filterState);
-  console.log(' CLUSTER TABLE DATA', tableData);
+  console.log('TABLE DATA', tableData);
   const columns = useMemo(
     () =>
       getColumns({
@@ -112,8 +104,8 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = await listClusterCreation() as ClusterCreationResponse;
-        console.log('cluster result data', resultData); // Fetch data from the listHKS API
+        const resultData = (await listEventsHKS()) as HKSEventsResponse;
+        console.log('result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
       } catch (error) {
         console.error('Error fetching data:', error);

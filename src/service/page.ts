@@ -1,48 +1,46 @@
-import { CreateCluster, CreateHSK, CreateEvent, AdminLogin, CreateDriver, CreatePA, AssignCollectionPoints } from '@/types';
+import {
+  CreateCluster,
+  CreateHSK,
+  CreateEvent,
+  AdminLogin,
+  CreateDriver,
+  CreatePA,
+  AssignCollectionPoints,
+} from '@/types';
 import axios from 'axios';
 
-const accessToken = sessionStorage.getItem("accessToken");
+const accessToken = sessionStorage.getItem('accessToken');
 // console.log("Access Token", accessToken)
 
 //ADMIN LOGIN
 
 export const superAdminLogin = async (details: AdminLogin) => {
-  let response = await fetch(
+  let response = await axios.post(
     'https://api.greenworms.alpha.logidots.com/api/auth/login',
+    details,
     {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(details),
     }
   );
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  console.log("RESULT FROM SERVICE PAGE", result);
-  return result;
+  console.log('RESULT FROM SERVICE PAGE', response);
+  return response;
 };
 
 //HKS
 
 export const createHSK = async (details: CreateHSK) => {
   let response = await axios.post(
-    'https://api.greenworms.alpha.logidots.com/api/users',details,
+    'https://api.greenworms.alpha.logidots.com/api/users',
+    details,
     {
-      // method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      // body: JSON.stringify(details),
     }
   );
-  // if (!response.ok) {
-  //   throw new Error('Something wrong on network connection');
-  // }
-  // let result = await response.json();
   return response;
 };
 
@@ -64,7 +62,8 @@ export const listHKS = async () => {
 
 export const viewHSK = async (userId: number) => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/users/${userId}`, {
+    `https://api.greenworms.alpha.logidots.com/api/users/${userId}`,
+    {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -79,7 +78,8 @@ export const viewHSK = async (userId: number) => {
 
 export const listCollection = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/collection-point?perPage=50&page=1&type=`, {
+    `https://api.greenworms.alpha.logidots.com/api/collection-point?perPage=50&page=1&type=`,
+    {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -92,49 +92,43 @@ export const listCollection = async () => {
   return result;
 };
 
-export const assignCollectionPoints = async (details: AssignCollectionPoints) => {
-  let response = await fetch(
+export const assignCollectionPoints = async (
+  details: AssignCollectionPoints
+) => {
+  let response = await axios.post(
     'https://api.greenworms.alpha.logidots.com/api/collection-point',
+    details,
     {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(details),
     }
   );
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+  return response;
 };
 
 //CLUSTER
 
 export const createCluster = async (details: CreateCluster) => {
-  let response = await fetch(
+  let response = await axios.post(
     'https://api.greenworms.alpha.logidots.com/api/users',
+    details,
     {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(details),
     }
   );
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+
+  return response;
 };
 
 export const listClusterCreation = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/users?user_type=cluster_admin`, {
+    `https://api.greenworms.alpha.logidots.com/api/users?user_type=cluster_admin`,
+    {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -150,27 +144,23 @@ export const listClusterCreation = async () => {
 //DRIVERS
 
 export const createDriver = async (details: CreateDriver) => {
-  let response = await fetch(
+  let response = await axios.post(
     'https://api.greenworms.alpha.logidots.com/api/users',
+    details,
     {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(details),
     }
   );
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+  return response;
 };
 
 export const listDrivers = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/users?user_type=drivers`, {
+    `https://api.greenworms.alpha.logidots.com/api/users?user_type=drivers`,
+    {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -206,7 +196,8 @@ export const createPA = async (details: CreatePA) => {
 
 export const listPA = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/users?user_type=project_associate`, {
+    `https://api.greenworms.alpha.logidots.com/api/users?user_type=project_associate`,
+    {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -222,15 +213,26 @@ export const listPA = async () => {
 //EVENT
 
 export const createEvent = async (details: CreateEvent) => {
-  let response = await fetch(
+  let response = await axios.post(
     'https://api.greenworms.alpha.logidots.com/api/events',
+    details,
     {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(details),
+    }
+  );
+  return response;
+};
+
+export const listEventsHKS = async () => {
+  let response = await fetch(
+    `https://api.greenworms.alpha.logidots.com/api/events`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     }
   );
   if (!response.ok) {
@@ -239,25 +241,3 @@ export const createEvent = async (details: CreateEvent) => {
   let result = await response.json();
   return result;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

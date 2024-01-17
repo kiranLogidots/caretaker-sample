@@ -254,17 +254,29 @@ export const menuItems = [
   {
     name: 'Cluster Admins',
     href: routes.clusterAdmins,
-    icon: <PiFolderLockDuotone />,
+    icon: <PiNoteBlankDuotone />,
   },
   {
     name: 'Project Associates',
     href: routes.projectAssociates,
-    icon: <PiFolderLockDuotone />,
+    icon: <PiHeadsetDuotone />,
   },
   {
     name: 'Drivers',
     href: routes.drivers,
-    icon: <PiFolderLockDuotone />,
+    icon: <PiUserCircleDuotone />,
+  },
+ 
+   // label start
+   {
+    name: 'Events',
+  },
+    // label end
+
+  {
+    name: 'Events',
+    href: routes.events,
+    icon: <PiGridFourDuotone />,
   },
   // {
   //   name: 'Point of Sale',
