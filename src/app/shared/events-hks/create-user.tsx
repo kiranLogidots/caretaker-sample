@@ -1,24 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PiXBold } from 'react-icons/pi';
-import {  SubmitHandler } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
-import {
-  CreateUserInput,
-  createUserSchema,
-} from '@/utils/validators/create-user.schema';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-
 import { createEvent } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import { CreateEventResponse } from '@/types';
 import axios from 'axios';
-import { EventHKSFormInput, eventHKSFormSchema } from '@/utils/validators/create-event-hks.schema';
+import {
+  EventHKSFormInput,
+  eventHKSFormSchema,
+} from '@/utils/validators/create-event-hks.schema';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
@@ -29,8 +27,11 @@ export default function CreateUser() {
   const onSubmit: SubmitHandler<EventHKSFormInput> = async (data) => {
     const formattedData = {
       name: data.name,
-      expense: data.expense,
-      date: data.date,
+      expense: parseInt(data.expense),
+      // date: new Date (data.date.split('T')[0]),
+      // date: new Date(data.date),
+      date: new Date(data.date).toISOString().split('T')[0],
+      // date: new Date(data.date.setHours(0, 0, 0, 0)),
     };
 
     setLoading(true);

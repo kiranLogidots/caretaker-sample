@@ -114,7 +114,11 @@ export interface CreateEventResponse {
   status: boolean;
   message: string;
   statusCode: number;
-  data: ResponseData;
+  data: {
+    name:string;
+    expense:number;
+    date:string | Date;
+  };
 }
 
 
