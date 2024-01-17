@@ -47,6 +47,9 @@ export default function CreateUser() {
   } = useForm();
 
   const selectedCollectionPoints = watch('collectionPoints', []);
+  // Convert the CollectionPointOption objects to strings.
+const collectionPointStrings = selectedCollectionPoints.map((option) => option.label);
+
   console.log('CP SELECTED ARE ', selectedCollectionPoints);
 
   useEffect(() => {
@@ -196,7 +199,7 @@ export default function CreateUser() {
                   placeholder="Select collection points"
                   isMulti
                   className=""
-                  options={collectionPointsOptions}
+                  options={collectionPointStrings}
                   {...register('collectionPoints')}
                   value={watch('collectionPoints')}
                   onChange={(selectedOptions) =>
