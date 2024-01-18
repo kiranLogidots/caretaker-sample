@@ -54,7 +54,7 @@ axios.interceptors.response.use(
     // If the error is due to an expired access token, try refreshing the token
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
+      signOut();
       try {
         await refreshAccessToken();
         return axios(originalRequest);
