@@ -116,7 +116,6 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         console.log('result data',resultData) // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
       } catch (error) {
-        signOut();
         console.error('Error fetching data:', error);
       }
     };

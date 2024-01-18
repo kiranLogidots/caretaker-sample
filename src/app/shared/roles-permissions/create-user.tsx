@@ -33,6 +33,7 @@ import {
   ListCollectionInterface,
 } from '@/types';
 import axios from 'axios';
+import { signOut } from 'next-auth/react';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
@@ -126,6 +127,7 @@ export default function CreateUser() {
         await assignCollectionPoints(collectionPointsData);
       console.log('Assign Points', assignPointsResult);
     } catch (err: any) {
+      signOut();
       console.log('Error message ', err.message);
       if (err.response?.data) {
         setErrorMessage(err.response?.data?.message);
@@ -133,6 +135,7 @@ export default function CreateUser() {
         setErrorMessage('Please try again');
       }
     } finally {
+      // signOut();
       setLoading(false);
     }
   };
