@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/roles-permissions/users-table/columns';
 import { listHKS } from '@/service/page';
+import { signOut } from 'next-auth/react';
 const FilterElement = dynamic(
   () => import('@/app/shared/roles-permissions/users-table/filter-element'),
   { ssr: false }
@@ -115,6 +116,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         console.log('result data',resultData) // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
       } catch (error) {
+        signOut();
         console.error('Error fetching data:', error);
       }
     };
