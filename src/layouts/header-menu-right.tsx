@@ -9,8 +9,9 @@ import ChatSolidIcon from '@/components/icons/chat-solid';
 
 export default function HeaderMenuRight() {
   return (
-    <div className="ms-auto grid shrink-0 grid-cols-4 items-center gap-2 text-gray-700 xs:gap-3 xl:gap-4">
-      <MessagesDropdown>
+    <div className="flex items-end justify-end mr-0">
+     {/* "ms-auto grid shrink-0 grid-cols-4 items-end justify-end right-0 gap-2 text-gray-700 xs:gap-3 xl:gap-4" */}
+      {/* <MessagesDropdown>
         <ActionIcon
           aria-label="Messages"
           variant="text"
@@ -40,7 +41,7 @@ export default function HeaderMenuRight() {
           />
         </ActionIcon>
       </NotificationDropdown>
-      <SettingsButton />
+      <SettingsButton /> */}
       <ProfileMenu />
     </div>
   );
