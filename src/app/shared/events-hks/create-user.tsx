@@ -29,9 +29,10 @@ export default function CreateUser() {
       name: data.name,
       expense: parseInt(data.expense),
       // date: new Date (data.date.split('T')[0]),
-      // date: new Date(data.date),
-      date: new Date(data.date).toISOString().split('T')[0],
+      date: new Date(data.date),
+      // date: new Date(data.date).toISOString().split('T')[0],
       // date: new Date(data.date.setHours(0, 0, 0, 0)),
+      // date: new Date(data.date).toDateString(),
     };
 
     setLoading(true);

@@ -26,12 +26,12 @@ export default function DateCell({
       >
         {formatDate(date, dateFormat)}
       </time>
-      <time
+      {/* <time
         dateTime={formatDate(date, 'HH:mm:ss')}
         className={cn('text-[13px] text-gray-500', timeClassName)}
       >
         {formatDate(date, timeFormat)}
-      </time>
+      </time> */}
     </div>
   );
 }
