@@ -24,8 +24,8 @@ export const DEFAULT_PRESET_COLORS = {
   // dark: '#1d58d8',
   lighter: '#ccfbf1', // Teal 100
   light: '#5eead4', // Teal 300
-  default: '#0d9488', // Teal 600
-  dark: '#115e59',
+  default: '#026163', // Teal 600 0d9488
+  dark: '#115e59', // Teal 800
   foreground: '#ffffff',
 };
 
@@ -56,7 +56,7 @@ export const usePresets = () => {
       colors: {
         lighter: '#ccfbf1', // Teal 100
         light: '#5eead4', // Teal 300
-        default: '#0d9488', // Teal 600
+        default: '#026163', // Teal 600 0d9488
         dark: '#115e59', // Teal 800
         foreground: '#ffffff',
       },

@@ -55,7 +55,7 @@ export default function FilterElement({
           All Users
         </Title>
 
-        <StatusField
+        {/* <StatusField
           className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
           options={statusOptions}
           value={filters['status']}
@@ -70,9 +70,9 @@ export default function FilterElement({
           displayValue={(selected: string) =>
             renderOptionDisplayValue(selected)
           }
-        />
+        /> */}
 
-        <StatusField
+        {/* <StatusField
           options={roles}
           value={filters['role']}
           placeholder="Filter by Role"
@@ -85,7 +85,7 @@ export default function FilterElement({
           displayValue={(selected: string) =>
             roles.find((option) => option.value === selected)?.value ?? selected
           }
-        />
+        /> */}
 
         {isFiltered && (
           <Button
