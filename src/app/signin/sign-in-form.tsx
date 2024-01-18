@@ -59,19 +59,18 @@ export default function SignInForm() {
     };
     try {
       const response = await superAdminLogin(formattedData);
-
       const resultData = response.data as SALoginInterface;
+      console.log("RESULT DATA SIGNUP PAGE",resultData)
       const { accessToken, refreshToken } = resultData.tokens;
-      console.log('RESULT OF SA LOGIN API', resultData);
       sessionStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('refreshToken', refreshToken);
     } catch {}
     console.log(data);
     signIn('credentials', {
       ...data,
-      onSuccess: () => {
-        router.push('/');
-      },
+      // onSuccess: () => {
+      //   router.push('/');
+      // },
     });
   };
 

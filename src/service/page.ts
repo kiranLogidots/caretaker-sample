@@ -8,15 +8,76 @@ import {
   AssignCollectionPoints,
 } from '@/types';
 import axios from 'axios';
+import { signOut } from 'next-auth/react';
 
+const apiBaseUrl = 'https://api.greenworms.alpha.logidots.com/api';
+
+const refreshAccessToken = async () => {
+  const refreshToken = sessionStorage.getItem('refreshToken');
+
+  // Make a request to your server to refresh the access token
+  try {
+    const response = await axios.post(`${apiBaseUrl}/auth/refresh`, {
+      refreshToken,
+    });
+
+    const { accessToken } = response.data;
+    sessionStorage.setItem('accessToken', accessToken);
+
+    // Retry the original request with the new access token
+    return Promise.resolve();
+  } catch (error) {
+    // Handle refresh token failure (e.g., redirect to login page)
+    return Promise.reject(error);
+  }
+};
+
+axios.interceptors.request.use(
+  (config) => {
+    // Add the access token to the request headers
+    const accessToken = sessionStorage.getItem('accessToken');
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // If the error is due to an expired access token, try refreshing the token
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        await refreshAccessToken();
+        return axios(originalRequest);
+      } catch (refreshError) {
+        signOut();
+        // If refresh fails, handle the error (e.g., redirect to login page)
+        return Promise.reject(refreshError);
+      }
+    }
+
+    // For other errors, pass through the original error
+    return Promise.reject(error);
+  }
+);
 const accessToken = sessionStorage.getItem('accessToken');
+// const refreshToken = sessionStorage.getItem('refreshToken');
 // console.log("Access Token", accessToken)
 
 //ADMIN LOGIN
 
 export const superAdminLogin = async (details: AdminLogin) => {
   let response = await axios.post(
-    'https://api.greenworms.alpha.logidots.com/api/auth/login',
+    `${apiBaseUrl}/auth/login`,
     details,
     {
       headers: {
@@ -32,7 +93,7 @@ export const superAdminLogin = async (details: AdminLogin) => {
 
 export const createHSK = async (details: CreateHSK) => {
   let response = await axios.post(
-    'https://api.greenworms.alpha.logidots.com/api/users',
+    `${apiBaseUrl}/users`,
     details,
     {
       headers: {
@@ -46,7 +107,7 @@ export const createHSK = async (details: CreateHSK) => {
 
 export const listHKS = async () => {
   let response = await fetch(
-    'https://api.greenworms.alpha.logidots.com/api/users?user_type=hks_users',
+    `${apiBaseUrl}/users?user_type=hks_users`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -62,7 +123,7 @@ export const listHKS = async () => {
 
 export const viewHSK = async (userId: number) => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/users/${userId}`,
+    `${apiBaseUrl}/users/${userId}`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -78,7 +139,7 @@ export const viewHSK = async (userId: number) => {
 
 export const listCollection = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/collection-point?perPage=50&page=1&type=`,
+    `${apiBaseUrl}/collection-point?perPage=50&page=1&type=`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -96,7 +157,7 @@ export const assignCollectionPoints = async (
   details: AssignCollectionPoints
 ) => {
   let response = await axios.post(
-    'https://api.greenworms.alpha.logidots.com/api/collection-point',
+    `${apiBaseUrl}/collection-point`,
     details,
     {
       headers: {
@@ -112,7 +173,7 @@ export const assignCollectionPoints = async (
 
 export const createCluster = async (details: CreateCluster) => {
   let response = await axios.post(
-    'https://api.greenworms.alpha.logidots.com/api/users',
+    `${apiBaseUrl}/users`,
     details,
     {
       headers: {
@@ -127,7 +188,7 @@ export const createCluster = async (details: CreateCluster) => {
 
 export const listClusterCreation = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/users?user_type=cluster_admin`,
+    `${apiBaseUrl}/users?user_type=cluster_admin`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -145,7 +206,7 @@ export const listClusterCreation = async () => {
 
 export const createDriver = async (details: CreateDriver) => {
   let response = await axios.post(
-    'https://api.greenworms.alpha.logidots.com/api/users',
+    `${apiBaseUrl}/users`,
     details,
     {
       headers: {
@@ -159,7 +220,7 @@ export const createDriver = async (details: CreateDriver) => {
 
 export const listDrivers = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/users?user_type=drivers`,
+    `${apiBaseUrl}/users?user_type=drivers`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -177,7 +238,7 @@ export const listDrivers = async () => {
 
 export const createPA = async (details: CreatePA) => {
   let response = await fetch(
-    'https://api.greenworms.alpha.logidots.com/api/users',
+    `${apiBaseUrl}/users`,
     {
       method: 'POST',
       headers: {
@@ -196,7 +257,7 @@ export const createPA = async (details: CreatePA) => {
 
 export const listPA = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/users?user_type=project_associate`,
+    `${apiBaseUrl}/users?user_type=project_associate`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -214,7 +275,7 @@ export const listPA = async () => {
 
 export const createEvent = async (details: CreateEvent) => {
   let response = await axios.post(
-    'https://api.greenworms.alpha.logidots.com/api/events',
+    `${apiBaseUrl}/events`,
     details,
     {
       headers: {
@@ -228,7 +289,7 @@ export const createEvent = async (details: CreateEvent) => {
 
 export const listEventsHKS = async () => {
   let response = await fetch(
-    `https://api.greenworms.alpha.logidots.com/api/events`,
+    `${apiBaseUrl}/events`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
