@@ -28,6 +28,7 @@ const refreshAccessToken = async () => {
     return Promise.resolve();
   } catch (error) {
     // Handle refresh token failure (e.g., redirect to login page)
+    signOut();
     return Promise.reject(error);
   }
 };
@@ -42,6 +43,7 @@ axios.interceptors.request.use(
     return config;
   },
   (error) => {
+    signOut();
     return Promise.reject(error);
   }
 );
