@@ -115,14 +115,8 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         const resultData = await listDrivers() as DriverResponse;
         console.log('Drivers result data',resultData) // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
-      } catch (error:any) {
-        if (error.response && error.response.status === 401) {
-          signOut({
-            callbackUrl: 'http://localhost:3000',
-          });
-        } else {
-          console.error('Error fetching data:', error);
-        }
+      } catch (err:any) {
+        console.log("Error response for listing users", err.response)
       }
     };
 

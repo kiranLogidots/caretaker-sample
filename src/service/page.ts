@@ -109,21 +109,25 @@ export const createHSK = async (details: CreateHSK) => {
   return response;
 };
 
-export const listHKS = async () => {
-  try {
-    const response = await axios.get(
-      `${apiBaseUrl}/users?user_type=hks_users`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+export const listHKS = () => {
+  return axios
+    .get(`${apiBaseUrl}/users?user_type=hks_users`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response); 
+      if (error.response && error.response?.data?.statusCode === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
       }
-    );
-
-    return response.data;
-  } catch (error) {
-    throw new Error('Something wrong on network connection');
-  }
+      // throw new Error('Something wrong on network connection');
+    });
 };
 
 export const viewHSK = async (userId: number) => {
@@ -139,20 +143,25 @@ export const viewHSK = async (userId: number) => {
   return result;
 };
 
-export const listCollection = async () => {
-  let response = await fetch(
-    `${apiBaseUrl}/collection-point?perPage=50&page=1&type=`,
-    {
+export const listCollection = () => {
+  return axios
+    .get(`${apiBaseUrl}/collection-point?perPage=50&page=1&type=`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-    }
-  );
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response); // Log the error response
+      if (error.response && error.response?.data?.statusCode === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
 };
 
 export const assignCollectionPoints = async (
@@ -180,17 +189,25 @@ export const createCluster = async (details: CreateCluster) => {
   return response;
 };
 
-export const listClusterCreation = async () => {
-  let response = await fetch(`${apiBaseUrl}/users?user_type=cluster_admin`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+export const listClusterCreation = () => {
+  return axios
+    .get(`${apiBaseUrl}/users?user_type=cluster_admin`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response); 
+      if (error.response && error.response?.data?.statusCode === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
 };
 
 //DRIVERS
@@ -205,17 +222,25 @@ export const createDriver = async (details: CreateDriver) => {
   return response;
 };
 
-export const listDrivers = async () => {
-  let response = await fetch(`${apiBaseUrl}/users?user_type=drivers`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+export const listDrivers = () => {
+  return axios
+    .get(`${apiBaseUrl}/users?user_type=drivers`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response); 
+      if (error.response && error.response?.data?.statusCode === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
 };
 
 //PROJECT-ASSOCIATES
@@ -236,20 +261,25 @@ export const createPA = async (details: CreatePA) => {
   return result;
 };
 
-export const listPA = async () => {
-  let response = await fetch(
-    `${apiBaseUrl}/users?user_type=project_associate`,
-    {
+export const listPA = () => {
+  return axios
+    .get(`${apiBaseUrl}/users?user_type=project_associate`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-    }
-  );
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response); 
+      if (error.response && error.response?.data?.statusCode === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
 };
 
 //EVENT
@@ -264,15 +294,23 @@ export const createEvent = async (details: CreateEvent) => {
   return response;
 };
 
-export const listEventsHKS = async () => {
-  let response = await fetch(`${apiBaseUrl}/events`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
+export const listEventsHKS = () => {
+  return axios
+    .get(`${apiBaseUrl}/events`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (error.response && error.response?.data?.statusCode === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
 };
