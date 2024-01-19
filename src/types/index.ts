@@ -130,7 +130,25 @@ export interface CreateEventResponse {
   };
 }
 
+export interface HKSEvents {
+  id: number;
+  name: string;
+  expense: string;
+  date: Date;
+}
 
+export interface HKSEventsResponse {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: HKSEvents[];
+  pagination: {
+    totalCount: number;
+    currentPage: number;
+    perPage: number;
+    totalPage: number;
+  };
+}
 
 export interface RolesResponse {
   id: number;

@@ -12,6 +12,7 @@ import PencilIcon from '@/components/icons/pencil';
 import AvatarCard from '@/components/ui/avatar-card';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
+import { HKSEvents } from '@/types';
 
 function getStatusBadge(status: User['status']) {
   switch (status) {
@@ -52,7 +53,7 @@ type Columns = {
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
-  onDeleteItem: (id: string) => void;
+  onDeleteItem: (id: number) => void;
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
 };
@@ -163,7 +164,7 @@ export const getColumns = ({
     dataIndex: 'action',
     key: 'action',
     width: 140,
-    render: (_: string, user: User) => (
+    render: (_: string, event: HKSEvents) => (
       <div className="justify-en flex items-center gap-3 pe-3">
         <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
           <ActionIcon
@@ -187,8 +188,8 @@ export const getColumns = ({
         </Tooltip> */}
         <DeletePopover
           title={`Delete this user`}
-          description={`Are you sure you want to delete this #${user.id} user?`}
-          onDelete={() => onDeleteItem(user.id)}
+          description={`Are you sure you want to delete this event ?`}
+          onDelete={() => onDeleteItem(event.id)}
         />
       </div>
     ),

@@ -314,3 +314,19 @@ export const listEventsHKS = () => {
       // throw new Error('Something wrong on network connection');
     });
 };
+
+export const deleteEvent = async (eventId: string) => {
+  try {
+    const response = await axios.delete(`${apiBaseUrl}/events/${eventId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Delete event failed:', error);
+    // throw new Error('Failed to delete event');
+  }
+};
+

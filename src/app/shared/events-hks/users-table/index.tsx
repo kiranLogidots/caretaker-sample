@@ -1,5 +1,5 @@
 'use client';
-
+import { Text } from '@/components/ui/text';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
@@ -7,8 +7,9 @@ import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/events-hks/users-table/columns';
-import { listEventsHKS, listHKS } from '@/service/page';
-import { signOut } from 'next-auth/react';
+import { deleteEvent, listEventsHKS, listHKS } from '@/service/page';
+import { HKSEvents, HKSEventsResponse } from '@/types';
+import toast from 'react-hot-toast';
 const FilterElement = dynamic(
   () => import('@/app/shared/events-hks/users-table/filter-element'),
   { ssr: false }
@@ -22,25 +23,6 @@ const filterState = {
   status: '',
 };
 
-interface HKSEvents {
-  id: number;
-  name: string;
-  expense: string;
-  date: Date;
-}
-
-interface HKSEventsResponse {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: HKSEvents[];
-  pagination: {
-    totalCount: number;
-    currentPage: number;
-    perPage: number;
-    totalPage: number;
-  };
-}
 export default function UsersTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
   const [tableData, setTableData] = useState<HKSEvents[]>([]);
@@ -50,10 +32,29 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     },
   });
 
-  const onDeleteItem = useCallback((id: string) => {
-    handleDelete(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const onDeleteItem = useCallback(
+    async (id: number) => {
+      try {
+        await deleteEvent(id.toString());
+
+        // Update the table data after successful deletion
+        const updatedTableData = tableData.filter((event) => event.id !== id);
+        setTableData(updatedTableData);
+        // toast.success(<Text>Event deleted succesfully</Text>);
+        toast.success('Event deleted succesfully', {
+          position: 'top-right',
+        });
+      } catch (error) {
+        toast.error('Failed to delete the event', {
+          position: 'top-right',
+        });
+        console.error('Delete event failed:', error);
+      }
+      // handleDelete(id);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [tableData]
+  );
 
   const {
     isLoading,
@@ -108,8 +109,8 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         const resultData = (await listEventsHKS()) as HKSEventsResponse;
         console.log('result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
-      } catch (err:any) {
-        console.log("Error response for listing users", err.response)
+      } catch (err: any) {
+        console.log('Error response for listing users', err.response);
       }
     };
 
