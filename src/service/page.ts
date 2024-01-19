@@ -12,65 +12,62 @@ import { signOut } from 'next-auth/react';
 
 const apiBaseUrl = 'https://api.greenworms.alpha.logidots.com/api';
 
-const refreshAccessToken = async () => {
-  const refreshToken = sessionStorage.getItem('refreshToken');
+// const refreshAccessToken = async () => {
+//   const refreshToken = sessionStorage.getItem('refreshToken');
+//   try {
+//     const response = await axios.post(`${apiBaseUrl}/auth/refresh`, {
+//       refreshToken,
+//     });
 
-  // Make a request to your server to refresh the access token
-  try {
-    const response = await axios.post(`${apiBaseUrl}/auth/refresh`, {
-      refreshToken,
-    });
+//     const { accessToken } = response.data;
+//     sessionStorage.setItem('accessToken', accessToken);
+//     return Promise.resolve();
+//   } catch (error) {
+//     // Handle refresh token failure (e.g., redirect to login page)
+//     signOut();
+//     return Promise.reject(error);
+//   }
+// };
 
-    const { accessToken } = response.data;
-    sessionStorage.setItem('accessToken', accessToken);
+// axios.interceptors.request.use(
+//   (config) => {
+//     // Add the access token to the request headers
+//     const accessToken = sessionStorage.getItem('accessToken');
+//     if (accessToken) {
+//       config.headers.Authorization = `Bearer ${accessToken}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     signOut();
+//     return Promise.reject(error);
+//   }
+// );
 
-    // Retry the original request with the new access token
-    return Promise.resolve();
-  } catch (error) {
-    // Handle refresh token failure (e.g., redirect to login page)
-    signOut();
-    return Promise.reject(error);
-  }
-};
+// axios.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
 
-axios.interceptors.request.use(
-  (config) => {
-    // Add the access token to the request headers
-    const accessToken = sessionStorage.getItem('accessToken');
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => {
-    signOut();
-    return Promise.reject(error);
-  }
-);
+//     // If the error is due to an expired access token, try refreshing the token
+//     if (error.response && error.response.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
+//       signOut();
+//       try {
+//         await refreshAccessToken();
+//         return axios(originalRequest);
+//       } catch (refreshError) {
+//         signOut();
+//         // If refresh fails, handle the error (e.g., redirect to login page)
+//         return Promise.reject(refreshError);
+//       }
+//     }
 
-axios.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+//     // For other errors, pass through the original error
+//     return Promise.reject(error);
+//   }
+// );
 
-    // If the error is due to an expired access token, try refreshing the token
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      signOut();
-      try {
-        await refreshAccessToken();
-        return axios(originalRequest);
-      } catch (refreshError) {
-        signOut();
-        // If refresh fails, handle the error (e.g., redirect to login page)
-        return Promise.reject(refreshError);
-      }
-    }
-
-    // For other errors, pass through the original error
-    return Promise.reject(error);
-  }
-);
 const accessToken = sessionStorage.getItem('accessToken');
 // const refreshToken = sessionStorage.getItem('refreshToken');
 // console.log("Access Token", accessToken)
