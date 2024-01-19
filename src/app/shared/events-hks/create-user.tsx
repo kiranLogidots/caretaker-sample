@@ -56,13 +56,13 @@ export default function CreateUser() {
         });
       }
     } catch (err: any) {
-      console.log('Error message ', err.message);
-      if (err.response.data) {
-        setErrorMessage(err.response.data.message);
-      } else if (err.response && err.response.status === 401) {
+      console.log('Error message ', err.response);
+      if (err.response && err.response?.data?.statusCode === 401) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
+      } else if (err.response.data) {
+        setErrorMessage(err.response.data.message);
       } else {
         setErrorMessage('Please try again');
       }
@@ -115,7 +115,9 @@ export default function CreateUser() {
               />
 
               {errorMessage && (
-                <div className="col-span-full font-semibold text-sm text-red-500">{errorMessage}</div>
+                <div className="col-span-full text-sm font-semibold text-red-500">
+                  {errorMessage}
+                </div>
               )}
 
               <div className="col-span-full flex items-center justify-end gap-4">

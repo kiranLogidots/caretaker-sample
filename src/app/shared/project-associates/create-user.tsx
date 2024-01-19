@@ -127,12 +127,12 @@ export default function CreateUser() {
       console.log('Assign Points', assignPointsResult);
     } catch (err: any) {
       console.log('Error message ', err.message);
-      if (err.response.data) {
-        setErrorMessage(err.response.data.message);
-      } else if (err.response && err.response.status === 401) {
+      if (err.response && err.response?.data?.statusCode === 401) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
+      } else if (err.response.data) {
+        setErrorMessage(err.response.data.message);
       } else {
         setErrorMessage('Please try again');
       }
