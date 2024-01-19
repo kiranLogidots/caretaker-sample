@@ -64,6 +64,15 @@ export interface CreateCluster {
   password: string;
   confirm_password: string;
 }
+export interface CreateUser {
+  user_type: string;
+  name: string;
+  age: number;
+  address: string;
+  phone: string;
+  password: string;
+  confirm_password: string;
+}
 export interface CreateDriver {
   user_type: string;
   name: string;

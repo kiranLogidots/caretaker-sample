@@ -6,6 +6,7 @@ import {
   CreateDriver,
   CreatePA,
   AssignCollectionPoints,
+  CreateUser,
 } from '@/types';
 import axios from 'axios';
 import { signOut } from 'next-auth/react';
@@ -75,60 +76,62 @@ const accessToken = sessionStorage.getItem('accessToken');
 //ADMIN LOGIN
 
 export const superAdminLogin = async (details: AdminLogin) => {
-  let response = await axios.post(
-    `${apiBaseUrl}/auth/login`,
-    details,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  let response = await axios.post(`${apiBaseUrl}/auth/login`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   console.log('RESULT FROM SERVICE PAGE', response);
+  return response;
+};
+
+//CREATE USER API
+export const createUser = async (details: CreateUser) => {
+  let response = await axios.post(`${apiBaseUrl}/users`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
   return response;
 };
 
 //HKS
 
 export const createHSK = async (details: CreateHSK) => {
-  let response = await axios.post(
-    `${apiBaseUrl}/users`,
-    details,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await axios.post(`${apiBaseUrl}/users`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   return response;
 };
 
 export const listHKS = async () => {
-  let response = await fetch(
-    `${apiBaseUrl}/users?user_type=hks_users`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-  if (!response.ok) {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/users?user_type=hks_users`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
     throw new Error('Something wrong on network connection');
   }
-  let result = await response.json();
-  return result;
 };
 
 export const viewHSK = async (userId: number) => {
-  let response = await fetch(
-    `${apiBaseUrl}/users/${userId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await fetch(`${apiBaseUrl}/users/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   if (!response.ok) {
     throw new Error('Something wrong on network connection');
   }
@@ -155,45 +158,34 @@ export const listCollection = async () => {
 export const assignCollectionPoints = async (
   details: AssignCollectionPoints
 ) => {
-  let response = await axios.post(
-    `${apiBaseUrl}/collection-point`,
-    details,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await axios.post(`${apiBaseUrl}/collection-point`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   return response;
 };
 
 //CLUSTER
 
 export const createCluster = async (details: CreateCluster) => {
-  let response = await axios.post(
-    `${apiBaseUrl}/users`,
-    details,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await axios.post(`${apiBaseUrl}/users`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
   return response;
 };
 
 export const listClusterCreation = async () => {
-  let response = await fetch(
-    `${apiBaseUrl}/users?user_type=cluster_admin`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await fetch(`${apiBaseUrl}/users?user_type=cluster_admin`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   if (!response.ok) {
     throw new Error('Something wrong on network connection');
   }
@@ -204,28 +196,21 @@ export const listClusterCreation = async () => {
 //DRIVERS
 
 export const createDriver = async (details: CreateDriver) => {
-  let response = await axios.post(
-    `${apiBaseUrl}/users`,
-    details,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await axios.post(`${apiBaseUrl}/users`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   return response;
 };
 
 export const listDrivers = async () => {
-  let response = await fetch(
-    `${apiBaseUrl}/users?user_type=drivers`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await fetch(`${apiBaseUrl}/users?user_type=drivers`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   if (!response.ok) {
     throw new Error('Something wrong on network connection');
   }
@@ -236,17 +221,14 @@ export const listDrivers = async () => {
 //PROJECT-ASSOCIATES
 
 export const createPA = async (details: CreatePA) => {
-  let response = await fetch(
-    `${apiBaseUrl}/users`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(details),
-    }
-  );
+  let response = await fetch(`${apiBaseUrl}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(details),
+  });
   if (!response.ok) {
     throw new Error('Something wrong on network connection');
   }
@@ -273,28 +255,21 @@ export const listPA = async () => {
 //EVENT
 
 export const createEvent = async (details: CreateEvent) => {
-  let response = await axios.post(
-    `${apiBaseUrl}/events`,
-    details,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await axios.post(`${apiBaseUrl}/events`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   return response;
 };
 
 export const listEventsHKS = async () => {
-  let response = await fetch(
-    `${apiBaseUrl}/events`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let response = await fetch(`${apiBaseUrl}/events`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   if (!response.ok) {
     throw new Error('Something wrong on network connection');
   }
