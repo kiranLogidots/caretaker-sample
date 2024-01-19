@@ -15,7 +15,7 @@ import { routes } from '@/config/routes';
 import { loginSchema, LoginSchema } from '@/utils/validators/login.schema';
 import { superAdminLogin } from '@/service/page';
 import { useRouter } from 'next/navigation';
-
+import { IoMdRefresh } from 'react-icons/io';
 
 interface SAUser {
   id: number;
@@ -50,6 +50,7 @@ interface SALoginInterface {
 export default function SignInForm() {
   //TODO: why we need to reset it here
   const [reset, setReset] = useState({});
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
@@ -58,20 +59,21 @@ export default function SignInForm() {
       password: data.password,
     };
     try {
+      setLoading(true);
       const response = await superAdminLogin(formattedData);
       const resultData = response.data as SALoginInterface;
-      console.log("RESULT DATA SIGNUP PAGE",resultData)
+      console.log('RESULT DATA SIGNUP PAGE', resultData);
       const { accessToken, refreshToken } = resultData.tokens;
       sessionStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('refreshToken', refreshToken);
     } catch {}
-    console.log(data);
     signIn('credentials', {
       ...data,
       // onSuccess: () => {
       //   router.push('/');
       // },
     });
+    // setLoading(false);
   };
 
   return (
@@ -118,9 +120,25 @@ export default function SignInForm() {
                 Forget Password?
               </Link> */}
             </div>
-            <Button className="w-full bg-green-dark" type="submit" size="lg">
+            {/* <Button className="w-full bg-green-dark" type="submit" size="lg">
               <span>Sign in</span>{' '}
               <PiArrowRightBold className="ms-2 mt-0.5 h-5 w-5" />
+            </Button> */}
+            <Button className="w-full bg-green-dark" type="submit" size="lg">
+              {loading ? (
+                <div className='flex justify-center items-center gap-2'>
+                  <IoMdRefresh
+                    className="mx-auto animate-spin text-white"
+                    size={24}
+                  />
+                  <span>Signing In..</span>
+                </div>
+              ) : (
+                <>
+                  <span>Sign in</span>{' '}
+                  <PiArrowRightBold className="ms-2 mt-0.5 h-5 w-5" />
+                </>
+              )}
             </Button>
           </div>
         )}
