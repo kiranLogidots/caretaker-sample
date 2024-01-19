@@ -132,6 +132,21 @@ export const getColumns = ({
     width: 200,
     render: (value: Date) => <DateCell date={value} />,
   },
+  {
+    title: <HeaderCell title="No of Participants" />,
+    onHeaderCell: () => onHeaderCellClick('expense'),
+    dataIndex: 'no_of_participants',
+    key: 'no_of_participants',
+    width: 250,
+    render: (no_of_participants: number) => no_of_participants,
+  },
+  {
+    title: <HeaderCell title="Organised By" />,
+    dataIndex: 'organised_by',
+    key: 'organised_by',
+    width: 250,
+    hidden: 'organised_by',
+  },
   // {
   //   title: <HeaderCell title="Permissions" />,
   //   dataIndex: 'permissions',
