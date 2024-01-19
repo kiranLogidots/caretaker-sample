@@ -98,7 +98,7 @@ export interface AssignCollectionPoints {
 export interface CreateEvent {
   name: string;
   expense: number;
-  date: Date;
+  date: string;
 }
 
 export interface CreateUserResponse {
