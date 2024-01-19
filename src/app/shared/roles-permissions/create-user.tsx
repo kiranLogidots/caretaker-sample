@@ -205,21 +205,22 @@ export default function CreateUser() {
                 name="collectionPoints"
                 control={control}
                 render={({ field: { name, onChange, value } }) => (
-                  <Select
-                    options={collectionPointsOptions}
-                    value={value}
-                    className="col-span-full"
-                    onChange={onChange}
-                    name={name}
-                    isMulti
-                    // label="Collection Points"
-                    // error={errors?.status?.message}
-                    // getOptionValue={(option) => option.value}
-                    // displayValue={(selected: string) =>
-                    //   permissions.find((option) => option.value === selected)    ?.label ?? ''
-                    // }
-                    // dropdownClassName={'z-[9999]'}
-                  />
+                  <div className='flex flex-col gap-2 col-span-full'>
+                    <label
+                      htmlFor={name}
+                      className=" font-medium text-gray-900 dark:text-white"
+                    >
+                      Collection Points
+                    </label>
+                    <Select
+                      options={collectionPointsOptions}
+                      value={value}
+                      className="col-span-full"
+                      onChange={onChange}
+                      name={name}
+                      isMulti
+                    />
+                  </div>
                 )}
               />
 
@@ -238,7 +239,9 @@ export default function CreateUser() {
                 error={errors.confirmPassword?.message}
               />
               {errorMessage && (
-                <div className="col-span-full font-semibold text-sm text-red-500">{errorMessage}</div>
+                <div className="col-span-full text-sm font-semibold text-red-500">
+                  {errorMessage}
+                </div>
               )}
 
               <div className="col-span-full flex items-center justify-end gap-4">

@@ -205,21 +205,22 @@ export default function CreateUser() {
                 name="collectionPoints"
                 control={control}
                 render={({ field: { name, onChange, value } }) => (
-                  <Select
-                    options={collectionPointsOptions}
-                    value={value}
-                    className="col-span-full"
-                    onChange={onChange}
-                    name={name}
-                    isMulti
-                    // label="Collection Points"
-                    // error={errors?.status?.message}
-                    // getOptionValue={(option) => option.value}
-                    // displayValue={(selected: string) =>
-                    //   permissions.find((option) => option.value === selected)    ?.label ?? ''
-                    // }
-                    // dropdownClassName={'z-[9999]'}
-                  />
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={name}
+                      className=" font-medium text-gray-900 dark:text-white"
+                    >
+                      Collection Points
+                    </label>
+                    <Select
+                      options={collectionPointsOptions}
+                      value={value}
+                      className="col-span-full"
+                      onChange={onChange}
+                      name={name}
+                      isMulti
+                    />
+                  </div>
                 )}
               />
 
@@ -237,8 +238,10 @@ export default function CreateUser() {
                 {...register('confirmPassword')}
                 error={errors.confirmPassword?.message}
               />
-                {errorMessage && (
-                <div className="col-span-full font-semibold text-sm text-red-500">{errorMessage}</div>
+              {errorMessage && (
+                <div className="col-span-full text-sm font-semibold text-red-500">
+                  {errorMessage}
+                </div>
               )}
 
               {/* <Controller

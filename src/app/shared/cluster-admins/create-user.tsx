@@ -162,15 +162,15 @@ export default function CreateUser() {
                 label="Full Name"
                 placeholder="Enter user's full name"
                 {...register('fullName')}
-                className="col-span-full"
+                // className="col-span-full"
                 error={errors.fullName?.message}
               />
 
               <Input
                 label="Email"
                 placeholder="Enter user's Email Address"
-                className="col-span-full"
-                {...register('email')}
+                // className="col-span-full"
+                // {...register('email')}
                 error={errors.email?.message}
               />
 
@@ -183,19 +183,18 @@ export default function CreateUser() {
               />
 
               <Input
+                label="Age"
+                placeholder="Enter user's age"
+                // className="col-span-full"
+                {...register('age')}
+                error={errors.age?.message}
+              />
+              <Input
                 label="Address"
                 placeholder="Enter user's Address"
                 className="col-span-full"
                 {...register('address')}
                 error={errors.address?.message}
-              />
-
-              <Input
-                label="Age"
-                placeholder="Enter user's age"
-                className="col-span-full"
-                {...register('age')}
-                error={errors.age?.message}
               />
 
               {/* <label
@@ -220,21 +219,22 @@ export default function CreateUser() {
                 name="collectionPoints"
                 control={control}
                 render={({ field: { name, onChange, value } }) => (
-                  <Select
-                    options={collectionPointsOptions}
-                    value={value}
-                    className="col-span-full"
-                    onChange={onChange}
-                    name={name}
-                    isMulti
-                    // label="Collection Points"
-                    // error={errors?.status?.message}
-                    // getOptionValue={(option) => option.value}
-                    // displayValue={(selected: string) =>
-                    //   permissions.find((option) => option.value === selected)    ?.label ?? ''
-                    // }
-                    // dropdownClassName={'z-[9999]'}
-                  />
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={name}
+                      className=" font-medium text-gray-900 dark:text-white"
+                    >
+                      Collection Points
+                    </label>
+                    <Select
+                      options={collectionPointsOptions}
+                      value={value}
+                      className="col-span-full"
+                      onChange={onChange}
+                      name={name}
+                      isMulti
+                    />
+                  </div>
                 )}
               />
 
@@ -254,7 +254,9 @@ export default function CreateUser() {
               />
 
               {errorMessage && (
-                <div className="col-span-full font-semibold text-sm text-red-500">{errorMessage}</div>
+                <div className="col-span-full text-sm font-semibold text-red-500">
+                  {errorMessage}
+                </div>
               )}
 
               <div className="col-span-full flex items-center justify-end gap-4">
