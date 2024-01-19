@@ -90,7 +90,7 @@ export default function CreateUser() {
             <>
               <div className="col-span-full flex items-center justify-between">
                 <Title as="h4" className="font-semibold">
-                  Add a new User
+                  Add a new Event
                 </Title>
                 <ActionIcon size="sm" variant="text" onClick={closeModal}>
                   <PiXBold className="h-auto w-5" />
