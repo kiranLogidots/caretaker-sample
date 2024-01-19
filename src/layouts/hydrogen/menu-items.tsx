@@ -53,7 +53,7 @@ export const menuItems = [
   },
   // label end
   {
-    name: 'File Manager',
+    name: 'Dashboard',
     href: '/',
     icon: <PiFolderNotchDuotone />,
   // badge: 'New',
