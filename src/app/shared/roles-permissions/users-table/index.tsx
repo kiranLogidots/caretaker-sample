@@ -115,9 +115,14 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         const resultData = await listHKS() as HKSUsersResponse;
         console.log('result data',resultData) // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
-      } catch (error) {
-        // signOut();
-        console.error('Error fetching data:', error);
+      } catch (error:any) {
+        if (error.response && error.response.status === 401) {
+          signOut({
+            callbackUrl: 'http://localhost:3000',
+          });
+        } else {
+          console.error('Error fetching data:', error);
+        }
       }
     };
 

@@ -28,6 +28,7 @@ import {
   CreateUserResponse,
   ListCollectionInterface,
 } from '@/types';
+import { signOut } from 'next-auth/react';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
@@ -48,7 +49,7 @@ export default function CreateUser() {
   } = useForm();
 
   const selectedCollectionPoints = watch('collectionPoints', []);
-   // Convert the CollectionPointOption objects to strings.
+  // Convert the CollectionPointOption objects to strings.
   //  const collectionPointStrings = selectedCollectionPoints.map(
   //   (option: { label: any }) => option.label
   // );
@@ -122,9 +123,17 @@ export default function CreateUser() {
       const assignPointsResult =
         await assignCollectionPoints(collectionPointsData);
       console.log('Assign Points', assignPointsResult);
-    } catch (error) {
-      console.error('Error creating user:', error);
-      // Handle error (e.g., display an error message to the user)
+    } catch (err: any) {
+      console.log('Error message ', err.message);
+      if (err.response.data) {
+        setErrorMessage(err.response.data.message);
+      } else if (err.response && err.response.status === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        setErrorMessage('Please try again');
+      }
     } finally {
       setLoading(false);
     }
@@ -175,8 +184,6 @@ export default function CreateUser() {
                 error={errors.phone?.message}
               />
 
-            
-
               <Input
                 label="Age"
                 placeholder="Enter user's age"
@@ -184,7 +191,7 @@ export default function CreateUser() {
                 {...register('age')}
                 error={errors.age?.message}
               />
-                <Input
+              <Input
                 label="Address"
                 placeholder="Enter user's Address"
                 className="col-span-full"
@@ -210,8 +217,8 @@ export default function CreateUser() {
                   }
                 />
               </label> */}
-               <Controller
-                name="collectionPoints"               
+              <Controller
+                name="collectionPoints"
                 control={control}
                 render={({ field: { name, onChange, value } }) => (
                   <Select
@@ -246,6 +253,9 @@ export default function CreateUser() {
                 {...register('confirmPassword')}
                 error={errors.confirmPassword?.message}
               />
+              {errorMessage && (
+                <div className="col-span-full font-semibold text-sm text-red-500">{errorMessage}</div>
+              )}
 
               {/* <Controller
               name="role"

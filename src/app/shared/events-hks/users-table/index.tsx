@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/events-hks/users-table/columns';
 import { listEventsHKS, listHKS } from '@/service/page';
+import { signOut } from 'next-auth/react';
 const FilterElement = dynamic(
   () => import('@/app/shared/events-hks/users-table/filter-element'),
   { ssr: false }
@@ -107,8 +108,14 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         const resultData = (await listEventsHKS()) as HKSEventsResponse;
         console.log('result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } catch (error:any) {
+        if (error.response && error.response.status === 401) {
+          signOut({
+            callbackUrl: 'http://localhost:3000',
+          });
+        } else {
+          console.error('Error fetching data:', error);
+        }
       }
     };
 

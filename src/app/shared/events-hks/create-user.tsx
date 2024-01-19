@@ -17,6 +17,7 @@ import {
   EventHKSFormInput,
   eventHKSFormSchema,
 } from '@/utils/validators/create-event-hks.schema';
+import { signOut } from 'next-auth/react';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
@@ -58,6 +59,10 @@ export default function CreateUser() {
       console.log('Error message ', err.message);
       if (err.response.data) {
         setErrorMessage(err.response.data.message);
+      } else if (err.response && err.response.status === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
       } else {
         setErrorMessage('Please try again');
       }
@@ -110,7 +115,7 @@ export default function CreateUser() {
               />
 
               {errorMessage && (
-                <div className="col-span-full text-red-500">{errorMessage}</div>
+                <div className="col-span-full font-semibold text-sm text-red-500">{errorMessage}</div>
               )}
 
               <div className="col-span-full flex items-center justify-end gap-4">

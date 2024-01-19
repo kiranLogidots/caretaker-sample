@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/drivers/users-table/columns';
 import { listDrivers, listHKS } from '@/service/page';
+import { signOut } from 'next-auth/react';
 const FilterElement = dynamic(
   () => import('@/app/shared/drivers/users-table/filter-element'),
   { ssr: false }
@@ -114,8 +115,14 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         const resultData = await listDrivers() as DriverResponse;
         console.log('Drivers result data',resultData) // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } catch (error:any) {
+        if (error.response && error.response.status === 401) {
+          signOut({
+            callbackUrl: 'http://localhost:3000',
+          });
+        } else {
+          console.error('Error fetching data:', error);
+        }
       }
     };
 
