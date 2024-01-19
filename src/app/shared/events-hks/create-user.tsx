@@ -34,6 +34,10 @@ export default function CreateUser() {
       // date: new Date(data.date).toISOString().split('T')[0],
       // date: new Date(data.date.setHours(0, 0, 0, 0)),
       // date: new Date(data.date).toDateString(),
+      no_of_participants: parseInt(data.no_of_participants),
+      description: data.description,
+      other_description: data.other_description,
+      organised_by: data.organised_by,
     };
 
     setLoading(true);
@@ -112,6 +116,35 @@ export default function CreateUser() {
                 className="col-span-full"
                 {...register('date')}
                 error={errors.date?.message}
+              />
+
+              <Input
+                label="Number of Participants"
+                placeholder="Enter number of participants"
+                className="col-span-full"
+                {...register('no_of_participants')}
+                error={errors.no_of_participants?.message}
+              />
+              <Input
+                label="Description"
+                placeholder="Enter description"
+                className="col-span-full"
+                {...register('description')}
+                error={errors.description?.message}
+              />
+              <Input
+                label="Other Description"
+                placeholder="Enter other description"
+                className="col-span-full"
+                {...register('other_description')}
+                error={errors.other_description?.message}
+              />
+              <Input
+                label="Organized By"
+                // placeholder="organized by"
+                className="col-span-full"
+                {...register('organised_by')}
+                error={errors.organised_by?.message}
               />
 
               {errorMessage && (
