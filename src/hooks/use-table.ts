@@ -98,7 +98,7 @@ export function useTable<T extends AnyObject>(
   /*
    * Handle delete
    */
-  function handleDelete(id: number | string[]) {
+  function handleDelete(id: string | string[]) {
     const updatedData = Array.isArray(id)
       ? data.filter((item) => !id.includes(item.id))
       : data.filter((item) => item.id !== id);
