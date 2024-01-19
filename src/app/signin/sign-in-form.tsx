@@ -38,14 +38,14 @@ interface SALoginInterface {
   };
   user: SAUser[];
 }
-const initialValues: LoginSchema = {
-  email: 'superadmin@greenworms.com',
-  password: 'adminPassword',
-  rememberMe: true,
-  // email: 'admin@admin.com',
-  // password: 'admin',
-  // rememberMe: true,
-};
+// const initialValues: LoginSchema = {
+//   email: 'superadmin@greenworms.com',
+//   password: 'adminPassword',
+//   rememberMe: true,
+//   // email: 'admin@admin.com',
+//   // password: 'admin',
+//   // rememberMe: true,
+// };
 
 export default function SignInForm() {
   //TODO: why we need to reset it here
@@ -80,9 +80,9 @@ export default function SignInForm() {
         validationSchema={loginSchema}
         resetValues={reset}
         onSubmit={onSubmit}
-        useFormProps={{
-          defaultValues: initialValues,
-        }}
+        // useFormProps={{
+        //   defaultValues: initialValues,
+        // }}
       >
         {({ register, formState: { errors } }) => (
           <div className="space-y-5">
@@ -111,12 +111,12 @@ export default function SignInForm() {
                 label="Remember Me"
                 className="[&>label>span]:font-medium"
               /> */}
-              <Link
+              {/* <Link
                 href={routes.auth.forgotPassword1}
                 className="h-auto p-0 text-sm font-semibold text-green-dark underline transition-colors hover:text-gray-900 hover:no-underline"
               >
                 Forget Password?
-              </Link>
+              </Link> */}
             </div>
             <Button className="w-full bg-green-dark" type="submit" size="lg">
               <span>Sign in</span>{' '}
