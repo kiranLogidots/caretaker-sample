@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/cluster-admins/users-table/columns';
 import { listClusterCreation } from '@/service/page';
+import { signOut } from 'next-auth/react';
 const FilterElement = dynamic(
   () => import('@/app/shared/cluster-admins/users-table/filter-element'),
   { ssr: false }
@@ -112,10 +113,14 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = await listClusterCreation() as ClusterCreationResponse;
+        const resultData =
+          (await listClusterCreation()) as ClusterCreationResponse;
         console.log('cluster result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
       } catch (error) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
         console.error('Error fetching data:', error);
       }
     };

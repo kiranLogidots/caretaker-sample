@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/project-associates/users-table/columns';
 import {  listPA } from '@/service/page';
+import { signOut } from 'next-auth/react';
 const FilterElement = dynamic(
   () => import('@/app/shared/project-associates/users-table/filter-element'),
   { ssr: false }
@@ -116,6 +117,9 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         console.log('result data',resultData) // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
       } catch (error) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
         console.error('Error fetching data:', error);
       }
     };
