@@ -32,7 +32,7 @@ type Columns = {
   checkedItems: string[];
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
-  onDeleteItem: (id: number) => void;
+  onDeleteItem: (id: string) => void;
 };
 
 export const getColumns = ({
