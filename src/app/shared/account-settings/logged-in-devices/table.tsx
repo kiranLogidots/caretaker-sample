@@ -22,7 +22,7 @@ export default function LoggedInDevices({
       handleSort(value);
     },
   });
-  const onDeleteItem = (id: string) => handleDelete(id);
+  const onDeleteItem = (id: number) => handleDelete(id);
 
   const {
     isLoading,
