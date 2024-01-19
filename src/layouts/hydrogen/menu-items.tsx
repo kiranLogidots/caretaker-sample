@@ -56,7 +56,7 @@ export const menuItems = [
     name: 'File Manager',
     href: '/',
     icon: <PiFolderNotchDuotone />,
-  badge: 'New',
+  // badge: 'New',
   },
   // {
   //   name: 'Executive',
