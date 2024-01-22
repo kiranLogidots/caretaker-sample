@@ -44,7 +44,11 @@ import {
   PiUserSquareDuotone,
   PiImageDuotone,
 } from 'react-icons/pi';
-
+import { MdOutlineDashboard, MdEventAvailable, MdInput } from 'react-icons/md';
+import { FaUserTie, FaShuttleVan } from "react-icons/fa";
+import { HiUserGroup } from "react-icons/hi";
+import { RiAdminFill } from "react-icons/ri";
+import { VscRequestChanges } from "react-icons/vsc";
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
   // label start
@@ -55,7 +59,7 @@ export const menuItems = [
   {
     name: 'Dashboard',
     href: '/',
-    icon: <PiFolderNotchDuotone />,
+    icon: <MdOutlineDashboard />,
   // badge: 'New',
   },
   // {
@@ -251,34 +255,46 @@ export const menuItems = [
   {
     name: 'Haritha Karma Sena',
     href: routes.rolesPermissions,
-    icon: <PiFolderLockDuotone />,
+    icon: <HiUserGroup />,
   },
   {
     name: 'Cluster Admins',
     href: routes.clusterAdmins,
-    icon: <PiNoteBlankDuotone />,
+    icon: <RiAdminFill />,
   },
   {
     name: 'Project Associates',
     href: routes.projectAssociates,
-    icon: <PiHeadsetDuotone />,
+    icon: <FaUserTie />,
   },
   {
     name: 'Drivers',
     href: routes.drivers,
-    icon: <PiUserCircleDuotone />,
+    icon: <FaShuttleVan />,
   },
  
    // label start
    {
-    name: 'Events',
+    name: 'Activities',
   },
     // label end
 
+ 
   {
     name: 'Events',
     href: routes.events,
-    icon: <PiGridFourDuotone />,
+    icon: <MdEventAvailable />,
+  },
+  {
+    name: 'Input Ward Data',
+    href: routes.wardData,
+    icon: <MdInput />,
+    // icon: <PiCreditCardDuotone />,
+  },
+  {
+    name: 'Pickup Request',
+    href: routes.pickupRequest,
+    icon: <VscRequestChanges />,
   },
   // {
   //   name: 'Point of Sale',

@@ -68,6 +68,8 @@ export const routes = {
   drivers:'/drivers',
   projectAssociates:'/project-associates',
   events:'/events-hks',
+  wardData:'/ward-data',
+  pickupRequest:'/pickup-request',
   invoice: {
     home: '/invoice',
     create: '/invoice/create',
