@@ -112,7 +112,8 @@ export default function CreateUser() {
         });
       }
 
-      const user_id = resultData.data.id;
+      const user_id = resultData.data?.savedUser?.id;
+      console.log("userid of driver", user_id)
 
       const collectionPointsData = {
         user_id: user_id,

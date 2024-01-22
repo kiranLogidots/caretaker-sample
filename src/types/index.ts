@@ -128,6 +128,8 @@ export interface CreateUserResponse {
   message: string;
   statusCode: number;
   data: {
+   EngageSpotStatus: boolean;
+   savedUser:{
     id: number;
     user_type: string;
     name: string;
@@ -138,6 +140,7 @@ export interface CreateUserResponse {
     roles: RolesResponse[];
     created_at: string;
     updated_at: string;
+   }
   };
 }
 
