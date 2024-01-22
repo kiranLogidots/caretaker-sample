@@ -7,10 +7,10 @@ export const wardDataFormSchema = z.object({
   date: z.string(),
   collection_point_id: z
     .string()
-    .min(1, { message: messages.expenseIsRequired }),
-  ward_no: z.string(),
-  hks_team_name: z.string().min(1, { message: messages.expenseIsRequired }),
-  shop_visited: z.string().min(1, { message: messages.expenseIsRequired }),
+    .min(1, { message: messages.collectionPointIdReq }),
+  ward_no: z.string().min(1, { message: messages.wardNoReq }),
+  hks_team_name: z.string().min(1, { message: messages.HKSTeamnameReq }),
+  shop_visited: z.string(),
   shop_paid: z.string().min(1, { message: messages.expenseIsRequired }),
   shop_vacant: z.string().min(1, { message: messages.expenseIsRequired }),
   house_visited: z.string().min(1, { message: messages.expenseIsRequired }),

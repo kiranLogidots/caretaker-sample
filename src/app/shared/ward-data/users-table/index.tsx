@@ -7,7 +7,7 @@ import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/ward-data/users-table/columns';
-import { deleteEvent, listEventsHKS, listHKS } from '@/service/page';
+import { deleteEvent, deleteWardData, listEventsHKS, listHKS, listWardData } from '@/service/page';
 import { HKSEvents, HKSEventsResponse } from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(
@@ -35,20 +35,19 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const onDeleteItem = useCallback(
     async (id: number) => {
       try {
-        await deleteEvent(id.toString());
+        await deleteWardData(id.toString());
 
         // Update the table data after successful deletion
-        const updatedTableData = tableData.filter((event) => event.id !== id);
+        const updatedTableData = tableData.filter((warddata) => warddata.id !== id);
         setTableData(updatedTableData);
-        // toast.success(<Text>Event deleted succesfully</Text>);
-        toast.success('Event deleted succesfully', {
+        toast.success('Ward Data deleted successfully', {
           position: 'top-right',
         });
       } catch (error) {
-        toast.error('Failed to delete the event', {
+        toast.error('Failed to delete the ward data', {
           position: 'top-right',
         });
-        console.error('Delete event failed:', error);
+        console.error('Delete ward data failed:', error);
       }
       // handleDelete(id);
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -106,7 +105,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = (await listEventsHKS()) as HKSEventsResponse;
+        const resultData = (await listWardData()) as HKSEventsResponse;
         console.log('result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
       } catch (err: any) {

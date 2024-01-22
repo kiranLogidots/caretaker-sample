@@ -61,7 +61,7 @@ export default function CreateUser() {
           date: '',
         });
         closeModal();
-        toast.success('Event created successfully', {
+        toast.success('Ward Collection Data created successfully', {
           position: 'top-right',
         });
       }
@@ -96,7 +96,7 @@ export default function CreateUser() {
             <>
               <div className="col-span-full flex items-center justify-between">
                 <Title as="h4" className="font-semibold">
-                  Add a new Event
+                  Add a new ward collection data
                 </Title>
                 <ActionIcon size="sm" variant="text" onClick={closeModal}>
                   <PiXBold className="h-auto w-5" />
@@ -229,7 +229,7 @@ export default function CreateUser() {
                   isLoading={isLoading}
                   className="w-full @xl:w-auto"
                 >
-                  Create Event
+                  Add Ward Data
                 </Button>
               </div>
             </>

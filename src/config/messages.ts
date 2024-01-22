@@ -12,6 +12,25 @@ export const messages = {
   passwordsDidNotMatch: "Passwords don't match",
   nameIsRequired: 'Name is required',
   expenseIsRequired: 'Expense is required',
+collectionPointIdReq: 'Collection Point ID is required',
+wardNoReq:'Ward number is required',
+HKSTeamnameReq:'HKS Team Name Required',
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   noOfParticipantsIsRequired: 'Please enter number of participants',
   organizedByIsRequired: 'Please enter who is organising this event',
   invalidOrganizer:'The organizer you entered is an invalid one',

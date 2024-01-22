@@ -93,28 +93,6 @@ export const getColumns = ({
   //     </div>
   //   ),
   // },
-  {
-    title: <HeaderCell title="Name" />,
-    dataIndex: 'name',
-    key: 'fullName',
-    width: 250,
-    hidden: 'fullName',
-    // render: (_: string, user: User) => (
-    //   <AvatarCard
-    //     src={user.avatar}
-    //     name={user.fullName}
-    //     description={user.email}
-    //   />
-    // ),
-  },
-  {
-    title: <HeaderCell title="Expense" />,
-    onHeaderCell: () => onHeaderCellClick('expense'),
-    dataIndex: 'expense',
-    key: 'expense',
-    width: 250,
-    render: (expense: number) => expense,
-  },
 
   {
     title: (
@@ -133,19 +111,41 @@ export const getColumns = ({
     render: (value: Date) => <DateCell date={value} />,
   },
   {
-    title: <HeaderCell title="No of Participants" />,
-    onHeaderCell: () => onHeaderCellClick('expense'),
-    dataIndex: 'no_of_participants',
-    key: 'no_of_participants',
+    title: <HeaderCell title="Ward Number" />,
+    dataIndex: 'ward_no',
+    key: 'ward_no',
     width: 250,
-    render: (no_of_participants: number) => no_of_participants,
+    hidden: 'ward_no',
+    // render: (_: string, user: User) => (
+    //   <AvatarCard
+    //     src={user.avatar}
+    //     name={user.fullName}
+    //     description={user.email}
+    //   />
+    // ),
   },
   {
-    title: <HeaderCell title="Organised By" />,
-    dataIndex: 'organised_by',
-    key: 'organised_by',
+    title: <HeaderCell title="HKS Team Name" />,
+    onHeaderCell: () => onHeaderCellClick('hks_team_name'),
+    dataIndex: 'hks_team_name',
+    key: 'hks_team_name',
     width: 250,
-    hidden: 'organised_by',
+    render: (hks_team_name: number) => hks_team_name,
+  },
+  {
+    title: <HeaderCell title="Collection Point Id" />,
+    onHeaderCell: () => onHeaderCellClick('collection_point_id'),
+    dataIndex: 'collection_point_id',
+    key: 'collection_point_id',
+    width: 250,
+    render: (collection_point_id: number) => collection_point_id,
+  },
+  {
+    title: <HeaderCell title="Collection Amount" />,
+    dataIndex: 'collection_amt',
+    key: 'collection_amt',
+    width: 250,
+    hidden: 'collection_amt',
   },
   // {
   //   title: <HeaderCell title="Permissions" />,
@@ -181,7 +181,7 @@ export const getColumns = ({
     width: 140,
     render: (_: string, event: HKSEvents) => (
       <div className="justify-en flex items-center gap-3 pe-3">
-        <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
+        <Tooltip size="sm" content={'Edit Data'} placement="top" color="invert">
           <ActionIcon
             as="span"
             size="sm"
@@ -202,8 +202,8 @@ export const getColumns = ({
           </ActionIcon>
         </Tooltip> */}
         <DeletePopover
-          title={`Delete this user`}
-          description={`Are you sure you want to delete this event ?`}
+          title={`Delete this data`}
+          description={`Are you sure you want to delete this data ?`}
           onDelete={() => onDeleteItem(event.id)}
         />
       </div>
