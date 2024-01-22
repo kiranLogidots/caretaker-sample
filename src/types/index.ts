@@ -99,6 +99,28 @@ export interface CreateEvent {
   name: string;
   expense: number;
   date: string;
+  no_of_participants: number;
+  description: string;
+  other_description: string;
+  organised_by: string;
+}
+
+export interface AddWardData {
+  date: string;
+  collection_point_id: number;
+  ward_no: string;
+  hks_team_name: string;
+  shop_visited: number;
+  shop_paid: number;
+  shop_vacant: number;
+  house_visited: number;
+  house_paid: number;
+  house_denied: number;
+  house_vacant: number;
+  house_not_intrested: number;
+  house_w_no_money: number;
+  collection_amt: number;
+  hks_incentive: number;
 }
 
 export interface CreateUserResponse {

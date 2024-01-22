@@ -7,6 +7,7 @@ import {
   CreatePA,
   AssignCollectionPoints,
   CreateUser,
+  AddWardData,
 } from '@/types';
 import axios from 'axios';
 import { signOut } from 'next-auth/react';
@@ -330,3 +331,50 @@ export const deleteEvent = async (eventId: string) => {
   }
 };
 
+//INPUT WARD DATA
+
+export const addWardData = async (details: AddWardData) => {
+  let response = await axios.post(`${apiBaseUrl}/ward-collection-data`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response;
+};
+
+export const listWardData = () => {
+  return axios
+    .get(`${apiBaseUrl}/ward-collection-data`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (error.response && error.response?.data?.statusCode === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
+};
+
+export const deleteWardData = async (wardId: string) => {
+  try {
+    const response = await axios.delete(`${apiBaseUrl}/ward-collection-data/${wardId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Delete event failed:', error);
+    // throw new Error('Failed to delete event');
+  }
+};
