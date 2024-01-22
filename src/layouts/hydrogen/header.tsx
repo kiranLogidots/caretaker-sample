@@ -7,6 +7,8 @@ import Sidebar from '@/layouts/hydrogen/sidebar';
 import Logo from '@/components/logo';
 import HeaderMenuRight from '@/layouts/header-menu-right';
 import StickyHeader from '@/layouts/sticky-header';
+import Image from 'next/image';
+import GWLogo from "../../../public/logo_greenworms.svg";
 
 export default function Header() {
   return (
@@ -21,11 +23,11 @@ export default function Header() {
           className="me-4 w-9 shrink-0 text-gray-800 hover:text-gray-900 lg:me-5 xl:hidden"
         >
           <Logo iconOnly={true} />
+          <Image src={GWLogo} className='w-[205px]' alt="Greenworms logo"/>
         </Link>
 
         <SearchWidget />
       </div>
-
       <HeaderMenuRight />
     </StickyHeader>
   );
