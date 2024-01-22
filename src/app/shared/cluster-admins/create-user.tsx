@@ -170,7 +170,7 @@ export default function CreateUser() {
                 label="Email"
                 placeholder="Enter user's Email Address"
                 // className="col-span-full"
-                // {...register('email')}
+                {...register('email')}
                 error={errors.email?.message}
               />
 
