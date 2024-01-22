@@ -10,7 +10,7 @@ const pageHeader = {
   breadcrumb: [
     {
       href: '/',
-      name: 'Events',
+      name: 'Activities',
     },
     {
       name: 'Events',
