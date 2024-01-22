@@ -45,9 +45,9 @@ import {
   PiImageDuotone,
 } from 'react-icons/pi';
 import { MdOutlineDashboard, MdEventAvailable, MdInput } from 'react-icons/md';
-import { FaUserTie, FaShuttleVan } from "react-icons/fa";
-import { HiUserGroup } from "react-icons/hi";
-import { RiAdminFill } from "react-icons/ri";
+// import { FaUserTie, FaShuttleVan } from "react-icons/fa";
+// import { HiUserGroup } from "react-icons/hi";
+// import { RiAdminFill } from "react-icons/ri";
 import { VscRequestChanges } from "react-icons/vsc";
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
@@ -255,22 +255,22 @@ export const menuItems = [
   {
     name: 'Haritha Karma Sena',
     href: routes.rolesPermissions,
-    icon: <HiUserGroup />,
+    icon: <PiUserPlusDuotone />,
   },
   {
     name: 'Cluster Admins',
     href: routes.clusterAdmins,
-    icon: <RiAdminFill />,
+    icon: <PiUserSquareDuotone />,
   },
   {
     name: 'Project Associates',
     href: routes.projectAssociates,
-    icon: <FaUserTie />,
+    icon: <PiUserSquareDuotone />,
   },
   {
     name: 'Drivers',
     href: routes.drivers,
-    icon: <FaShuttleVan />,
+    icon: <PiUserSquareDuotone />,
   },
  
    // label start
