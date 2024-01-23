@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { PiXBold } from 'react-icons/pi';
-import { SubmitHandler } from 'react-hook-form';
+import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,7 @@ import {
   eventHKSFormSchema,
 } from '@/utils/validators/create-event-hks.schema';
 import { signOut } from 'next-auth/react';
+import Select from 'react-select';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
@@ -29,11 +30,7 @@ export default function CreateUser() {
     const formattedData = {
       name: data.name,
       expense: parseInt(data.expense),
-      // date: new Date (data.date.split('T')[0]),
-      // date: new Date(data.date),
       date: new Date(data.date).toISOString().split('T')[0],
-      // date: new Date(data.date.setHours(0, 0, 0, 0)),
-      // date: new Date(data.date).toDateString(),
       no_of_participants: parseInt(data.no_of_participants),
       description: data.description,
       other_description: data.other_description,
@@ -99,14 +96,14 @@ export default function CreateUser() {
               <Input
                 label="Name"
                 placeholder="Enter name of the event"
-                className="col-span-full"
+                // className="col-span-full"
                 {...register('name')}
                 error={errors.name?.message}
               />
               <Input
                 label="Expense"
                 placeholder="Enter expense"
-                className="col-span-full"
+                // className="col-span-full"
                 {...register('expense')}
                 error={errors.expense?.message}
               />
@@ -121,30 +118,49 @@ export default function CreateUser() {
               <Input
                 label="Number of Participants"
                 placeholder="Enter number of participants"
-                className="col-span-full"
+                // className="col-span-full"
                 {...register('no_of_participants')}
                 error={errors.no_of_participants?.message}
               />
               <Input
                 label="Description"
                 placeholder="Enter description"
-                className="col-span-full"
+                // className="col-span-full"
                 {...register('description')}
                 error={errors.description?.message}
               />
               <Input
                 label="Other Description"
                 placeholder="Enter other description"
-                className="col-span-full"
+                // className="col-span-full"
                 {...register('other_description')}
                 error={errors.other_description?.message}
               />
-              <Input
-                label="Organized By"
-                // placeholder="organized by"
-                className="col-span-full"
-                {...register('organised_by')}
-                error={errors.organised_by?.message}
+              <Controller
+                name="organised_by"
+                control={control}
+                render={({ field: { name, onChange, value } }) => (
+                  <div className=" flex flex-col gap-2 mb-20">
+                    <label
+                      htmlFor={name}
+                      className=" font-medium text-gray-900 dark:text-white"
+                    >
+                      Event Type
+                    </label>
+                    <Select
+                      options={[
+                        { value: 'greenworms', label: 'greenworms' },
+                        { value: 'lsg', label: 'lsg' },
+                        { value: 'other', label: 'other' },
+                      ]}
+                      value={{ value: value, label: value }}
+                      onChange={(selectedOption) =>
+                        onChange(selectedOption?.value)
+                      }
+                      name={name}
+                    />
+                  </div>
+                )}
               />
 
               {errorMessage && (
@@ -152,7 +168,6 @@ export default function CreateUser() {
                   {errorMessage}
                 </div>
               )}
-
               <div className="col-span-full flex items-center justify-end gap-4">
                 <Button
                   variant="outline"
