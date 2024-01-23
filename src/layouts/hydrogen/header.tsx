@@ -8,7 +8,7 @@ import Logo from '@/components/logo';
 import HeaderMenuRight from '@/layouts/header-menu-right';
 import StickyHeader from '@/layouts/sticky-header';
 import Image from 'next/image';
-import GWLogo from "../../../public/logo_greenworms.svg";
+import GWLogo from "../../../public/logo.png";
 
 export default function Header() {
   return (
