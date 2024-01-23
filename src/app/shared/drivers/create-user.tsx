@@ -182,6 +182,7 @@ export default function CreateUser() {
                 placeholder="Enter your phone number..."
                 labelClassName="font-medium text-gray-900 dark:text-white"
                 {...register('phone')}
+                defaultValue="+91" 
                 error={errors.phone?.message}
               />
 

@@ -179,6 +179,7 @@ export default function CreateUser() {
                 placeholder="Enter your phone number..."
                 labelClassName="font-medium text-gray-900 dark:text-white"
                 {...register('phone')}
+                defaultValue="+91" 
                 error={errors.phone?.message}
               />
 
@@ -196,25 +197,6 @@ export default function CreateUser() {
                 {...register('address')}
                 error={errors.address?.message}
               />
-
-              {/* <label
-                htmlFor="collectionPoints"
-                className=" col-span-full flex flex-col gap-2 text-sm font-medium text-gray-700"
-              >
-                Collection Points
-                <Select
-                  id="collectionPoints"
-                  placeholder="Select collection points"
-                  isMulti
-                  className=""
-                  options={collectionPointsOptions}
-                  {...register('collectionPoints')}
-                  value={watch('collectionPoints')}
-                  onChange={(selectedOptions) =>
-                    setValue('collectionPoints', selectedOptions)
-                  }
-                />
-              </label> */}
               <Controller
                 name="collectionPoints"
                 control={control}
