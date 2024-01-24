@@ -122,6 +122,13 @@ export interface AddWardData {
   collection_amt: number;
   hks_incentive: number;
 }
+export interface InitiateJobsRequest{
+  collection_point_id:number,
+    driver_id:number,
+    materialType:string,
+    date:string,
+    approximateWeight:number,
+}
 
 export interface CreateUserResponse {
   status: boolean;

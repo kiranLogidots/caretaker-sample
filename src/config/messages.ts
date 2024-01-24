@@ -12,22 +12,14 @@ export const messages = {
   passwordsDidNotMatch: "Passwords don't match",
   nameIsRequired: 'Name is required',
   expenseIsRequired: 'Expense is required',
-collectionPointIdReq: 'Collection Point ID is required',
-wardNoReq:'Ward number is required',
-HKSTeamnameReq:'HKS Team Name Required',
 
+  collectionPointIdReq: 'Collection Point ID is required',
+  wardNoReq:'Ward number is required',
+  HKSTeamnameReq:'HKS Team Name Required',
 
-
-
-
-
-
-
-
-
-
-
-
+  materialTypeRequired:'Please select a material type',
+  driverIdIsRequired:'Driver id is required',
+  LSGIsRequired: 'Please select LSG',
 
 
 

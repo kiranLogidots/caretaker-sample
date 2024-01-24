@@ -1,61 +1,95 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PiXBold } from 'react-icons/pi';
-import { SubmitHandler } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { createEvent } from '@/service/page';
+import {  initiateJobs, listCollection } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
-import { CreateEventResponse } from '@/types';
-import axios from 'axios';
 import {
-  EventHKSFormInput,
-  eventHKSFormSchema,
-} from '@/utils/validators/create-event-hks.schema';
+  CollectionPointOption,
+  CreateEventResponse,
+  ListCollectionInterface,
+} from '@/types';
 import { signOut } from 'next-auth/react';
+import {
+  PickupReqFormInput,
+  pickupReqFormSchema,
+} from '@/utils/validators/create-pickup-request.schema';
+import Select from 'react-select';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [collectionPointsOptions, setCollectionPointsOptions] = useState<
+    CollectionPointOption[]
+  >([]);
 
-  const onSubmit: SubmitHandler<EventHKSFormInput> = async (data) => {
+  const {
+    register,
+    control,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const selectedCollectionPoints = watch('collection_point_id', []);
+  console.log('LSG SELECTED ARE ', selectedCollectionPoints);
+
+  useEffect(() => {
+    const fetchCollectionPoints = async () => {
+      try {
+        const result = (await listCollection()) as ListCollectionInterface;
+        console.log('Result of CP API', result);
+        setCollectionPointsOptions(
+          result?.data?.map((point) => ({
+            value: point.id,
+            label: point.name,
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching collection points:', error);
+      }
+    };
+
+    fetchCollectionPoints();
+  }, []);
+
+  const onSubmit: SubmitHandler<PickupReqFormInput> = async (data) => {
     const formattedData = {
-      name: data.name,
-      expense: parseInt(data.expense),
-      // date: new Date (data.date.split('T')[0]),
-      // date: new Date(data.date),
+      collection_point_id: parseInt(data.collection_point_id),
+      driver_id: parseInt(data.driver_id),
+      materialType: data.materialType,
       date: new Date(data.date).toISOString().split('T')[0],
-      // date: new Date(data.date.setHours(0, 0, 0, 0)),
-      // date: new Date(data.date).toDateString(),
-      no_of_participants: parseInt(data.no_of_participants),
-      description: data.description,
-      other_description: data.other_description,
-      organised_by: data.organised_by,
+      approximateWeight: parseInt(data.approximateWeight),
     };
 
     setLoading(true);
 
     try {
-      const response = await createEvent(formattedData);
+      const response = await initiateJobs(formattedData);
       const resultData = response.data as CreateEventResponse;
 
       console.log('API Response:', resultData);
 
       if (resultData.status == true) {
         setReset({
-          name: '',
-          expense: '',
-          date: '',
+          collection_point_id:'',
+          driver_id:'',
+          materialType:'',
+          date:'',
+          approximateWeight:'',
         });
         closeModal();
-        toast.success('Event created successfully', {
+        toast.success('New Job created successfully', {
           position: 'top-right',
         });
       }
@@ -79,10 +113,10 @@ export default function CreateUser() {
     <>
       {' '}
       <Toaster position="top-right" />
-      <Form<EventHKSFormInput>
+      <Form<PickupReqFormInput>
         resetValues={reset}
         onSubmit={onSubmit}
-        validationSchema={eventHKSFormSchema}
+        validationSchema={pickupReqFormSchema}
         className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
@@ -96,20 +130,36 @@ export default function CreateUser() {
                   <PiXBold className="h-auto w-5" />
                 </ActionIcon>
               </div>
-              <Input
-                label="Name"
-                placeholder="Enter name of the event"
-                className="col-span-full"
-                {...register('name')}
-                error={errors.name?.message}
+
+              <Controller
+                name="collection_point_id"
+                control={control}
+                render={({ field: { name, onChange, value } }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={name}
+                      className=" font-medium text-gray-900 dark:text-white"
+                    >
+                      Select LSG
+                    </label>
+                    <Select
+                      options={collectionPointsOptions}
+                      value={value}
+                      className="col-span-full"
+                      onChange={onChange}
+                      name={name}
+                      // isMulti
+                    />
+                  </div>
+                )}
               />
-              <Input
-                label="Expense"
-                placeholder="Enter expense"
+              {/* <Input
+                label="LSG"
+                placeholder="Enter LSG"
                 className="col-span-full"
-                {...register('expense')}
-                error={errors.expense?.message}
-              />
+                {...register('collection_point_id')}
+                error={errors.collection_point_id?.message}
+              /> */}
               <Input
                 label="Date"
                 type="date"
@@ -118,33 +168,53 @@ export default function CreateUser() {
                 error={errors.date?.message}
               />
 
-              <Input
-                label="Number of Participants"
+              {/* <Input
+                label="Material Selection"
                 placeholder="Enter number of participants"
                 className="col-span-full"
-                {...register('no_of_participants')}
-                error={errors.no_of_participants?.message}
+                {...register('materialType')}
+                error={errors.materialType?.message}
+              /> */}
+              <Controller
+                name="materialType"
+                control={control}
+                render={({ field: { name, onChange, value } }) => (
+                  <div className=" flex flex-col gap-2 ">
+                    <label
+                      htmlFor={name}
+                      className=" font-medium text-gray-900 dark:text-white"
+                    >
+                      Material Selection
+                    </label>
+                    <Select
+                      options={[
+                        { value: 'reject', label: 'reject' },
+                        { value: 'recycle', label: 'recycle' },
+                        { value: 'mixed', label: 'mixed' },
+                      ]}
+                      // value={{ value: value, label: value }}
+                      value={{ value, label: value }}
+                      onChange={(selectedOption) =>
+                        onChange(selectedOption?.value)
+                      }
+                      name={name}
+                    />
+                  </div>
+                )}
               />
               <Input
-                label="Description"
-                placeholder="Enter description"
-                className="col-span-full"
-                {...register('description')}
-                error={errors.description?.message}
+                label="Driver"
+                placeholder="Select Driver"
+                // className="col-span-full"
+                {...register('driver_id')}
+                error={errors.driver_id?.message}
               />
               <Input
-                label="Other Description"
-                placeholder="Enter other description"
+                label="Approximate Weight"
+                placeholder="Enter approx weight"
                 className="col-span-full"
-                {...register('other_description')}
-                error={errors.other_description?.message}
-              />
-              <Input
-                label="Organized By"
-                // placeholder="organized by"
-                className="col-span-full"
-                {...register('organised_by')}
-                error={errors.organised_by?.message}
+                {...register('approximateWeight')}
+                error={errors.approximateWeight?.message}
               />
 
               {errorMessage && (
@@ -166,7 +236,7 @@ export default function CreateUser() {
                   isLoading={isLoading}
                   className="w-full @xl:w-auto"
                 >
-                  Create Event
+                  Initiate Job Request
                 </Button>
               </div>
             </>
