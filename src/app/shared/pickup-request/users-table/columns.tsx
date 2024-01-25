@@ -12,7 +12,7 @@ import PencilIcon from '@/components/icons/pencil';
 import AvatarCard from '@/components/ui/avatar-card';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
-import { HKSEvents } from '@/types';
+import { HKSEvents, JobsList } from '@/types';
 
 function getStatusBadge(status: User['status']) {
   switch (status) {
@@ -93,27 +93,46 @@ export const getColumns = ({
   //     </div>
   //   ),
   // },
+  // {
+  //   title: <HeaderCell title="PickUp Date" />,
+  //   dataIndex: 'created_at',
+  //   key: 'created_at',
+  //   width: 250,
+  //   hidden: 'created_at',
+  //   // render: (_: string, user: User) => (
+  //   //   <AvatarCard
+  //   //     src={user.avatar}
+  //   //     name={user.fullName}
+  //   //     description={user.email}
+  //   //   />
+  //   // ),
+  // },
   {
-    title: <HeaderCell title="PickUp Date" />,
-    dataIndex: 'name',
-    key: 'fullName',
-    width: 250,
-    hidden: 'fullName',
-    // render: (_: string, user: User) => (
-    //   <AvatarCard
-    //     src={user.avatar}
-    //     name={user.fullName}
-    //     description={user.email}
-    //   />
-    // ),
+    title: (
+      <HeaderCell
+        title=" PickUp Date"
+        sortable
+        ascending={
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
+        }
+      />
+    ),
+    onHeaderCell: () => onHeaderCellClick('date'),
+    dataIndex: 'created_at',
+    key: 'created_at',
+    width: 200,
+    render: (value: Date) => <DateCell date={value} />,
   },
   {
     title: <HeaderCell title="PickUp Point" />,
-    onHeaderCell: () => onHeaderCellClick('expense'),
-    dataIndex: 'expense',
-    key: 'expense',
+    onHeaderCell: () => onHeaderCellClick('collection_point_data.name'),
+    dataIndex: 'collection_point_data.name',
+    key: 'collection_point_data.name',
     width: 250,
-    render: (expense: number) => expense,
+    render: (text: string, record: JobsList) => {
+      const pickupPoint = record.collection_point_data?.name || ''; // Ensure driver_data and name are available
+      return <Text>{pickupPoint}</Text>;
+    },
   },
   {
     title: <HeaderCell title="Driver Name" />,
@@ -121,34 +140,25 @@ export const getColumns = ({
     dataIndex: 'driver_data.name',
     key: 'driver_data.name',
     width: 250,
-    render: (expense: number) => expense,
+    // render: (expense: number) => expense,
+    render: (text: string, record: JobsList) => {
+      const driverName = record.driver_data?.name || ''; // Ensure driver_data and name are available
+      return <Text>{driverName}</Text>;
+    },
   },
 
-  // {
-  //   title: (
-  //     <HeaderCell
-  //       title="Date"
-  //       sortable
-  //       ascending={
-  //         sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
-  //       }
-  //     />
-  //   ),
-  //   onHeaderCell: () => onHeaderCellClick('date'),
-  //   dataIndex: 'date',
-  //   key: 'date',
-  //   width: 200,
-  //   render: (value: Date) => <DateCell date={value} />,
-  // },
   {
     title: <HeaderCell title="Status" />,
-    onHeaderCell: () => onHeaderCellClick('expense'),
-    dataIndex: 'no_of_participants',
-    key: 'no_of_participants',
+    onHeaderCell: () => onHeaderCellClick('status.name'),
+    dataIndex: 'status.name',
+    key: 'status.name',
     width: 250,
-    render: (no_of_participants: number) => no_of_participants,
+    render: (text: string, record: JobsList) => {
+      const status = record.status?.name || ''; // Ensure driver_data and name are available
+      return <Text>{status}</Text>;
+    },
   },
- 
+
   {
     title: <HeaderCell title="Actions" />,
     dataIndex: 'action',

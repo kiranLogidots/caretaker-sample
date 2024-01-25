@@ -1,4 +1,5 @@
 import { CouponType } from '@/config/enums';
+import { NumberDomain } from 'recharts/types/util/types';
 
 export interface ResponseData {
   id: number;
@@ -122,12 +123,12 @@ export interface AddWardData {
   collection_amt: number;
   hks_incentive: number;
 }
-export interface InitiateJobsRequest{
-  collection_point_id:number,
-    driver_id:number,
-    materialType:string,
-    date:string,
-    approximateWeight:number,
+export interface InitiateJobsRequest {
+  collection_point_id: number;
+  driver_id: number;
+  materialType: string;
+  date: string;
+  approximateWeight: number;
 }
 
 export interface CreateUserResponse {
@@ -135,19 +136,19 @@ export interface CreateUserResponse {
   message: string;
   statusCode: number;
   data: {
-   EngageSpotStatus: boolean;
-   savedUser:{
-    id: number;
-    user_type: string;
-    name: string;
-    phone: string;
-    age: number;
-    password: string;
-    created_by: number;
-    roles: RolesResponse[];
-    created_at: string;
-    updated_at: string;
-   }
+    EngageSpotStatus: boolean;
+    savedUser: {
+      id: number;
+      user_type: string;
+      name: string;
+      phone: string;
+      age: number;
+      password: string;
+      created_by: number;
+      roles: RolesResponse[];
+      created_at: string;
+      updated_at: string;
+    };
   };
 }
 
@@ -156,9 +157,9 @@ export interface CreateEventResponse {
   message: string;
   statusCode: number;
   data: {
-    name:string;
-    expense:number;
-    date:string | Date;
+    name: string;
+    expense: number;
+    date: string | Date;
   };
 }
 
@@ -179,6 +180,59 @@ export interface HKSEventsResponse {
     currentPage: number;
     perPage: number;
     totalPage: number;
+  };
+}
+export interface JobsListResponse {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: JobsList[];
+  pagination: {
+    totalCount: number;
+    currentPage: number;
+    perPage: number;
+    totalPage: number;
+  };
+}
+export interface JobsList {
+  id: number;
+  material_type: string;
+  weight: string;
+  collection_point_id: number;
+  driver_id: number;
+  status_id: number;
+  collection_point_data: {
+    id: number;
+    name: string;
+    point_type: string;
+    district_id: number;
+  };
+  driver_data: {
+    id: number;
+    user_type: string;
+    name: string;
+    phone: string;
+    age: number;
+    email: string;
+    address: string;
+    password: string;
+    created_by: number;
+    created_at: string;
+    updated_at: string;
+    otp_secret: null;
+    otp_timestamp: null;
+    profile_image: null;
+  };
+  created_by: number;
+  date: string;
+  created_at: string;
+  updated_at: string;
+  status: {
+    id: number;
+    name: string;
+    desc: string;
+    order: number;
+    type: string;
   };
 }
 

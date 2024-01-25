@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/pickup-request/users-table/columns';
 import { deleteEvent, listAllJobs, listEventsHKS, listHKS } from '@/service/page';
-import { HKSEvents, HKSEventsResponse } from '@/types';
+import { HKSEvents, HKSEventsResponse, JobsList, JobsListResponse } from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(
   () => import('@/app/shared/pickup-request/users-table/filter-element'),
@@ -25,7 +25,7 @@ const filterState = {
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
-  const [tableData, setTableData] = useState<HKSEvents[]>([]);
+  const [tableData, setTableData] = useState<JobsList[]>([]);
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
@@ -41,11 +41,11 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         const updatedTableData = tableData.filter((event) => event.id !== id);
         setTableData(updatedTableData);
         // toast.success(<Text>Event deleted succesfully</Text>);
-        toast.success('Event deleted succesfully', {
+        toast.success('Job deleted succesfully', {
           position: 'top-right',
         });
       } catch (error) {
-        toast.error('Failed to delete the event', {
+        toast.error('Failed to delete the job', {
           position: 'top-right',
         });
         console.error('Delete event failed:', error);
@@ -106,9 +106,9 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = (await listAllJobs()) as HKSEventsResponse;
+        const resultData = (await listAllJobs()) as JobsListResponse;
         console.log('result data', resultData); // Fetch data from the listHKS API
-        setTableData(resultData.data); // Update the table data state with the fetched data
+        setTableData(resultData?.data); // Update the table data state with the fetched data
       } catch (err: any) {
         console.log('Error response for listing users', err.response);
       }
