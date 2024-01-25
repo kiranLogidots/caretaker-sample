@@ -186,11 +186,11 @@ export const getColumns = ({
             <EyeIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip> */}
-        <DeletePopover
+        {/* <DeletePopover
           title={`Delete this user`}
           description={`Are you sure you want to delete this event ?`}
           onDelete={() => onDeleteItem(event.id)}
-        />
+        /> */}
       </div>
     ),
   },

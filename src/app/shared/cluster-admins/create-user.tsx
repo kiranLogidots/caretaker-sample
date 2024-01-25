@@ -117,6 +117,7 @@ export default function CreateUser() {
         collectionPointIds: selectedCollectionPoints.map(
           (point: { value: number }) => point.value
         ),
+        
       };
       const assignPointsResult =
         await assignCollectionPoints(collectionPointsData);
@@ -179,7 +180,7 @@ export default function CreateUser() {
                 placeholder="Enter your phone number..."
                 labelClassName="font-medium text-gray-900 dark:text-white"
                 {...register('phone')}
-                defaultValue="+91" 
+                defaultValue="+91"
                 error={errors.phone?.message}
               />
 
@@ -212,7 +213,11 @@ export default function CreateUser() {
                       options={collectionPointsOptions}
                       value={value}
                       className="col-span-full"
-                      onChange={onChange}
+                      // onChange={onChange}
+                      onChange={(selectedOptions) => {
+                        onChange(selectedOptions); 
+                        setValue(name, selectedOptions); 
+                      }}
                       name={name}
                       isMulti
                     />

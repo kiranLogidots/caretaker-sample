@@ -234,7 +234,11 @@ export default function CreateUser() {
                       options={collectionPointsOptions}
                       value={value}
                       className="col-span-full"
-                      onChange={onChange}
+                      // onChange={onChange}
+                      onChange={(selectedOptions) => {
+                        onChange(selectedOptions); 
+                        setValue(name, selectedOptions); 
+                      }}
                       name={name}
                       isMulti
                     />

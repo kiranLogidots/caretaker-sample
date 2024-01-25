@@ -132,14 +132,14 @@ export const getColumns = ({
     width: 250,
     render: (hks_team_name: number) => hks_team_name,
   },
-  {
-    title: <HeaderCell title="Collection Point Id" />,
-    onHeaderCell: () => onHeaderCellClick('collection_point_id'),
-    dataIndex: 'collection_point_id',
-    key: 'collection_point_id',
-    width: 250,
-    render: (collection_point_id: number) => collection_point_id,
-  },
+  // {
+  //   title: <HeaderCell title="Collection Point Id" />,
+  //   onHeaderCell: () => onHeaderCellClick('collection_point_id'),
+  //   dataIndex: 'collection_point_id',
+  //   key: 'collection_point_id',
+  //   width: 250,
+  //   render: (collection_point_id: number) => collection_point_id,
+  // },
   {
     title: <HeaderCell title="Collection Amount" />,
     dataIndex: 'collection_amt',
