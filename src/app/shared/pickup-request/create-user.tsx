@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import {  initiateJobs, listCollection } from '@/service/page';
+import { initiateJobs, listCollection } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import {
   CollectionPointOption,
@@ -41,9 +41,6 @@ export default function CreateUser() {
     formState: { errors },
   } = useForm();
 
-  const selectedCollectionPoints = watch('collection_point_id', []);
-  console.log('LSG SELECTED ARE ', selectedCollectionPoints);
-
   useEffect(() => {
     const fetchCollectionPoints = async () => {
       try {
@@ -64,8 +61,9 @@ export default function CreateUser() {
   }, []);
 
   const onSubmit: SubmitHandler<PickupReqFormInput> = async (data) => {
+    console.log('ON SUBMIT TRIGGERED');
     const formattedData = {
-      collection_point_id: parseInt(data.collection_point_id),
+      collection_point_id: data.collection_point_id,
       driver_id: parseInt(data.driver_id),
       materialType: data.materialType,
       date: new Date(data.date).toISOString().split('T')[0],
@@ -82,11 +80,11 @@ export default function CreateUser() {
 
       if (resultData.status == true) {
         setReset({
-          collection_point_id:'',
-          driver_id:'',
-          materialType:'',
-          date:'',
-          approximateWeight:'',
+          collection_point_id: '',
+          driver_id: '',
+          materialType: '',
+          date: '',
+          approximateWeight: '',
         });
         closeModal();
         toast.success('New Job created successfully', {
@@ -138,28 +136,29 @@ export default function CreateUser() {
                   <div className="col-span-full flex flex-col gap-2">
                     <label
                       htmlFor={name}
-                      className=" font-medium text-gray-900 dark:text-white"
+                      className="font-medium text-gray-900 dark:text-white"
                     >
                       Select LSG
                     </label>
                     <Select
-                      options={collectionPointsOptions}
-                      value={value}
+                      options={collectionPointsOptions.map((option) => ({
+                        value: option.value,
+                        label: option.label,
+                      }))}
+                      value={collectionPointsOptions.find(
+                        (option) => String(option.value) === String(value)
+                      )}
                       className="col-span-full"
-                      onChange={onChange}
+                   
+                      onChange={(selectedOption) => {
+                        onChange(selectedOption?.value); // Set the selected value
+                      }}
                       name={name}
-                      // isMulti
                     />
                   </div>
                 )}
               />
-              {/* <Input
-                label="LSG"
-                placeholder="Enter LSG"
-                className="col-span-full"
-                {...register('collection_point_id')}
-                error={errors.collection_point_id?.message}
-              /> */}
+
               <Input
                 label="Date"
                 type="date"
@@ -168,13 +167,6 @@ export default function CreateUser() {
                 error={errors.date?.message}
               />
 
-              {/* <Input
-                label="Material Selection"
-                placeholder="Enter number of participants"
-                className="col-span-full"
-                {...register('materialType')}
-                error={errors.materialType?.message}
-              /> */}
               <Controller
                 name="materialType"
                 control={control}
@@ -193,7 +185,7 @@ export default function CreateUser() {
                         { value: 'mixed', label: 'mixed' },
                       ]}
                       // value={{ value: value, label: value }}
-                      value={{ value, label: value }}
+                      value={value ? { value, label: value } : null}
                       onChange={(selectedOption) =>
                         onChange(selectedOption?.value)
                       }
@@ -202,13 +194,14 @@ export default function CreateUser() {
                   </div>
                 )}
               />
+
               <Input
                 label="Driver"
                 placeholder="Select Driver"
-                // className="col-span-full"
                 {...register('driver_id')}
                 error={errors.driver_id?.message}
               />
+
               <Input
                 label="Approximate Weight"
                 placeholder="Enter approx weight"
