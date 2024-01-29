@@ -121,7 +121,7 @@ export const listHKS = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); 
-      if (error.response && error.response?.data?.statusCode === 401 || 403) {
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401)) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -155,7 +155,7 @@ export const listCollection = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); // Log the error response
-      if (error.response && error.response?.data?.statusCode === 401 || 403) {
+      if (error.response && error.response?.data?.statusCode === 401) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -201,7 +201,7 @@ export const listClusterCreation = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); 
-      if (error.response && error.response?.data?.statusCode === 401 || 403) {
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -234,7 +234,7 @@ export const listDrivers = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); 
-      if (error.response && error.response?.data?.statusCode === 401 ||403) {
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -273,7 +273,7 @@ export const listPA = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); 
-      if (error.response && error.response?.data?.statusCode === 401 || 403) {
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401)) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -306,7 +306,7 @@ export const listEventsHKS = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
-      if (error.response && error.response?.data?.statusCode === 401 || 403) {
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -354,7 +354,7 @@ export const listWardData = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
-      if (error.response && error.response?.data?.statusCode === 401 ||403) {
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -402,7 +402,7 @@ export const listAllJobs = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
-      if (error.response && error.response?.data?.statusCode === 401) {
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
