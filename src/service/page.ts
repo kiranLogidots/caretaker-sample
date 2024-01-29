@@ -121,7 +121,7 @@ export const listHKS = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); 
-      if (error.response && error.response?.data?.statusCode === 401) {
+      if (error.response && error.response?.data?.statusCode === 401 || 403) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -155,7 +155,7 @@ export const listCollection = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); // Log the error response
-      if (error.response && error.response?.data?.statusCode === 401) {
+      if (error.response && error.response?.data?.statusCode === 401 || 403) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -201,7 +201,7 @@ export const listClusterCreation = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); 
-      if (error.response && error.response?.data?.statusCode === 401) {
+      if (error.response && error.response?.data?.statusCode === 401 || 403) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -234,7 +234,7 @@ export const listDrivers = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); 
-      if (error.response && error.response?.data?.statusCode === 401) {
+      if (error.response && error.response?.data?.statusCode === 401 ||403) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -273,7 +273,7 @@ export const listPA = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response); 
-      if (error.response && error.response?.data?.statusCode === 401) {
+      if (error.response && error.response?.data?.statusCode === 401 || 403) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -306,7 +306,7 @@ export const listEventsHKS = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
-      if (error.response && error.response?.data?.statusCode === 401) {
+      if (error.response && error.response?.data?.statusCode === 401 || 403) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -354,7 +354,7 @@ export const listWardData = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
-      if (error.response && error.response?.data?.statusCode === 401) {
+      if (error.response && error.response?.data?.statusCode === 401 ||403) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -413,18 +413,4 @@ export const listAllJobs = () => {
     });
 };
 
-export const b = async (wardId: string) => {
-  try {
-    const response = await axios.delete(`${apiBaseUrl}/ward-collection-data/${wardId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Delete event failed:', error);
-    // throw new Error('Failed to delete event');
-  }
-};
 
