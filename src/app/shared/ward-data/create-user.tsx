@@ -1,36 +1,54 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PiXBold } from 'react-icons/pi';
-import { SubmitHandler } from 'react-hook-form';
+import { Controller, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { addWardData, createEvent } from '@/service/page';
+import { addWardData, createEvent, listCollection } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
-import { CreateEventResponse } from '@/types';
-import axios from 'axios';
-import {
-  EventHKSFormInput,
-  eventHKSFormSchema,
-} from '@/utils/validators/create-event-hks.schema';
+import { CollectionPointOption, CreateEventResponse, ListCollectionInterface } from '@/types';
 import { signOut } from 'next-auth/react';
 import { WardDataFormInput, wardDataFormSchema } from '@/utils/validators/create-ward-data.schema';
+import Select from 'react-select';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [collectionPointsOptions, setCollectionPointsOptions] = useState<
+  CollectionPointOption[]
+>([]);
+
+useEffect(() => {
+  const fetchCollectionPoints = async () => {
+    try {
+      const result = (await listCollection()) as ListCollectionInterface;
+      console.log('Result of CP API', result);
+      setCollectionPointsOptions(
+        result?.data?.map((point) => ({
+          value: point.id,
+          label: point.name,
+        }))
+      );
+    } catch (error) {
+      console.error('Error fetching collection points:', error);
+    }
+  };
+
+  fetchCollectionPoints();
+}, []);
 
   const onSubmit: SubmitHandler<WardDataFormInput> = async (data) => {
 
     const formattedData = {
       date: data.date,
-      collection_point_id: parseInt(data.collection_point_id),
+      collection_point_id: data.collection_point_id,
       ward_no: data.ward_no,
       hks_team_name: data.hks_team_name,
       shop_visited: parseInt(data.shop_visited),
@@ -56,9 +74,21 @@ export default function CreateUser() {
 
       if (resultData.status == true) {
         setReset({
-          name: '',
-          expense: '',
           date: '',
+          collection_point_id: '',
+          ward_no: '',
+          hks_team_name: '',
+          shop_visited: '',
+          shop_paid: '',
+          shop_vacant: '',
+          house_visited: '',
+          house_paid: '',
+          house_denied: '',
+          house_vacant: '',
+          house_not_intrested: '',
+          house_w_no_money: '',
+          collection_amt:'',
+          hks_incentive: '',
         });
         closeModal();
         toast.success('Ward Collection Data created successfully', {
@@ -109,14 +139,43 @@ export default function CreateUser() {
                 {...register('date')}
                 error={errors.date?.message}
               />
+              <Controller
+                name="collection_point_id"
+                control={control}
+                render={({ field: { name, onChange, value } }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Select LSG
+                    </label>
+                    <Select
+                      options={collectionPointsOptions.map((option) => ({
+                        value: option.value,
+                        label: option.label,
+                      }))}
+                      value={collectionPointsOptions.find(
+                        (option) => String(option.value) === String(value)
+                      )}
+                      className="col-span-full"
+                   
+                      onChange={(selectedOption) => {
+                        onChange(selectedOption?.value); // Set the selected value
+                      }}
+                      name={name}
+                    />
+                  </div>
+                )}
+              />
 
-              <Input
+              {/* <Input
                 label="Collection Point ID"
                 placeholder="Enter collection point id"
                 // className="col-span-full"
                 {...register('collection_point_id')}
                 error={errors.collection_point_id?.message}
-              />
+              /> */}
               <Input
                 label="Ward Number"
                 placeholder="Enter ward number"

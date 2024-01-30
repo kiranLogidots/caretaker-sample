@@ -18,7 +18,7 @@ const statusColors: any = {
   'In Progress': 'info',
   in_progress: 'success',
   initiated: 'secondary',
-  'declined': 'danger',
+  'rejected': 'danger',
 };
 
 // function getStatusBadge(status: User['status']) {
