@@ -14,39 +14,46 @@ import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
 import { HKSEvents, JobsList } from '@/types';
 
-function getStatusBadge(status: User['status']) {
-  switch (status) {
-    case STATUSES.Deactivated:
-      return (
-        <div className="flex items-center">
-          <Badge color="danger" renderAsDot />
+const statusColors: any = {
+  'In Progress': 'info',
+  in_progress: 'success',
+  initiated: 'secondary',
+  'declined': 'danger',
+};
 
-          <Text className="ms-2 font-medium text-red-dark">{status}</Text>
-        </div>
-      );
-    case STATUSES.Active:
-      return (
-        <div className="flex items-center">
-          <Badge color="success" renderAsDot />
-          <Text className="ms-2 font-medium text-green-dark">{status}</Text>
-        </div>
-      );
-    case STATUSES.Pending:
-      return (
-        <div className="flex items-center">
-          <Badge renderAsDot className="bg-gray-400" />
-          <Text className="ms-2 font-medium text-gray-600">{status}</Text>
-        </div>
-      );
-    default:
-      return (
-        <div className="flex items-center">
-          <Badge renderAsDot className="bg-gray-400" />
-          <Text className="ms-2 font-medium text-gray-600">{status}</Text>
-        </div>
-      );
-  }
-}
+// function getStatusBadge(status: User['status']) {
+//   switch (status) {
+//     case STATUSES.Deactivated:
+//       return (
+//         <div className="flex items-center">
+//           <Badge color="danger" renderAsDot />
+
+//           <Text className="ms-2 font-medium text-red-dark">{status}</Text>
+//         </div>
+//       );
+//     case STATUSES.Active:
+//       return (
+//         <div className="flex items-center">
+//           <Badge color="success" renderAsDot />
+//           <Text className="ms-2 font-medium text-green-dark">{status}</Text>
+//         </div>
+//       );
+//     case STATUSES.Pending:
+//       return (
+//         <div className="flex items-center">
+//           <Badge renderAsDot className="bg-gray-400" />
+//           <Text className="ms-2 font-medium text-gray-600">{status}</Text>
+//         </div>
+//       );
+//     default:
+//       return (
+//         <div className="flex items-center">
+//           <Badge renderAsDot className="bg-gray-400" />
+//           <Text className="ms-2 font-medium text-gray-600">{status}</Text>
+//         </div>
+//       );
+//   }
+// }
 
 type Columns = {
   data: any[];
@@ -135,6 +142,18 @@ export const getColumns = ({
     },
   },
   {
+    title: <HeaderCell title="PickUp Address" />,
+    onHeaderCell: () => onHeaderCellClick('driver_data.address'),
+    dataIndex: 'driver_data.address',
+    key: 'driver_data.address',
+    width: 250,
+    // render: (expense: number) => expense,
+    render: (text: string, record: JobsList) => {
+      const pickupAddress = record.driver_data?.address || ''; // Ensure driver_data and name are available
+      return <Text>{pickupAddress}</Text>;
+    },
+  },
+  {
     title: <HeaderCell title="Driver Name" />,
     onHeaderCell: () => onHeaderCellClick('driver_data.name'),
     dataIndex: 'driver_data.name',
@@ -155,7 +174,16 @@ export const getColumns = ({
     width: 250,
     render: (text: string, record: JobsList) => {
       const status = record.status?.name || ''; // Ensure driver_data and name are available
-      return <Text>{status}</Text>;
+      return (
+        <Badge
+          variant="flat"
+          rounded="pill"
+          className="w-[90px] font-medium"
+          color={statusColors[status]}
+        >
+          {status}
+        </Badge>
+      );
     },
   },
 
