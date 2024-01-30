@@ -61,7 +61,6 @@ export default function CreateUser() {
   }, []);
 
   const onSubmit: SubmitHandler<PickupReqFormInput> = async (data) => {
-    console.log('ON SUBMIT TRIGGERED');
     const formattedData = {
       collection_point_id: data.collection_point_id,
       driver_id: parseInt(data.driver_id),

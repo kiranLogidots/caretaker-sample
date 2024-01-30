@@ -6,7 +6,7 @@ import { messages } from '@/config/messages';
 export const wardDataFormSchema = z.object({
   date: z.string(),
   collection_point_id: z
-    .string()
+    .number()
     .min(1, { message: messages.collectionPointIdReq }),
   ward_no: z.string().min(1, { message: messages.wardNoReq }),
   hks_team_name: z.string().min(1, { message: messages.HKSTeamnameReq }),
