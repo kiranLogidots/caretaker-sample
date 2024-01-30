@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { initiateJobs, listCollection } from '@/service/page';
+import { initiateJobs, listCollection, listDrivers } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import {
   CollectionPointOption,
@@ -31,6 +31,9 @@ export default function CreateUser() {
   const [collectionPointsOptions, setCollectionPointsOptions] = useState<
     CollectionPointOption[]
   >([]);
+  const [driverListData, setDriverListData] = useState<CollectionPointOption[]>(
+    []
+  );
 
   const {
     register,
@@ -59,11 +62,29 @@ export default function CreateUser() {
 
     fetchCollectionPoints();
   }, []);
+  useEffect(() => {
+    const fetchDriverListData = async () => {
+      try {
+        const result = (await listDrivers()) as ListCollectionInterface;
+        console.log('Result of list driver', result);
+        setDriverListData(
+          result?.data?.map((point) => ({
+            value: point.id,
+            label: point.name,
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching collection points:', error);
+      }
+    };
+
+    fetchDriverListData();
+  }, []);
 
   const onSubmit: SubmitHandler<PickupReqFormInput> = async (data) => {
     const formattedData = {
       collection_point_id: data.collection_point_id,
-      driver_id: parseInt(data.driver_id),
+      driver_id: data.driver_id,
       materialType: data.materialType,
       date: new Date(data.date).toISOString().split('T')[0],
       approximateWeight: parseInt(data.approximateWeight),
@@ -148,7 +169,6 @@ export default function CreateUser() {
                         (option) => String(option.value) === String(value)
                       )}
                       className="col-span-full"
-                   
                       onChange={(selectedOption) => {
                         onChange(selectedOption?.value); // Set the selected value
                       }}
@@ -170,7 +190,7 @@ export default function CreateUser() {
                 name="materialType"
                 control={control}
                 render={({ field: { name, onChange, value } }) => (
-                  <div className=" flex flex-col gap-2 ">
+                  <div className="col-span-full flex flex-col gap-2 ">
                     <label
                       htmlFor={name}
                       className=" font-medium text-gray-900 dark:text-white"
@@ -183,6 +203,7 @@ export default function CreateUser() {
                         { value: 'recycle', label: 'recycle' },
                         { value: 'mixed', label: 'mixed' },
                       ]}
+                      className="col-span-full"
                       // value={{ value: value, label: value }}
                       value={value ? { value, label: value } : null}
                       onChange={(selectedOption) =>
@@ -194,11 +215,39 @@ export default function CreateUser() {
                 )}
               />
 
-              <Input
+              {/* <Input
                 label="Driver"
                 placeholder="Select Driver"
                 {...register('driver_id')}
                 error={errors.driver_id?.message}
+              /> */}
+              <Controller
+                name="driver_id"
+                control={control}
+                render={({ field: { name, onChange, value } }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Select Driver
+                    </label>
+                    <Select
+                      options={driverListData.map((option) => ({
+                        value: option.value,
+                        label: option.label,
+                      }))}
+                      value={driverListData.find(
+                        (option) => String(option.value) === String(value)
+                      )}
+                      className="col-span-full scroll"
+                      onChange={(selectedOption) => {
+                        onChange(selectedOption?.value); 
+                      }}
+                      name={name}
+                    />
+                  </div>
+                )}
               />
 
               <Input
