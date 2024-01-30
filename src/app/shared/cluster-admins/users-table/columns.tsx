@@ -137,7 +137,10 @@ export const getColumns = ({
     dataIndex: 'address',
     key: 'address',
     width: 250,
-    render: (address: string) => address,
+    render: (address: string) => (
+      <span title={address}>{address.length > 50 ? `${address.slice(0, 50)} ...` : address}</span>
+    ),
+    // render: (address: string) => address,
   },
 
   {
