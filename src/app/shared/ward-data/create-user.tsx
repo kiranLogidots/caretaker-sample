@@ -11,9 +11,16 @@ import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { addWardData, createEvent, listCollection } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
-import { CollectionPointOption, CreateEventResponse, ListCollectionInterface } from '@/types';
+import {
+  CollectionPointOption,
+  CreateEventResponse,
+  ListCollectionInterface,
+} from '@/types';
 import { signOut } from 'next-auth/react';
-import { WardDataFormInput, wardDataFormSchema } from '@/utils/validators/create-ward-data.schema';
+import {
+  WardDataFormInput,
+  wardDataFormSchema,
+} from '@/utils/validators/create-ward-data.schema';
 import Select from 'react-select';
 
 export default function CreateUser() {
@@ -22,30 +29,35 @@ export default function CreateUser() {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [collectionPointsOptions, setCollectionPointsOptions] = useState<
-  CollectionPointOption[]
->([]);
+    CollectionPointOption[]
+  >([]);
+  const [shopsWithNoMoney, setShopsWithNoMoney] = useState(0);
+  const [shopsWithNoInterest, setShopsWithNoInterest] = useState(0);
+  const [shopVacant, setShopVacant] = useState(0);
+  const [houseWithNoMoney, setHouseWithNoMoney] = useState(0);
+  const [houseWithNoInterest, setHouseWithNoInterest] = useState(0);
+  const [houseVacant, setHouseVacant] = useState(0);
 
-useEffect(() => {
-  const fetchCollectionPoints = async () => {
-    try {
-      const result = (await listCollection()) as ListCollectionInterface;
-      console.log('Result of CP API', result);
-      setCollectionPointsOptions(
-        result?.data?.map((point) => ({
-          value: point.id,
-          label: point.name,
-        }))
-      );
-    } catch (error) {
-      console.error('Error fetching collection points:', error);
-    }
-  };
+  useEffect(() => {
+    const fetchCollectionPoints = async () => {
+      try {
+        const result = (await listCollection()) as ListCollectionInterface;
+        console.log('Result of CP API', result);
+        setCollectionPointsOptions(
+          result?.data?.map((point) => ({
+            value: point.id,
+            label: point.name,
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching collection points:', error);
+      }
+    };
 
-  fetchCollectionPoints();
-}, []);
+    fetchCollectionPoints();
+  }, []);
 
   const onSubmit: SubmitHandler<WardDataFormInput> = async (data) => {
-
     const formattedData = {
       date: data.date,
       collection_point_id: data.collection_point_id,
@@ -61,6 +73,9 @@ useEffect(() => {
       house_not_intrested: parseInt(data.house_not_intrested),
       house_w_no_money: parseInt(data.house_w_no_money),
       collection_amt: parseInt(data.collection_amt),
+      shops_not_cooperate: parseInt(data.shops_not_cooperate),
+      shops_with_no_money: parseInt(data.shops_with_no_money),
+      shops_with_no_interest: parseInt(data.shops_with_no_interest),
       hks_incentive: parseInt(data.hks_incentive),
     };
 
@@ -87,7 +102,7 @@ useEffect(() => {
           house_vacant: '',
           house_not_intrested: '',
           house_w_no_money: '',
-          collection_amt:'',
+          collection_amt: '',
           hks_incentive: '',
         });
         closeModal();
@@ -132,13 +147,7 @@ useEffect(() => {
                   <PiXBold className="h-auto w-5" />
                 </ActionIcon>
               </div>
-              <Input
-                label="Date"
-                type="date"
-                className="col-span-full"
-                {...register('date')}
-                error={errors.date?.message}
-              />
+
               <Controller
                 name="collection_point_id"
                 control={control}
@@ -159,7 +168,6 @@ useEffect(() => {
                         (option) => String(option.value) === String(value)
                       )}
                       className="col-span-full"
-                   
                       onChange={(selectedOption) => {
                         onChange(selectedOption?.value); // Set the selected value
                       }}
@@ -167,6 +175,13 @@ useEffect(() => {
                     />
                   </div>
                 )}
+              />
+              <Input
+                label="Date"
+                type="date"
+                className="col-span-full"
+                {...register('date')}
+                error={errors.date?.message}
               />
 
               {/* <Input
@@ -176,13 +191,6 @@ useEffect(() => {
                 {...register('collection_point_id')}
                 error={errors.collection_point_id?.message}
               /> */}
-              <Input
-                label="Ward Number"
-                placeholder="Enter ward number"
-                // className="col-span-full"
-                {...register('ward_no')}
-                error={errors.ward_no?.message}
-              />
 
               <Input
                 label="HKS Team Name"
@@ -192,67 +200,11 @@ useEffect(() => {
                 error={errors.hks_team_name?.message}
               />
               <Input
-                label="Shop Visited"
-                placeholder="Enter no of visited shops"
+                label="Ward Number"
+                placeholder="Enter ward number"
                 // className="col-span-full"
-                {...register('shop_visited')}
-                error={errors.shop_visited?.message}
-              />
-              <Input
-                label="Shop Paid"
-                placeholder="Enter no of paid shops"
-                // className="col-span-full"
-                {...register('shop_paid')}
-                error={errors.shop_paid?.message}
-              />
-              <Input
-                label="No of vacant shops"
-                placeholder="Enter no of vacant shops"
-                // className="col-span-full"
-                {...register('shop_vacant')}
-                error={errors.shop_vacant?.message}
-              />
-              <Input
-                label="House Visited"
-                placeholder="Enter no of visited houses"
-                // className="col-span-full"
-                {...register('house_visited')}
-                error={errors.house_visited?.message}
-              />
-              <Input
-                label="House Paid"
-                placeholder="Enter no of paid houses"
-                // className="col-span-full"
-                {...register('house_paid')}
-                error={errors.house_paid?.message}
-              />
-              <Input
-                label="Houses Denied"
-                placeholder="Houses denied"
-                // className="col-span-full"
-                {...register('house_denied')}
-                error={errors.house_denied?.message}
-              />
-              <Input
-                label="House Vacant"
-                placeholder="Enter no of vacant houses"
-                // className="col-span-full"
-                {...register('house_vacant')}
-                error={errors.house_vacant?.message}
-              />
-              <Input
-                label="Houses Not Interested"
-                placeholder="Houses Not Interested"
-                // className="col-span-full"
-                {...register('house_not_intrested')}
-                error={errors.house_not_intrested?.message}
-              />
-              <Input
-                label="House NO MONEY ???"
-                // placeholder="Enter no of vacant houses"
-                // className="col-span-full"
-                {...register('house_w_no_money')}
-                error={errors.house_w_no_money?.message}
+                {...register('ward_no')}
+                error={errors.ward_no?.message}
               />
               <Input
                 label="Collection Amount"
@@ -267,6 +219,113 @@ useEffect(() => {
                 // className="col-span-full"
                 {...register('hks_incentive')}
                 error={errors.hks_incentive?.message}
+              />
+              {/* --------------------------------------------------- */}
+
+              <Input
+                label="Shop Visited"
+                placeholder="Enter no of visited shops"
+                // className="col-span-full"
+                {...register('shop_visited')}
+                error={errors.shop_visited?.message}
+              />
+              <Input
+                label="House Visited"
+                placeholder="Enter no of visited houses"
+                // className="col-span-full"
+                {...register('house_visited')}
+                error={errors.house_visited?.message}
+              />
+              {/* --------------------------------------------------- */}
+
+              <Input
+                label="Shop Paid"
+                placeholder="Enter no of paid shops"
+                // className="col-span-full"
+                {...register('shop_paid')}
+                error={errors.shop_paid?.message}
+              />
+              <Input
+                label="House Paid"
+                placeholder="Enter no of paid houses"
+                // className="col-span-full"
+                {...register('house_paid')}
+                error={errors.house_paid?.message}
+              />
+              {/* --------------------------------------------------- */}
+
+              <Input
+                label="Shops Vacant"
+                placeholder="Enter no of vacant shops"
+                // className="col-span-full"
+                {...register('shop_vacant')}
+                onChange={(e) => setShopVacant(parseInt(e.target.value) || 0)}
+                error={errors.shop_vacant?.message}
+              />
+              <Input
+                label="House Vacant"
+                placeholder="Enter no of vacant houses"
+                // className="col-span-full"
+                {...register('house_vacant')}
+                onChange={(e) => setHouseVacant(parseInt(e.target.value) || 0)}
+                error={errors.house_vacant?.message}
+              />
+              {/* --------------------------------------------------- */}
+
+              <Input
+                label="Shops Not Interested"
+                placeholder="Shops Not Interested"
+                // className="col-span-full"
+                {...register('shops_with_no_interest')}
+                onChange={(e) => setShopsWithNoInterest(parseInt(e.target.value) || 0)}
+                error={errors.shops_with_no_interest?.message}
+              />
+              <Input
+                label="Houses Not Interested"
+                placeholder="Houses Not Interested"
+                // className="col-span-full"
+                {...register('house_not_intrested')}
+                onChange={(e) => setHouseWithNoInterest(parseInt(e.target.value) || 0)}
+                error={errors.house_not_intrested?.message}
+              />
+              {/* --------------------------------------------------- */}
+
+              <Input
+                label="Shops with no money"
+                // placeholder="Enter no of vacant houses"
+                // className="col-span-full"
+                {...register('shops_with_no_money')}
+                onChange={(e) => setShopsWithNoMoney(parseInt(e.target.value) || 0)}
+                error={errors.shops_with_no_money?.message}
+              />
+              <Input
+                label="House with no money"
+                // placeholder="Enter no of vacant houses"
+                // className="col-span-full"
+                {...register('house_w_no_money')}
+                onChange={(e) => setHouseWithNoMoney(parseInt(e.target.value) || 0)}
+                error={errors.house_w_no_money?.message}
+              />
+
+              {/* --------------------------------------------------- */}
+
+              <Input
+                label="Shops Incorporated"
+                placeholder="Houses denied"
+                // className="col-span-full"
+                {...register('shops_not_cooperate')}
+                value={shopsWithNoMoney + shopsWithNoInterest + shopVacant}
+                error={errors.shops_not_cooperate?.message}
+                readOnly
+              />
+              <Input
+                label="Houses Denied"
+                placeholder="Houses denied"
+                // className="col-span-full"
+                {...register('house_denied')}
+                value={houseWithNoMoney + houseWithNoInterest + houseVacant}
+                error={errors.house_denied?.message}
+                readOnly
               />
 
               {errorMessage && (

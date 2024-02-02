@@ -23,6 +23,9 @@ export const wardDataFormSchema = z.object({
   house_w_no_money: z.string().min(1, { message: messages.expenseIsRequired }),
   collection_amt: z.string().min(1, { message: messages.expenseIsRequired }),
   hks_incentive: z.string().min(1, { message: messages.expenseIsRequired }),
+  shops_not_cooperate: z.string().min(1, { message: messages.expenseIsRequired }),
+  shops_with_no_money: z.string().min(1, { message: messages.expenseIsRequired }),
+  shops_with_no_interest: z.string().min(1, { message: messages.expenseIsRequired }),
   //   organised_by: z.string().min(1, { message: messages.organizedByIsRequired })
   //   .refine((value) => validOrganisers.includes(value), {
   //     message: messages.invalidOrganizer,
