@@ -18,6 +18,10 @@ export const routes = {
     checkout: '/ecommerce/checkout',
     trackingId: (id: string) => `/ecommerce/tracking/${id}`,
   },
+  pickUpRequest:{
+    dashboard:'/pickup-request',
+    requestDetails:(slug:string) => `/pickup-request/request-detail/${slug}`
+  },
   searchAndFilter: {
     realEstate: '/search/real-estate',
     nft: '/search/nft',

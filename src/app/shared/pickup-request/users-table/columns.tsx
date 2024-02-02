@@ -13,12 +13,15 @@ import AvatarCard from '@/components/ui/avatar-card';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
 import { HKSEvents, JobsList } from '@/types';
+import Link from 'next/link';
+import { routes } from '@/config/routes';
+import { ProductType } from '@/data/products-data';
 
 const statusColors: any = {
-  'In Progress': 'info',
-  in_progress: 'success',
-  initiated: 'secondary',
-  'rejected': 'danger',
+  in_progress: 'secondary',
+  initiated: 'warning',
+  rejected: 'danger',
+  completed: 'success',
 };
 
 // function getStatusBadge(status: User['status']) {
@@ -192,9 +195,9 @@ export const getColumns = ({
     dataIndex: 'action',
     key: 'action',
     width: 140,
-    render: (_: string, event: HKSEvents) => (
+    render: (_: string, row: ProductType) => (
       <div className="justify-en flex items-center gap-3 pe-3">
-        <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
+        {/* <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
           <ActionIcon
             as="span"
             size="sm"
@@ -203,17 +206,19 @@ export const getColumns = ({
           >
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
-        </Tooltip>
-        {/* <Tooltip size="sm" content={'View User'} placement="top" color="invert">
-          <ActionIcon
-            as="span"
-            size="sm"
-            variant="outline"
-            className="hover:!border-gray-900 hover:text-gray-700"
-          >
-            <EyeIcon className="h-4 w-4" />
-          </ActionIcon>
         </Tooltip> */}
+        <Tooltip size="sm" content={'View User'} placement="top" color="invert">
+          <Link href={routes.pickUpRequest.requestDetails(row.id)}>
+            <ActionIcon
+              as="span"
+              size="sm"
+              variant="outline"
+              className="hover:!border-gray-900 hover:text-gray-700"
+            >
+              <EyeIcon className="h-4 w-4" />
+            </ActionIcon>
+          </Link>
+        </Tooltip>
         {/* <DeletePopover
           title={`Delete this user`}
           description={`Are you sure you want to delete this event ?`}

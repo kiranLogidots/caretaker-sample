@@ -413,4 +413,43 @@ export const listAllJobs = () => {
     });
 };
 
-
+export const viewJobRequest = (id:number) => {
+  return axios
+    .get(`${apiBaseUrl}/jobs/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response); 
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
+};
+export const jobTrackings = (id:number) => {
+  return axios
+    .get(`${apiBaseUrl}/jobs/${id}/trackings`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response); 
+      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
+};

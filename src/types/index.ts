@@ -106,6 +106,92 @@ export interface CreateEvent {
   organised_by: string;
 }
 
+export interface JobRequestResponse {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: JobRequestResponseData
+ 
+}
+export interface JobRequestResponseData{
+  id:number;
+  material_type:string;
+  weight:string;
+  collection_point_id:number;
+  driver_id:number;
+  status_id:number;
+  collection_point_data:CollectionPointData
+  driver_data:DriverData
+  date:string;
+  status:{
+    id:number;
+    name:string;
+    desc:string;
+    order:number;
+    type:string;
+  }
+
+};
+
+export interface JobTrackingResponse{
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data:JobTrackingResponseData[];
+}
+
+export interface JobTrackingResponseData{
+  id:number;
+  job_id:number;
+  driver_id:number;
+  status_id:number;
+  file:string;
+  note:string;
+  time:Date;
+  location_lattitude:string;
+  location_longitude:string;
+  weight:number;
+  status:TrackingStatus;
+  images:TrackingImages[];
+
+}
+export interface TrackingStatus{
+  id:number;
+  name:string;
+  desc:string;
+  order:number;
+  type:string;
+}
+export interface TrackingImages{
+  id:number;
+  image:string;
+  job_tracking_id:number;
+  imgUrl:string;
+}
+export interface DriverData {
+  id: number;
+  user_type: string;
+  name: string;
+  phone: string;
+  age: number;
+  email: string;
+  address: string;
+  password: string;
+  created_at: string;
+  updated_at: string;
+  created_by: number;
+  otp_secret: number;
+  otp_timestamp: number;
+  profile_image: string;
+}
+export interface CollectionPointData {
+  id:number;
+  name: string;
+  address: string;
+  point_type:string;
+  district_id:number;
+  no_of_wards:number;
+}
 export interface AddWardData {
   date: string;
   collection_point_id: number;

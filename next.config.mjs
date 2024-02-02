@@ -3,6 +3,7 @@ import './src/env.mjs';
 
 const nextConfig = {
   images: {
+    domains: ['greenwormsimages.s3.ap-south-1.amazonaws.com'],
     remotePatterns: [
       {
         protocol: 'https',
