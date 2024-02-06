@@ -88,13 +88,13 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
                 getValues={getValues}
                 className="col-span-full"
               />
-              <UploadZone
+              {/* <UploadZone
                 label="Cover Photo"
                 name="coverPhoto"
                 setValue={setValue}
                 getValues={getValues}
                 className="col-span-full"
-              />
+              /> */}
               <Input
                 label="Full Name *"
                 placeholder="Enter your full name..."

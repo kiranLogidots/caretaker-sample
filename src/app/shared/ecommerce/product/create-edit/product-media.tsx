@@ -16,12 +16,12 @@ export default function ProductMedia({ className }: ProductMediaProps) {
       description="Upload your product image gallery here"
       className={cn(className)}
     >
-      <UploadZone
+      {/* <UploadZone
         className="col-span-full"
         name="productImages"
         getValues={getValues}
         setValue={setValue}
-      />
+      /> */}
     </FormGroup>
   );
 }

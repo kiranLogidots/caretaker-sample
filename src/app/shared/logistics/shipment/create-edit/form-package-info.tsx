@@ -77,13 +77,13 @@ export default function FormPackageInfo({ className }: FormPackageInfoProps) {
         {...register('packageDescription')}
         error={errors.packageDescription?.message as string}
       />
-      <UploadZone
+      {/* <UploadZone
         name="packageInfoAttachment"
         className="col-span-full"
         getValues={getValues}
         setValue={setValue}
         error={errors?.packageInfoAttachment?.message as string}
-      />
+      /> */}
       <div className="mt-3">
         <h4 className="flex items-center gap-1 text-base font-bold text-gray-900 @7xl:text-lg">
           <PiGift className="h-6 w-6" />

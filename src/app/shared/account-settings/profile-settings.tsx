@@ -184,7 +184,7 @@ export default function ProfileSettingsView() {
                   />
                 </FormGroup>
 
-                <FormGroup
+                {/* <FormGroup
                   title="Portfolio Projects"
                   description="Share a few snippets of your work"
                   className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
@@ -197,7 +197,7 @@ export default function ProfileSettingsView() {
                       error={errors?.portfolios?.message as string}
                     />
                   </div>
-                </FormGroup>
+                </FormGroup> */}
               </div>
               <FormFooter
                 // isLoading={isLoading}

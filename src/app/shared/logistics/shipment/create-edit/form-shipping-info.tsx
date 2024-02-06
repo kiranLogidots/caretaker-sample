@@ -162,13 +162,13 @@ export default function FormShippingInfo() {
           )}
         />
       </NoSSR>
-      <UploadZone
+      {/* <UploadZone
         name="shippingInfoAttachment"
         className="col-span-full"
         getValues={getValues}
         setValue={setValue}
         error={errors?.shippingInfoAttachment?.message as string}
-      />
+      /> */}
     </FormGroup>
   );
 }

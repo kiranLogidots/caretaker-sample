@@ -223,12 +223,12 @@ export default function CreateCategory({
                 description="Upload your product image gallery here"
                 isModalView={isModalView}
               >
-                <UploadZone
+                {/* <UploadZone
                   name="images"
                   getValues={getValues}
                   setValue={setValue}
                   className="col-span-full"
-                />
+                /> */}
               </HorizontalFormBlockWrapper>
             </div>
           </div>

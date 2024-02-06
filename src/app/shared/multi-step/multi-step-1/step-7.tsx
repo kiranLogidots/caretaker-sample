@@ -120,12 +120,12 @@ export default function StepTwo() {
               />
             </div>
 
-            <UploadZone
+            {/* <UploadZone
               name="photos"
               label="Upload Property Photo"
               getValues={getValues}
               setValue={setValue}
-            />
+            /> */}
           </>
         </form>
       </div>
