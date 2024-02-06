@@ -9,6 +9,7 @@ import {
   CreateUser,
   AddWardData,
   InitiateJobsRequest,
+  SaveImageUpload,
 } from '@/types';
 import axios from 'axios';
 import { signOut } from 'next-auth/react';
@@ -120,8 +121,12 @@ export const listHKS = () => {
     })
     .then((response) => response.data)
     .catch((error) => {
-      console.error('Error response:', error.response); 
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401)) {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -200,8 +205,12 @@ export const listClusterCreation = () => {
     })
     .then((response) => response.data)
     .catch((error) => {
-      console.error('Error response:', error.response); 
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -233,8 +242,12 @@ export const listDrivers = () => {
     })
     .then((response) => response.data)
     .catch((error) => {
-      console.error('Error response:', error.response); 
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -272,8 +285,12 @@ export const listPA = () => {
     })
     .then((response) => response.data)
     .catch((error) => {
-      console.error('Error response:', error.response); 
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401)) {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -306,7 +323,11 @@ export const listEventsHKS = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -332,15 +353,47 @@ export const deleteEvent = async (eventId: string) => {
   }
 };
 
-//INPUT WARD DATA
+export const uploadFileToApi = async (file: any) => {
+  const formData = new FormData();
+  formData.append('file', file);
 
-export const addWardData = async (details: AddWardData) => {
-  let response = await axios.post(`${apiBaseUrl}/ward-collection-data`, details, {
+  try {
+    const response = await axios.post(`${apiBaseUrl}/image-upload`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log('File upload response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('File upload error:', error);
+    throw error;
+  }
+};
+
+export const saveImageUpload = async (details: SaveImageUpload) => {
+  let response = await axios.post(`${apiBaseUrl}/event-images`, details, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
     },
   });
+  return response;
+};
+
+//INPUT WARD DATA
+
+export const addWardData = async (details: AddWardData) => {
+  let response = await axios.post(
+    `${apiBaseUrl}/ward-collection-data`,
+    details,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
   return response;
 };
 
@@ -354,7 +407,11 @@ export const listWardData = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -367,12 +424,15 @@ export const listWardData = () => {
 
 export const deleteWardData = async (wardId: string) => {
   try {
-    const response = await axios.delete(`${apiBaseUrl}/ward-collection-data/${wardId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await axios.delete(
+      `${apiBaseUrl}/ward-collection-data/${wardId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error('Delete event failed:', error);
@@ -402,7 +462,11 @@ export const listAllJobs = () => {
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -413,7 +477,7 @@ export const listAllJobs = () => {
     });
 };
 
-export const viewJobRequest = (id:number) => {
+export const viewJobRequest = (id: number) => {
   return axios
     .get(`${apiBaseUrl}/jobs/${id}`, {
       headers: {
@@ -422,8 +486,12 @@ export const viewJobRequest = (id:number) => {
     })
     .then((response) => response.data)
     .catch((error) => {
-      console.error('Error response:', error.response); 
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
@@ -433,7 +501,7 @@ export const viewJobRequest = (id:number) => {
       // throw new Error('Something wrong on network connection');
     });
 };
-export const jobTrackings = (id:number) => {
+export const jobTrackings = (id: number) => {
   return axios
     .get(`${apiBaseUrl}/jobs/${id}/trackings`, {
       headers: {
@@ -442,8 +510,12 @@ export const jobTrackings = (id:number) => {
     })
     .then((response) => response.data)
     .catch((error) => {
-      console.error('Error response:', error.response); 
-      if (error.response && (error.response?.data?.statusCode === 403 || error.response.status === 401))  {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });

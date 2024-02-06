@@ -1,17 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { PiXBold } from 'react-icons/pi';
-import { Controller, SubmitHandler } from 'react-hook-form';
+import {
+  Controller,
+  SubmitHandler,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { createEvent } from '@/service/page';
+import { createEvent, saveImageUpload } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
-import { CreateEventResponse } from '@/types';
+import { CreateEventResponse, SaveImageUpload } from '@/types';
 import axios from 'axios';
 import {
   EventHKSFormInput,
@@ -19,13 +24,23 @@ import {
 } from '@/utils/validators/create-event-hks.schema';
 import { signOut } from 'next-auth/react';
 import Select from 'react-select';
-
+import FormGroup from '../form-group';
+import UploadZone from '@/components/ui/file-upload/upload-zone';
+interface FileType {
+  name: string;
+  url: string;
+  size: number;
+}
 export default function CreateUser() {
+  const { getValues, setValue, control } = useForm();
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const [uploadedImages, setUploadedImages] = useState<FileType[]>([]);
+  const handleUploadedImages = (newImages: FileType[]) => {
+    setUploadedImages((prevImages) => [...prevImages, ...newImages]);
+  };
   const onSubmit: SubmitHandler<EventHKSFormInput> = async (data) => {
     const formattedData = {
       name: data.name,
@@ -50,12 +65,28 @@ export default function CreateUser() {
           name: '',
           expense: '',
           date: '',
+          no_of_participants: '',
+          description: '',
+          other_description: '',
+          organised_by: '',
         });
         closeModal();
         toast.success('Event created successfully', {
           position: 'top-right',
         });
       }
+      const event_id = resultData.data?.id;
+      console.log('event id', event_id);
+
+      const saveEventImageData : SaveImageUpload = {
+        event_id: event_id,
+        images: uploadedImages.map((image) => image.name),
+      };
+
+      //save image upload api calling
+      const EventsImagesSave = await saveImageUpload(saveEventImageData);
+      console.log('saveImageUpload response', EventsImagesSave);
+
     } catch (err: any) {
       console.log('Error message ', err.response);
       if (err.response && err.response?.data?.statusCode === 401) {
@@ -140,7 +171,7 @@ export default function CreateUser() {
                 name="organised_by"
                 control={control}
                 render={({ field: { name, onChange, value } }) => (
-                  <div className=" flex flex-col gap-2 mb-20">
+                  <div className=" flex flex-col gap-2">
                     <label
                       htmlFor={name}
                       className=" font-medium text-gray-900 dark:text-white"
@@ -153,7 +184,7 @@ export default function CreateUser() {
                         { value: 'lsg', label: 'lsg' },
                         { value: 'other', label: 'other' },
                       ]}
-                      value={{ value: value, label: value }}
+                      value={{ value: value, label: value } || ''}
                       onChange={(selectedOption) =>
                         onChange(selectedOption?.value)
                       }
@@ -162,6 +193,21 @@ export default function CreateUser() {
                   </div>
                 )}
               />
+              <FormGroup
+                title="Upload images"
+                description="Upload yourimages here"
+                // className={cn(className)}
+                className="col-span-full"
+              >
+                <UploadZone
+                  className="col-span-full "
+                  name="productImages"
+                  getValues={getValues}
+                  setValue={setValue}
+                  // onDrop={onDrop}
+                  onImagesUploaded={handleUploadedImages}
+                />
+              </FormGroup>
 
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">

@@ -19,6 +19,8 @@ import cn from '@/utils/class-names';
 import UploadIcon from '@/components/shape/upload';
 import { FieldError } from '@/components/ui/field-error';
 import { endsWith } from 'lodash';
+import axios from 'axios';
+import { uploadFileToApi } from '@/service/page';
 
 interface UploadZoneProps {
   label?: string;
@@ -27,6 +29,7 @@ interface UploadZoneProps {
   setValue: any;
   className?: string;
   error?: string;
+  onImagesUploaded: (newImages: FileType[]) => void; 
 }
 
 interface FileType {
@@ -42,12 +45,19 @@ export default function UploadZone({
   getValues,
   setValue,
   error,
+  onImagesUploaded,
 }: UploadZoneProps) {
   const [files, setFiles] = useState<File[]>([]);
 
-  const onDrop = useCallback(
-    (acceptedFiles: FileWithPath[]) => {
-      console.log('acceptedFiles', acceptedFiles);
+  const onDrop = useCallback(async(acceptedFiles: FileWithPath[]) => {
+
+    console.log('acceptedFiles', acceptedFiles);
+    for (const file of acceptedFiles) {
+      await uploadFileToApi(file);
+      onImagesUploaded([
+        { name: file.name, url: '', size: file.size },
+      ]);
+    }
       setFiles([
         ...acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -240,13 +250,13 @@ function UploadButtons({
         <PiTrashBold />
         Clear {files.length} files
       </Button>
-      <Button
+      {/* <Button
         className="w-full gap-2 @xl:w-auto"
         isLoading={isLoading}
         onClick={onUpload}
       >
         <PiUploadSimpleBold /> Upload {files.length} files
-      </Button>
+      </Button> */}
     </div>
   );
 }

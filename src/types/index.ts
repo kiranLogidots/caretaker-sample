@@ -105,6 +105,10 @@ export interface CreateEvent {
   other_description: string;
   organised_by: string;
 }
+export interface SaveImageUpload {
+  event_id:number;
+  images:string[];
+}
 
 export interface JobRequestResponse {
   status: boolean;
@@ -243,6 +247,7 @@ export interface CreateEventResponse {
   message: string;
   statusCode: number;
   data: {
+    id: any;
     name: string;
     expense: number;
     date: string | Date;
