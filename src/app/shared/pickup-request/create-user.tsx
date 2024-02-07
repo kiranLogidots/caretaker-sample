@@ -13,7 +13,7 @@ import { initiateJobs, listCollection, listDrivers } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import {
   CollectionPointOption,
-  CreateEventResponse,
+  JobsListResponse,
   ListCollectionInterface,
 } from '@/types';
 import { signOut } from 'next-auth/react';
@@ -94,7 +94,7 @@ export default function CreateUser() {
 
     try {
       const response = await initiateJobs(formattedData);
-      const resultData = response.data as CreateEventResponse;
+      const resultData = response.data as JobsListResponse;
 
       console.log('API Response:', resultData);
 

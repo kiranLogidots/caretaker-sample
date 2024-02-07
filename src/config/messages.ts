@@ -20,8 +20,28 @@ export const messages = {
   materialTypeRequired:'Please select a material type',
   driverIdIsRequired:'Driver id is required',
   LSGIsRequired: 'Please select LSG',
+  weightRequired:'Enter approximate weight',
 
+  shopVisitedRequired:'Enter number of visited shops',
+  houseVisitedRequired:'Enter number of visited houses',
 
+  shopVacant:'Enter number of vacant shops',
+  houseVacant:'Enter number of vacant houses',
+
+  shopPaid:'Enter number of shops which had made the payment',
+  housePaid:'Enter number of houses which had made the payment',
+
+  houseDenied:'Enter no of non-corporated houses',
+  shopsDenied:'Enter no of non-corporated shops',
+
+  shopsNoMoney:'Enter no of shops which did not made payment',
+  houseNoMoney:'Enter no of houses which did not made payment',
+
+  houeNoInterest:'Enter no of houses which do not have interest',
+  shopsNoInterest:'Enter no of shops which do not have interest',
+
+  collectionAmountIsReq:'Enter the collection amount',
+  hksIncentiveReq:'Enter the HKS Incentive amount',
 
   noOfParticipantsIsRequired: 'Please enter number of participants',
   organizedByIsRequired: 'Please enter who is organising this event',
