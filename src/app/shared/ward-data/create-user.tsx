@@ -310,7 +310,7 @@ export default function CreateUser() {
               {/* --------------------------------------------------- */}
 
               <Input
-                label="Shops Incorporated"
+                label="Shops Non-Corporated"
                 placeholder="Houses denied"
                 // className="col-span-full"
                 {...register('shops_not_cooperate')}
@@ -319,7 +319,7 @@ export default function CreateUser() {
                 readOnly
               />
               <Input
-                label="Houses Denied"
+                label="Houses Non-Corporated"
                 placeholder="Houses denied"
                 // className="col-span-full"
                 {...register('house_denied')}
