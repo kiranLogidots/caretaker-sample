@@ -22,6 +22,10 @@ export const routes = {
     dashboard:'/pickup-request',
     requestDetails:(slug:string) => `/pickup-request/request-detail/${slug}`
   },
+  eventsHKS:{
+    dashboard:'/events-hks',
+    eventDetails:(slug:number) => `/events-hks/event-detail/${slug}`
+  },
   searchAndFilter: {
     realEstate: '/search/real-estate',
     nft: '/search/nft',

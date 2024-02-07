@@ -313,7 +313,7 @@ export const createEvent = async (details: CreateEvent) => {
   return response;
 };
 
-export const listEventsHKS = () => {
+export const listEventsHKS = (currentPage:number, pageSize:number) => {
   return axios
     .get(`${apiBaseUrl}/events`, {
       headers: {
@@ -351,6 +351,30 @@ export const deleteEvent = async (eventId: string) => {
     console.error('Delete event failed:', error);
     // throw new Error('Failed to delete event');
   }
+};
+
+export const viewEventDetail = (id: number) => {
+  return axios
+    .get(`${apiBaseUrl}/events/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+    });
 };
 
 export const uploadFileToApi = async (file: any) => {
@@ -501,6 +525,7 @@ export const viewJobRequest = (id: number) => {
       // throw new Error('Something wrong on network connection');
     });
 };
+
 export const jobTrackings = (id: number) => {
   return axios
     .get(`${apiBaseUrl}/jobs/${id}/trackings`, {

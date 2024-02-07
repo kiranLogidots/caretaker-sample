@@ -31,7 +31,8 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
       handleSort(value);
     },
   });
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
   const onDeleteItem = useCallback(
     async (id: number) => {
       try {
@@ -60,9 +61,9 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     isLoading,
     isFiltered,
     // tableData,
-    currentPage,
-    totalItems,
-    handlePaginate,
+    // currentPage,
+    // totalItems,
+    // handlePaginate,
     filters,
     updateFilter,
     searchTerm,
@@ -106,17 +107,21 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = (await listEventsHKS()) as HKSEventsResponse;
+        const resultData = (await listEventsHKS(currentPage, pageSize)) as HKSEventsResponse;
         console.log('result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData.data); // Update the table data state with the fetched data
+        setTotalItems(resultData.pagination.totalCount);
       } catch (err: any) {
         console.log('Error response for listing users', err.response);
       }
     };
 
     fetchData(); // Call fetchData when the component mounts
-  }, []);
-
+  }, [currentPage, pageSize]);
+  function handlePaginate(pageNumber: number) {
+    setCurrentPage(pageNumber);
+  }
+  
   return (
     <div className="mt-14">
       <FilterElement
@@ -139,7 +144,8 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
           setPageSize,
           total: totalItems,
           current: currentPage,
-          onChange: (page: number) => handlePaginate(page),
+          onChange: handlePaginate,
+          // onChange: (page: number) => handlePaginate(page),
         }}
         tableFooter={
           <TableFooter

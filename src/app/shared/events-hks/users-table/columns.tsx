@@ -13,6 +13,8 @@ import AvatarCard from '@/components/ui/avatar-card';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
 import { HKSEvents } from '@/types';
+import Link from 'next/link';
+import { routes } from '@/config/routes';
 
 function getStatusBadge(status: User['status']) {
   switch (status) {
@@ -181,7 +183,7 @@ export const getColumns = ({
     width: 140,
     render: (_: string, event: HKSEvents) => (
       <div className="justify-en flex items-center gap-3 pe-3">
-        <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
+        {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">
           <ActionIcon
             as="span"
             size="sm"
@@ -190,8 +192,9 @@ export const getColumns = ({
           >
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
-        </Tooltip>
-        {/* <Tooltip size="sm" content={'View User'} placement="top" color="invert">
+        </Tooltip> */}
+        <Tooltip size="sm" content={'View Event'} placement="top" color="invert">
+          <Link href={routes.eventsHKS.eventDetails(event.id)}>
           <ActionIcon
             as="span"
             size="sm"
@@ -200,9 +203,10 @@ export const getColumns = ({
           >
             <EyeIcon className="h-4 w-4" />
           </ActionIcon>
-        </Tooltip> */}
+          </Link>
+        </Tooltip>
         <DeletePopover
-          title={`Delete this user`}
+          title={`Delete this event`}
           description={`Are you sure you want to delete this event ?`}
           onDelete={() => onDeleteItem(event.id)}
         />

@@ -106,71 +106,68 @@ export interface CreateEvent {
   organised_by: string;
 }
 export interface SaveImageUpload {
-  event_id:number;
-  images:string[];
+  event_id: number;
+  images: string[];
 }
 
 export interface JobRequestResponse {
   status: boolean;
   message: string;
   statusCode: number;
-  data: JobRequestResponseData
- 
+  data: JobRequestResponseData;
 }
-export interface JobRequestResponseData{
-  id:number;
-  material_type:string;
-  weight:string;
-  collection_point_id:number;
-  driver_id:number;
-  status_id:number;
-  collection_point_data:CollectionPointData
-  driver_data:DriverData
-  date:string;
-  status:{
-    id:number;
-    name:string;
-    desc:string;
-    order:number;
-    type:string;
-  }
+export interface JobRequestResponseData {
+  id: number;
+  material_type: string;
+  weight: string;
+  collection_point_id: number;
+  driver_id: number;
+  status_id: number;
+  collection_point_data: CollectionPointData;
+  driver_data: DriverData;
+  date: string;
+  status: {
+    id: number;
+    name: string;
+    desc: string;
+    order: number;
+    type: string;
+  };
+}
 
-};
-
-export interface JobTrackingResponse{
+export interface JobTrackingResponse {
   status: boolean;
   message: string;
   statusCode: number;
-  data:JobTrackingResponseData[];
+  data: JobTrackingResponseData[];
 }
 
-export interface JobTrackingResponseData{
-  id:number;
-  job_id:number;
-  driver_id:number;
-  status_id:number;
-  file:string;
-  note:string;
-  time:Date;
-  location_lattitude:string;
-  location_longitude:string;
-  weight:number;
-  status:TrackingStatus;
-  images:TrackingImages[];
-
+export interface JobTrackingResponseData {
+  id: number;
+  job_id: number;
+  driver_id: number;
+  status_id: number;
+  file: string;
+  note: string;
+  time: Date;
+  location_lattitude: string;
+  location_longitude: string;
+  weight: number;
+  status: TrackingStatus;
+  images: TrackingImages[];
 }
-export interface TrackingStatus{
-  id:number;
-  name:string;
-  desc:string;
-  order:number;
-  type:string;
+export interface TrackingStatus {
+  id: number;
+  name: string;
+  desc: string;
+  order: number;
+  type: string;
 }
-export interface TrackingImages{
-  id:number;
-  image:string;
-  job_tracking_id:number;
-  imgUrl:string;
+export interface TrackingImages {
+  id: number;
+  image: string;
+  job_tracking_id: number;
+  imgUrl: string;
 }
 export interface DriverData {
   id: number;
@@ -189,12 +186,12 @@ export interface DriverData {
   profile_image: string;
 }
 export interface CollectionPointData {
-  id:number;
+  id: number;
   name: string;
   address: string;
-  point_type:string;
-  district_id:number;
-  no_of_wards:number;
+  point_type: string;
+  district_id: number;
+  no_of_wards: number;
 }
 export interface AddWardData {
   date: string;
@@ -246,12 +243,22 @@ export interface CreateEventResponse {
   status: boolean;
   message: string;
   statusCode: number;
-  data: {
-    id: any;
-    name: string;
-    expense: number;
-    date: string | Date;
-  };
+  data: EventResponseData;
+}
+export interface EventResponseData {
+  id: any;
+  name: string;
+  expense: number;
+  date: string;
+  no_of_participants: number;
+  description: string;
+  other_description: string;
+  organised_by: string;
+  images: [
+    {
+      imgUrl: string;
+    },
+  ];
 }
 
 export interface HKSEvents {
