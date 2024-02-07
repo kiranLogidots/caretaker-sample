@@ -52,19 +52,36 @@ export default function UploadZone({
   const onDrop = useCallback(async(acceptedFiles: FileWithPath[]) => {
 
     console.log('acceptedFiles', acceptedFiles);
+    const newFiles = [
+      ...files,
+      ...acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      ),
+    ];
+  
+    // Update the state
+    setFiles(newFiles);
+  
     for (const file of acceptedFiles) {
       await uploadFileToApi(file);
       onImagesUploaded([
         { name: file.name, url: '', size: file.size },
-      ]);
-    }
-      setFiles([
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        ),
-      ]);
+      ]);}
+    // for (const file of acceptedFiles) {
+    //   await uploadFileToApi(file);
+    //   onImagesUploaded([
+    //     { name: file.name, url: '', size: file.size },
+    //   ]);
+    // }
+    //   setFiles([
+    //     ...acceptedFiles.map((file) =>
+    //       Object.assign(file, {
+    //         preview: URL.createObjectURL(file),
+    //       })
+    //     ),
+    //   ]);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [files]
