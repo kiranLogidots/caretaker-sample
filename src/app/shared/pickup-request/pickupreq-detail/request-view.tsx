@@ -158,8 +158,7 @@ export default function JobRequestView({ id }: { id: number }) {
   //   amount: total,
   // });
   const orderNote = useAtomValue(orderNoteAtom);
-  const billingAddress = useAtomValue(billingAddressAtom);
-  const shippingAddress = useAtomValue(shippingAddressAtom);
+
   return (
     <div className="@container">
       <div className="flex flex-wrap justify-center border-b border-t border-gray-300 py-4 font-medium text-gray-700 @5xl:justify-start">
@@ -221,36 +220,44 @@ export default function JobRequestView({ id }: { id: number }) {
             </Title>
 
             <div className="space-y-4">
-              {trackingData.map((item) => (
+              {trackingData.map((item, index) => (
                 <div
                   key={item.id}
-                  className="flex items-center rounded-lg border border-gray-100 px-5 py-5 font-medium shadow-sm transition-shadow @5xl:px-7"
+                  // className="flex items-center rounded-lg border border-gray-100 px-5 py-5 font-medium shadow-sm transition-shadow @5xl:px-7"
                 >
-                  <div className="flex flex-col items-start gap-3">
-                    <Text
-                      as="span"
-                      className="font-lexend text-lg font-semibold text-gray-900"
+                  {item.status.type === 'tracking' && (
+                    <div
+                      key={item.id}
+                      className="flex items-center rounded-lg border border-gray-100 px-5 py-5 font-medium shadow-sm transition-shadow @5xl:px-7"
                     >
-                      Stage {item.status?.order}
-                    </Text>
-                    {/* <Text as="span" className="font-lexend text-gray-700"> */}
-                      {/* {item.time} */}
-                       <DateCell date={item.time} />
-                    {/* </Text> */}
-                    <Text as="span" className="font-lexend text-gray-700">
-                      {item.weight ? `Weight - ${item.weight}` : null}
-                    </Text>
-                    {item.images.map((image) => (
-                      <Image
-                        key={image.id}
-                        src={image.imgUrl}
-                        alt={String(image.id)}
-                        height={80}
-                        width={360}
-                        className="object-contain"
-                      />
-                    ))}
-                  </div>
+                      <div className="flex flex-col items-start gap-3">
+                        <Text
+                          as="span"
+                          className="font-lexend text-lg font-semibold text-gray-900"
+                        >
+                          {/* Stage {index + 1} */}
+                          {item.status.name}
+                        </Text>
+                        {/* <Text as="span" className="font-lexend text-gray-700"> */}
+                        {/* {item.time} */}
+                        <DateCell date={item.time} />
+                        {/* </Text> */}
+                        <Text as="span" className="font-lexend text-gray-700">
+                          {item.weight ? `Weight - ${item.weight}` : null}
+                        </Text>
+                        {item.images.map((image) => (
+                          <Image
+                            key={image.id}
+                            src={image.imgUrl}
+                            alt={String(image.id)}
+                            height={100}
+                            width={300}
+                            className="object-contain"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
