@@ -43,6 +43,10 @@ export interface CollectionPointOption {
   value: number;
   label: string;
 }
+export interface DriversListData {
+  value: number;
+  label: string;
+}
 export interface AdminLogin {
   PhoneOrEmail: string;
   password: string;

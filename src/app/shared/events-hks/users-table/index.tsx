@@ -7,7 +7,7 @@ import { useColumn } from '@/hooks/use-column';
 import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/events-hks/users-table/columns';
-import { deleteEvent, listEventsHKS, listHKS } from '@/service/page';
+import { deleteEvent, listEventsHKS } from '@/service/page';
 import { HKSEvents, HKSEventsResponse } from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(

@@ -13,6 +13,7 @@ import { initiateJobs, listCollection, listDrivers } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import {
   CollectionPointOption,
+  DriversListData,
   JobsListResponse,
   ListCollectionInterface,
 } from '@/types';
@@ -31,7 +32,7 @@ export default function CreateUser() {
   const [collectionPointsOptions, setCollectionPointsOptions] = useState<
     CollectionPointOption[]
   >([]);
-  const [driverListData, setDriverListData] = useState<CollectionPointOption[]>(
+  const [driverListData, setDriverListData] = useState<DriversListData[]>(
     []
   );
 
@@ -148,6 +149,34 @@ export default function CreateUser() {
                   <PiXBold className="h-auto w-5" />
                 </ActionIcon>
               </div>
+              <Controller
+                name="driver_id"
+                control={control}
+                render={({ field: { name, onChange, value } }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Select Driver
+                    </label>
+                    <Select
+                      options={driverListData.map((option) => ({
+                        value: option.value,
+                        label: option.label,
+                      }))}
+                      value={driverListData.find(
+                        (option) => String(option.value) === String(value)
+                      )}
+                      // className="overflow-y-scroll"
+                      onChange={(selectedOption) => {
+                        onChange(selectedOption?.value);
+                      }}
+                      name={name}
+                    />
+                  </div>
+                )}
+              />
 
               <Controller
                 name="collection_point_id"
@@ -221,34 +250,6 @@ export default function CreateUser() {
                 {...register('driver_id')}
                 error={errors.driver_id?.message}
               /> */}
-              <Controller
-                name="driver_id"
-                control={control}
-                render={({ field: { name, onChange, value } }) => (
-                  <div className="col-span-full flex flex-col gap-2">
-                    <label
-                      htmlFor={name}
-                      className="font-medium text-gray-900 dark:text-white"
-                    >
-                      Select Driver
-                    </label>
-                    <Select
-                      options={driverListData.map((option) => ({
-                        value: option.value,
-                        label: option.label,
-                      }))}
-                      value={driverListData.find(
-                        (option) => String(option.value) === String(value)
-                      )}
-                      className="col-span-full scroll"
-                      onChange={(selectedOption) => {
-                        onChange(selectedOption?.value); 
-                      }}
-                      name={name}
-                    />
-                  </div>
-                )}
-              />
 
               <Input
                 label="Approximate Weight"
