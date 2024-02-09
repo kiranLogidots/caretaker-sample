@@ -405,6 +405,31 @@ export const saveImageUpload = async (details: SaveImageUpload) => {
   return response;
 };
 
+export const downloadEventReport = () => {
+  return axios
+    .get(`${apiBaseUrl}/events/export`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
+};
+
 //INPUT WARD DATA
 
 export const addWardData = async (details: AddWardData) => {
@@ -462,6 +487,31 @@ export const deleteWardData = async (wardId: string) => {
     console.error('Delete event failed:', error);
     // throw new Error('Failed to delete event');
   }
+};
+
+export const downloadWardDataReport = () => {
+  return axios
+    .get(`${apiBaseUrl}/ward-collection-data/export`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
 };
 
 //PICK UP REQUEST
@@ -529,6 +579,31 @@ export const viewJobRequest = (id: number) => {
 export const jobTrackings = (id: number) => {
   return axios
     .get(`${apiBaseUrl}/jobs/${id}/trackings`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
+};
+
+export const downloadJobReport = () => {
+  return axios
+    .get(`${apiBaseUrl}/jobs/list-report`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
