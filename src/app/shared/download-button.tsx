@@ -1,39 +1,33 @@
 'use client';
 
-import { PiPlusBold } from 'react-icons/pi';
+import { PiDownloadSimpleBold } from 'react-icons/pi';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Button, type ButtonProps } from '@/components/ui/button';
 import cn from '@/utils/class-names';
 
-interface ModalButtonProps extends ButtonProps {
+interface DownloadButtonProps extends ButtonProps {
   label?: string;
   className?: string;
   customSize?: string;
   icon?: React.ReactNode;
-  view: React.ReactNode;
+  onClickFunction: () => void;
 }
 
-export default function ModalButton({
+export default function DownloadButton({
   label = 'Add New',
   className,
   customSize = '500px',
-  view,
-  icon = <PiPlusBold className="me-1.5 h-[17px] w-[17px]" />,
+  onClickFunction,
+  icon = <PiDownloadSimpleBold className="me-1.5 h-[17px] w-[17px]" />,
   ...rest
-}: ModalButtonProps) {
-  const { openModal } = useModal();
+}: DownloadButtonProps) {
   return (
     <Button
       className={cn(
         'mt-5 w-full text-xs capitalize @lg:w-auto sm:text-sm lg:mt-0 bg-teal-800',
         className
       )}
-      onClick={() =>
-        openModal({
-          view,
-          customSize,
-        })
-      }
+      onClick={onClickFunction} 
       {...rest}
     >
       {icon}
