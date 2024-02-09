@@ -10,6 +10,8 @@ import { rolesList } from '@/data/roles-permissions';
 import { Input } from '@/components/ui/input';
 import ModalButton from '@/app/shared/modal-button';
 import CreateUser from '@/app/shared/ward-data/create-user';
+import DownloadButton from '../../download-button';
+import { downloadJobReport, downloadWardDataReport } from '@/service/page';
 
 const statusOptions = [
   {
@@ -39,6 +41,29 @@ const roles = rolesList.map((role) => ({
   label: role.name,
   value: role.name,
 }));
+
+const handleDownload = async () => {
+  console.log("DOWNLOAD BTN CLICKED!")
+  try{
+    const resultData = await downloadWardDataReport();
+    console.log("report response data", resultData);
+    const blob = new Blob([resultData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet charset=utf-8' });
+     // Create a download link
+     const downloadLink = document.createElement('a');
+     downloadLink.href = window.URL.createObjectURL(blob);
+     downloadLink.download = 'wardDataReport.xlsx';
+     // Append the link to the body and trigger the download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+     // Remove the link from the body
+     document.body.removeChild(downloadLink);
+     alert("Report downloaded successfully!");
+
+
+  }catch(error){
+    console.error("Error downloading report:", error);
+  }
+};
 
 export default function FilterElement({
   isFiltered,
@@ -114,6 +139,14 @@ export default function FilterElement({
           <ModalButton
             label="Add Ward Data"
             view={<CreateUser />}
+            customSize="600px"
+            className="mt-0"
+          />
+        </div>
+        <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
+          <DownloadButton
+            label="Download Report"
+            onClickFunction={handleDownload}
             customSize="600px"
             className="mt-0"
           />

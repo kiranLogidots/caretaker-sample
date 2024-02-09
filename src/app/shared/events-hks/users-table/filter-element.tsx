@@ -10,6 +10,10 @@ import { rolesList } from '@/data/roles-permissions';
 import { Input } from '@/components/ui/input';
 import ModalButton from '@/app/shared/modal-button';
 import CreateUser from '@/app/shared/events-hks/create-user';
+import PrintButton from '../../print-button';
+import ExportButton from '../../export-button';
+import DownloadButton from '../../download-button';
+import { downloadEventReport } from '@/service/page';
 
 const statusOptions = [
   {
@@ -40,6 +44,28 @@ const roles = rolesList.map((role) => ({
   value: role.name,
 }));
 
+const handleDownload = async () => {
+  console.log('DOWNLOAD BTN CLICKED!');
+  try {
+    const resultData = await downloadEventReport();
+    console.log('report response data', resultData);
+
+    const blob = new Blob([resultData], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
+    });
+    const downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = 'eventReport.xlsx';
+    downloadLink.setAttribute('target', '_blank');
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    alert('Report downloaded successfully!');
+  } catch (error) {
+    console.error('Error downloading report:', error);
+  }
+};
+
 export default function FilterElement({
   isFiltered,
   handleReset,
@@ -55,7 +81,7 @@ export default function FilterElement({
           All Events
         </Title>
 
-        {/* <StatusField
+        <StatusField
           className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
           options={statusOptions}
           value={filters['status']}
@@ -70,9 +96,9 @@ export default function FilterElement({
           displayValue={(selected: string) =>
             renderOptionDisplayValue(selected)
           }
-        /> */}
+        />
 
-        {/* <StatusField
+        <StatusField
           options={roles}
           value={filters['role']}
           placeholder="Filter by Role"
@@ -85,9 +111,9 @@ export default function FilterElement({
           displayValue={(selected: string) =>
             roles.find((option) => option.value === selected)?.value ?? selected
           }
-        /> */}
+        />
 
-        {/* {isFiltered && (
+        {isFiltered && (
           <Button
             size="sm"
             onClick={handleReset}
@@ -96,7 +122,7 @@ export default function FilterElement({
           >
             <PiTrashDuotone className="me-1.5 h-[17px] w-[17px]" /> Clear
           </Button>
-        )} */}
+        )}
 
         <Input
           type="search"
@@ -114,6 +140,14 @@ export default function FilterElement({
           <ModalButton
             label="Add New Event"
             view={<CreateUser />}
+            customSize="600px"
+            className="mt-0"
+          />
+        </div>
+        <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
+          <DownloadButton
+            label="Download Report"
+            onClickFunction={handleDownload}
             customSize="600px"
             className="mt-0"
           />
