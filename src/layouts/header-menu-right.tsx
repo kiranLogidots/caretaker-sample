@@ -7,7 +7,8 @@ import SettingsButton from '@/components/settings/settings-button';
 import RingBellSolidIcon from '@/components/icons/ring-bell-solid';
 import ChatSolidIcon from '@/components/icons/chat-solid';
 import { Engagespot } from '@engagespot/react-component';
-
+import Image from 'next/image';
+import NotiEmptyImage from '../../public/noti.png';
 export default function HeaderMenuRight() {
   const theme = {
     colors: {
@@ -15,10 +16,9 @@ export default function HeaderMenuRight() {
     },
     notificationButton: {
       background: '',
-      hoverBackground:'teal',
-      iconFill:'black'
+      hoverBackground: '',
+      iconFill: 'black',
     },
-    
   };
 
   return (
@@ -59,6 +59,20 @@ export default function HeaderMenuRight() {
         userId="unique-id-of-your-user"
         userToken="Required if secure auth is enabled on your Engagespot app"
         theme={theme}
+        renderEmptyPlaceholderImage={() => {
+          return (
+            <div className='flex flex-col gap-3 justify-center items-center'>
+              <Image
+                src={NotiEmptyImage}
+                alt="Noti Image"
+                width={200}
+                height={200}
+              />
+              <h1 className='font-bold text-3xl '>You are all up to date</h1>
+              <p className='text-sm'>New notification will appear here whenever there is activity</p>
+            </div>
+          );
+        }}
       />
       {/* <SettingsButton /> */}
       <ProfileMenu />
