@@ -6,11 +6,24 @@ import ProfileMenu from '@/layouts/profile-menu';
 import SettingsButton from '@/components/settings/settings-button';
 import RingBellSolidIcon from '@/components/icons/ring-bell-solid';
 import ChatSolidIcon from '@/components/icons/chat-solid';
+import { Engagespot } from '@engagespot/react-component';
 
 export default function HeaderMenuRight() {
+  const theme = {
+    colors: {
+      colorPrimary: 'black',
+    },
+    notificationButton: {
+      background: '',
+      hoverBackground:'teal',
+      iconFill:'black'
+    },
+    
+  };
+
   return (
-    <div className="flex items-end justify-end mr-0">
-     {/* "ms-auto grid shrink-0 grid-cols-4 items-end justify-end right-0 gap-2 text-gray-700 xs:gap-3 xl:gap-4" */}
+    <div className="mr-0 flex items-end justify-end gap-8">
+      {/* "ms-auto grid shrink-0 grid-cols-4 items-end justify-end right-0 gap-2 text-gray-700 xs:gap-3 xl:gap-4" */}
       {/* <MessagesDropdown>
         <ActionIcon
           aria-label="Messages"
@@ -25,8 +38,8 @@ export default function HeaderMenuRight() {
             className="absolute right-2.5 top-2.5 -translate-y-1/3 translate-x-1/2"
           />
         </ActionIcon>
-      </MessagesDropdown>
-      <NotificationDropdown>
+      </MessagesDropdown> */}
+      {/* <NotificationDropdown>
         <ActionIcon
           aria-label="Notification"
           variant="text"
@@ -40,8 +53,14 @@ export default function HeaderMenuRight() {
             className="absolute right-2.5 top-2.5 -translate-y-1/3 translate-x-1/2"
           />
         </ActionIcon>
-      </NotificationDropdown>
-      <SettingsButton /> */}
+      </NotificationDropdown> */}
+      <Engagespot
+        apiKey="b1vxvkz6m5txxwsas37nr"
+        userId="unique-id-of-your-user"
+        userToken="Required if secure auth is enabled on your Engagespot app"
+        theme={theme}
+      />
+      {/* <SettingsButton /> */}
       <ProfileMenu />
     </div>
   );
