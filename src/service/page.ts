@@ -124,7 +124,8 @@ export const listHKS = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -208,7 +209,8 @@ export const listClusterCreation = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -245,7 +247,8 @@ export const listDrivers = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -288,7 +291,8 @@ export const listPA = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -325,7 +329,8 @@ export const listEventsHKS = (currentPage:number, pageSize:number) => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -365,7 +370,8 @@ export const viewEventDetail = (id: number) => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -417,7 +423,8 @@ export const downloadEventReport = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -458,7 +465,8 @@ export const listWardData = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -501,7 +509,8 @@ export const downloadWardDataReport = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -538,7 +547,8 @@ export const listAllJobs = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -563,7 +573,8 @@ export const viewJobRequest = (id: number) => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -588,7 +599,8 @@ export const jobTrackings = (id: number) => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({
@@ -613,7 +625,8 @@ export const downloadJobReport = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (error.response?.data?.statusCode === 403 ||
+        (
+          // error.response?.data?.statusCode === 403 ||
           error.response.status === 401)
       ) {
         signOut({

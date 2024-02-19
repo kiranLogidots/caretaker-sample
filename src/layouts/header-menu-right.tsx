@@ -56,8 +56,8 @@ export default function HeaderMenuRight() {
       </NotificationDropdown> */}
       <Engagespot
         apiKey="b1vxvkz6m5txxwsas37nr"
-        userId="unique-id-of-your-user"
-        userToken="Required if secure auth is enabled on your Engagespot app"
+        userId="superadmin@greenworms.com"
+        // userToken="Required if secure auth is enabled on your Engagespot app"
         theme={theme}
         renderEmptyPlaceholderImage={() => {
           return (
