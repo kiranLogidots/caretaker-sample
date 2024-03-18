@@ -260,17 +260,22 @@ export const menuItems = [
   {
     name: 'Cluster Admins',
     href: routes.clusterAdmins,
-    icon: <PiUserSquareDuotone />,
+    icon: <PiUserPlusDuotone />,
   },
   {
     name: 'Project Associates',
     href: routes.projectAssociates,
-    icon: <PiUserSquareDuotone />,
+    icon: <PiUserPlusDuotone />,
   },
   {
     name: 'Drivers',
     href: routes.drivers,
-    icon: <PiUserSquareDuotone />,
+    icon: <PiUserPlusDuotone />,
+  },
+  {
+    name: 'Transport Coordinators',
+    href: routes.transportCoordinator,
+    icon: <PiUserPlusDuotone />,
   },
  
    // label start

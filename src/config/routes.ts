@@ -75,6 +75,7 @@ export const routes = {
   clusterAdmins:'/cluster-admins',
   drivers:'/drivers',
   projectAssociates:'/project-associates',
+  transportCoordinator:'/transport-coordinator',
   events:'/events-hks',
   wardData:'/ward-data',
   pickupRequest:'/pickup-request',

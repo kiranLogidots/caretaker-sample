@@ -638,3 +638,43 @@ export const downloadJobReport = () => {
       // throw new Error('Something wrong on network connection');
     });
 };
+
+
+//TRANSPORT COORDINATOR
+
+export const createTC = async (details: CreateCluster) => {
+  let response = await axios.post(`${apiBaseUrl}/users`, details, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+};
+
+export const listTC = () => {
+  return axios
+    .get(`${apiBaseUrl}/users?user_type=transport_cordinator`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        (
+          // error.response?.data?.statusCode === 403 ||
+          error.response.status === 401)
+      ) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
+};
