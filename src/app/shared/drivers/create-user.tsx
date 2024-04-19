@@ -80,6 +80,7 @@ export default function CreateUser() {
       age: parseInt(data.age),
       address: data.address,
       email: data.email,
+      vehicle_no:data.vehicle_no,
       phone: data.phone,
       password: data.password,
       confirm_password: data.confirmPassword,
@@ -102,6 +103,7 @@ export default function CreateUser() {
           phone: '',
           age: '',
           address: '',
+          vehicle_no: '',
           role: '',
           permissions: '',
           status: '',
@@ -113,7 +115,7 @@ export default function CreateUser() {
       }
 
       const user_id = resultData.data?.savedUser?.id;
-      console.log("userid of driver", user_id)
+      console.log('userid of driver', user_id);
 
       const collectionPointsData = {
         user_id: user_id,
@@ -182,7 +184,7 @@ export default function CreateUser() {
                 placeholder="Enter your phone number..."
                 labelClassName="font-medium text-gray-900 dark:text-white"
                 {...register('phone')}
-                defaultValue="+91" 
+                defaultValue="+91"
                 error={errors.phone?.message}
               />
 
@@ -199,6 +201,13 @@ export default function CreateUser() {
                 className="col-span-full"
                 {...register('address')}
                 error={errors.address?.message}
+              />
+              <Input
+                label="Vehicle Number"
+                placeholder="Enter user's vehicle number"
+                className="col-span-full"
+                {...register('vehicle_no')}
+                error={errors.vehicle_no?.message}
               />
 
               {/* <label
@@ -219,7 +228,7 @@ export default function CreateUser() {
                   }
                 />
               </label> */}
-            <Controller
+              <Controller
                 name="collectionPoints"
                 control={control}
                 render={({ field: { name, onChange, value } }) => (
@@ -236,8 +245,8 @@ export default function CreateUser() {
                       className="col-span-full"
                       // onChange={onChange}
                       onChange={(selectedOptions) => {
-                        onChange(selectedOptions); 
-                        setValue(name, selectedOptions); 
+                        onChange(selectedOptions);
+                        setValue(name, selectedOptions);
                       }}
                       name={name}
                       isMulti
@@ -261,7 +270,9 @@ export default function CreateUser() {
                 error={errors.confirmPassword?.message}
               />
               {errorMessage && (
-                <div className="col-span-full font-semibold text-sm text-red-500">{errorMessage}</div>
+                <div className="col-span-full text-sm font-semibold text-red-500">
+                  {errorMessage}
+                </div>
               )}
 
               {/* <Controller

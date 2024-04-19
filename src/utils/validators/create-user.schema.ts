@@ -8,6 +8,7 @@ export const createUserSchema = z.object({
   email: validateEmail,
   age: z.string().min(1, { message: messages.ageIsRequired }),
   address: z.string().min(1, { message: messages.addressIsRequired }),
+  vehicle_no: z.string().min(1, { message: messages.vehicleNoIsRequired }),
   phone: z.string().min(1, { message: messages.phoneNumberIsRequired }),
   password: z
     .string()
