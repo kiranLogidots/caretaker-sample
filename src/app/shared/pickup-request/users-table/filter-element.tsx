@@ -12,6 +12,7 @@ import ModalButton from '@/app/shared/modal-button';
 import CreateUser from '@/app/shared/pickup-request/create-user';
 import DownloadButton from '../../download-button';
 import { downloadJobReport, downloadWardDataReport } from '@/service/page';
+import { useState } from 'react';
 
 const statusOptions = [
   {
@@ -42,29 +43,6 @@ const roles = rolesList.map((role) => ({
   value: role.name,
 }));
 
-const handleDownload = async () => {
-  console.log("DOWNLOAD BTN CLICKED!")
-  try{
-    const resultData = await downloadJobReport();
-    console.log("report response data", resultData);
-    const blob = new Blob([resultData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-     // Create a download link
-     const downloadLink = document.createElement('a');
-     downloadLink.href = window.URL.createObjectURL(blob);
-     downloadLink.download = 'jobRequestReport.xlsx';
-     // Append the link to the body and trigger the download
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-     // Remove the link from the body
-     document.body.removeChild(downloadLink);
-     alert("Report downloaded successfully!");
-
-
-  }catch(error){
-    console.error("Error downloading report:", error);
-  }
-};
-
 export default function FilterElement({
   isFiltered,
   handleReset,
@@ -73,55 +51,39 @@ export default function FilterElement({
   onSearch,
   searchTerm,
 }: FilterElementProps) {
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    console.log('DOWNLOAD BTN CLICKED!');
+    try {
+      const resultData = await downloadJobReport();
+      console.log('report response data', resultData);
+      const blob = new Blob([resultData], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      // Create a download link
+      const downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.download = 'jobRequestReport.xlsx';
+      // Append the link to the body and trigger the download
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      // Remove the link from the body
+      document.body.removeChild(downloadLink);
+      alert('Report downloaded successfully!');
+      setDownloading(false);
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      setDownloading(false);
+    }
+  };
   return (
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
         <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
           Jobs List
         </Title>
-
-        {/* <StatusField
-          className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
-          options={statusOptions}
-          value={filters['status']}
-          onChange={(value: string) => {
-            updateFilter('status', value);
-          }}
-          placeholder="Filter by Status"
-          getOptionValue={(option) => option.value}
-          getOptionDisplayValue={(option) =>
-            renderOptionDisplayValue(option.value as string)
-          }
-          displayValue={(selected: string) =>
-            renderOptionDisplayValue(selected)
-          }
-        /> */}
-
-        {/* <StatusField
-          options={roles}
-          value={filters['role']}
-          placeholder="Filter by Role"
-          className=" @4xl:-auto -order-2 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-4 @4xl:w-auto"
-          dropdownClassName="w-48"
-          getOptionValue={(option) => option.value}
-          onChange={(value: string) => {
-            updateFilter('role', value);
-          }}
-          displayValue={(selected: string) =>
-            roles.find((option) => option.value === selected)?.value ?? selected
-          }
-        /> */}
-
-        {/* {isFiltered && (
-          <Button
-            size="sm"
-            onClick={handleReset}
-            className="-order-1 h-8 w-full bg-gray-200/70 @4xl:-order-4 @4xl:w-auto"
-            variant="flat"
-          >
-            <PiTrashDuotone className="me-1.5 h-[17px] w-[17px]" /> Clear
-          </Button>
-        )} */}
 
         <Input
           type="search"
@@ -145,7 +107,7 @@ export default function FilterElement({
         </div>
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           <DownloadButton
-            label="Download Report"
+            label={downloading ? 'Downloading...' : 'Download Report'}
             onClickFunction={handleDownload}
             customSize="600px"
             className="mt-0"

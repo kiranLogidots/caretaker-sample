@@ -3,11 +3,12 @@ import { messages } from '@/config/messages';
 import { validateEmail } from '@/utils/validators/common-rules';
 
 // form zod validation schema
-export const createUserSchema = z.object({
+export const createDriverSchema = z.object({
   fullName: z.string().min(1, { message: messages.fullNameIsRequired }),
   email: validateEmail,
   age: z.string().min(1, { message: messages.ageIsRequired }),
   address: z.string().min(1, { message: messages.addressIsRequired }),
+  vehicle_no: z.string().min(1, { message: messages.vehicleNoIsRequired }),
   phone: z.string().min(1, { message: messages.phoneNumberIsRequired }),
   password: z
     .string()
@@ -36,9 +37,9 @@ export const createUserSchema = z.object({
   // status: z.string().min(1, { message: messages.statusIsRequired }),
 });
 // Add a cross-field validation for confirm_password
-createUserSchema.refine((data) => data.password === data.confirmPassword, {
+createDriverSchema.refine((data) => data.password === data.confirmPassword, {
   message: messages.passwordsDidNotMatch,
 });
 
 // generate form types from zod validation schema
-export type CreateUserInput = z.infer<typeof createUserSchema>;
+export type CreateDriverInput = z.infer<typeof createDriverSchema>;

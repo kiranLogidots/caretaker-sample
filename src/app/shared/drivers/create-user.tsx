@@ -7,10 +7,7 @@ import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
-import {
-  CreateUserInput,
-  createUserSchema,
-} from '@/utils/validators/create-user.schema';
+
 import { Title } from '@/components/ui/text';
 import { Password } from '@/components/ui/password';
 import { useModal } from '@/app/shared/modal-views/use-modal';
@@ -29,7 +26,29 @@ import {
   ListCollectionInterface,
 } from '@/types';
 import { signOut } from 'next-auth/react';
+import { CreateDriverInput, createDriverSchema } from '@/utils/validators/create-driver-schema';
+// const handleDownload = async () => {
+//   console.log("DOWNLOAD BTN CLICKED!")
+//   try{
+//     const resultData = await downloadJobReport();
+//     console.log("report response data", resultData);
+//     const blob = new Blob([resultData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+//      // Create a download link
+//      const downloadLink = document.createElement('a');
+//      downloadLink.href = window.URL.createObjectURL(blob);
+//      downloadLink.download = 'jobRequestReport.xlsx';
+//      // Append the link to the body and trigger the download
+//     document.body.appendChild(downloadLink);
+//     downloadLink.click();
+//      // Remove the link from the body
+//      document.body.removeChild(downloadLink);
+//      alert("Report downloaded successfully!");
 
+
+//   }catch(error){
+//     console.error("Error downloading report:", error);
+//   }
+// };
 export default function CreateUser() {
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
@@ -73,7 +92,7 @@ export default function CreateUser() {
 
     fetchCollectionPoints();
   }, []);
-  const onSubmit: SubmitHandler<CreateUserInput> = async (data) => {
+  const onSubmit: SubmitHandler<CreateDriverInput> = async (data) => {
     const formattedData = {
       user_type: 'drivers',
       name: data.fullName,
@@ -146,10 +165,10 @@ export default function CreateUser() {
     <>
       {' '}
       <Toaster position="top-right" />
-      <Form<CreateUserInput>
+      <Form<CreateDriverInput>
         resetValues={reset}
         onSubmit={onSubmit}
-        validationSchema={createUserSchema}
+        validationSchema={createDriverSchema}
         className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
