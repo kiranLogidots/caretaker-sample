@@ -134,9 +134,6 @@ dependencies:
   nodemailer:
     specifier: ^6.9.7
     version: 6.9.7
-  playwright:
-    specifier: ^1.43.1
-    version: 1.43.1
   pretty-bytes:
     specifier: ^6.1.1
     version: 6.1.1
@@ -295,6 +292,9 @@ devDependencies:
   husky:
     specifier: ^8.0.3
     version: 8.0.3
+  playwright:
+    specifier: ^1.43.1
+    version: 1.43.1
   postcss:
     specifier: ^8.4.32
     version: 8.4.32
@@ -4189,7 +4189,7 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /fsevents@2.3.3:
@@ -5765,7 +5765,7 @@ packages:
     resolution: {integrity: sha512-EI36Mto2Vrx6VF7rm708qSnesVQKbxEWvPrfA1IPY6HgczBplDx7ENtx+K2n4kJ41sLLkuGfmb0ZLSSXlDhqPg==}
     engines: {node: '>=16'}
     hasBin: true
-    dev: false
+    dev: true
 
   /playwright@1.43.1:
     resolution: {integrity: sha512-V7SoH0ai2kNt1Md9E3Gwas5B9m8KR2GVvwZnAI6Pg0m3sh7UvgiYhRrhsziCmqMJNouPckiOhk8T+9bSAK0VIA==}
@@ -5775,7 +5775,7 @@ packages:
       playwright-core: 1.43.1
     optionalDependencies:
       fsevents: 2.3.2
-    dev: false
+    dev: true
 
   /postcss-import@15.1.0(postcss@8.4.32):
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
