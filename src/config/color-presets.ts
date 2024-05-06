@@ -22,15 +22,14 @@ export const DEFAULT_PRESET_COLORS = {
   // light: '#608efb',
   // default: '#3872fa',
   // dark: '#1d58d8',
-  lighter: '#ccfbf1', // Teal 100
-  light: '#5eead4', // Teal 300
-  default: '#026163', // Teal 600 0d9488
-  dark: '#115e59', // Teal 800
-  foreground: '#ffffff',
+  lighter: '#4486F4', 
+  light: '#4486F4', 
+  default: '#4486F4', 
+  dark: '#4486F4', 
+  foreground: '#4486F4',
 };
 
-// export const DEFAULT_PRESET_COLOR_NAME = 'Blue';
-export const DEFAULT_PRESET_COLOR_NAME = 'Teal';
+export const DEFAULT_PRESET_COLOR_NAME = 'Blue';
 
 export const usePresets = () => {
   const { theme } = useTheme();
@@ -51,14 +50,24 @@ export const usePresets = () => {
           theme === 'light' ? presetLight.foreground : presetDark.foreground,
       },
     },
+    // {
+    //   name: 'Teal',
+    //   colors: {
+    //     lighter: '#ccfbf1', // Teal 100
+    //     light: '#5eead4', // Teal 300
+    //     default: '#026163', // Teal 600 0d9488
+    //     dark: '#115e59', // Teal 800
+    //     foreground: '#ffffff',
+    //   },
+    // },
     {
-      name: 'Teal',
+      name: 'Blue',
       colors: {
-        lighter: '#ccfbf1', // Teal 100
-        light: '#5eead4', // Teal 300
-        default: '#026163', // Teal 600 0d9488
-        dark: '#115e59', // Teal 800
-        foreground: '#ffffff',
+        lighter: '#4486F4', // Teal 100
+        light: '#4486F4', // Teal 300
+        default: '#4486F4', // Teal 600 0d9488
+        dark: '#4486F4', // Teal 800
+        foreground: '#4486F4',
       },
     },
     {

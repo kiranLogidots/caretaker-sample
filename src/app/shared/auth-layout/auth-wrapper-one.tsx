@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import logoImg from '@public/logo.png';
+import logoImg from '@public/seek.png';
 import logoImgText from '@public/logo-primary-text.svg';
 import Image from 'next/image';
 import { Title, Text } from '@/components/ui/text';
@@ -117,7 +117,7 @@ export default function AuthWrapperOne({
             {children}
           </div>
         </div>
-        <div className="hidden w-7/12 items-center justify-center rounded-[20px] bg-teal-800 px-6 lg:flex 2xl:px-16 dark:bg-gray-100/40">
+        <div className="hidden w-7/12 items-center justify-center rounded-[20px] bg-white px-6 lg:flex 2xl:px-16 dark:bg-gray-100/40">
           <div className="pb- pt- text-center xl:pt- 2xl:block 2xl:w-[1063px]">
             {/* <div className="mx-auto mb-10 max-w-sm pt-2 2xl:max-w-lg">
               <Title

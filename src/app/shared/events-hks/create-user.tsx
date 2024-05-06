@@ -180,7 +180,7 @@ export default function CreateUser() {
                     </label>
                     <Select
                       options={[
-                        { value: 'greenworms', label: 'greenworms' },
+                        { value: 'seekhealth', label: 'seekhealth' },
                         { value: 'lsg', label: 'lsg' },
                         { value: 'other', label: 'other' },
                       ]}

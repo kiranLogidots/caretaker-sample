@@ -27,7 +27,7 @@ export default function SignIn() {
       // bannerDescription=""
       // isSocialLoginActive={true}
       pageImage={
-        <div className="relative mx-auto w-[500px] xl:w-[620px] 2xl:w-[800px]">
+        <div className="relative mx-auto w-[500px] xl:w-[620px] 2xl:w-[780px]">
           <Image
             src={SideImage
               // 'https://isomorphic-furyroad.s3.amazonaws.com/public/auth/sign-up.webp'

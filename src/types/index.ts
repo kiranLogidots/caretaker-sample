@@ -51,26 +51,8 @@ export interface AdminLogin {
   PhoneOrEmail: string;
   password: string;
 }
-export interface CreateHSK {
-  user_type: string;
-  name: string;
-  age: number;
-  address: string;
-  phone: string;
-  password: string;
-  confirm_password: string;
-}
-export interface CreateCluster {
-  user_type: string;
-  name: string;
-  age: number;
-  address: string;
-  phone: string;
-  password: string;
-  confirm_password: string;
-}
+
 export interface CreateUser {
-  user_type: string;
   name: string;
   age: number;
   address: string;
@@ -78,37 +60,19 @@ export interface CreateUser {
   password: string;
   confirm_password: string;
 }
-export interface CreateDriver {
-  user_type: string;
+export interface CreateOrg {
   name: string;
-  age: number;
   address: string;
-  phone: string;
-  password: string;
-  confirm_password: string;
+  primary_contact_name: string;
+  primary_contact_email: string;
+  primary_contact_phone: string;
 }
-export interface CreatePA {
-  user_type: string;
-  name: string;
-  age: number;
-  address: string;
-  phone: string;
-  password: string;
-  confirm_password: string;
-}
+
 export interface AssignCollectionPoints {
   user_id: number;
   collectionPointIds: number[];
 }
-export interface CreateEvent {
-  name: string;
-  expense: number;
-  date: string;
-  no_of_participants: number;
-  description: string;
-  other_description: string;
-  organised_by: string;
-}
+
 export interface SaveImageUpload {
   event_id: number;
   images: string[];
@@ -227,19 +191,12 @@ export interface CreateUserResponse {
   message: string;
   statusCode: number;
   data: {
-    EngageSpotStatus: boolean;
-    savedUser: {
-      id: number;
-      user_type: string;
-      name: string;
-      phone: string;
-      age: number;
-      password: string;
-      created_by: number;
-      roles: RolesResponse[];
-      created_at: string;
-      updated_at: string;
-    };
+    name: string;
+    address:string;
+    id:number
+    primary_contact_name:string;
+    primary_contact_email:string;
+    primary_contact_phone:string;
   };
 }
 

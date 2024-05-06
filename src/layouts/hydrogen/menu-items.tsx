@@ -253,54 +253,54 @@ export const menuItems = [
   //   icon: <PiCalendarPlusDuotone />,
   // },
   {
-    name: 'Haritha Karma Sena',
+    name: 'Organizations',
     href: routes.rolesPermissions,
-    icon: <PiUserPlusDuotone />,
+    icon: <MdEventAvailable />,
   },
-  {
-    name: 'Cluster Admins',
-    href: routes.clusterAdmins,
-    icon: <PiUserPlusDuotone />,
-  },
-  {
-    name: 'Project Associates',
-    href: routes.projectAssociates,
-    icon: <PiUserPlusDuotone />,
-  },
-  {
-    name: 'Drivers',
-    href: routes.drivers,
-    icon: <PiUserPlusDuotone />,
-  },
-  {
-    name: 'Transport Coordinators',
-    href: routes.transportCoordinator,
-    icon: <PiUserPlusDuotone />,
-  },
+  // {
+  //   name: 'Cluster Admins',
+  //   href: routes.clusterAdmins,
+  //   icon: <PiUserPlusDuotone />,
+  // },
+  // {
+  //   name: 'Project Associates',
+  //   href: routes.projectAssociates,
+  //   icon: <PiUserPlusDuotone />,
+  // },
+  // {
+  //   name: 'Drivers',
+  //   href: routes.drivers,
+  //   icon: <PiUserPlusDuotone />,
+  // },
+  // {
+  //   name: 'Transport Coordinators',
+  //   href: routes.transportCoordinator,
+  //   icon: <PiUserPlusDuotone />,
+  // },
  
    // label start
-   {
-    name: 'Activities',
-  },
+  //  {
+  //   name: 'Activities',
+  // },
     // label end
 
  
-  {
-    name: 'Events',
-    href: routes.events,
-    icon: <MdEventAvailable />,
-  },
-  {
-    name: 'Input Ward Data',
-    href: routes.wardData,
-    icon: <MdInput />,
-    // icon: <PiCreditCardDuotone />,
-  },
-  {
-    name: 'Pickup Request',
-    href: routes.pickupRequest,
-    icon: <VscRequestChanges />,
-  },
+  // {
+  //   name: 'Events',
+  //   href: routes.events,
+  //   icon: <MdEventAvailable />,
+  // },
+  // {
+  //   name: 'Input Ward Data',
+  //   href: routes.wardData,
+  //   icon: <MdInput />,
+  //   // icon: <PiCreditCardDuotone />,
+  // },
+  // {
+  //   name: 'Pickup Request',
+  //   href: routes.pickupRequest,
+  //   icon: <VscRequestChanges />,
+  // },
   // {
   //   name: 'Point of Sale',
   //   href: routes.pos.index,

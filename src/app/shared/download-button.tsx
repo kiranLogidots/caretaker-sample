@@ -24,7 +24,7 @@ export default function DownloadButton({
   return (
     <Button
       className={cn(
-        'mt-5 w-full text-xs capitalize @lg:w-auto sm:text-sm lg:mt-0 bg-teal-800',
+        'mt-5 w-full text-xs capitalize @lg:w-auto sm:text-sm lg:mt-0 bg-[#4286F5]',
         className
       )}
       onClick={onClickFunction} 

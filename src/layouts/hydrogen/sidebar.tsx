@@ -12,7 +12,7 @@ import { menuItems } from '@/layouts/hydrogen/menu-items';
 import Logo from '@/components/logo';
 import StatusBadge from '@/components/get-status-badge';
 import Image from 'next/image';
-import GWLogo from "../../../public/logo_greenworms.svg";
+import GWLogo from "../../../public/seek.png";
 
 
 export default function Sidebar({ className }: { className?: string }) {
@@ -31,7 +31,7 @@ export default function Sidebar({ className }: { className?: string }) {
           className="text-gray-800 hover:text-gray-900"
         >
           {/* <Logo className="max-w-[155px]" /> */}
-          <Image src={GWLogo} className='w-[205px]' alt="Greenworms logo"/>
+          <Image src={GWLogo} className='w-[205px]' alt="seek logo"/>
         </Link>
       </div>
 

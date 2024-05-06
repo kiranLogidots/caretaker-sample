@@ -32,14 +32,15 @@ interface SAUser {
 }
 interface SALoginInterface {
   message: string;
-  tokens: {
-    accessToken: string;
-    refreshToken: string;
-  };
+  accessToken:string;
+  // tokens: {
+  //   accessToken: string;
+  //   refreshToken: string;
+  // };
   user: SAUser[];
 }
 // const initialValues: LoginSchema = {
-//   email: 'superadmin@greenworms.com',
+//   email: 'kim@seekhealth.com',
 //   password: 'adminPassword',
 //   rememberMe: true,
 //   // email: 'admin@admin.com',
@@ -63,10 +64,13 @@ export default function SignInForm() {
       const response = await superAdminLogin(formattedData);
       const resultData = response.data as SALoginInterface;
       console.log('RESULT DATA SIGNUP PAGE', resultData);
-      const { accessToken, refreshToken } = resultData.tokens;
+      const  accessToken  = resultData.accessToken;
       sessionStorage.setItem('accessToken', accessToken);
-      sessionStorage.setItem('refreshToken', refreshToken);
-    } catch {}
+      // sessionStorage.setItem('refreshToken', refreshToken);
+    } catch(error) {
+      console.error('Error during login', error);
+    }
+    
     signIn('credentials', {
       ...data,
       // onSuccess: () => {

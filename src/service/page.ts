@@ -1,80 +1,17 @@
 import {
-  CreateCluster,
-  CreateHSK,
-  CreateEvent,
   AdminLogin,
-  CreateDriver,
-  CreatePA,
   AssignCollectionPoints,
+  CreateOrg,
   CreateUser,
-  AddWardData,
-  InitiateJobsRequest,
   SaveImageUpload,
 } from '@/types';
 import axios from 'axios';
 import { signOut } from 'next-auth/react';
 
-const apiBaseUrl = 'https://api.greenworms.alpha.logidots.com/api';
-
-// const refreshAccessToken = async () => {
-//   const refreshToken = sessionStorage.getItem('refreshToken');
-//   try {
-//     const response = await axios.post(`${apiBaseUrl}/auth/refresh`, {
-//       refreshToken,
-//     });
-
-//     const { accessToken } = response.data;
-//     sessionStorage.setItem('accessToken', accessToken);
-//     return Promise.resolve();
-//   } catch (error) {
-//     // Handle refresh token failure (e.g., redirect to login page)
-//     signOut();
-//     return Promise.reject(error);
-//   }
-// };
-
-// axios.interceptors.request.use(
-//   (config) => {
-//     // Add the access token to the request headers
-//     const accessToken = sessionStorage.getItem('accessToken');
-//     if (accessToken) {
-//       config.headers.Authorization = `Bearer ${accessToken}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     signOut();
-//     return Promise.reject(error);
-//   }
-// );
-
-// axios.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
-
-//     // If the error is due to an expired access token, try refreshing the token
-//     if (error.response && error.response.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       signOut();
-//       try {
-//         await refreshAccessToken();
-//         return axios(originalRequest);
-//       } catch (refreshError) {
-//         signOut();
-//         // If refresh fails, handle the error (e.g., redirect to login page)
-//         return Promise.reject(refreshError);
-//       }
-//     }
-
-//     // For other errors, pass through the original error
-//     return Promise.reject(error);
-//   }
-// );
-
+const apiBaseUrl = 'https://api.seekhealth.alpha2.logidots.com/api';
 const accessToken = sessionStorage.getItem('accessToken');
 // const refreshToken = sessionStorage.getItem('refreshToken');
-// console.log("Access Token", accessToken)
+console.log('Access Token', accessToken);
 
 //ADMIN LOGIN
 
@@ -89,8 +26,8 @@ export const superAdminLogin = async (details: AdminLogin) => {
 };
 
 //CREATE USER API
-export const createUser = async (details: CreateUser) => {
-  let response = await axios.post(`${apiBaseUrl}/users`, details, {
+export const createOrg = async (details: CreateOrg) => {
+  let response = await axios.post(`${apiBaseUrl}/organizations`, details, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
@@ -100,21 +37,9 @@ export const createUser = async (details: CreateUser) => {
   return response;
 };
 
-//HKS
-
-export const createHSK = async (details: CreateHSK) => {
-  let response = await axios.post(`${apiBaseUrl}/users`, details, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response;
-};
-
-export const listHKS = () => {
+export const listOrg = () => {
   return axios
-    .get(`${apiBaseUrl}/users?user_type=hks_users`, {
+    .get(`${apiBaseUrl}/organizations`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -124,9 +49,8 @@ export const listHKS = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
+        // error.response?.data?.statusCode === 403 ||
+        error.response.status === 401
       ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
@@ -184,165 +108,6 @@ export const assignCollectionPoints = async (
   return response;
 };
 
-//CLUSTER
-
-export const createCluster = async (details: CreateCluster) => {
-  let response = await axios.post(`${apiBaseUrl}/users`, details, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  return response;
-};
-
-export const listClusterCreation = () => {
-  return axios
-    .get(`${apiBaseUrl}/users?user_type=cluster_admin`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-//DRIVERS
-
-export const createDriver = async (details: CreateDriver) => {
-  let response = await axios.post(`${apiBaseUrl}/users`, details, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response;
-};
-
-export const listDrivers = () => {
-  return axios
-    .get(`${apiBaseUrl}/users?user_type=drivers`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-//PROJECT-ASSOCIATES
-
-export const createPA = async (details: CreatePA) => {
-  let response = await fetch(`${apiBaseUrl}/users`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(details),
-  });
-  if (!response.ok) {
-    throw new Error('Something wrong on network connection');
-  }
-  let result = await response.json();
-  return result;
-};
-
-export const listPA = () => {
-  return axios
-    .get(`${apiBaseUrl}/users?user_type=project_associate`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-//EVENT
-
-export const createEvent = async (details: CreateEvent) => {
-  let response = await axios.post(`${apiBaseUrl}/events`, details, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response;
-};
-
-export const listEventsHKS = (currentPage:number, pageSize:number) => {
-  return axios
-    .get(`${apiBaseUrl}/events`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
 export const deleteEvent = async (eventId: string) => {
   try {
     const response = await axios.delete(`${apiBaseUrl}/events/${eventId}`, {
@@ -370,9 +135,8 @@ export const viewEventDetail = (id: number) => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
+        // error.response?.data?.statusCode === 403 ||
+        error.response.status === 401
       ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
@@ -423,251 +187,8 @@ export const downloadEventReport = () => {
       console.error('Error response:', error.response);
       if (
         error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-//INPUT WARD DATA
-
-export const addWardData = async (details: AddWardData) => {
-  let response = await axios.post(
-    `${apiBaseUrl}/ward-collection-data`,
-    details,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-  return response;
-};
-
-export const listWardData = () => {
-  return axios
-    .get(`${apiBaseUrl}/ward-collection-data`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-export const deleteWardData = async (wardId: string) => {
-  try {
-    const response = await axios.delete(
-      `${apiBaseUrl}/ward-collection-data/${wardId}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error('Delete event failed:', error);
-    // throw new Error('Failed to delete event');
-  }
-};
-
-export const downloadWardDataReport = () => {
-  return axios
-    .get(`${apiBaseUrl}/ward-collection-data/export`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-//PICK UP REQUEST
-
-export const initiateJobs = async (details: InitiateJobsRequest) => {
-  let response = await axios.post(`${apiBaseUrl}/jobs/initiate`, details, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response;
-};
-
-export const listAllJobs = () => {
-  return axios
-    .get(`${apiBaseUrl}/jobs/list-all`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-export const viewJobRequest = (id: number) => {
-  return axios
-    .get(`${apiBaseUrl}/jobs/${id}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-export const jobTrackings = (id: number) => {
-  return axios
-    .get(`${apiBaseUrl}/jobs/${id}/trackings`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-export const downloadJobReport = () => {
-  return axios
-    .get(`${apiBaseUrl}/jobs/list-report`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
-      ) {
-        signOut({
-          callbackUrl: 'http://localhost:3000',
-        });
-      } else {
-        console.error('Error fetching data:', error);
-      }
-      // throw new Error('Something wrong on network connection');
-    });
-};
-
-
-//TRANSPORT COORDINATOR
-
-export const createTC = async (details: CreateCluster) => {
-  let response = await axios.post(`${apiBaseUrl}/users`, details, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  return response;
-};
-
-export const listTC = () => {
-  return axios
-    .get(`${apiBaseUrl}/users?user_type=transport_cordinator`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error response:', error.response);
-      if (
-        error.response &&
-        (
-          // error.response?.data?.statusCode === 403 ||
-          error.response.status === 401)
+        // error.response?.data?.statusCode === 403 ||
+        error.response.status === 401
       ) {
         signOut({
           callbackUrl: 'http://localhost:3000',
