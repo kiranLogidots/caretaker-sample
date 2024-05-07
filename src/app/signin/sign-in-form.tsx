@@ -32,7 +32,7 @@ interface SAUser {
 }
 interface SALoginInterface {
   message: string;
-  accessToken:string;
+  accessToken: string;
   // tokens: {
   //   accessToken: string;
   //   refreshToken: string;
@@ -64,13 +64,13 @@ export default function SignInForm() {
       const response = await superAdminLogin(formattedData);
       const resultData = response.data as SALoginInterface;
       console.log('RESULT DATA SIGNUP PAGE', resultData);
-      const  accessToken  = resultData.accessToken;
+      const accessToken = resultData.accessToken;
       sessionStorage.setItem('accessToken', accessToken);
       // sessionStorage.setItem('refreshToken', refreshToken);
-    } catch(error) {
+    } catch (error) {
       console.error('Error during login', error);
     }
-    
+
     signIn('credentials', {
       ...data,
       // onSuccess: () => {
@@ -130,7 +130,7 @@ export default function SignInForm() {
             </Button> */}
             <Button className="w-full bg-green-dark" type="submit" size="lg">
               {loading ? (
-                <div className='flex justify-center items-center gap-2'>
+                <div className="flex items-center justify-center gap-2">
                   <IoMdRefresh
                     className="mx-auto animate-spin text-white"
                     size={24}

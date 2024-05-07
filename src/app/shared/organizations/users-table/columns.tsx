@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ActionIcon } from '@/components/ui/action-icon';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
+import TrashIcon from '@/components/icons/trash';
 import AvatarCard from '@/components/ui/avatar-card';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
@@ -200,6 +201,17 @@ export const getColumns = ({
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip>
+        <Tooltip size="sm" content={'View User'} placement="top" color="invert">
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            className="hover:!border-gray-900 hover:text-gray-700"
+          >
+            <EyeIcon className="h-4 w-4" />
+          </ActionIcon>
+        </Tooltip>
+
         {/* <Tooltip size="sm" content={'View User'} placement="top" color="invert">
           <ActionIcon
             as="span"

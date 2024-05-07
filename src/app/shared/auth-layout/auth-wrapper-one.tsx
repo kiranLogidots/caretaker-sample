@@ -61,10 +61,10 @@ export default function AuthWrapperOne({
               <PiArrowLeftBold />
               <b className="ms-1 font-medium">Back to home</b>
             </Link> */}
-            <div className="mb-7 px-6 pt-3 text-center md:pt-0 lg:px-0 lg:text-start xl:mb-8 2xl:mb-10">
+            <div className=" mb-7 px-6 pt-3 text-center md:pt-0 lg:px-0 lg:text-start xl:mb-8 2xl:mb-10">
               <Link
                 href={'/'}
-                className="mb-2 inline-flex justify-center items-center max-w-[168px] xl:mb-3"
+                className="absolute top-6 mb-2 inline-flex max-w-[168px] items-center justify-center xl:mb-3"
               >
                 <Image src={logoImg} alt="Isomorphic" className="" />
 
@@ -117,8 +117,8 @@ export default function AuthWrapperOne({
             {children}
           </div>
         </div>
-        <div className="hidden w-7/12 items-center justify-center rounded-[20px] bg-white px-6 lg:flex 2xl:px-16 dark:bg-gray-100/40">
-          <div className="pb- pt- text-center xl:pt- 2xl:block 2xl:w-[1063px]">
+        <div className="hidden w-7/12 items-center justify-center rounded-[20px] bg-white px-6 dark:bg-gray-100/40 lg:flex 2xl:px-16">
+          <div className="pb- pt- xl:pt- text-center 2xl:block 2xl:w-[1063px]">
             {/* <div className="mx-auto mb-10 max-w-sm pt-2 2xl:max-w-lg">
               <Title
                 as="h2"

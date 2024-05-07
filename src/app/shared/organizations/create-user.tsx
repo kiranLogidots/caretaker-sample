@@ -150,16 +150,17 @@ export default function CreateUser() {
               <Input
                 label="Organization Name"
                 placeholder="Enter organization's name"
+                className="col-span-full"
                 {...register('name')}
                 error={errors.name?.message}
               />
-
+              {/*
               <Input
                 label="Primary Contact Name"
                 placeholder="Enter primary contact name"
                 {...register('primary_contact_name')}
                 error={errors.primary_contact_name?.message}
-              />
+              /> */}
 
               <Input
                 label="Organization Address"
@@ -167,6 +168,14 @@ export default function CreateUser() {
                 className="col-span-full"
                 {...register('address')}
                 error={errors.address?.message}
+              />
+
+              <Input
+                label="Primary Contact Name"
+                placeholder="Enter primary contact name"
+                className="col-span-full"
+                {...register('primary_contact_name')}
+                error={errors.primary_contact_name?.message}
               />
 
               <Input
@@ -181,7 +190,7 @@ export default function CreateUser() {
                 placeholder="Enter  primary contact phone number"
                 labelClassName="font-medium text-gray-900 dark:text-white"
                 {...register('primary_contact_phone')}
-                defaultValue="+91"
+                defaultValue="+1"
                 error={errors.primary_contact_phone?.message}
               />
 

@@ -112,7 +112,7 @@ export default function FilterElement({
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           <ModalButton
-            label="Add New User"
+            label="Add New Organization"
             view={<CreateUser />}
             customSize="600px"
             className="mt-0"
