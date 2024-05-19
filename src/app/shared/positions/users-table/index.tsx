@@ -5,7 +5,7 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/positions/users-table/columns';
-import { deletePositionCat, listPositionCat, listPositions } from '@/service/page';
+import { deletePositionCat, deletePositions, listPositionCat, listPositions } from '@/service/page';
 import {
   CreatePositionCatResponse,
   HKSEvents,
@@ -39,7 +39,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const onDeleteItem = useCallback(
     async (id: number) => {
       try {
-        await deletePositionCat(id.toString());
+        await deletePositions(id.toString());
 
         const updatedTableData = tableData.filter((event) => event.id !== id);
         setTableData(updatedTableData);

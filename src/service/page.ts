@@ -200,6 +200,20 @@ export const deletePositionCat = async (positionCatId: string) => {
     // throw new Error('Failed to delete event');
   }
 };
+export const deletePositions = async (positionCatId: string) => {
+  try {
+    const response = await axios.delete(`${apiBaseUrl}/v1/positions/${positionCatId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Delete event failed:', error);
+    // throw new Error('Failed to delete event');
+  }
+};
 
 export const createPositions = async (details: CreatePositions) => {
   let response = await axios.post(`${apiBaseUrl}/v1/positions`, details, {
