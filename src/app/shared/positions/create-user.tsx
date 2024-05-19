@@ -1,22 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PiXBold } from 'react-icons/pi';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { createPositionCat } from '@/service/page';
+import {  createPositions, listPositionCat } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
-import { CreatePositionCatResponse } from '@/types';
-import {
-  EventHKSFormInput,
-  eventHKSFormSchema,
-} from '@/utils/validators/create-event-hks.schema';
+import { CreatePositionCatResponse, ListPositionCategoryInterface } from '@/types';
 import { signOut } from 'next-auth/react';
+import {
+  PositionsFormInput,
+  positionsFormSchema,
+} from '@/utils/validators/create-position.schema';
+import Select from 'react-select';
 
 export default function CreateUser() {
   const { getValues, setValue, control } = useForm();
@@ -24,17 +25,39 @@ export default function CreateUser() {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [accountTypes, setAccountTypes] = useState< { value: number; label: string }[]>([]);
 
-  const onSubmit: SubmitHandler<EventHKSFormInput> = async (data) => {
+  useEffect(() => {
+    const fetchAccountTypes = async () => {
+      try {
+        const result = (await listPositionCat()) as ListPositionCategoryInterface[];
+        console.log('Account types:', result);
+        setAccountTypes(
+          result.map((type) => ({
+            value: type.id,
+            label: type.name,
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching account types:', error);
+      }
+    };
+
+    fetchAccountTypes();
+  }, []);
+
+  const onSubmit: SubmitHandler<PositionsFormInput> = async (data) => {
     const formattedData = {
       name: data.name,
       description: data.description,
+      position_category_id: Number(data.position_category_id),
+      hourly_rate: data.hourly_rate,
     };
 
     setLoading(true);
 
     try {
-      const response = await createPositionCat(formattedData);
+      const response = await createPositions(formattedData);
       const resultData = response.data as CreatePositionCatResponse[];
 
       console.log('API Response:', resultData);
@@ -45,7 +68,7 @@ export default function CreateUser() {
           description: '',
         });
         closeModal();
-        toast.success('Position Category created successfully', {
+        toast.success('Positions created successfully', {
           position: 'top-right',
         });
       }
@@ -68,10 +91,10 @@ export default function CreateUser() {
   return (
     <>
       <Toaster position="top-right" />
-      <Form<EventHKSFormInput>
+      <Form<PositionsFormInput>
         resetValues={reset}
         onSubmit={onSubmit}
-        validationSchema={eventHKSFormSchema}
+        validationSchema={positionsFormSchema}
         className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
@@ -99,6 +122,41 @@ export default function CreateUser() {
                 {...register('description')}
                 error={errors.description?.message}
               />
+              <Controller
+                name="position_category_id"
+                control={control}
+                render={({ field }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={field.name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                    Select Position Category
+                    </label>
+                    <Select
+                      options={accountTypes}
+                      value={accountTypes.find(
+                        (at) => at.value === field.value
+                      )}
+                      onChange={(option) =>
+                        field.onChange(option ? option.value : null)
+                      }
+                      name={field.name}
+                      isClearable
+                    />
+                  </div>
+                )}
+              />
+              <Input
+                label="Hourly Rate"
+                placeholder="Enter hourly rate"
+                className="col-span-full"
+                // {...register('hourly_rate')}
+                {...register('hourly_rate', {
+                  setValueAs: (value) => parseFloat(value), // Convert the input value to a number
+                })}
+                error={errors.hourly_rate?.message}
+              />
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">
                   {errorMessage}
@@ -117,7 +175,7 @@ export default function CreateUser() {
                   isLoading={isLoading}
                   className="w-full @xl:w-auto"
                 >
-                  Create Position Category
+                  Create Positions
                 </Button>
               </div>
             </>

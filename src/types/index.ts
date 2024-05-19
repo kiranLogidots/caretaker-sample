@@ -51,6 +51,14 @@ export interface ListAccountInterface {
   updated_at: string;
   deleted_at: string | null;
 }
+export interface ListPositionsInterface {
+  id: number;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
 
 export interface ListData {
   id: number;
@@ -104,6 +112,12 @@ export interface CreateOrg {
 export interface CreatePositionCat {
  name:string;
  description:string;
+}
+export interface CreatePositions {
+ name:string;
+ description:string;
+ position_category_id:number;
+ hourly_rate:number;
 }
 export interface CreatePositionCatResponse {
  name:string;

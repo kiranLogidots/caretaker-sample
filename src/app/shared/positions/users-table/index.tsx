@@ -5,11 +5,12 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/positions/users-table/columns';
-import { deletePositionCat, listPositionCat } from '@/service/page';
+import { deletePositionCat, listPositionCat, listPositions } from '@/service/page';
 import {
   CreatePositionCatResponse,
   HKSEvents,
   ListPositionCategoryInterface,
+  ListPositionsInterface,
 } from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(
@@ -42,14 +43,14 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
 
         const updatedTableData = tableData.filter((event) => event.id !== id);
         setTableData(updatedTableData);
-        toast.success('Position Category deleted succesfully', {
+        toast.success('Position deleted succesfully', {
           position: 'top-right',
         });
       } catch (error) {
-        toast.error('Failed to delete the position category', {
+        toast.error('Failed to delete the position', {
           position: 'top-right',
         });
-        console.error('Delete pos-cat failed:', error);
+        console.error('Delete position failed:', error);
       }
     },
     [tableData]
@@ -105,9 +106,9 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     const fetchData = async () => {
       try {
         const resultData =
-          (await listPositionCat()) as ListPositionCategoryInterface[];
+          (await listPositions()) as ListPositionsInterface[];
         console.log('result data', resultData); // Fetch data from the listHKS API
-        // setTableData(resultData); 
+        setTableData(resultData); 
         // setTotalItems(resultData.pagination.totalCount);
       } catch (err: any) {
         console.log('Error response for listing users', err.response);

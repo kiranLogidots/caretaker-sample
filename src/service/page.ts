@@ -3,6 +3,7 @@ import {
   AssignCollectionPoints,
   CreateOrg,
   CreatePositionCat,
+  CreatePositions,
   CreateUser,
   SaveImageUpload,
 } from '@/types';
@@ -200,7 +201,7 @@ export const deletePositionCat = async (positionCatId: string) => {
   }
 };
 
-export const createPositions = async (details: CreateOrg) => {
+export const createPositions = async (details: CreatePositions) => {
   let response = await axios.post(`${apiBaseUrl}/v1/positions`, details, {
     headers: {
       'Content-Type': 'application/json',

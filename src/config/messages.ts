@@ -13,7 +13,8 @@ export const messages = {
   nameIsRequired: 'Name is required',
   descIsRequired: 'Description is required',
   expenseIsRequired: 'Expense is required',
-
+  positionCatIsRequired:'Select a position category',
+  hourlyRateIsRequired: 'Hourly rate is required',
   noOfParticipantsIsRequired: 'Please enter number of participants',
   organizedByIsRequired: 'Please enter who is organising this event',
   invalidOrganizer:'The organizer you entered is an invalid one',
