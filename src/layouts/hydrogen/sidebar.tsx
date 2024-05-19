@@ -12,7 +12,7 @@ import { menuItems } from '@/layouts/hydrogen/menu-items';
 import Logo from '@/components/logo';
 import StatusBadge from '@/components/get-status-badge';
 import Image from 'next/image';
-import GWLogo from "../../../public/seek.png";
+import GWLogo from "../../../public/caretaker-logo-vector.png";
 
 
 export default function Sidebar({ className }: { className?: string }) {
