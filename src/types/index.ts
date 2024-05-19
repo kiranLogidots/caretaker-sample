@@ -26,6 +26,32 @@ export interface ListCollectionInterface {
   data: ListData[];
   pagination: Pagination[];
 }
+
+export interface ListIndustryInterface {
+  id: number;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+export interface ListPositionCategoryInterface {
+  id: number;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+export interface ListAccountInterface {
+  id: number;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
 export interface ListData {
   id: number;
   name: string;
@@ -48,7 +74,7 @@ export interface DriversListData {
   label: string;
 }
 export interface AdminLogin {
-  PhoneOrEmail: string;
+  email: string;
   password: string;
 }
 
@@ -61,11 +87,28 @@ export interface CreateUser {
   confirm_password: string;
 }
 export interface CreateOrg {
-  name: string;
-  address: string;
-  primary_contact_name: string;
-  primary_contact_email: string;
-  primary_contact_phone: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  industry_type_id: number;
+  account_type_id: number;
+  company_name: string;
+  company_address_line_one: string;
+  company_address_line_two: string;
+  country: string;
+  postal_code: string;
+  work_phone: string;
+  work_email: string;
+}
+export interface CreatePositionCat {
+ name:string;
+ description:string;
+}
+export interface CreatePositionCatResponse {
+ name:string;
+ description:string;
+ id:number;
 }
 
 export interface AssignCollectionPoints {
@@ -192,34 +235,40 @@ export interface CreateUserResponse {
   statusCode: number;
   data: {
     name: string;
-    address:string;
-    id:number
-    primary_contact_name:string;
-    primary_contact_email:string;
-    primary_contact_phone:string;
+    address: string;
+    id: number;
+    primary_contact_name: string;
+    primary_contact_email: string;
+    primary_contact_phone: string;
   };
 }
 
-export interface CreateEventResponse {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: EventResponseData;
+export interface CreatePositionResponse {
+  id: number;
+  name: string;
+  description: string;
+  hourly_rate: string;
+  position_category_id: number;
+  positionCategory: {
+    id: number;
+    name: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string;
+  };
+}
+export interface CreatePositionCatResponse {
+  id: number;
+  name: string;
+  description: string;
+  
+
 }
 export interface EventResponseData {
   id: any;
   name: string;
-  expense: number;
-  date: string;
-  no_of_participants: number;
   description: string;
-  other_description: string;
-  organised_by: string;
-  images: [
-    {
-      imgUrl: string;
-    },
-  ];
 }
 
 export interface HKSEvents {
@@ -230,16 +279,14 @@ export interface HKSEvents {
 }
 
 export interface HKSEventsResponse {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: HKSEvents[];
-  pagination: {
-    totalCount: number;
-    currentPage: number;
-    perPage: number;
-    totalPage: number;
-  };
+  id: number;
+  name: string;
+  description: string;
+}
+export interface HKSEventsResponse {
+  id: number;
+  name: string;
+  description: string;
 }
 export interface JobsListResponse {
   status: boolean;

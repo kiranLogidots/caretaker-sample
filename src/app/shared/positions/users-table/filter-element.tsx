@@ -9,7 +9,7 @@ import { STATUSES } from '@/data/users-data';
 import { rolesList } from '@/data/roles-permissions';
 import { Input } from '@/components/ui/input';
 import ModalButton from '@/app/shared/modal-button';
-import CreateUser from '@/app/shared/events-hks/create-user';
+import CreateUser from '@/app/shared/positions/create-user';
 import PrintButton from '../../print-button';
 import ExportButton from '../../export-button';
 import DownloadButton from '../../download-button';
@@ -78,7 +78,7 @@ export default function FilterElement({
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
         <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
-          All Events
+          All Position Categories
         </Title>
 
         <StatusField
@@ -138,20 +138,20 @@ export default function FilterElement({
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           <ModalButton
-            label="Add New Event"
+            label="Add New Position Category"
             view={<CreateUser />}
             customSize="600px"
             className="mt-0"
           />
         </div>
-        <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
+        {/* <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           <DownloadButton
             label="Download Report"
             onClickFunction={handleDownload}
             customSize="600px"
             className="mt-0"
           />
-        </div>
+        </div> */}
       </div>
     </>
   );

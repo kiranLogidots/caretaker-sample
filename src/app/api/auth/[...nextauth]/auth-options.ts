@@ -52,8 +52,8 @@ export const authOptions: NextAuthOptions = {
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid
         const user = {
-          email: 'kim@seekhealth.com',
-          password: 'Password@123',
+          email: 'admin@caretaker.com',
+          password: 'password',
         };
 
         if (

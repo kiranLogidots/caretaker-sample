@@ -9,10 +9,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ActionIcon } from '@/components/ui/action-icon';
 import EyeIcon from '@/components/icons/eye';
 import PencilIcon from '@/components/icons/pencil';
-import TrashIcon from '@/components/icons/trash';
 import AvatarCard from '@/components/ui/avatar-card';
 import DateCell from '@/components/ui/date-cell';
 import DeletePopover from '@/app/shared/delete-popover';
+import { HKSEvents } from '@/types';
+import Link from 'next/link';
+import { routes } from '@/config/routes';
 
 function getStatusBadge(status: User['status']) {
   switch (status) {
@@ -53,7 +55,7 @@ type Columns = {
   sortConfig?: any;
   handleSelectAll: any;
   checkedItems: string[];
-  onDeleteItem: (id: string) => void;
+  onDeleteItem: (id: number) => void;
   onHeaderCellClick: (value: string) => void;
   onChecked?: (id: string) => void;
 };
@@ -93,73 +95,60 @@ export const getColumns = ({
   //     </div>
   //   ),
   // },
-
   {
-    title: (
-      <HeaderCell
-        title="Company Name"
-        // sortable
-        // ascending={
-        //   sortConfig?.direction === 'asc' && sortConfig?.key === 'role'
-        // }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('address'),
-    dataIndex: 'company_name',
-    key: 'company_name',
+    title: <HeaderCell title="Name" />,
+    dataIndex: 'name',
+    key: 'name',
     width: 250,
-    render: (company_name: string) => company_name,
+    // hidden: 'name',
+    // render: (_: string, user: User) => (
+    //   <AvatarCard
+    //     src={user.avatar}
+    //     name={user.fullName}
+    //     description={user.email}
+    //   />
+    // ),
+  },
+  {
+    title: <HeaderCell title="Description" />,
+    onHeaderCell: () => onHeaderCellClick('description'),
+    dataIndex: 'description',
+    key: 'description',
+    width: 250,
+    render: (description: string) => description,
   },
 
   // {
-  //   title: <HeaderCell title="Name" />,
-  //   dataIndex: 'name',
-  //   key: 'first_name',
-  //   width: 250,
-  //   hidden: 'first_name',
-  //   // render: (_: string, user: User) => (
-  //   //   <AvatarCard
-  //   //     src={user.avatar}
-  //   //     name={user.fullName}
-  //   //     description={user.email}
-  //   //   />
-  //   // ),
+  //   title: (
+  //     <HeaderCell
+  //       title="Date"
+  //       sortable
+  //       ascending={
+  //         sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
+  //       }
+  //     />
+  //   ),
+  //   onHeaderCell: () => onHeaderCellClick('date'),
+  //   dataIndex: 'date',
+  //   key: 'date',
+  //   width: 200,
+  //   render: (value: Date) => <DateCell date={value} />,
   // },
   // {
-  //   title: <HeaderCell title="Email" />,
-  //   onHeaderCell: () => onHeaderCellClick('email'),
-  //   dataIndex: 'email',
-  //   key: 'email',
+  //   title: <HeaderCell title="No of Participants" />,
+  //   onHeaderCell: () => onHeaderCellClick('expense'),
+  //   dataIndex: 'no_of_participants',
+  //   key: 'no_of_participants',
   //   width: 250,
-  //   render: (email: string) => email,
+  //   render: (no_of_participants: number) => no_of_participants,
   // },
-
-  {
-    title: <HeaderCell title="Phone" />,
-    onHeaderCell: () => onHeaderCellClick('phone'),
-    dataIndex: 'work_phone',
-    key: 'work_phone',
-    width: 250,
-    render: (work_phone: string) => work_phone,
-  },
- 
-
-  {
-    title: (
-      <HeaderCell
-        title="Created"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('created_at'),
-    dataIndex: 'created_at',
-    key: 'created_at',
-    width: 200,
-    render: (value: Date) => <DateCell date={value} />,
-  },
+  // {
+  //   title: <HeaderCell title="Organised By" />,
+  //   dataIndex: 'organised_by',
+  //   key: 'organised_by',
+  //   width: 250,
+  //   hidden: 'organised_by',
+  // },
   // {
   //   title: <HeaderCell title="Permissions" />,
   //   dataIndex: 'permissions',
@@ -192,9 +181,9 @@ export const getColumns = ({
     dataIndex: 'action',
     key: 'action',
     width: 140,
-    render: (_: string, user: User) => (
+    render: (_: string, event: HKSEvents) => (
       <div className="justify-en flex items-center gap-3 pe-3">
-        <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
+        {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">
           <ActionIcon
             as="span"
             size="sm"
@@ -203,33 +192,24 @@ export const getColumns = ({
           >
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
-        </Tooltip>
-        <Tooltip size="sm" content={'View User'} placement="top" color="invert">
-          <ActionIcon
-            as="span"
-            size="sm"
-            variant="outline"
-            className="hover:!border-gray-900 hover:text-gray-700"
-          >
-            <EyeIcon className="h-4 w-4" />
-          </ActionIcon>
-        </Tooltip>
-
-        {/* <Tooltip size="sm" content={'View User'} placement="top" color="invert">
-          <ActionIcon
-            as="span"
-            size="sm"
-            variant="outline"
-            className="hover:!border-gray-900 hover:text-gray-700"
-          >
-            <EyeIcon className="h-4 w-4" />
-          </ActionIcon>
         </Tooltip> */}
-        {/* <DeletePopover
-          title={`Delete this user`}
-          description={`Are you sure you want to delete this #${user.id} user?`}
-          onDelete={() => onDeleteItem(user.id)}
-        /> */}
+        <Tooltip size="sm" content={'View Position Category'} placement="top" color="invert">
+          <Link href={routes.eventsHKS.eventDetails(event.id)}>
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            className="hover:!border-gray-900 hover:text-gray-700"
+          >
+            <EyeIcon className="h-4 w-4" />
+          </ActionIcon>
+          </Link>
+        </Tooltip>
+        <DeletePopover
+          title={`Delete`}
+          description={`Are you sure you want to delete this position category ?`}
+          onDelete={() => onDeleteItem(event.id)}
+        />
       </div>
     ),
   },

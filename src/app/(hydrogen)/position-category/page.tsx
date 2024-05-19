@@ -1,9 +1,9 @@
 import { usersData } from '@/data/users-data';
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
-import RolesGrid from '@/app/shared/events-hks/roles-grid';
-import UsersTable from '@/app/shared/events-hks/users-table';
-import CreateRole from '@/app/shared/events-hks/create-role';
+import RolesGrid from '@/app/shared/position-category/roles-grid';
+import UsersTable from '@/app/shared/position-category/users-table';
+import CreateRole from '@/app/shared/position-category/create-role';
 
 const pageHeader = {
   title: 'Position Categories',

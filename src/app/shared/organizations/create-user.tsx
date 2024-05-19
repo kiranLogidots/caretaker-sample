@@ -13,74 +13,83 @@ import {
 } from '@/utils/validators/create-user.schema';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import {
-  assignCollectionPoints,
-  createOrg,
-  listCollection,
-} from '@/service/page';
+import { createOrg, listAccountTypes, listIndustryTypes } from '@/service/page';
 import Select from 'react-select';
 import toast, { Toaster } from 'react-hot-toast';
 import {
-  CollectionPointOption,
   CreateUserResponse,
-  ListCollectionInterface,
+  ListAccountInterface,
+  ListIndustryInterface,
 } from '@/types';
-import axios from 'axios';
-import { signOut } from 'next-auth/react';
 
 export default function CreateUser() {
   const { closeModal } = useModal();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [collectionPointsOptions, setCollectionPointsOptions] = useState<
-    CollectionPointOption[]
-  >([]);
+  const [accountTypes, setAccountTypes] = useState< { value: number; label: string }[]>([]);
+  const { register, control, watch, setValue, handleSubmit, formState: { errors },} = useForm();
+  const [industryTypes, setIndustryTypes] = useState< { value: number; label: string }[]>([]);
 
-  const {
-    register,
-    control,
-    watch,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  useEffect(() => {
+    const fetchIndustryTypes = async () => {
+      try {
+        const industryTypesData =
+          (await listIndustryTypes()) as ListIndustryInterface[];
+        setIndustryTypes(
+          industryTypesData.map((type) => ({
+            value: type.id,
+            label: type.name,
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching industry types:', error);
+      }
+    };
 
-  // const selectedCollectionPoints = watch('collectionPoints', []);
-  // // Convert the CollectionPointOption objects to strings.
-  // //  const collectionPointStrings = selectedCollectionPoints.map(
-  // //   (option: { label: any }) => option.label
-  // // );
-  // console.log('CP SELECTED ARE ', selectedCollectionPoints);
+    fetchIndustryTypes();
+  }, []);
 
-  // useEffect(() => {
-  //   const fetchCollectionPoints = async () => {
-  //     try {
-  //       const result = (await listCollection()) as ListCollectionInterface;
-  //       console.log('Result of CP API', result);
-  //       setCollectionPointsOptions(
-  //         result.data.map((point) => ({
-  //           value: point.id,
-  //           label: point.name,
-  //         }))
-  //       );
-  //     } catch (error) {
-  //       console.error('Error fetching collection points:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchAccountTypes = async () => {
+      try {
+        const result = (await listAccountTypes()) as ListAccountInterface[];
+        console.log('Account types:', result);
+        setAccountTypes(
+          result.map((type) => ({
+            value: type.id,
+            label: type.name,
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching account types:', error);
+      }
+    };
 
-  //   fetchCollectionPoints();
-  // }, []);
+    fetchAccountTypes();
+  }, []);
 
   const onSubmit: SubmitHandler<CreateUserInput> = async (data) => {
     console.log('The create user button is clicked', data);
 
     const formattedData = {
-      name: data.name,
-      address: data.address,
-      primary_contact_name: data.primary_contact_name,
-      primary_contact_email: data.primary_contact_email,
-      primary_contact_phone: data.primary_contact_phone,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      password: data.password,
+      industry_type_id: Number(data.industry_type_id),
+      account_type_id: Number(data.account_type_id),
+      // industry_type_id: parseInt(data.industry_type_id)?.value,
+      // account_type_id: parseInt(data.account_type_id)?.value,
+      // industry_type_id: data.industry_type_id?.value,
+      // account_type_id: data.account_type_id?.value,
+      company_name: data.company_name,
+      company_address_line_one: data.company_address_line_one,
+      company_address_line_two: data.company_address_line_two,
+      country: data.country,
+      postal_code: data.postal_code,
+      work_phone: data.work_phone,
+      work_email: data.work_email,
     };
 
     setLoading(true);
@@ -90,23 +99,27 @@ export default function CreateUser() {
       const resultData = response.data as CreateUserResponse;
       console.log('API Response of create Org:', resultData);
 
-      if (resultData.status == true) {
+      if (resultData.message = "Organization and Organization Admin created successfully") {
         setReset({
-          fullName: '',
+          first_name: '',
+          last_name: '',
           email: '',
-          phone: '',
-          age: '',
-          address: '',
-          role: '',
-          permissions: '',
-          status: '',
-          collectionPoints: '',
+          password: '',
+          industry_type_id: '',
+          account_type_id: '',
+          company_name: '',
+          company_address_line_one: '',
+          company_address_line_two: '',
+          country: '',
+          postal_code: '',
+          work_phone: '',
+          work_email: '',
         });
         closeModal();
         toast.success('User created successfully', {
           position: 'top-right',
         });
-        location.reload();
+        // location.reload();
       }
     } catch (err: any) {
       console.log('Error message ', err.message);
@@ -148,93 +161,131 @@ export default function CreateUser() {
                 </ActionIcon>
               </div>
               <Input
-                label="Organization Name"
-                placeholder="Enter organization's name"
-                className="col-span-full"
-                {...register('name')}
-                error={errors.name?.message}
+                label="First Name"
+                placeholder="Enter first name"
+                {...register('first_name')}
+                error={errors.first_name?.message}
               />
-              {/*
               <Input
-                label="Primary Contact Name"
-                placeholder="Enter primary contact name"
-                {...register('primary_contact_name')}
-                error={errors.primary_contact_name?.message}
-              /> */}
-
+                label="Last Name"
+                placeholder="Enter last name"
+                {...register('last_name')}
+                error={errors.last_name?.message}
+              />
               <Input
-                label="Organization Address"
-                placeholder="Enter organization's Address"
-                className="col-span-full"
-                {...register('address')}
-                error={errors.address?.message}
+                label="Email"
+                placeholder="Enter your email"
+                {...register('email')}
+                error={errors.email?.message}
               />
 
               <Input
-                label="Primary Contact Name"
-                placeholder="Enter primary contact name"
-                className="col-span-full"
-                {...register('primary_contact_name')}
-                error={errors.primary_contact_name?.message}
-              />
-
-              <Input
-                label="Primary Contact Email"
-                placeholder="Enter primary contact email "
-                {...register('primary_contact_email')}
-                error={errors.primary_contact_email?.message}
-              />
-
-              <Input
-                label="Primary Contact Phone"
-                placeholder="Enter  primary contact phone number"
-                labelClassName="font-medium text-gray-900 dark:text-white"
-                {...register('primary_contact_phone')}
-                defaultValue="+1"
-                error={errors.primary_contact_phone?.message}
-              />
-
-              {/* <Controller
-                name="collectionPoints"
-                control={control}
-                render={({ field: { name, onChange, value } }) => (
-                  <div className="col-span-full flex flex-col gap-2">
-                    <label
-                      htmlFor={name}
-                      className=" font-medium text-gray-900 dark:text-white"
-                    >
-                      Collection Points
-                    </label>
-                    <Select
-                      options={collectionPointsOptions}
-                      value={value}
-                      className="col-span-full"
-                      // onChange={onChange}
-                      onChange={(selectedOptions) => {
-                        onChange(selectedOptions);
-                        setValue(name, selectedOptions);
-                      }}
-                      name={name}
-                      isMulti
-                    />
-                  </div>
-                )}
-              />
-
-              <Password
                 label="Password"
                 placeholder="Enter your password"
-                labelClassName="font-medium text-gray-900 dark:text-white"
                 {...register('password')}
                 error={errors.password?.message}
               />
-              <Password
-                label="Confirm Password"
-                placeholder="Enter your password"
+
+              <Input
+                label="Work Email"
+                placeholder="Enter work email"
+                {...register('work_email')}
+                error={errors.work_email?.message}
+              />
+
+              <Input
+                label="Phone"
+                placeholder="Enter work phone number"
                 labelClassName="font-medium text-gray-900 dark:text-white"
-                {...register('confirmPassword')}
-                error={errors.confirmPassword?.message}
-              /> */}
+                {...register('work_phone')}
+                defaultValue="+91"
+                error={errors.work_phone?.message}
+              />
+              
+              <Controller
+              name="account_type_id"
+              control={control}
+              render={({ field }) => (
+                <div className="col-span-full flex flex-col gap-2">
+                  <label
+                    htmlFor={field.name}
+                    className="font-medium text-gray-900 dark:text-white"
+                  >
+                    Account Type
+                  </label>
+                  <Select
+                    options={accountTypes}
+                    value={accountTypes.find(at => at.value === field.value)}
+                    onChange={option => field.onChange(option ? option.value : null)}
+                    name={field.name}
+                    isClearable
+                  />
+                </div>
+              )}
+            />
+            <Controller
+              name="industry_type_id"
+              control={control}
+              render={({ field }) => (
+                <div className="col-span-full flex flex-col gap-2">
+                  <label
+                    htmlFor={field.name}
+                    className="font-medium text-gray-900 dark:text-white"
+                  >
+                    Industry Type
+                  </label>
+                  <Select
+                    options={industryTypes}
+                    value={industryTypes.find(it => it.value === field.value)}
+                    onChange={option => field.onChange(option ? option.value : null)}
+                    name={field.name}
+                    isClearable
+                    // menuPortalTarget={document.body}
+                    // styles={{
+                    //   menuPortal: base => ({ ...base, zIndex: 9999 }),
+                    //   menu: base => ({ ...base, maxHeight: '200px', overflowY: 'auto' }),
+                    // }}
+                  />
+                </div>
+              )}
+            />
+
+              <Input
+                label="Company Name"
+                placeholder="Enter company name"
+                className="col-span-full"
+                {...register('company_name')}
+                error={errors.company_name?.message}
+              />
+              <Input
+                label="Company Address Line One"
+                placeholder="Enter organization's Address"
+                // className="col-span-full"
+                {...register('company_address_line_one')}
+                error={errors.company_address_line_one?.message}
+              />
+              <Input
+                label="Company Address Line Two"
+                placeholder="Enter organization's Address"
+                // className="col-span-full"
+                {...register('company_address_line_two')}
+                error={errors.company_address_line_two?.message}
+              />
+
+              <Input
+                label="Postal Code"
+                placeholder="Enter postal code "
+                {...register('postal_code')}
+                error={errors.postal_code?.message}
+              />
+
+              <Input
+                label="Country"
+                placeholder="Enter your country"
+                {...register('country')}
+                error={errors.country?.message}
+              />
+
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">
                   {errorMessage}

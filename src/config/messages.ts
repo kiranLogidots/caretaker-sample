@@ -11,37 +11,8 @@ export const messages = {
   collectionPointsIsRequired:'CollectionPoints is required',
   passwordsDidNotMatch: "Passwords don't match",
   nameIsRequired: 'Name is required',
+  descIsRequired: 'Description is required',
   expenseIsRequired: 'Expense is required',
-
-  collectionPointIdReq: 'Collection Point ID is required',
-  wardNoReq:'Ward number is required',
-  HKSTeamnameReq:'HKS Team Name Required',
-
-  materialTypeRequired:'Please select a material type',
-  driverIdIsRequired:'Driver id is required',
-  LSGIsRequired: 'Please select LSG',
-  weightRequired:'Enter approximate weight',
-
-  shopVisitedRequired:'Enter number of visited shops',
-  houseVisitedRequired:'Enter number of visited houses',
-
-  shopVacant:'Enter number of vacant shops',
-  houseVacant:'Enter number of vacant houses',
-
-  shopPaid:'Enter number of shops which had made the payment',
-  housePaid:'Enter number of houses which had made the payment',
-
-  houseDenied:'Enter no of non-corporated houses',
-  shopsDenied:'Enter no of non-corporated shops',
-
-  shopsNoMoney:'Enter no of shops which did not made payment',
-  houseNoMoney:'Enter no of houses which did not made payment',
-
-  houeNoInterest:'Enter no of houses which do not have interest',
-  shopsNoInterest:'Enter no of shops which do not have interest',
-
-  collectionAmountIsReq:'Enter the collection amount',
-  hksIncentiveReq:'Enter the HKS Incentive amount',
 
   noOfParticipantsIsRequired: 'Please enter number of participants',
   organizedByIsRequired: 'Please enter who is organising this event',
@@ -68,6 +39,8 @@ export const messages = {
   countryIsRequired: 'Country is required',
   addressLineOneRequired: 'Address line 1 is required',
   zipCodeRequired: 'ZIP code is required',
+  IndustryTypeIdRequired: 'Select your type of industry',
+  AccountTypeIdRequired: 'Select your type of account',
   cardHolderNameIsRequired: 'Card holder name is required',
   cardNumberIsRequired: 'Card Number is required',
   cardExpireIsRequired: 'Expire Date is required',
@@ -75,6 +48,8 @@ export const messages = {
   catNameIsRequired: 'Category name is required',
   slugIsRequired: 'Slug is required',
   addressIsRequired: 'Address is required',
+  companyIsRequired: 'Company is required',
+  companyaddressIsRequired: 'Company Address is required',
   vehicleNoIsRequired: 'Vehicle number is required',
   ageIsRequired:'Age is required',
   createDateIsRequired: 'Create Date is required',
@@ -87,6 +62,8 @@ export const messages = {
   itemQtyIsRequired: 'Item Quantity is required',
   itemPriceIsRequired: 'Item Price is required',
   fullNameIsRequired: 'Full name is required',
+  firstNameIsRequired: 'First name is required',
+  lastNameIsRequired: 'Last name is required',
   propertyTypeIsRequired: 'Property type is required',
   placeTypeIsRequired: 'Place type is required',
   amenitiesAreRequired: 'Amenities are required',

@@ -2,43 +2,38 @@ import { z } from 'zod';
 import { messages } from '@/config/messages';
 import { validateEmail } from '@/utils/validators/common-rules';
 
-// form zod validation schema
 export const createUserSchema = z.object({
-  name: z.string().min(1, { message: messages.fullNameIsRequired }),
-  primary_contact_email: validateEmail,
-  address: z.string().min(1, { message: messages.addressIsRequired }),
-  primary_contact_name: z.string().min(1, { message: messages.addressIsRequired }),
-  primary_contact_phone: z.string().min(1, { message: messages.phoneNumberIsRequired }),
-  // password: z
-  //   .string()
-  //   .min(6, { message: messages.passwordLengthMin })
-  //   .max(32, { message: messages.passwordLengthMax })
-  //   .refine((data) => /[A-Z]/.test(data), {
-  //     message: messages.passwordOneUppercase,
-  //   })
-  //   .refine((data) => /[a-z]/.test(data), {
-  //     message: messages.passwordOneLowercase,
-  //   })
-  //   .refine((data) => /\d/.test(data), { message: messages.passwordOneNumeric })
-  //   .refine((data) => data.length > 0, { message: messages.passwordRequired }),
-  // confirmPassword: z.string(),
-  // collectionPoints: z.array(
-  //   z.object({
-  //     label: z.string(),
-  //     value: z.number(),
-  //   })
-  // ),
-  // confirmPassword: z
-  // .string()
-  // .refine((data) => data === data.password, { message: messages.passwordsDidNotMatch
-  // }),
-  // permissions: z.string().min(1, { message: messages.permissionIsRequired }),
-  // status: z.string().min(1, { message: messages.statusIsRequired }),
+  first_name: z.string().min(1, { message: messages.firstNameIsRequired }),
+  last_name: z.string().min(1, { message: messages.lastNameIsRequired }),
+  email: validateEmail,
+  work_email: validateEmail,
+  company_name: z.string().min(1, { message: messages.companyIsRequired }),
+  company_address_line_one: z
+    .string()
+    .min(1, { message: messages.companyaddressIsRequired }),
+  company_address_line_two: z
+    .string(),
+  country: z.string().min(1, { message: messages.countryIsRequired }),
+  postal_code: z.string().min(1, { message: messages.zipCodeRequired }),
+  work_phone: z.string(),
+  industry_type_id: z
+    .number()
+    .min(1, { message: messages.IndustryTypeIdRequired }),
+  account_type_id: z
+    .number()
+    .min(1, { message: messages.AccountTypeIdRequired }),
+  password: z
+    .string()
+    .min(6, { message: messages.passwordLengthMin })
+    .max(32, { message: messages.passwordLengthMax })
+    .refine((data) => /[A-Z]/.test(data), {
+      message: messages.passwordOneUppercase,
+    })
+    .refine((data) => /[a-z]/.test(data), {
+      message: messages.passwordOneLowercase,
+    })
+    .refine((data) => /\d/.test(data), { message: messages.passwordOneNumeric })
+    .refine((data) => data.length > 0, { message: messages.passwordRequired }),
 });
-// Add a cross-field validation for confirm_password
-// createUserSchema.refine((data) => data.password === data.confirmPassword, {
-//   message: messages.passwordsDidNotMatch,
-// });
 
-// generate form types from zod validation schema
 export type CreateUserInput = z.infer<typeof createUserSchema>;

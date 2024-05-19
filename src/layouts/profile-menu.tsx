@@ -38,7 +38,7 @@ function DropdownMenu() {
           <Title as="h6" className="font-semibold"> Super Admin
             {/* Albert Flores */}
           </Title>
-          {/* <Text className="text-gray-600">kim@seekhealth.com</Text> */}
+          {/* <Text className="text-gray-600">admin@caretaker.com</Text> */}
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">

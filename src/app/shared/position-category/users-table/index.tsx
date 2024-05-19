@@ -1,17 +1,18 @@
 'use client';
-import { Text } from '@/components/ui/text';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
-import { Button } from '@/components/ui/button';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/events-hks/users-table/columns';
-import { deleteEvent, listEventsHKS } from '@/service/page';
-import { HKSEvents, HKSEventsResponse } from '@/types';
+import { getColumns } from '@/app/shared/position-category/users-table/columns';
+import { deletePositionCat, listPositionCat } from '@/service/page';
+import {
+  CreatePositionCatResponse,
+  ListPositionCategoryInterface,
+} from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(
-  () => import('@/app/shared/events-hks/users-table/filter-element'),
+  () => import('@/app/shared/position-category/users-table/filter-element'),
   { ssr: false }
 );
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
@@ -25,7 +26,7 @@ const filterState = {
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
-  const [tableData, setTableData] = useState<HKSEvents[]>([]);
+  const [tableData, setTableData] = useState<CreatePositionCatResponse[]>([]);
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
@@ -36,23 +37,19 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const onDeleteItem = useCallback(
     async (id: number) => {
       try {
-        await deleteEvent(id.toString());
+        await deletePositionCat(id.toString());
 
-        // Update the table data after successful deletion
         const updatedTableData = tableData.filter((event) => event.id !== id);
         setTableData(updatedTableData);
-        // toast.success(<Text>Event deleted succesfully</Text>);
-        toast.success('Event deleted succesfully', {
+        toast.success('Position Category deleted succesfully', {
           position: 'top-right',
         });
       } catch (error) {
-        toast.error('Failed to delete the event', {
+        toast.error('Failed to delete the position category', {
           position: 'top-right',
         });
-        console.error('Delete event failed:', error);
+        console.error('Delete pos-cat failed:', error);
       }
-      // handleDelete(id);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
     [tableData]
   );
@@ -89,7 +86,6 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         onChecked: handleRowSelect,
         handleSelectAll,
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       selectedRowKeys,
       onHeaderCellClick,
@@ -107,10 +103,15 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = (await listEventsHKS(currentPage, pageSize)) as HKSEventsResponse;
+        const resultData =
+          (await listPositionCat()) as ListPositionCategoryInterface[];
         console.log('result data', resultData); // Fetch data from the listHKS API
-        setTableData(resultData.data); // Update the table data state with the fetched data
-        setTotalItems(resultData.pagination.totalCount);
+        const convertedData = resultData.map(item => ({
+          ...item,
+          description: item.description || '', // Convert null to an empty string
+        }));
+        setTableData(convertedData); 
+        // setTotalItems(resultData.pagination.totalCount);
       } catch (err: any) {
         console.log('Error response for listing users', err.response);
       }
@@ -121,7 +122,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   function handlePaginate(pageNumber: number) {
     setCurrentPage(pageNumber);
   }
-  
+
   return (
     <div className="mt-14">
       <FilterElement

@@ -98,9 +98,9 @@ export const getColumns = ({
   {
     title: <HeaderCell title="Name" />,
     dataIndex: 'name',
-    key: 'fullName',
+    key: 'name',
     width: 250,
-    hidden: 'fullName',
+    hidden: 'name',
     // render: (_: string, user: User) => (
     //   <AvatarCard
     //     src={user.avatar}
@@ -110,45 +110,45 @@ export const getColumns = ({
     // ),
   },
   {
-    title: <HeaderCell title="Expense" />,
-    onHeaderCell: () => onHeaderCellClick('expense'),
-    dataIndex: 'expense',
-    key: 'expense',
+    title: <HeaderCell title="Description" />,
+    onHeaderCell: () => onHeaderCellClick('description'),
+    dataIndex: 'description',
+    key: 'description',
     width: 250,
-    render: (expense: number) => expense,
+    render: (description: string) => description,
   },
 
-  {
-    title: (
-      <HeaderCell
-        title="Date"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('date'),
-    dataIndex: 'date',
-    key: 'date',
-    width: 200,
-    render: (value: Date) => <DateCell date={value} />,
-  },
-  {
-    title: <HeaderCell title="No of Participants" />,
-    onHeaderCell: () => onHeaderCellClick('expense'),
-    dataIndex: 'no_of_participants',
-    key: 'no_of_participants',
-    width: 250,
-    render: (no_of_participants: number) => no_of_participants,
-  },
-  {
-    title: <HeaderCell title="Organised By" />,
-    dataIndex: 'organised_by',
-    key: 'organised_by',
-    width: 250,
-    hidden: 'organised_by',
-  },
+  // {
+  //   title: (
+  //     <HeaderCell
+  //       title="Date"
+  //       sortable
+  //       ascending={
+  //         sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
+  //       }
+  //     />
+  //   ),
+  //   onHeaderCell: () => onHeaderCellClick('date'),
+  //   dataIndex: 'date',
+  //   key: 'date',
+  //   width: 200,
+  //   render: (value: Date) => <DateCell date={value} />,
+  // },
+  // {
+  //   title: <HeaderCell title="No of Participants" />,
+  //   onHeaderCell: () => onHeaderCellClick('expense'),
+  //   dataIndex: 'no_of_participants',
+  //   key: 'no_of_participants',
+  //   width: 250,
+  //   render: (no_of_participants: number) => no_of_participants,
+  // },
+  // {
+  //   title: <HeaderCell title="Organised By" />,
+  //   dataIndex: 'organised_by',
+  //   key: 'organised_by',
+  //   width: 250,
+  //   hidden: 'organised_by',
+  // },
   // {
   //   title: <HeaderCell title="Permissions" />,
   //   dataIndex: 'permissions',

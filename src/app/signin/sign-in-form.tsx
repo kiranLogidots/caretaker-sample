@@ -32,15 +32,12 @@ interface SAUser {
 }
 interface SALoginInterface {
   message: string;
-  accessToken: string;
-  // tokens: {
-  //   accessToken: string;
-  //   refreshToken: string;
-  // };
+  access_token: string;
+  refresh_token: string;
   user: SAUser[];
 }
 // const initialValues: LoginSchema = {
-//   email: 'kim@seekhealth.com',
+//   email: 'admin@caretaker.com',
 //   password: 'adminPassword',
 //   rememberMe: true,
 //   // email: 'admin@admin.com',
@@ -56,7 +53,7 @@ export default function SignInForm() {
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     const formattedData = {
-      PhoneOrEmail: data.email,
+      email: data.email,
       password: data.password,
     };
     try {
@@ -64,7 +61,7 @@ export default function SignInForm() {
       const response = await superAdminLogin(formattedData);
       const resultData = response.data as SALoginInterface;
       console.log('RESULT DATA SIGNUP PAGE', resultData);
-      const accessToken = resultData.accessToken;
+      const accessToken = resultData.access_token;
       sessionStorage.setItem('accessToken', accessToken);
       // sessionStorage.setItem('refreshToken', refreshToken);
     } catch (error) {

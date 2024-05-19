@@ -77,6 +77,8 @@ export const routes = {
   projectAssociates:'/project-associates',
   transportCoordinator:'/transport-coordinator',
   events:'/events-hks',
+  positioncategory:'/position-category',
+  position:'/positions',
   wardData:'/ward-data',
   pickupRequest:'/pickup-request',
   invoice: {

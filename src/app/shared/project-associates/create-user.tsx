@@ -15,16 +15,6 @@ import { Title } from '@/components/ui/text';
 // import { Select } from '@/components/ui/select';
 import { Password } from '@/components/ui/password';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import {
-  permissions,
-  roles,
-  statuses,
-} from '@/app/shared/project-associates/utils';
-import {
-  assignCollectionPoints,
-  createHSK,
-  listCollection,
-} from '@/service/page';
 import Select from 'react-select';
 import toast, { Toaster } from 'react-hot-toast';
 import {

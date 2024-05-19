@@ -12,7 +12,7 @@ export const loginSchema = z.object({
   rememberMe: z.boolean().optional(),
 });
 const isCorrectPassword = (password: string) => {
-  const expectedPassword = 'Password@123';
+  const expectedPassword = 'password';
   return password === expectedPassword;
 };
 

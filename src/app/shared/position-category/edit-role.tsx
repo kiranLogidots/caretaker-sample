@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { PiCheckBold, PiXBold } from 'react-icons/pi';
 import { Controller, SubmitHandler } from 'react-hook-form';
-import { permissions, roles } from '@/app/shared/events-hks/utils';
+import { permissions, roles } from '@/app/shared/positions/utils';
 import { AdvancedCheckbox } from '@/components/ui/advanced-checkbox';
 import { CheckboxGroup } from '@/components/ui/checkbox-group';
 import { useModal } from '@/app/shared/modal-views/use-modal';
@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { PERMISSIONS } from '@/data/users-data';
 import { Title } from '@/components/ui/text';
 import { Form } from '@/components/ui/form';
-import cn from '@/utils/class-names';
 import {
   RolePermissionInput,
   rolePermissionSchema,

@@ -257,6 +257,16 @@ export const menuItems = [
     href: routes.rolesPermissions,
     icon: <MdEventAvailable />,
   },
+  {
+    name: 'Position Category',
+    href: routes.positioncategory,
+    icon: <MdEventAvailable />,
+  },
+  {
+    name: 'Positions',
+    href: routes.position,
+    icon: <MdEventAvailable />,
+  },
   // {
   //   name: 'Cluster Admins',
   //   href: routes.clusterAdmins,

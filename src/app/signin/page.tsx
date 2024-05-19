@@ -37,7 +37,7 @@ export default function SignIn() {
             // fill
             priority
             // sizes="(max-width: 768px) 100vw"
-            className=" object-cover"
+            className="object-cover"
           />
         </div>
       }

@@ -1,4 +1,4 @@
-import RoleCard from '@/app/shared/events-hks/role-card';
+import RoleCard from '@/app/shared/position-category/role-card';
 import { rolesList } from '@/data/roles-permissions';
 import cn from '@/utils/class-names';
 
