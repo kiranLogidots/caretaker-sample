@@ -4,17 +4,19 @@ import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/positions/users-table/columns';
+import { getColumns } from '@/app/shared/branches/users-table/columns';
 import { deletePositionCat, deletePositions, listBranches, listPositionCat, listPositions } from '@/service/page';
 import {
+  Branch,
   CreatePositionCatResponse,
   HKSEvents,
+  ListBranchesInterface,
   ListPositionCategoryInterface,
   ListPositionsInterface,
 } from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(
-  () => import('@/app/shared/positions/users-table/filter-element'),
+  () => import('@/app/shared/branches/users-table/filter-element'),
   { ssr: false }
 );
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
@@ -28,7 +30,7 @@ const filterState = {
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
   const [pageSize, setPageSize] = useState(10);
-  const [tableData, setTableData] = useState<ListPositionsInterface[]>([]);
+  const [tableData, setTableData] = useState<Branch[]>([]);
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
@@ -106,7 +108,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     const fetchData = async () => {
       try {
         const resultData =
-          (await listBranches()) as ListPositionsInterface[];
+          (await listBranches()) as Branch[];
         console.log('result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData); 
         // setTotalItems(resultData.pagination.totalCount);
