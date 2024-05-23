@@ -1,5 +1,4 @@
 import { CouponType } from '@/config/enums';
-import { NumberDomain } from 'recharts/types/util/types';
 
 export interface ResponseData {
   id: number;
@@ -110,19 +109,55 @@ export interface CreateOrg {
   work_email: string;
 }
 export interface CreatePositionCat {
- name:string;
- description:string;
+  name: string;
+  description: string;
 }
 export interface CreatePositions {
- name:string;
- description:string;
- position_category_id:number;
- hourly_rate:number;
+  name: string;
+  description: string;
+  position_category_id: number;
+  hourly_rate: number;
+}
+export interface CreateDepartments {
+  description: string;
+  name: string;
+  organization_branch_id: number;
+}
+export interface CreateBranches {
+  branch_admin: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+  };
+  branch_name: string;
+  location_address_line_one: string;
+  location_address_line_two: string;
+  country: string;
+  postal_code: string;
+  organization_id: number;
+}
+export interface CreateStaffs {
+  positions: StaffsPositions[];
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  onboarded_by: string;
+  primary_location: string;
+  organization_id: number;
+  organization_branch_id: number;
+}
+
+export interface StaffsPositions {
+  position_id: number;
+  hourly_rate: number;
+  is_primary: number;
 }
 export interface CreatePositionCatResponse {
- name:string;
- description:string;
- id:number;
+  name: string;
+  description: string;
+  id: number;
 }
 
 export interface AssignCollectionPoints {
@@ -276,8 +311,6 @@ export interface CreatePositionCatResponse {
   id: number;
   name: string;
   description: string;
-  
-
 }
 export interface EventResponseData {
   id: any;

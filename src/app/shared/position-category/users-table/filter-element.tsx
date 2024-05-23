@@ -14,6 +14,7 @@ import PrintButton from '../../print-button';
 import ExportButton from '../../export-button';
 import DownloadButton from '../../download-button';
 import { downloadEventReport } from '@/service/page';
+import DrawerButton from '../../drawer-button';
 
 const statusOptions = [
   {
@@ -43,28 +44,6 @@ const roles = rolesList.map((role) => ({
   label: role.name,
   value: role.name,
 }));
-
-const handleDownload = async () => {
-  console.log('DOWNLOAD BTN CLICKED!');
-  try {
-    const resultData = await downloadEventReport();
-    console.log('report response data', resultData);
-
-    const blob = new Blob([resultData], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
-    });
-    const downloadLink = document.createElement('a');
-    downloadLink.href = window.URL.createObjectURL(blob);
-    downloadLink.download = 'eventReport.xlsx';
-    downloadLink.setAttribute('target', '_blank');
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-    alert('Report downloaded successfully!');
-  } catch (error) {
-    console.error('Error downloading report:', error);
-  }
-};
 
 export default function FilterElement({
   isFiltered,
@@ -137,21 +116,19 @@ export default function FilterElement({
         />
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
-          <ModalButton
+          {/* <ModalButton
             label="Add New Position Category"
             view={<CreateUser />}
             customSize="600px"
             className="mt-0"
+          /> */}
+          <DrawerButton
+            label="Add New Position Category"
+            view={<CreateUser />}
+            customSize="500px"
+            placement="right"
           />
         </div>
-        {/* <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
-          <DownloadButton
-            label="Download Report"
-            onClickFunction={handleDownload}
-            customSize="600px"
-            className="mt-0"
-          />
-        </div> */}
       </div>
     </>
   );

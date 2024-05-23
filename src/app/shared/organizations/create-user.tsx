@@ -21,9 +21,11 @@ import {
   ListAccountInterface,
   ListIndustryInterface,
 } from '@/types';
+import { useDrawer } from '../drawer-views/use-drawer';
+import { signOut } from 'next-auth/react';
 
 export default function CreateUser() {
-  const { closeModal } = useModal();
+  const { closeDrawer } = useDrawer();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -115,23 +117,23 @@ export default function CreateUser() {
           work_phone: '',
           work_email: '',
         });
-        closeModal();
+        closeDrawer();
         toast.success('User created successfully', {
           position: 'top-right',
         });
-        // location.reload();
+        location.reload();
       }
     } catch (err: any) {
       console.log('Error message ', err.message);
-      // if (err.response && err.response?.data?.statusCode === 401) {
-      //   signOut({
-      //     callbackUrl: 'http://localhost:3000',
-      //   });
-      // } else if (err.response.data) {
-      //   setErrorMessage(err.response.data.message);
-      // } else {
-      //   setErrorMessage('Please try again');
-      // }
+      if (err.response && err.response?.data?.statusCode === 401) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else if (err.response.data) {
+        setErrorMessage(err.response.data.message);
+      } else {
+        setErrorMessage('Please try again');
+      }
       setErrorMessage('Please try again');
     } finally {
       // signOut();
@@ -156,7 +158,7 @@ export default function CreateUser() {
                 <Title as="h4" className="font-semibold">
                   Add new organization
                 </Title>
-                <ActionIcon size="sm" variant="text" onClick={closeModal}>
+                <ActionIcon size="sm" variant="text" onClick={closeDrawer}>
                   <PiXBold className="h-auto w-5" />
                 </ActionIcon>
               </div>
@@ -206,7 +208,7 @@ export default function CreateUser() {
               name="account_type_id"
               control={control}
               render={({ field }) => (
-                <div className="col-span-full flex flex-col gap-2">
+                <div className="col-span- flex flex-col gap-2">
                   <label
                     htmlFor={field.name}
                     className="font-medium text-gray-900 dark:text-white"
@@ -227,7 +229,7 @@ export default function CreateUser() {
               name="industry_type_id"
               control={control}
               render={({ field }) => (
-                <div className="col-span-full flex flex-col gap-2">
+                <div className="col-span- flex flex-col gap-2">
                   <label
                     htmlFor={field.name}
                     className="font-medium text-gray-900 dark:text-white"
@@ -295,7 +297,7 @@ export default function CreateUser() {
               <div className="col-span-full flex items-center justify-end gap-4">
                 <Button
                   variant="outline"
-                  onClick={closeModal}
+                  onClick={closeDrawer}
                   className="w-full @xl:w-auto"
                 >
                   Cancel
