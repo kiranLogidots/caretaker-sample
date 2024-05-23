@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import {  createPositions, listPositionCat } from '@/service/page';
+import {  createDepartments, createPositions, listBranches, listPositionCat } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import { CreatePositionCatResponse, ListPositionCategoryInterface } from '@/types';
 import { signOut } from 'next-auth/react';
@@ -19,6 +19,7 @@ import {
 } from '@/utils/validators/create-position.schema';
 import Select from 'react-select';
 import { useDrawer } from '../drawer-views/use-drawer';
+import { DepartmentFormInput, createDepartmentSchema } from '@/utils/validators/create-department.schema';
 
 export default function CreateUser() {
   const { getValues, setValue, control } = useForm();
@@ -30,10 +31,10 @@ export default function CreateUser() {
   const [accountTypes, setAccountTypes] = useState< { value: number; label: string }[]>([]);
 
   useEffect(() => {
-    const fetchAccountTypes = async () => {
+    const fetchBranches = async () => {
       try {
-        const result = (await listPositionCat()) as ListPositionCategoryInterface[];
-        console.log('Account types:', result);
+        const result = (await listBranches()) as ListPositionCategoryInterface[];
+        console.log('List branch results:', result);
         setAccountTypes(
           result.map((type) => ({
             value: type.id,
@@ -45,21 +46,20 @@ export default function CreateUser() {
       }
     };
 
-    fetchAccountTypes();
+    fetchBranches();
   }, []);
 
-  const onSubmit: SubmitHandler<PositionsFormInput> = async (data) => {
+  const onSubmit: SubmitHandler<DepartmentFormInput> = async (data) => {
     const formattedData = {
       name: data.name,
       description: data.description,
-      position_category_id: Number(data.position_category_id),
-      hourly_rate: data.hourly_rate,
+      organization_branch_id: Number(data.organization_branch_id),
     };
 
     setLoading(true);
 
     try {
-      const response = await createPositions(formattedData);
+      const response = await createDepartments(formattedData);
       const resultData = response.data as CreatePositionCatResponse[];
 
       console.log('API Response:', resultData);
@@ -93,10 +93,10 @@ export default function CreateUser() {
   return (
     <>
       <Toaster position="top-right" />
-      <Form<PositionsFormInput>
+      <Form<DepartmentFormInput>
         resetValues={reset}
         onSubmit={onSubmit}
-        validationSchema={positionsFormSchema}
+        validationSchema={createDepartmentSchema}
         className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
@@ -125,7 +125,7 @@ export default function CreateUser() {
                 error={errors.description?.message}
               />
               <Controller
-                name="position_category_id"
+                name="organization_branch_id"
                 control={control}
                 render={({ field }) => (
                   <div className="col-span-full flex flex-col gap-2">
@@ -133,7 +133,7 @@ export default function CreateUser() {
                       htmlFor={field.name}
                       className="font-medium text-gray-900 dark:text-white"
                     >
-                    Select Position Category
+                    Select Branch
                     </label>
                     <Select
                       options={accountTypes}
