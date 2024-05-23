@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/positions/users-table/columns';
+import { getColumns } from '@/app/shared/departments/users-table/columns';
 import { deletePositionCat, deletePositions, listPositionCat, listPositions } from '@/service/page';
 import {
   CreatePositionCatResponse,

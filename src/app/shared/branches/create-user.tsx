@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { createBranches, listPositionCat } from '@/service/page';
+import { createBranches, listOrg, listPositionCat } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import {
   CreatePositionCatResponse,
@@ -38,7 +38,7 @@ export default function CreateUser() {
     const fetchAccountTypes = async () => {
       try {
         const result =
-          (await listPositionCat()) as ListPositionCategoryInterface[];
+          (await listOrg()) as ListPositionCategoryInterface[];
         console.log('Account types:', result);
         setAccountTypes(
           result.map((type) => ({

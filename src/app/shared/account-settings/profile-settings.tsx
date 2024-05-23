@@ -22,7 +22,7 @@ import { roles } from '@/data/forms/my-details';
 import FormGroup from '@/app/shared/form-group';
 import Link from 'next/link';
 import FormFooter from '@/components/form-footer';
-import UploadZone from '@/components/ui/file-upload/upload-zone';
+// import UploadZone from '@/components/ui/file-upload/upload-zone';
 import cn from '@/utils/class-names';
 import { useLayout } from '@/hooks/use-layout';
 import { useBerylliumSidebars } from '@/layouts/beryllium/beryllium-utils';

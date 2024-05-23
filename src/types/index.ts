@@ -42,6 +42,93 @@ export interface ListPositionCategoryInterface {
   updated_at: string;
   deleted_at: string | null;
 }
+// export interface ListOrganizationInterface {
+//   data : ListOrganizationData[];
+// }
+
+export interface AccountType {
+  id: number;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+// Interface for industry type
+export interface IndustryType {
+  id: number;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+// Interface for organization user
+export interface OrganizationUser {
+  id: number;
+  role: string;
+  organization_id: number;
+  organization_branch_id: number | null;
+  role_id: number;
+  user_id: string;
+  primary_location: string | null;
+  onboarded_by: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+// Interface for organization
+export interface Organization {
+  id: number;
+  account_type_id: number;
+  industry_type_id: number;
+  organization_super_admin_id: number | null;
+  company_name: string;
+  country: string;
+  postal_code: string;
+  company_address_line_one: string;
+  company_address_line_two: string;
+  work_phone: string;
+  work_email: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  accountType: AccountType;
+  industryType: IndustryType;
+  organizationUsers: OrganizationUser[];
+}
+
+// Meta data interface
+export interface Meta {
+  itemsPerPage: number;
+  totalItems: number;
+  currentPage: number;
+  totalPages: number;
+  sortBy: [string, string][];
+}
+
+// Links interface
+export interface Links {
+  current: string;
+}
+
+// Main response interface
+export interface ListOrganisationResponse {
+  data: Organization[];
+  meta: Meta;
+  links: Links;
+}
+export interface ListOrganizationData {
+  id: number;
+  name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
 export interface ListAccountInterface {
   id: number;
   name: string;
@@ -57,6 +144,46 @@ export interface ListPositionsInterface {
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
+}
+
+export interface ListBranchesInterface {
+  id: number;
+  branch_name: string;
+  organization_id: number;
+  location_name: string | null;
+  location_address_line_one: string;
+  location_address_line_two: string;
+  postal_code: string;
+  country: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+export interface HKSUsers {
+  id: number;
+  user_type: string;
+  name: string;
+  phone: string;
+  age: number;
+  email: string;
+  address: string;
+  password: string;
+  created_at: string;
+  updated_at: string;
+  created_by: number;
+}
+
+export interface HKSUsersResponse {
+  status: boolean;
+  message: string;
+  statusCode: number;
+  data: HKSUsers[];
+  pagination: {
+    totalCount: number;
+    currentPage: number;
+    perPage: number;
+    totalPage: number;
+  };
 }
 
 export interface ListData {

@@ -70,7 +70,7 @@ export default function CreateUser() {
           description: '',
         });
         closeDrawer();
-        toast.success('Positions created successfully', {
+        toast.success('Position created successfully', {
           position: 'top-right',
         });
       }
@@ -112,7 +112,7 @@ export default function CreateUser() {
               </div>
               <Input
                 label="Name"
-                placeholder="Enter name of the event"
+                placeholder="Enter name"
                 className="col-span-full"
                 {...register('name')}
                 error={errors.name?.message}
@@ -177,7 +177,7 @@ export default function CreateUser() {
                   isLoading={isLoading}
                   className="w-full @xl:w-auto"
                 >
-                  Create Positions
+                  Create Position
                 </Button>
               </div>
             </>

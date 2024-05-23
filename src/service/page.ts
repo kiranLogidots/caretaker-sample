@@ -268,10 +268,10 @@ export const createBranches = async (details: CreateBranches) => {
 };
 
 //LIST BRANCHES API
-export const listBranches = (organization_id: number) => {
+export const listBranches = () => {
   return axios
     .get(
-      `${apiBaseUrl}/v1/organization-branches?organization_id=${organization_id}`,
+      `${apiBaseUrl}/v1/organization-branches`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
