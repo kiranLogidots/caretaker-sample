@@ -101,7 +101,7 @@ export default function FilterElement({
 
         <Input
           type="search"
-          placeholder="Search for users..."
+          placeholder="Search for organization..."
           value={searchTerm}
           onClear={() => onSearch('')}
           onChange={(event) => onSearch(event.target.value)}
@@ -119,7 +119,7 @@ export default function FilterElement({
             className="mt-0"
           /> */}
            <DrawerButton
-            label="Add New Position Category"
+            label="Add New Organization"
             view={<CreateUser />}
             customSize="500px"
             placement="right"

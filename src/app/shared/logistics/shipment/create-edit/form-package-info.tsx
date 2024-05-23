@@ -7,7 +7,7 @@ import { RadioGroup } from '@/components/ui/radio-group';
 import { PiCheckCircleFill, PiGift } from 'react-icons/pi';
 import { AdvancedRadio } from '@/components/ui/advanced-radio';
 import { toCurrency } from '@/utils/to-currency';
-import UploadZone from '@/components/ui/file-upload/upload-zone';
+// import UploadZone from '@/components/ui/file-upload/upload-zone';
 
 interface FormPackageInfoProps {
   className?: string;

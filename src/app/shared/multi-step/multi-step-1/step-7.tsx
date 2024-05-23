@@ -19,7 +19,7 @@ import {
   formStep7Schema,
   FormStep7Schema,
 } from '@/utils/validators/multistep-form.schema';
-import UploadZone from '@/components/ui/file-upload/upload-zone';
+// import UploadZone from '@/components/ui/file-upload/upload-zone';
 
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,

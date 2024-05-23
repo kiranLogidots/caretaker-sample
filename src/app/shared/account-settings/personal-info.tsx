@@ -15,7 +15,7 @@ import {
   personalInfoFormSchema,
   PersonalInfoFormTypes,
 } from '@/utils/validators/personal-info.schema';
-import UploadZone from '@/components/ui/file-upload/upload-zone';
+// import UploadZone from '@/components/ui/file-upload/upload-zone';
 import { countries, roles, timezones } from '@/data/forms/my-details';
 import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
 

@@ -12,7 +12,7 @@ import {
   shippingMethods,
   courierCompanies,
 } from '@/app/shared/logistics/shipment/create-edit/select-options';
-import UploadZone from '@/components/ui/file-upload/upload-zone';
+// import UploadZone from '@/components/ui/file-upload/upload-zone';
 
 export default function FormShippingInfo() {
   const {

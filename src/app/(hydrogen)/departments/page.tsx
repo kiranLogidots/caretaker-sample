@@ -1,19 +1,19 @@
 import { usersData } from '@/data/users-data';
 import PageHeader from '@/app/shared/page-header';
 import ModalButton from '@/app/shared/modal-button';
-import RolesGrid from '@/app/shared/positions/roles-grid';
-import UsersTable from '@/app/shared/positions/users-table';
-import CreateRole from '@/app/shared/positions/create-role';
+import RolesGrid from '@/app/shared/departments/roles-grid';
+import UsersTable from '@/app/shared/departments/users-table';
+import CreateRole from '@/app/shared/departments/create-role';
 
 const pageHeader = {
-  title: 'Positions',
+  title: 'Departments',
   breadcrumb: [
     {
       href: '/',
       name: 'Users',
     },
     {
-      name: 'Positions',
+      name: 'Departments',
     },
   ],
 };

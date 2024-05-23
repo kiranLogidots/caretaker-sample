@@ -261,14 +261,14 @@ export default function CreateUser() {
               />
               <Input
                 label="Company Address Line One"
-                placeholder="Enter organization's Address"
+                placeholder="Enter company address"
                 // className="col-span-full"
                 {...register('company_address_line_one')}
                 error={errors.company_address_line_one?.message}
               />
               <Input
                 label="Company Address Line Two"
-                placeholder="Enter organization's Address"
+                placeholder="Enter company address"
                 // className="col-span-full"
                 {...register('company_address_line_two')}
                 error={errors.company_address_line_two?.message}
@@ -307,7 +307,7 @@ export default function CreateUser() {
                   isLoading={isLoading}
                   className="w-full @xl:w-auto"
                 >
-                  Create User
+                  Create Organization
                 </Button>
               </div>
             </>

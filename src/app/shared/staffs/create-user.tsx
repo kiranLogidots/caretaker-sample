@@ -104,7 +104,7 @@ export default function CreateUser() {
             <>
               <div className="col-span-full flex items-center justify-between">
                 <Title as="h4" className="font-semibold">
-                  Add a position
+                  Add a staff
                 </Title>
                 <ActionIcon size="sm" variant="text" onClick={closeDrawer}>
                   <PiXBold className="h-auto w-5" />
@@ -112,7 +112,7 @@ export default function CreateUser() {
               </div>
               <Input
                 label="Name"
-                placeholder="Enter name of the event"
+                placeholder="Enter name"
                 className="col-span-full"
                 {...register('name')}
                 error={errors.name?.message}

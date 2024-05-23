@@ -14,7 +14,7 @@ import {
   CategoryFormInput,
   categoryFormSchema,
 } from '@/utils/validators/create-category.schema';
-import UploadZone from '@/components/ui/file-upload/upload-zone';
+// import UploadZone from '@/components/ui/file-upload/upload-zone';
 const Select = dynamic(
   () => import('@/components/ui/select').then((mod) => mod.Select),
   {

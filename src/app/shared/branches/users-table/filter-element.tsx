@@ -56,7 +56,7 @@ export default function FilterElement({
           All Branches
         </Title>
 
-        <StatusField
+        {/* <StatusField
           className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
           options={statusOptions}
           value={filters['status']}
@@ -71,9 +71,9 @@ export default function FilterElement({
           displayValue={(selected: string) =>
             renderOptionDisplayValue(selected)
           }
-        />
+        /> */}
 
-        <StatusField
+        {/* <StatusField
           options={roles}
           value={filters['role']}
           placeholder="Filter by Role"
@@ -86,7 +86,7 @@ export default function FilterElement({
           displayValue={(selected: string) =>
             roles.find((option) => option.value === selected)?.value ?? selected
           }
-        />
+        /> */}
 
         {isFiltered && (
           <Button
@@ -99,7 +99,7 @@ export default function FilterElement({
           </Button>
         )}
 
-        <Input
+        {/* <Input
           type="search"
           placeholder="Search for Branches..."
           value={searchTerm}
@@ -109,11 +109,11 @@ export default function FilterElement({
           rounded="lg"
           clearable
           className="-order-4 w-full @xl:-order-5 @xl:ms-auto @xl:w-auto @4xl:-order-2 @4xl:w-[230px] @5xl:w-auto"
-        />
+        /> */}
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           {/* <ModalButton
-            label="Add New Position"
+            label="Add New Branch"
             view={<CreateUser />}
             customSize="600px"
             className="mt-0"

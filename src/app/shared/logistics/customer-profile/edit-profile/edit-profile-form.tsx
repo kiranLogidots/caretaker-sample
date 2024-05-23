@@ -13,7 +13,7 @@ import { ActionIcon } from '@/components/ui/action-icon';
 import { PiX } from 'react-icons/pi';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
-import UploadZone from '@/components/ui/file-upload/upload-zone';
+// import UploadZone from '@/components/ui/file-upload/upload-zone';
 import {
   customerProfileSchema,
   CustomerProfileSchema,
