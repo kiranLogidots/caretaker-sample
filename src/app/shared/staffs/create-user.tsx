@@ -70,7 +70,7 @@ export default function CreateUser() {
           description: '',
         });
         closeDrawer();
-        toast.success('Positions created successfully', {
+        toast.success('Staff created successfully', {
           position: 'top-right',
         });
       }

@@ -125,14 +125,14 @@ export const getColumns = ({
   //   width: 250,
   //   render: (position_category_id: string) => position_category_id,
   // },
-  {
-    title: <HeaderCell title="Hourly Rate" />,
-    onHeaderCell: () => onHeaderCellClick('hourly_rate'),
-    dataIndex: 'hourly_rate',
-    key: 'hourly_rate',
-    width: 250,
-    render: (hourly_rate: string) => hourly_rate,
-  },
+  // {
+  //   title: <HeaderCell title="Hourly Rate" />,
+  //   onHeaderCell: () => onHeaderCellClick('hourly_rate'),
+  //   dataIndex: 'hourly_rate',
+  //   key: 'hourly_rate',
+  //   width: 250,
+  //   render: (hourly_rate: string) => hourly_rate,
+  // },
 
   // {
   //   title: (
@@ -209,7 +209,7 @@ export const getColumns = ({
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip> */}
-        <Tooltip size="sm" content={'View Position'} placement="top" color="invert">
+        <Tooltip size="sm" content={'View Department'} placement="top" color="invert">
           <Link href={routes.eventsHKS.eventDetails(event.id)}>
           <ActionIcon
             as="span"
@@ -223,7 +223,7 @@ export const getColumns = ({
         </Tooltip>
         <DeletePopover
           title={`Delete`}
-          description={`Are you sure you want to delete this position ?`}
+          description={`Are you sure you want to delete this department ?`}
           onDelete={() => onDeleteItem(event.id)}
         />
       </div>

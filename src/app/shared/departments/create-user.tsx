@@ -70,7 +70,7 @@ export default function CreateUser() {
           description: '',
         });
         closeDrawer();
-        toast.success('Positions created successfully', {
+        toast.success('Departments created successfully', {
           position: 'top-right',
         });
       }
@@ -149,7 +149,7 @@ export default function CreateUser() {
                   </div>
                 )}
               />
-              <Input
+              {/* <Input
                 label="Hourly Rate"
                 placeholder="Enter hourly rate"
                 className="col-span-full"
@@ -158,7 +158,7 @@ export default function CreateUser() {
                   setValueAs: (value) => parseFloat(value), // Convert the input value to a number
                 })}
                 error={errors.hourly_rate?.message}
-              />
+              /> */}
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">
                   {errorMessage}
@@ -177,7 +177,7 @@ export default function CreateUser() {
                   isLoading={isLoading}
                   className="w-full @xl:w-auto"
                 >
-                  Create Positions
+                  Create Department
                 </Button>
               </div>
             </>
