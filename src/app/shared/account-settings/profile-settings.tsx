@@ -12,7 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select } from '@/components/ui/select';
 import { routes } from '@/config/routes';
 import toast from 'react-hot-toast';
-import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
+// import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
 import {
   defaultValues,
   profileFormSchema,
@@ -109,12 +109,12 @@ export default function ProfileSettingsView() {
                   className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
                 >
                   <div className="col-span-2 flex flex-col items-center gap-4 @xl:flex-row">
-                    <AvatarUpload
+                    {/* <AvatarUpload
                       name="avatar"
                       setValue={setValue}
                       getValues={getValues}
                       error={errors?.avatar?.message as string}
-                    />
+                    /> */}
                   </div>
                 </FormGroup>
 
