@@ -71,6 +71,7 @@ export const routes = {
     index: '/point-of-sale',
   },
   eventCalendar: '/event-calendar',
+  rolesPermissions: '/roles-permissions',
   organizations: '/organizations',
   clusterAdmins:'/cluster-admins',
   drivers:'/drivers',
