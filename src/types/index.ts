@@ -165,11 +165,6 @@ export interface AssignCollectionPoints {
   collectionPointIds: number[];
 }
 
-export interface SaveImageUpload {
-  event_id: number;
-  images: string[];
-}
-
 export interface JobRequestResponse {
   status: boolean;
   message: string;

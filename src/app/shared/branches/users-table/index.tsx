@@ -43,14 +43,14 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
 
         const updatedTableData = tableData.filter((event) => event.id !== id);
         setTableData(updatedTableData);
-        toast.success('Position deleted succesfully', {
+        toast.success('Branches deleted succesfully', {
           position: 'top-right',
         });
       } catch (error) {
-        toast.error('Failed to delete the position', {
+        toast.error('Failed to delete the branch', {
           position: 'top-right',
         });
-        console.error('Delete position failed:', error);
+        console.error('Delete branch failed:', error);
       }
     },
     [tableData]
