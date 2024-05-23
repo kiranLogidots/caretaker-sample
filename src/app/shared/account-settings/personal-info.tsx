@@ -17,7 +17,7 @@ import {
 } from '@/utils/validators/personal-info.schema';
 // import UploadZone from '@/components/ui/file-upload/upload-zone';
 import { countries, roles, timezones } from '@/data/forms/my-details';
-import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
+// import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
 
 const Select = dynamic(
   () => import('@/components/ui/select').then((mod) => mod.Select),
@@ -104,12 +104,12 @@ export default function PersonalInfoView() {
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
                 <div className="flex flex-col gap-6 @container @3xl:col-span-2">
-                  <AvatarUpload
+                  {/* <AvatarUpload
                     name="avatar"
                     setValue={setValue}
                     getValues={getValues}
                     error={errors?.avatar?.message as string}
-                  />
+                  /> */}
                 </div>
               </FormGroup>
 

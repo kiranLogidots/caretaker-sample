@@ -146,7 +146,7 @@ export interface ListPositionsInterface {
   deleted_at: string | null;
 }
 
-export interface ListBranchesInterface {
+export interface Branch {
   id: number;
   branch_name: string;
   organization_id: number;
@@ -158,6 +158,23 @@ export interface ListBranchesInterface {
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
+}
+export interface Meta {
+  itemsPerPage: number;
+  totalItems: number;
+  currentPage: number;
+  totalPages: number;
+  sortBy: [string, string][];
+}
+
+export interface Links {
+  current: string;
+}
+
+export interface ListBranchesInterface {
+  data: Branch[];
+  meta: Meta;
+  links: Links;
 }
 export interface HKSUsers {
   id: number;

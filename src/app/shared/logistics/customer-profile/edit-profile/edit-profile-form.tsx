@@ -12,7 +12,7 @@ import { countries } from '@/app/shared/logistics/shipment/create-edit/select-op
 import { ActionIcon } from '@/components/ui/action-icon';
 import { PiX } from 'react-icons/pi';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
+// import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
 // import UploadZone from '@/components/ui/file-upload/upload-zone';
 import {
   customerProfileSchema,
@@ -82,12 +82,12 @@ export default function EditProfileForm({ className }: EditProfileFormProps) {
         }) => {
           return (
             <>
-              <AvatarUpload
+              {/* <AvatarUpload
                 name="avatar"
                 setValue={setValue}
                 getValues={getValues}
                 className="col-span-full"
-              />
+              /> */}
               {/* <UploadZone
                 label="Cover Photo"
                 name="coverPhoto"
