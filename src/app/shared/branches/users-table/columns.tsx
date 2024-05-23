@@ -96,11 +96,11 @@ export const getColumns = ({
   //   ),
   // },
   {
-    title: <HeaderCell title="Name" />,
-    dataIndex: 'name',
-    key: 'name',
+    title: <HeaderCell title="Branch Name" />,
+    dataIndex: 'branch_name',
+    key: 'branch_name',
     width: 250,
-    hidden: 'name',
+    hidden: 'branch_name',
     // render: (_: string, user: User) => (
     //   <AvatarCard
     //     src={user.avatar}
@@ -110,12 +110,12 @@ export const getColumns = ({
     // ),
   },
   {
-    title: <HeaderCell title="Description" />,
-    onHeaderCell: () => onHeaderCellClick('description'),
-    dataIndex: 'description',
-    key: 'description',
+    title: <HeaderCell title="Country" />,
+    onHeaderCell: () => onHeaderCellClick('country'),
+    dataIndex: 'country',
+    key: 'country',
     width: 250,
-    render: (description: string) => description,
+    render: (country: string) => country,
   },
   // {
   //   title: <HeaderCell title="Position Category" />,
@@ -125,14 +125,14 @@ export const getColumns = ({
   //   width: 250,
   //   render: (position_category_id: string) => position_category_id,
   // },
-  {
-    title: <HeaderCell title="Hourly Rate" />,
-    onHeaderCell: () => onHeaderCellClick('hourly_rate'),
-    dataIndex: 'hourly_rate',
-    key: 'hourly_rate',
-    width: 250,
-    render: (hourly_rate: string) => hourly_rate,
-  },
+  // {
+  //   title: <HeaderCell title="Hourly Rate" />,
+  //   onHeaderCell: () => onHeaderCellClick('hourly_rate'),
+  //   dataIndex: 'hourly_rate',
+  //   key: 'hourly_rate',
+  //   width: 250,
+  //   render: (hourly_rate: string) => hourly_rate,
+  // },
 
   // {
   //   title: (

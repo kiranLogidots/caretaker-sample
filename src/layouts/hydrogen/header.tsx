@@ -8,7 +8,7 @@ import Logo from '@/components/logo';
 import HeaderMenuRight from '@/layouts/header-menu-right';
 import StickyHeader from '@/layouts/sticky-header';
 import Image from 'next/image';
-import SHLogo from "../../../public/seek.png";
+import SHLogo from "../../../public/caretaker-logo-vector.png";
 
 export default function Header() {
   return (
@@ -23,7 +23,7 @@ export default function Header() {
           className="me-4 w-9 shrink-0 text-gray-800 hover:text-gray-900 lg:me-5 xl:hidden"
         >
           {/* <Logo iconOnly={true} /> */}
-          <Image src={SHLogo} className='w-[205px]' alt="Seekhealth Logo"/>
+          <Image src={SHLogo} className='w-[205px]' alt="CareTaker Logo"/>
         </Link>
 
         <SearchWidget />

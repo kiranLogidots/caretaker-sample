@@ -71,7 +71,7 @@ export const routes = {
     index: '/point-of-sale',
   },
   eventCalendar: '/event-calendar',
-  rolesPermissions: '/organizations',
+  organizations: '/organizations',
   clusterAdmins:'/cluster-admins',
   drivers:'/drivers',
   projectAssociates:'/project-associates',
@@ -79,6 +79,9 @@ export const routes = {
   events:'/events-hks',
   positioncategory:'/position-category',
   position:'/positions',
+  branches:'/branches',
+  departments:'/departments',
+  staffs:'/staffs',
   wardData:'/ward-data',
   pickupRequest:'/pickup-request',
   invoice: {

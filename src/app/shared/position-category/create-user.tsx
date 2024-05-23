@@ -17,10 +17,11 @@ import {
   positionCategoryFormSchema,
 } from '@/utils/validators/create-position-category.schema';
 import { signOut } from 'next-auth/react';
+import { useDrawer } from '../drawer-views/use-drawer';
 
 export default function CreateUser() {
   const { getValues, setValue, control } = useForm();
-  const { closeModal } = useModal();
+  const { closeDrawer } = useDrawer();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -44,7 +45,7 @@ export default function CreateUser() {
           name: '',
           description: '',
         });
-        closeModal();
+        closeDrawer();
         toast.success('Position Category created successfully', {
           position: 'top-right',
         });
@@ -82,7 +83,7 @@ export default function CreateUser() {
                 <Title as="h4" className="font-semibold">
                   Add a position
                 </Title>
-                <ActionIcon size="sm" variant="text" onClick={closeModal}>
+                <ActionIcon size="sm" variant="text" onClick={closeDrawer}>
                   <PiXBold className="h-auto w-5" />
                 </ActionIcon>
               </div>
@@ -108,7 +109,7 @@ export default function CreateUser() {
               <div className="col-span-full flex items-center justify-end gap-4">
                 <Button
                   variant="outline"
-                  onClick={closeModal}
+                  onClick={closeDrawer}
                   className="w-full @xl:w-auto"
                 >
                   Cancel

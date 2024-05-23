@@ -10,8 +10,8 @@ enum MODE {
 }
 
 export const siteConfig = {
-  title: 'Seekhealth',
-  description: `Seekhealth is a platform that connects patients with doctors and healthcare providers to provide a seamless healthcare experience.`,
+  title: 'CareTaker',
+  description: `CareTaker `,
   logo: logoImg,
   icon: logoIconImg,
   mode: MODE.LIGHT,
@@ -25,13 +25,13 @@ export const metaObject = (
   description: string = siteConfig.description
 ): Metadata => {
   return {
-    title: title ? `${title} - Seekhealth` : siteConfig.title,
+    title: title ? `${title} - CareTaker` : siteConfig.title,
     description,
     openGraph: openGraph ?? {
-      title: title ? `${title} - Seekhealth` : title,
+      title: title ? `${title} - CareTaker` : title,
       description,
       url: 'https://isomorphic-furyroad.vercel.app',
-      siteName: 'Seekhealth', // https://developers.google.com/search/docs/appearance/site-names
+      siteName: 'CareTaker', // https://developers.google.com/search/docs/appearance/site-names
       images: {
         url: 'https://s3.amazonaws.com/redqteam.com/isomorphic-furyroad/itemdep/isobanner.png',
         width: 1200,

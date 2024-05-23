@@ -60,6 +60,7 @@ export const menuItems = [
     name: 'Dashboard',
     href: '/',
     icon: <MdOutlineDashboard />,
+    roles: ['super_admin', 'organization_super_admin', 'branch_admin'],
   // badge: 'New',
   },
   // {
@@ -99,6 +100,42 @@ export const menuItems = [
   // label start
   {
     name: 'Users',
+  },
+  {
+    name: 'Organizations',
+    href: routes.organizations,
+    icon: <MdEventAvailable />,
+    roles: ['super_admin'],
+  },
+  {
+    name: 'Position Category',
+    href: routes.positioncategory,
+    icon: <MdEventAvailable />,
+    roles: ['super_admin'],
+  },
+  {
+    name: 'Positions',
+    href: routes.position,
+    icon: <MdEventAvailable />,
+    roles: ['super_admin'],
+  },
+  {
+    name: 'Branches',
+    href: routes.branches,
+    icon: <MdEventAvailable />,
+    roles: ['super_admin'],
+  },
+  {
+    name: 'Departments',
+    href: routes.departments,
+    icon: <MdEventAvailable />,
+    roles: ['super_admin'],
+  },
+  {
+    name: 'Staffs',
+    href: routes.staffs,
+    icon: <MdEventAvailable />,
+    roles: ['super_admin'],
   },
   // label end
   // {
@@ -252,21 +289,6 @@ export const menuItems = [
   //   href: routes.eventCalendar,
   //   icon: <PiCalendarPlusDuotone />,
   // },
-  {
-    name: 'Organizations',
-    href: routes.rolesPermissions,
-    icon: <MdEventAvailable />,
-  },
-  {
-    name: 'Position Category',
-    href: routes.positioncategory,
-    icon: <MdEventAvailable />,
-  },
-  {
-    name: 'Positions',
-    href: routes.position,
-    icon: <MdEventAvailable />,
-  },
   // {
   //   name: 'Cluster Admins',
   //   href: routes.clusterAdmins,

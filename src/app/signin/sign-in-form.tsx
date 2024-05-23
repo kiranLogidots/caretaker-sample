@@ -17,24 +17,19 @@ import { superAdminLogin } from '@/service/page';
 import { useRouter } from 'next/navigation';
 import { IoMdRefresh } from 'react-icons/io';
 
-interface SAUser {
+interface UserRoles {
   id: number;
-  user_type: string;
   name: string;
-  phone: string;
-  age: number;
-  email: string;
-  address: string;
-  password: string;
   created_at: string;
-  updated_at: string;
-  created_by: string;
 }
 interface SALoginInterface {
   message: string;
   access_token: string;
   refresh_token: string;
-  user: SAUser[];
+  id: string;
+  email: string;
+  is_active: boolean;
+  roles: UserRoles[];
 }
 // const initialValues: LoginSchema = {
 //   email: 'admin@caretaker.com',
@@ -62,8 +57,12 @@ export default function SignInForm() {
       const resultData = response.data as SALoginInterface;
       console.log('RESULT DATA SIGNUP PAGE', resultData);
       const accessToken = resultData.access_token;
+      const user_roles = resultData.roles;
+      sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
+      // const user_roles = resultData.roles;
+      // console.log("User roles", user_roles);
       sessionStorage.setItem('accessToken', accessToken);
-      // sessionStorage.setItem('refreshToken', refreshToken);
+      // sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
     } catch (error) {
       console.error('Error during login', error);
     }
@@ -76,6 +75,19 @@ export default function SignInForm() {
     });
     // setLoading(false);
   };
+
+  // const redirectToDashboard = (user_roles:string) => {
+  //   if (user_roles.includes('super_admin')) {
+  //     router.push('/dashboard/super-admin');
+  //   } else if (user_roles.includes('organization_super_admin')) {
+  //     router.push('/dashboard/org-admin');
+  //   } else if (user_roles.includes('branch_admin')) {
+  //     router.push('/dashboard/branch-admin');
+  //   } else {
+  //     // Handle other roles or redirect to a default dashboard
+  //     router.push('/dashboard');
+  //   }
+  // };
 
   return (
     <>

@@ -9,7 +9,7 @@ import { STATUSES } from '@/data/users-data';
 import { rolesList } from '@/data/roles-permissions';
 import { Input } from '@/components/ui/input';
 import ModalButton from '@/app/shared/modal-button';
-import CreateUser from '@/app/shared/organizations/create-user';
+import CreateUser from '@/app/shared/branches/create-user';
 import DrawerButton from '../../drawer-button';
 
 const statusOptions = [
@@ -53,10 +53,10 @@ export default function FilterElement({
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
         <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
-          All Organizations
+          All Branches
         </Title>
 
-        {/* <StatusField
+        <StatusField
           className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
           options={statusOptions}
           value={filters['status']}
@@ -71,9 +71,9 @@ export default function FilterElement({
           displayValue={(selected: string) =>
             renderOptionDisplayValue(selected)
           }
-        /> */}
+        />
 
-        {/* <StatusField
+        <StatusField
           options={roles}
           value={filters['role']}
           placeholder="Filter by Role"
@@ -86,7 +86,7 @@ export default function FilterElement({
           displayValue={(selected: string) =>
             roles.find((option) => option.value === selected)?.value ?? selected
           }
-        /> */}
+        />
 
         {isFiltered && (
           <Button
@@ -101,7 +101,7 @@ export default function FilterElement({
 
         <Input
           type="search"
-          placeholder="Search for users..."
+          placeholder="Search for Branches..."
           value={searchTerm}
           onClear={() => onSearch('')}
           onChange={(event) => onSearch(event.target.value)}
@@ -113,13 +113,13 @@ export default function FilterElement({
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           {/* <ModalButton
-            label="Add New Organization"
+            label="Add New Position"
             view={<CreateUser />}
             customSize="600px"
             className="mt-0"
           /> */}
-           <DrawerButton
-            label="Add New Position Category"
+          <DrawerButton
+            label="Add New Branch"
             view={<CreateUser />}
             customSize="500px"
             placement="right"
