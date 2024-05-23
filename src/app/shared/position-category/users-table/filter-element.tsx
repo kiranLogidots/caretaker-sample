@@ -13,7 +13,6 @@ import CreateUser from '@/app/shared/position-category/create-user';
 import PrintButton from '../../print-button';
 import ExportButton from '../../export-button';
 import DownloadButton from '../../download-button';
-import { downloadEventReport } from '@/service/page';
 import DrawerButton from '../../drawer-button';
 
 const statusOptions = [

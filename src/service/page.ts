@@ -6,7 +6,6 @@ import {
   CreatePositionCat,
   CreatePositions,
   CreateStaffs,
-  SaveImageUpload,
 } from '@/types';
 import axios from 'axios';
 import { signOut } from 'next-auth/react';
