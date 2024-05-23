@@ -12,7 +12,10 @@ import { useModal } from '@/app/shared/modal-views/use-modal';
 import { createBranches, listOrg, listPositionCat } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import {
+  Branch,
   CreatePositionCatResponse,
+  ListBranchesInterface,
+  ListOrganisationResponse,
   ListPositionCategoryInterface,
 } from '@/types';
 import { signOut } from 'next-auth/react';
@@ -30,24 +33,24 @@ export default function CreateUser() {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [accountTypes, setAccountTypes] = useState<
+  const [organizations, setOrganizations] = useState<
     { value: number; label: string }[]
   >([]);
 
   useEffect(() => {
     const fetchAccountTypes = async () => {
       try {
-        const result =
-          (await listOrg()) as ListPositionCategoryInterface[];
-        console.log('Account types:', result);
-        setAccountTypes(
-          result.map((type) => ({
-            value: type.id,
-            label: type.name,
+        const response = (await listOrg()) as ListOrganisationResponse;
+        const result = response.data;
+        console.log('Organizations:', result);
+        setOrganizations(
+          result.map((org) => ({
+            value: org.id,
+            label: org.company_name,
           }))
         );
       } catch (error) {
-        console.error('Error fetching account types:', error);
+        console.error('Error fetching organizations:', error);
       }
     };
 
@@ -168,8 +171,8 @@ export default function CreateUser() {
                       Select Organization
                     </label>
                     <Select
-                      options={accountTypes}
-                      value={accountTypes.find(
+                      options={organizations}
+                      value={organizations.find(
                         (at) => at.value === field.value
                       )}
                       onChange={(option) =>
