@@ -5,15 +5,8 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/branches/users-table/columns';
-import { deletePositionCat, deletePositions, listBranches, listPositionCat, listPositions } from '@/service/page';
-import {
-  Branch,
-  CreatePositionCatResponse,
-  HKSEvents,
-  ListBranchesInterface,
-  ListPositionCategoryInterface,
-  ListPositionsInterface,
-} from '@/types';
+import { deleteBranches, listBranches } from '@/service/page';
+import { Branch } from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(
   () => import('@/app/shared/branches/users-table/filter-element'),
@@ -41,7 +34,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const onDeleteItem = useCallback(
     async (id: number) => {
       try {
-        await deletePositions(id.toString());
+        await deleteBranches(id.toString());
 
         const updatedTableData = tableData.filter((event) => event.id !== id);
         setTableData(updatedTableData);
@@ -107,10 +100,9 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData =
-          (await listBranches()) as Branch[];
+        const resultData = (await listBranches()) as Branch[];
         console.log('result data', resultData); // Fetch data from the listHKS API
-        setTableData(resultData); 
+        setTableData(resultData);
         // setTotalItems(resultData.pagination.totalCount);
       } catch (err: any) {
         console.log('Error response for listing users', err.response);

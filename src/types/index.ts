@@ -114,6 +114,11 @@ export interface Meta {
 export interface Links {
   current: string;
 }
+export interface CreateDepartments {
+  organization_branch_id: number;
+  name: string;
+  description: string;
+}
 
 // Main response interface
 export interface ListOrganisationResponse {
