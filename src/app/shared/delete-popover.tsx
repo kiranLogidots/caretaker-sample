@@ -43,7 +43,7 @@ export default function DeletePopover({
               {description}
             </Text>
             <div className="flex items-center justify-end">
-              <Button size="sm" className="me-1.5 h-7" onClick={onDelete}>
+              <Button size="sm" className="me-1.5 h-7 text-white" onClick={onDelete}>
                 Yes
               </Button>
               <Button

@@ -46,7 +46,7 @@ export default function EventCalendarView() {
         month: true,
         week: true,
         day: true,
-        agenda: true,
+        agenda: false,
       },
       scrollToTime: new Date(2023, 10, 27, 6),
       formats: {
@@ -77,6 +77,7 @@ export default function EventCalendarView() {
         selectable
         scrollToTime={scrollToTime}
         className={cn('h-[650px] md:h-[1000px]', calendarToolbarClassName)}
+        defaultView="week" 
       />
     </div>
   );

@@ -60,9 +60,21 @@ export default function SignInForm() {
       const user_roles = resultData.roles;
       sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
       // const user_roles = resultData.roles;
-      // console.log("User roles", user_roles);
+      console.log("User roles array?", user_roles);
       sessionStorage.setItem('accessToken', accessToken);
       // sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
+      // Redirect based on role
+    const userRole = user_roles[0].name;
+    console.log("User role now is ", userRole)
+    if (userRole === 'super_admin') {
+      router.push('/');
+    } else if (userRole === 'organization_super_admin') {
+      router.push('/');
+    } else if (userRole === 'branch_admin') {
+      router.push('/branch-admin-dashboard');
+    } else {
+      router.push('/user-dashboard');
+    }
     } catch (error) {
       console.error('Error during login', error);
     }
@@ -75,19 +87,6 @@ export default function SignInForm() {
     });
     // setLoading(false);
   };
-
-  // const redirectToDashboard = (user_roles:string) => {
-  //   if (user_roles.includes('super_admin')) {
-  //     router.push('/dashboard/super-admin');
-  //   } else if (user_roles.includes('organization_super_admin')) {
-  //     router.push('/dashboard/org-admin');
-  //   } else if (user_roles.includes('branch_admin')) {
-  //     router.push('/dashboard/branch-admin');
-  //   } else {
-  //     // Handle other roles or redirect to a default dashboard
-  //     router.push('/dashboard');
-  //   }
-  // };
 
   return (
     <>

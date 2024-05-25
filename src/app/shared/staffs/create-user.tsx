@@ -175,9 +175,9 @@ export default function CreateUser() {
                 <Button
                   type="submit"
                   isLoading={isLoading}
-                  className="w-full @xl:w-auto"
+                  className="w-full text-white @xl:w-auto"
                 >
-                  Create Positions
+                  Create Staff
                 </Button>
               </div>
             </>

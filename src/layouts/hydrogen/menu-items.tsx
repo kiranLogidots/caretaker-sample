@@ -47,15 +47,78 @@ import {
 import { MdOutlineDashboard, MdEventAvailable, MdInput } from 'react-icons/md';
 import { FcDepartment } from "react-icons/fc";
 import { FaHospitalUser, FaRegHospital } from "react-icons/fa";
-// import { FaUserTie, FaShuttleVan } from "react-icons/fa";
-// import { HiUserGroup } from "react-icons/hi";
-// import { RiAdminFill } from "react-icons/ri";
+import { FaLocationCrosshairs } from "react-icons/fa6";
 import { VscRequestChanges } from "react-icons/vsc";
 import { TbNurse } from "react-icons/tb";
 import { SlOrganization } from "react-icons/sl";
 import { TbHierarchy3 } from "react-icons/tb";
 import { SiAwsorganizations } from "react-icons/si";
+
 // Note: do not add href in the label object, it is rendering as label
+
+export const menuItemsForSuperAdmin = [
+  {
+    name: 'Dashboard',
+    href: '/',
+    icon: <MdOutlineDashboard />,
+  },
+  {
+    name: 'Organizations',
+    href: routes.organizations,
+    icon: <SlOrganization />,
+  },
+  {
+    name: 'Position Category',
+    href: routes.positioncategory,
+    icon: <TbNurse />,
+  },
+  {
+    name: 'Positions',
+    href: routes.position,
+    icon: <PiBriefcaseDuotone />,
+  },
+];
+
+export const menuItemsForOrgSuperAdmin = [
+  {
+    name: 'Dashboard',
+    href: '/',
+    icon: <MdOutlineDashboard />,
+  },
+  {
+    name: 'Locations',
+    href: routes.branches,
+    icon: <FaLocationCrosshairs />,
+  },
+];
+export const menuItemsForBranchAdmin = [
+  {
+    name: 'Dashboard',
+    href: '/',
+    icon: <MdOutlineDashboard />,
+  },
+  {
+    name: 'Departments',
+    href: routes.departments,
+    icon: <FaRegHospital />,
+  },
+  {
+    name: 'Staffs',
+    href: routes.staffs,
+    icon: <FaHospitalUser />,
+  },
+  {
+    name: 'Event Calendar',
+    href: routes.eventCalendar,
+    icon: <PiCalendarPlusDuotone />,
+  },
+];
+
+export const getUserRoles = () => {
+  const roles = sessionStorage.getItem('userRoles');
+  return roles ? JSON.parse(roles) : [];
+};
+
 export const menuItems = [
   // label start
   {
@@ -66,8 +129,42 @@ export const menuItems = [
     name: 'Dashboard',
     href: '/',
     icon: <MdOutlineDashboard />,
-    roles: ['super_admin', 'organization_super_admin', 'branch_admin'],
   // badge: 'New',
+  },
+  {
+    name: 'Organizations',
+    href: routes.organizations,
+    icon: <SlOrganization />,
+  },
+  {
+    name: 'Position Category',
+    href: routes.positioncategory,
+    icon: <TbNurse />,
+  },
+  {
+    name: 'Positions',
+    href: routes.position,
+    icon: <PiBriefcaseDuotone />,
+  },
+  {
+    name: 'Locations',
+    href: routes.branches,
+    icon: <FaLocationCrosshairs />,
+  },
+  {
+    name: 'Departments',
+    href: routes.departments,
+    icon: <FaRegHospital />,
+  },
+  {
+    name: 'Staffs',
+    href: routes.staffs,
+    icon: <FaHospitalUser />,
+  },
+  {
+    name: 'Event Calendar',
+    href: routes.eventCalendar,
+    icon: <PiCalendarPlusDuotone />,
   },
   // {
   //   name: 'Executive',
@@ -107,42 +204,7 @@ export const menuItems = [
   // {
   //   name: 'Users',
   // },
-  {
-    name: 'Organizations',
-    href: routes.organizations,
-    icon: <SlOrganization />,
-    roles: ['super_admin'],
-  },
-  {
-    name: 'Position Category',
-    href: routes.positioncategory,
-    icon: <TbNurse />,
-    roles: ['super_admin'],
-  },
-  {
-    name: 'Positions',
-    href: routes.position,
-    icon: <PiBriefcaseDuotone />,
-    roles: ['super_admin'],
-  },
-  {
-    name: 'Locations',
-    href: routes.branches,
-    icon: <TbHierarchy3 />,
-    roles: ['super_admin'],
-  },
-  {
-    name: 'Departments',
-    href: routes.departments,
-    icon: <FaRegHospital />,
-    roles: ['super_admin'],
-  },
-  {
-    name: 'Staffs',
-    href: routes.staffs,
-    icon: <FaHospitalUser />,
-    roles: ['super_admin'],
-  },
+ 
   // label end
   // {
   //   name: 'E-Commerce',
@@ -285,21 +347,7 @@ export const menuItems = [
   //     },
   //   ],
   // },
-  // {
-  //   name: 'File Manager',
-  //   href: routes.file.manager,
-  //   icon: <PiFolderNotchDuotone />,
-  // },
-  // {
-  //   name: 'Event Calendar',
-  //   href: routes.eventCalendar,
-  //   icon: <PiCalendarPlusDuotone />,
-  // },
-  // {
-  //   name: 'Cluster Admins',
-  //   href: routes.clusterAdmins,
-  //   icon: <PiUserPlusDuotone />,
-  // },
+
   // {
   //   name: 'Project Associates',
   //   href: routes.projectAssociates,
@@ -321,30 +369,6 @@ export const menuItems = [
   //   name: 'Activities',
   // },
     // label end
-
- 
-  // {
-  //   name: 'Events',
-  //   href: routes.events,
-  //   icon: <MdEventAvailable />,
-  // },
-  // {
-  //   name: 'Input Ward Data',
-  //   href: routes.wardData,
-  //   icon: <MdInput />,
-  //   // icon: <PiCreditCardDuotone />,
-  // },
-  // {
-  //   name: 'Pickup Request',
-  //   href: routes.pickupRequest,
-  //   icon: <VscRequestChanges />,
-  // },
-  // {
-  //   name: 'Point of Sale',
-  //   href: routes.pos.index,
-  //   icon: <PiCreditCardDuotone />,
-  //   badge: 'Update',
-  // },
 
   // {
   //   name: 'Search & Filters',

@@ -2,21 +2,40 @@
 
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Title } from '@/components/ui/text';
 import { Collapse } from '@/components/ui/collapse';
 import cn from '@/utils/class-names';
 import { PiCaretDownBold } from 'react-icons/pi';
 import SimpleBar from '@/components/ui/simplebar';
-import { menuItems } from '@/layouts/hydrogen/menu-items';
+import { menuItemsForSuperAdmin, menuItemsForOrgSuperAdmin, getUserRoles } from '@/layouts/hydrogen/menu-items';
+// import { menuItems } from '@/layouts/hydrogen/menu-items';
 import Logo from '@/components/logo';
 import StatusBadge from '@/components/get-status-badge';
 import Image from 'next/image';
 import GWLogo from "../../../public/caretaker-logo-vector.png";
+// import { useRouter } from 'next/router';
 
+interface MenuItem {
+  name: string;
+  href: string;
+  icon: JSX.Element;
+}
 
 export default function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const userRoles = getUserRoles();
+  const userRole = userRoles.length ? userRoles[0].name : null;
+
+  let menuItems: MenuItem[] = [];
+  // let menuItems: { name: string; href: string; icon: JSX.Element }[] = [];
+
+  if (userRole === 'super_admin') {
+    menuItems = menuItemsForSuperAdmin;
+  } else if (userRole === 'organization_super_admin') {
+    menuItems = menuItemsForOrgSuperAdmin;
+  }
   return (
     <aside
       className={cn(
