@@ -58,6 +58,7 @@ export default function CreateUser() {
   }, []);
 
   const onSubmit: SubmitHandler<CreateBranchesInput> = async (data) => {
+    const organizationId = sessionStorage.getItem('organizationId');
     const formattedData = {
       branch_admin: {
         first_name: data.first_name,
@@ -70,7 +71,7 @@ export default function CreateUser() {
       location_address_line_two: data.location_address_line_two,
       country: data.country,
       postal_code: data.postal_code,
-      organization_id: data.organization_id, // take from the url
+      organization_id: Number(organizationId), // take from the url
     };
 
     setLoading(true);
@@ -87,7 +88,7 @@ export default function CreateUser() {
           description: '',
         });
         closeDrawer();
-        toast.success('Branches created successfully', {
+        toast.success('Location created successfully', {
           position: 'top-right',
         });
       }
@@ -121,7 +122,7 @@ export default function CreateUser() {
             <>
               <div className="col-span-full flex items-center justify-between">
                 <Title as="h4" className="font-semibold">
-                  Add a branch
+                  Add a location
                 </Title>
                 <ActionIcon size="sm" variant="text" onClick={closeDrawer}>
                   <PiXBold className="h-auto w-5" />
@@ -153,13 +154,13 @@ export default function CreateUser() {
                 error={errors.password?.message}
               />
               <Input
-                label="Branch Name"
-                placeholder="Enter name of the branch"
+                label="Location"
+                placeholder="Enter the location"
                 className="col-span-full"
                 {...register('branch_name')}
                 error={errors.branch_name?.message}
               />
-              <Controller
+              {/* <Controller
                 name="organization_id"
                 control={control}
                 render={({ field }) => (
@@ -183,7 +184,7 @@ export default function CreateUser() {
                     />
                   </div>
                 )}
-              />
+              /> */}
               <Input
                 label="Location Address Line One"
                 placeholder="Enter location Address"
@@ -239,9 +240,9 @@ export default function CreateUser() {
                 <Button
                   type="submit"
                   isLoading={isLoading}
-                  className="w-full @xl:w-auto"
+                  className="w-full @xl:w-auto text-white"
                 >
-                  Create Branch
+                  Create Location
                 </Button>
               </div>
             </>

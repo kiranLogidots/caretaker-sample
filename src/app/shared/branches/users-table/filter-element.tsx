@@ -53,7 +53,7 @@ export default function FilterElement({
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
         <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
-          All Branches
+          All Locations
         </Title>
 
         {/* <StatusField
@@ -101,7 +101,7 @@ export default function FilterElement({
 
         {/* <Input
           type="search"
-          placeholder="Search for Branches..."
+          placeholder="Search for Location"
           value={searchTerm}
           onClear={() => onSearch('')}
           onChange={(event) => onSearch(event.target.value)}
@@ -113,13 +113,13 @@ export default function FilterElement({
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           {/* <ModalButton
-            label="Add New Branch"
+            label="Add New Location"
             view={<CreateUser />}
             customSize="600px"
             className="mt-0"
           /> */}
           <DrawerButton
-            label="Add New Branch"
+            label="Add New Location"
             view={<CreateUser />}
             customSize="500px"
             placement="right"

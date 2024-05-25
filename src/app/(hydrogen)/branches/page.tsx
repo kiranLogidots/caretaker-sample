@@ -6,14 +6,14 @@ import UsersTable from '@/app/shared/branches/users-table';
 import CreateRole from '@/app/shared/branches/create-role';
 
 const pageHeader = {
-  title: 'Branches',
+  title: 'Locations',
   breadcrumb: [
     {
       href: '/',
-      name: 'Users',
+      name: 'Overview',
     },
     {
-      name: 'Branches',
+      name: 'Locations',
     },
   ],
 };
