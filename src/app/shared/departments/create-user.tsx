@@ -133,7 +133,7 @@ export default function CreateUser() {
                       htmlFor={field.name}
                       className="font-medium text-gray-900 dark:text-white"
                     >
-                    Select Branch
+                    Select Location
                     </label>
                     <Select
                       options={accountTypes}

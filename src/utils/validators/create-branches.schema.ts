@@ -26,7 +26,7 @@ export const createBranchesSchema = z.object({
   location_address_line_two: z.string(),
   country: z.string().min(1, { message: messages.countryIsRequired }),
   postal_code: z.string().min(1, { message: messages.zipCodeRequired }),
-  organization_id: z.number().min(1, { message: messages.organizationIdRequired }),
+  organization_id: z.number(),
 });
 
 export type CreateBranchesInput = z.infer<typeof createBranchesSchema>;

@@ -22,15 +22,47 @@ interface UserRoles {
   name: string;
   created_at: string;
 }
+interface UserRole {
+  id: number;
+  name: string;
+  created_at: string;
+}
+
+interface OrganizationUser {
+  id: number;
+  role: string;
+  organization_id: number;
+  organization_branch_id: number | null;
+  role_id: number;
+  user_id: string;
+  primary_location: string | null;
+  onboarded_by: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
 interface SALoginInterface {
-  message: string;
+  type: string;
   access_token: string;
   refresh_token: string;
+  expires_in: string;
   id: string;
   email: string;
   is_active: boolean;
-  roles: UserRoles[];
+  roles: UserRole[];
+  organizationUsers: OrganizationUser[];
 }
+
+// interface SALoginInterface {
+//   message: string;
+//   access_token: string;
+//   refresh_token: string;
+//   id: string;
+//   email: string;
+//   is_active: boolean;
+//   roles: UserRoles[];
+// }
 // const initialValues: LoginSchema = {
 //   email: 'admin@caretaker.com',
 //   password: 'adminPassword',
@@ -60,21 +92,28 @@ export default function SignInForm() {
       const user_roles = resultData.roles;
       sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
       // const user_roles = resultData.roles;
-      console.log("User roles array?", user_roles);
+      console.log('User roles array?', user_roles);
       sessionStorage.setItem('accessToken', accessToken);
       // sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
       // Redirect based on role
-    const userRole = user_roles[0].name;
-    console.log("User role now is ", userRole)
-    if (userRole === 'super_admin') {
+      const userRole = user_roles[0].name;
+      if (userRole === 'organization_super_admin') {
+        const organizationUsers = resultData.organizationUsers;
+        const organizationId = organizationUsers[0].organization_id;
+        sessionStorage.setItem('organizationId', organizationId.toString());
+        console.log('Organization ID', organizationId);
+      }
+      console.log('User role now is ', userRole);
       router.push('/');
-    } else if (userRole === 'organization_super_admin') {
-      router.push('/');
-    } else if (userRole === 'branch_admin') {
-      router.push('/branch-admin-dashboard');
-    } else {
-      router.push('/user-dashboard');
-    }
+      // if (userRole === 'super_admin') {
+      //   router.push('/');
+      // } else if (userRole === 'organization_super_admin') {
+      //   router.push('/');
+      // } else if (userRole === 'branch_admin') {
+      //   router.push('/');
+      // } else {
+      //   router.push('/user-dashboard');
+      // }
     } catch (error) {
       console.error('Error during login', error);
     }

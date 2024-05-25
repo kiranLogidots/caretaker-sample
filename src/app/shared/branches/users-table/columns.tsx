@@ -96,7 +96,7 @@ export const getColumns = ({
   //   ),
   // },
   {
-    title: <HeaderCell title="Branch Name" />,
+    title: <HeaderCell title="Location" />,
     dataIndex: 'branch_name',
     key: 'branch_name',
     width: 50,
@@ -209,7 +209,7 @@ export const getColumns = ({
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip> */}
-        <Tooltip size="sm" content={'View Branch'} placement="top" color="invert">
+        <Tooltip size="sm" content={'View Location'} placement="top" color="invert">
           <Link href={routes.eventsHKS.eventDetails(event.id)}>
           <ActionIcon
             as="span"
@@ -223,7 +223,7 @@ export const getColumns = ({
         </Tooltip>
         <DeletePopover
           title={`Delete`}
-          description={`Are you sure you want to delete this branch ?`}
+          description={`Are you sure you want to delete this location ?`}
           onDelete={() => onDeleteItem(event.id)}
         />
       </div>

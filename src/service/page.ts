@@ -269,9 +269,11 @@ export const createBranches = async (details: CreateBranches) => {
 
 //LIST BRANCHES API
 export const listBranches = () => {
+  const organizationId = sessionStorage.getItem('organizationId');
   return axios
     .get(
-      `${apiBaseUrl}/v1/organization-branches`,
+      `${apiBaseUrl}/v1/organization-branches?${organizationId}`,
+      // {organization_id: organizationId}
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
