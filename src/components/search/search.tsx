@@ -32,20 +32,20 @@ export default function SearchWidget({
 
   return (
     <>
-      {/* <SearchTrigger
+      <SearchTrigger
         icon={icon}
         className={className}
         onClick={() => setOpen(true)}
-      /> */}
+      />
 
-      {/* <Modal
+      <Modal
         isOpen={open}
         onClose={() => setOpen(false)}
         overlayClassName="dark:bg-opacity-20 dark:bg-gray-50 dark:backdrop-blur-sm"
         containerClassName="dark:bg-gray-100/90 overflow-hidden dark:backdrop-blur-xl"
       >
         <SearchList onClose={() => setOpen(false)} />
-      </Modal> */}
+      </Modal>
     </>
   );
 }

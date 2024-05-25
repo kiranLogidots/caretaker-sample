@@ -45,10 +45,16 @@ import {
   PiImageDuotone,
 } from 'react-icons/pi';
 import { MdOutlineDashboard, MdEventAvailable, MdInput } from 'react-icons/md';
+import { FcDepartment } from "react-icons/fc";
+import { FaHospitalUser, FaRegHospital } from "react-icons/fa";
 // import { FaUserTie, FaShuttleVan } from "react-icons/fa";
 // import { HiUserGroup } from "react-icons/hi";
 // import { RiAdminFill } from "react-icons/ri";
 import { VscRequestChanges } from "react-icons/vsc";
+import { TbNurse } from "react-icons/tb";
+import { SlOrganization } from "react-icons/sl";
+import { TbHierarchy3 } from "react-icons/tb";
+import { SiAwsorganizations } from "react-icons/si";
 // Note: do not add href in the label object, it is rendering as label
 export const menuItems = [
   // label start
@@ -98,43 +104,43 @@ export const menuItems = [
   // },
 
   // label start
-  {
-    name: 'Users',
-  },
+  // {
+  //   name: 'Users',
+  // },
   {
     name: 'Organizations',
     href: routes.organizations,
-    icon: <MdEventAvailable />,
+    icon: <SlOrganization />,
     roles: ['super_admin'],
   },
   {
     name: 'Position Category',
     href: routes.positioncategory,
-    icon: <MdEventAvailable />,
+    icon: <TbNurse />,
     roles: ['super_admin'],
   },
   {
     name: 'Positions',
     href: routes.position,
-    icon: <MdEventAvailable />,
+    icon: <PiBriefcaseDuotone />,
     roles: ['super_admin'],
   },
   {
-    name: 'Branches',
+    name: 'Locations',
     href: routes.branches,
-    icon: <MdEventAvailable />,
+    icon: <TbHierarchy3 />,
     roles: ['super_admin'],
   },
   {
     name: 'Departments',
     href: routes.departments,
-    icon: <MdEventAvailable />,
+    icon: <FaRegHospital />,
     roles: ['super_admin'],
   },
   {
     name: 'Staffs',
     href: routes.staffs,
-    icon: <MdEventAvailable />,
+    icon: <FaHospitalUser />,
     roles: ['super_admin'],
   },
   // label end

@@ -60,10 +60,10 @@ export default function AuthWrapperOne({
               <PiArrowLeftBold />
               <b className="ms-1 font-medium">Back to home</b>
             </Link> */}
-            <div className=" mb-7 flex items-center justify-center px-6 pt-3 text-center md:pt-0 lg:px-0 lg:text-start ">
+            <div className=" items- justify- mb-7 flex flex-col px-6 pt-3 text-center md:pt-0 lg:px-0 lg:text-start ">
               <Link
                 href={'/'}
-                className="absolute top-6 mb-2 inline-flex max-w-[168px] items-center justify-center"
+                className="absolute top-12 inline-flex max-w-[168px]"
               >
                 <Image src={logoImg} alt="Isomorphic" className="" />
 
@@ -73,15 +73,15 @@ export default function AuthWrapperOne({
                   className="ps-2.5 dark:invert"
                 /> */}
               </Link>
-              {/* <Title
+              <Title
                 as="h2"
-                className="mb-5 text-[26px] leading-snug md:text-3xl md:!leading-normal lg:mb-7 lg:pe-16 lg:text-[28px] xl:text-3xl 2xl:pe-8 2xl:text-4xl"
+                className="mb-5 hidden xl:block text-[26px] leading-snug md:text-3xl md:!leading-normal lg:mb-7 lg:pe-16 lg:text-[28px] xl:text-3xl 2xl:pe-8 2xl:text-4xl"
               >
                 {title}
               </Title>
-              <Text className=" leading-[1.85] text-gray-700 md:leading-loose lg:pe-8 2xl:pe-14">
+              <Text className="hidden xl:block leading-[1.85] text-gray-700 md:leading-loose lg:pe-8 2xl:pe-14">
                 {description}
-              </Text> */}
+              </Text>
             </div>
             {/* {isSocialLoginActive && (
               <>
@@ -116,9 +116,9 @@ export default function AuthWrapperOne({
             {children}
           </div>
         </div>
-        {/* <div className="hidden w-7/12 items-center justify-center rounded-[20px] bg-white px-6 dark:bg-gray-100/40 lg:flex 2xl:px-16"> */}
-        {/* <div className=" text-center 2xl:block 2xl:w-[1063px]"> */}
-        {/* <div className="mx-auto mb-10 max-w-sm pt-2 2xl:max-w-lg">
+        <div className="hidden w-6/12 items-center justify-center rounded-[20px] bg-white px-6 dark:bg-gray-100/40 lg:flex 2xl:px-16">
+          <div className=" text-center 2xl:block 2xl:w-[1063px]">
+            {/* <div className="mx-auto mb-10 max-w-sm pt-2 2xl:max-w-lg">
               <Title
                 as="h2"
                 className="mb-5 font-semibold !leading-normal lg:text-[26px] 2xl:px-10 2xl:text-[32px]"
@@ -129,9 +129,9 @@ export default function AuthWrapperOne({
                 {bannerDescription}
               </Text>
             </div> */}
-        {/* {pageImage} */}
-        {/* </div> */}
-        {/* </div> */}
+            {pageImage}
+          </div>
+        </div>
       </div>
     </>
   );
