@@ -241,7 +241,7 @@ export default function CreateUser() {
                   isLoading={isLoading}
                   className="w-full @xl:w-auto"
                 >
-                  Create Positions
+                  Create Branch
                 </Button>
               </div>
             </>

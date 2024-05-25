@@ -99,7 +99,7 @@ export const getColumns = ({
     title: <HeaderCell title="Branch Name" />,
     dataIndex: 'branch_name',
     key: 'branch_name',
-    width: 250,
+    width: 50,
     hidden: 'branch_name',
     // render: (_: string, user: User) => (
     //   <AvatarCard
@@ -114,7 +114,7 @@ export const getColumns = ({
     onHeaderCell: () => onHeaderCellClick('country'),
     dataIndex: 'country',
     key: 'country',
-    width: 250,
+    width: 50,
     render: (country: string) => country,
   },
   // {
@@ -196,7 +196,7 @@ export const getColumns = ({
     title: <HeaderCell title="Actions" />,
     dataIndex: 'action',
     key: 'action',
-    width: 140,
+    width: 50,
     render: (_: string, event: HKSEvents) => (
       <div className="justify-en flex items-center gap-3 pe-3">
         {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">

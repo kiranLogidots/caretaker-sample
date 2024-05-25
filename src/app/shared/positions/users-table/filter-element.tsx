@@ -99,7 +99,7 @@ export default function FilterElement({
           </Button>
         )}
 
-        {/* <Input
+        <Input
           type="search"
           placeholder="Search for Positions..."
           value={searchTerm}
@@ -109,7 +109,7 @@ export default function FilterElement({
           rounded="lg"
           clearable
           className="-order-4 w-full @xl:-order-5 @xl:ms-auto @xl:w-auto @4xl:-order-2 @4xl:w-[230px] @5xl:w-auto"
-        /> */}
+        />
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           {/* <ModalButton

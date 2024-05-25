@@ -107,7 +107,7 @@ export const getColumns = ({
     onHeaderCell: () => onHeaderCellClick('address'),
     dataIndex: 'company_name',
     key: 'company_name',
-    width: 250,
+    width: 50,
     render: (company_name: string) => company_name,
   },
 
@@ -139,7 +139,7 @@ export const getColumns = ({
     onHeaderCell: () => onHeaderCellClick('phone'),
     dataIndex: 'work_phone',
     key: 'work_phone',
-    width: 250,
+    width: 50,
     render: (work_phone: string) => work_phone,
   },
  
@@ -157,7 +157,7 @@ export const getColumns = ({
     onHeaderCell: () => onHeaderCellClick('created_at'),
     dataIndex: 'created_at',
     key: 'created_at',
-    width: 200,
+    width: 10,
     render: (value: Date) => <DateCell date={value} />,
   },
   // {
@@ -191,7 +191,7 @@ export const getColumns = ({
     title: <HeaderCell title="Actions" />,
     dataIndex: 'action',
     key: 'action',
-    width: 140,
+    width: 50,
     render: (_: string, user: User) => (
       <div className="justify-en flex items-center gap-3 pe-3">
         <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">

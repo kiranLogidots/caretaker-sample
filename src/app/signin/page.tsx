@@ -3,7 +3,7 @@ import AuthWrapperOne from '@/app/shared/auth-layout/auth-wrapper-one';
 import Image from 'next/image';
 import UnderlineShape from '@/components/shape/underline';
 import { metaObject } from '@/config/site.config';
-import SideImage from '../../../public/sideimage.png';
+import SideImage from '../../../public/cover.jpg';
 export const metadata = {
   ...metaObject('Sign In'),
 };
@@ -13,21 +13,20 @@ export default function SignIn() {
     <AuthWrapperOne
       title={
         <>
-          {/* Welcome back! Please{' '}
+          Welcome back! Please{' '}
           <span className="relative inline-block">
             Sign in to
             <UnderlineShape className="absolute -bottom-2 start-0 h-2.5 w-24 text-blue md:w-28 xl:-bottom-1.5 xl:w-36" />
           </span>{' '}
-          continue.aspect-[4/3.37]  */}
+          your account
         </>
       }
-      description="
-      "
+      description="Enter your email and password to access your account."
       // bannerTitle="Let's Unwaste"
       // bannerDescription=""
       // isSocialLoginActive={true}
       pageImage={
-        <div className="relative mx-auto w-[500px] xl:w-[620px] 2xl:w-[780px]">
+        <div className="relative mx-auto w-[500px] xl:w-[620px] 2xl:w-full">
           <Image
             src={
               SideImage
@@ -36,7 +35,7 @@ export default function SignIn() {
             alt="Sign Up Thumbnail"
             // fill
             priority
-            // sizes="(max-width: 768px) 100vw"
+            sizes="(max-width: 768px) 100vw"
             className="object-cover"
           />
         </div>
