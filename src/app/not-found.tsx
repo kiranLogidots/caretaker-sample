@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 import { PiHouseLineBold } from 'react-icons/pi';
 import SocialItems from '@/components/ui/social-shares';
 import { siteConfig } from '@/config/site.config';
-import NotFoundImg from '@public/not-found.png';
+import NotFoundImg from '@public/notfound404.jpg';
 
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col bg-[#F8FAFC]">
-      <div className="sticky top-0 z-40 flex justify-center py-5 backdrop-blur-lg lg:backdrop-blur-none xl:py-10">
+      {/* <div className="sticky top-0 z-40 flex justify-center py-5 backdrop-blur-lg lg:backdrop-blur-none xl:py-10">
         <Link href="/">
           <Image
             src={siteConfig.logo}
@@ -19,7 +19,7 @@ export default function NotFound() {
             priority
           />
         </Link>
-      </div>
+      </div> */}
 
       <div className="flex grow items-center px-6 xl:px-10">
         <div className="mx-auto text-center">

@@ -39,7 +39,7 @@ export default function EventForm({
 
     toast.success(
       <Text as="b">
-        Event {isNewEvent ? 'Created' : 'Updated'} Successfully
+        Shift {isNewEvent ? 'Created' : 'Updated'} Successfully
       </Text>
     );
 
@@ -66,7 +66,7 @@ export default function EventForm({
     <div className="m-auto p-4 md:px-7 md:py-10">
       <div className="mb-6 flex items-center justify-between">
         <Title as="h3" className="text-lg">
-          {isUpdateEvent ? 'Update Event' : 'Create a new event'}
+          {isUpdateEvent ? 'Update Shift' : 'Create a new shift'}
         </Title>
         <ActionIcon
           size="sm"
@@ -99,8 +99,8 @@ export default function EventForm({
             <>
               <input type="hidden" {...register('id')} value={event?.id} />
               <Input
-                label="Event Name"
-                placeholder="Enter a name of event"
+                label="Position"
+                placeholder="Enter position"
                 {...register('title')}
                 className="col-span-full"
                 error={errors.title?.message}
@@ -163,7 +163,7 @@ export default function EventForm({
                 </Button>
                 <Button
                   type="submit"
-                  className="hover:gray-700 w-full hover:bg-gray-700 @xl:w-auto dark:bg-gray-200 dark:text-white dark:hover:bg-gray-300 dark:active:enabled:bg-gray-300"
+                  className="hover:gray-700 w-full hover:bg-gray-700 @xl:w-auto dark:bg-gray-200 text-white dark:hover:bg-gray-300 dark:active:enabled:bg-gray-300"
                 >
                   Save
                 </Button>

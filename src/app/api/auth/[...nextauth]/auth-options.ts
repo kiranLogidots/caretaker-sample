@@ -4,6 +4,9 @@ import GoogleProvider from 'next-auth/providers/google';
 import { env } from '@/env.mjs';
 import isEqual from 'lodash/isEqual';
 import { pagesOptions } from './pages-options';
+import axios from 'axios';
+
+const apiBaseUrl = 'https://api.nexsysi.alpha2.logidots.com/api';
 
 export const authOptions: NextAuthOptions = {
   // debug: true,
@@ -46,25 +49,49 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       id: 'credentials',
       name: 'Credentials',
-      credentials: {},
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
       async authorize(credentials: any) {
+        try {
+          const response = await axios.post(`${apiBaseUrl}/auth/login`, {
+            email: credentials?.email,
+            password: credentials?.password,
+          });
+          const user = response.data;
+
+          // Return user object to set the JWT token
+          if (user) {
+            return {
+              id: user.id,
+              email: user.email,
+              roles: user.roles,
+            };
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.error('Login failed', error);
+          return null;
+        }
         // You need to provide your own logic here that takes the credentials
         // submitted and returns either a object representing a user or value
         // that is false/null if the credentials are invalid
-        const user = {
-          email: 'admin@caretaker.com',
-          password: 'password',
-        };
+        // const user = {
+        //   email: 'admin@caretaker.com',
+        //   password: 'password',
+        // };
 
-        if (
-          isEqual(user, {
-            email: credentials?.email,
-            password: credentials?.password,
-          })
-        ) {
-          return user as any;
-        }
-        return null;
+        // if (
+        //   isEqual(user, {
+        //     email: credentials?.email,
+        //     password: credentials?.password,
+        //   })
+        // ) {
+        //   return user as any;
+        // }
+        // return null;
       },
     }),
     // GoogleProvider({
