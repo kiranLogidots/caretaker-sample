@@ -18,15 +18,15 @@ export const presetDark = {
 
 // defaults from global css line 38
 export const DEFAULT_PRESET_COLORS = {
-  // lighter: '#d7e3fe',
-  // light: '#608efb',
-  // default: '#3872fa',
-  // dark: '#1d58d8',
-  lighter: '#4486F4', 
-  light: '#4486F4', 
-  default: '#4486F4', 
-  dark: '#4486F4', 
-  foreground: '#4486F4',
+  lighter: '#d7e3fe',
+  light: '#608efb',
+  default: '#3872fa',
+  dark: '#1d58d8',
+  // lighter: '#4486F4', 
+  // light: '#4486F4', 
+  // default: '#4486F4', 
+  // dark: '#4486F4', 
+  foreground: '#d7e3fe',
 };
 
 export const DEFAULT_PRESET_COLOR_NAME = 'Blue';

@@ -12,7 +12,7 @@ export const metadata = {
 };
 
 const pageHeader = {
-  title: 'Event Calendar',
+  title: 'Schedule',
   breadcrumb: [
     {
       href: routes.file.dashboard,
@@ -20,7 +20,7 @@ const pageHeader = {
     },
     {
       href: routes.eventCalendar,
-      name: 'Event Calendar',
+      name: 'Schedule',
     },
   ],
 };

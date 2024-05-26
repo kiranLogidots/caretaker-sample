@@ -59,6 +59,10 @@ export default function CreateUser() {
 
   const onSubmit: SubmitHandler<CreateBranchesInput> = async (data) => {
     const organizationId = sessionStorage.getItem('organizationId');
+    if (!organizationId) {
+      setErrorMessage('Organization ID not found in session storage.');
+      return;
+    }
     const formattedData = {
       branch_admin: {
         first_name: data.first_name,
@@ -71,7 +75,7 @@ export default function CreateUser() {
       location_address_line_two: data.location_address_line_two,
       country: data.country,
       postal_code: data.postal_code,
-      organization_id: Number(organizationId), // take from the url
+      organization_id: Number(organizationId), // take from the session storage
     };
 
     setLoading(true);
@@ -160,6 +164,7 @@ export default function CreateUser() {
                 {...register('branch_name')}
                 error={errors.branch_name?.message}
               />
+
               {/* <Controller
                 name="organization_id"
                 control={control}
@@ -213,17 +218,6 @@ export default function CreateUser() {
                 {...register('country')}
                 error={errors.country?.message}
               />
-
-              {/* <Input
-                label="Hourly Rate"
-                placeholder="Enter hourly rate"
-                className="col-span-full"
-                // {...register('hourly_rate')}
-                {...register('hourly_rate', {
-                  setValueAs: (value) => parseFloat(value), // Convert the input value to a number
-                })}
-                error={errors.hourly_rate?.message}
-              /> */}
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">
                   {errorMessage}

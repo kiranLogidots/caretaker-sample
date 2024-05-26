@@ -5,8 +5,12 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/departments/users-table/columns';
-import { deletePositions, listPositions } from '@/service/page';
-import { ListPositionsInterface } from '@/types';
+import {
+  deletePositions,
+  listDepartments,
+  listPositions,
+} from '@/service/page';
+import { DepartmentResponseInterface, ListPositionsInterface } from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(
   () => import('@/app/shared/departments/users-table/filter-element'),
@@ -100,9 +104,12 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = (await listPositions()) as ListPositionsInterface[];
+        const branchId = sessionStorage.getItem('organizationBranchId');
+        const resultData =
+          (await listDepartments()) as DepartmentResponseInterface[];
         console.log('result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData);
+
         // setTotalItems(resultData.pagination.totalCount);
       } catch (err: any) {
         console.log('Error response for listing users', err.response);

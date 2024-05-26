@@ -119,6 +119,16 @@ export interface CreateDepartments {
   name: string;
   description: string;
 }
+export interface DepartmentResponseInterface {
+  id: number;
+  name: string;
+  description: string;
+  organization_id: number;
+  organization_branch_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
 
 // Main response interface
 export interface ListOrganisationResponse {
