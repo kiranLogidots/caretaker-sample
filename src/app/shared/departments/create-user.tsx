@@ -11,7 +11,7 @@ import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import {  createDepartments, createPositions, listBranches, listPositionCat } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
-import { CreatePositionCatResponse, ListPositionCategoryInterface } from '@/types';
+import { CreatePositionCatResponse, ListBranchesInterface, ListPositionCategoryInterface } from '@/types';
 import { signOut } from 'next-auth/react';
 import {
   PositionsFormInput,
@@ -30,30 +30,32 @@ export default function CreateUser() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [accountTypes, setAccountTypes] = useState< { value: number; label: string }[]>([]);
 
-  useEffect(() => {
-    const fetchBranches = async () => {
-      try {
-        const result = (await listBranches()) as ListPositionCategoryInterface[];
-        console.log('List branch results:', result);
-        setAccountTypes(
-          result.map((type) => ({
-            value: type.id,
-            label: type.name,
-          }))
-        );
-      } catch (error) {
-        console.error('Error fetching account types:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchBranches = async () => {
+  //     try {
+  //       const result = (await listBranches()) as ListBranchesInterface[];
+  //       console.log('List branch results:', result);
+  //       setAccountTypes(
+  //         result.map((type) => ({
+  //           value: type.id,
+  //           label: type.name,
+  //         }))
+  //       );
+  //     } catch (error) {
+  //       console.error('Error fetching account types:', error);
+  //     }
+  //   };
 
-    fetchBranches();
-  }, []);
+  //   fetchBranches();
+  // }, []);
 
   const onSubmit: SubmitHandler<DepartmentFormInput> = async (data) => {
+    const BranchId = sessionStorage.getItem('organizationBranchId');
+
     const formattedData = {
       name: data.name,
       description: data.description,
-      organization_branch_id: Number(data.organization_branch_id),
+      organization_branch_id: Number(BranchId),
     };
 
     setLoading(true);
@@ -124,7 +126,7 @@ export default function CreateUser() {
                 {...register('description')}
                 error={errors.description?.message}
               />
-              <Controller
+              {/* <Controller
                 name="organization_branch_id"
                 control={control}
                 render={({ field }) => (
@@ -148,7 +150,7 @@ export default function CreateUser() {
                     />
                   </div>
                 )}
-              />
+              /> */}
               {/* <Input
                 label="Hourly Rate"
                 placeholder="Enter hourly rate"

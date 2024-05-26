@@ -103,6 +103,14 @@ export default function SignInForm() {
         sessionStorage.setItem('organizationId', organizationId.toString());
         console.log('Organization ID', organizationId);
       }
+      else if (userRole === 'branch_admin') {
+        const organizationUsers = resultData.organizationUsers;
+        if (organizationUsers.length > 0 && organizationUsers[0].organization_branch_id !== null) {
+          const organizationBranchId = organizationUsers[0].organization_branch_id;
+          sessionStorage.setItem('organizationBranchId', organizationBranchId.toString());
+          console.log('Organization branch ID', organizationBranchId);
+        }
+      }
       console.log('User role now is ', userRole);
       router.push('/');
       // if (userRole === 'super_admin') {

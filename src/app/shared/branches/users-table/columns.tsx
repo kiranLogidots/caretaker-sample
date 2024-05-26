@@ -209,7 +209,7 @@ export const getColumns = ({
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip> */}
-        <Tooltip size="sm" content={'View Location'} placement="top" color="invert">
+        {/* <Tooltip size="sm" content={'View Location'} placement="top" color="invert">
           <Link href={routes.eventsHKS.eventDetails(event.id)}>
           <ActionIcon
             as="span"
@@ -220,7 +220,7 @@ export const getColumns = ({
             <EyeIcon className="h-4 w-4" />
           </ActionIcon>
           </Link>
-        </Tooltip>
+        </Tooltip> */}
         <DeletePopover
           title={`Delete`}
           description={`Are you sure you want to delete this location ?`}

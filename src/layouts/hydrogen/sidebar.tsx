@@ -11,6 +11,7 @@ import SimpleBar from '@/components/ui/simplebar';
 import {
   menuItemsForSuperAdmin,
   menuItemsForOrgSuperAdmin,
+  menuItemsForBranchAdmin,
 } from '@/layouts/hydrogen/menu-items';
 // import { menuItems } from '@/layouts/hydrogen/menu-items';
 import Logo from '@/components/logo';
@@ -47,6 +48,8 @@ export default function Sidebar({ className }: { className?: string }) {
     menuItems = menuItemsForSuperAdmin;
   } else if (userRole === 'organization_super_admin') {
     menuItems = menuItemsForOrgSuperAdmin;
+  } else if (userRole === 'branch_admin') {
+    menuItems = menuItemsForBranchAdmin;
   }
   return (
     <aside

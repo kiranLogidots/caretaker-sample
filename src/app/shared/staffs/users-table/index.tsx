@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/positions/users-table/columns';
+import { getColumns } from '@/app/shared/staffs/users-table/columns';
 import { deletePositionCat, deletePositions, listPositionCat, listPositions } from '@/service/page';
 import {
   CreatePositionCatResponse,
@@ -14,7 +14,7 @@ import {
 } from '@/types';
 import toast from 'react-hot-toast';
 const FilterElement = dynamic(
-  () => import('@/app/shared/positions/users-table/filter-element'),
+  () => import('@/app/shared/staffs/users-table/filter-element'),
   { ssr: false }
 );
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
@@ -43,7 +43,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
 
         const updatedTableData = tableData.filter((event) => event.id !== id);
         setTableData(updatedTableData);
-        toast.success('Position deleted succesfully', {
+        toast.success('Staff deleted succesfully', {
           position: 'top-right',
         });
       } catch (error) {
