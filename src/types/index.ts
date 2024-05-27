@@ -318,7 +318,29 @@ export interface CreatePositionCatResponse {
   description: string;
   id: number;
 }
-
+export interface CreateStaffResponse {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  roles: {
+    id: number;
+    name: string;
+    created_at: string;
+  }[];
+  email_verified_at: string | null;
+  remember_token: string | null;
+  dob: string | null;
+  profile_pic: string | null;
+  employee_start_date: string | null;
+  employment_status: string | null;
+  id: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  is_active: boolean;
+  employee_id: string | null;
+}
 export interface AssignCollectionPoints {
   user_id: number;
   collectionPointIds: number[];

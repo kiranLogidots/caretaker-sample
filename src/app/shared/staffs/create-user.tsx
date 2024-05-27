@@ -9,16 +9,20 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import {  createPositions, listPositionCat } from '@/service/page';
+import { createPositions, createStaffs, listPositionCat } from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
-import { CreatePositionCatResponse, ListPositionCategoryInterface } from '@/types';
-import { signOut } from 'next-auth/react';
 import {
-  PositionsFormInput,
-  positionsFormSchema,
-} from '@/utils/validators/create-position.schema';
+  CreatePositionCatResponse,
+  CreateStaffResponse,
+  ListPositionCategoryInterface,
+} from '@/types';
+import { signOut } from 'next-auth/react';
 import Select from 'react-select';
 import { useDrawer } from '../drawer-views/use-drawer';
+import {
+  CreateStaffsInput,
+  createStaffsSchema,
+} from '@/utils/validators/create-staffs.schema';
 
 export default function CreateUser() {
   const { getValues, setValue, control } = useForm();
@@ -27,47 +31,83 @@ export default function CreateUser() {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [accountTypes, setAccountTypes] = useState< { value: number; label: string }[]>([]);
+  const onboardedByOptions = [
+    { value: 'invitation', label: 'Invitation' },
+    { value: 'super_admin', label: 'Super Admin' },
+    { value: 'organization_super_admin', label: 'Organization Super Admin' },
+    { value: 'branch_admin', label: 'Branch Admin' },
+    { value: 'branch_staff', label: 'Branch Staff' },
+  ];
 
-  useEffect(() => {
-    const fetchAccountTypes = async () => {
-      try {
-        const result = (await listPositionCat()) as ListPositionCategoryInterface[];
-        console.log('Account types:', result);
-        setAccountTypes(
-          result.map((type) => ({
-            value: type.id,
-            label: type.name,
-          }))
-        );
-      } catch (error) {
-        console.error('Error fetching account types:', error);
-      }
-    };
+  // const [accountTypes, setAccountTypes] = useState<
+  //   { value: number; label: string }[]
+  // >([]);
 
-    fetchAccountTypes();
-  }, []);
+  // useEffect(() => {
+  //   const fetchAccountTypes = async () => {
+  //     try {
+  //       const result =
+  //         (await listPositionCat()) as ListPositionCategoryInterface[];
+  //       console.log('Account types:', result);
+  //       setAccountTypes(
+  //         result.map((type) => ({
+  //           value: type.id,
+  //           label: type.name,
+  //         }))
+  //       );
+  //     } catch (error) {
+  //       console.error('Error fetching account types:', error);
+  //     }
+  //   };
 
-  const onSubmit: SubmitHandler<PositionsFormInput> = async (data) => {
+  //   fetchAccountTypes();
+  // }, []);
+
+  const onSubmit: SubmitHandler<CreateStaffsInput> = async (data) => {
+    const organizationId = Number(sessionStorage.getItem('organizationId'));
+    const organizationBranchId = Number(
+      sessionStorage.getItem('organizationBranchId')
+    );
+
+    if (!organizationId) {
+      setErrorMessage('Organization ID not found in session storage.');
+      return;
+    }
+    if (!organizationBranchId) {
+      setErrorMessage('Branch ID not found in session storage.');
+      return;
+    }
+
     const formattedData = {
-      name: data.name,
-      description: data.description,
-      position_category_id: Number(data.position_category_id),
-      hourly_rate: data.hourly_rate,
+      ...data,
+      organization_id: organizationId,
+      organization_branch_id: organizationBranchId,
+      positions: [
+        {
+          position_id: Number(data.primary_position_id),
+          hourly_rate: Number(data.hourly_rate),
+          is_primary: 1,
+        },
+      ],
     };
-
     setLoading(true);
 
     try {
-      const response = await createPositions(formattedData);
-      const resultData = response.data as CreatePositionCatResponse[];
+      const response = await createStaffs(formattedData);
+      const resultData = response.data as CreateStaffResponse;
 
       console.log('API Response:', resultData);
 
       if (resultData) {
         setReset({
-          name: '',
-          description: '',
+          first_name: '',
+          last_name: '',
+          email: '',
+          password: '',
+          onboarded_by: '',
+          primary_location: '',
+          primary_position_id: '',
+          hourly_rate: '',
         });
         closeDrawer();
         toast.success('Staff created successfully', {
@@ -93,10 +133,10 @@ export default function CreateUser() {
   return (
     <>
       <Toaster position="top-right" />
-      <Form<PositionsFormInput>
+      <Form<CreateStaffsInput>
         resetValues={reset}
         onSubmit={onSubmit}
-        validationSchema={positionsFormSchema}
+        validationSchema={createStaffsSchema}
         className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
@@ -111,21 +151,32 @@ export default function CreateUser() {
                 </ActionIcon>
               </div>
               <Input
-                label="Name"
-                placeholder="Enter name"
-                className="col-span-full"
-                {...register('name')}
-                error={errors.name?.message}
+                label="First Name"
+                placeholder="Enter first name"
+                {...register('first_name')}
+                error={errors.first_name?.message}
               />
               <Input
-                label="Description"
-                placeholder="Enter description"
-                className="col-span-full"
-                {...register('description')}
-                error={errors.description?.message}
+                label="Last Name"
+                placeholder="Enter last name"
+                {...register('last_name')}
+                error={errors.last_name?.message}
+              />
+              <Input
+                label="Email"
+                placeholder="Enter email"
+                {...register('email')}
+                error={errors.email?.message}
+              />
+              <Input
+                label="Password"
+                placeholder="Enter password"
+                // type="password"
+                {...register('password')}
+                error={errors.password?.message}
               />
               <Controller
-                name="position_category_id"
+                name="onboarded_by"
                 control={control}
                 render={({ field }) => (
                   <div className="col-span-full flex flex-col gap-2">
@@ -133,12 +184,12 @@ export default function CreateUser() {
                       htmlFor={field.name}
                       className="font-medium text-gray-900 dark:text-white"
                     >
-                    Select Position Category
+                      Onboarded By
                     </label>
                     <Select
-                      options={accountTypes}
-                      value={accountTypes.find(
-                        (at) => at.value === field.value
+                      options={onboardedByOptions}
+                      value={onboardedByOptions.find(
+                        (option) => option.value === field.value
                       )}
                       onChange={(option) =>
                         field.onChange(option ? option.value : null)
@@ -149,16 +200,35 @@ export default function CreateUser() {
                   </div>
                 )}
               />
+
               {/* <Input
-                label="Hourly Rate"
-                placeholder="Enter hourly rate"
-                className="col-span-full"
-                // {...register('hourly_rate')}
-                {...register('hourly_rate', {
-                  setValueAs: (value) => parseFloat(value), // Convert the input value to a number
-                })}
-                error={errors.hourly_rate?.message}
+                label="Onboarded By"
+                placeholder="Enter onboarded by"
+                {...register('onboarded_by')}
+                error={errors.onboarded_by?.message}
               /> */}
+              <Input
+                label="Primary Location"
+                className="col-span-full"
+                placeholder="Enter primary location"
+                {...register('primary_location')}
+                error={errors.primary_location?.message}
+              />
+              <Input
+                label="Primary Position ID"
+                className="col-span-full"
+                placeholder="Enter primary position ID"
+                {...register('primary_position_id')}
+                error={errors.primary_position_id?.message}
+              />
+              <Input
+                label="Hourly Rate"
+                className="col-span-full"
+                placeholder="Enter hourly rate"
+                {...register('hourly_rate')}
+                error={errors.hourly_rate?.message}
+              />
+
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">
                   {errorMessage}

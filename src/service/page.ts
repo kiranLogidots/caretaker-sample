@@ -397,17 +397,18 @@ export const createStaffs = async (details: CreateStaffs) => {
 };
 
 //LIST STAFFS API
-export const listStaffs = (organization_id: number) => {
+export const listStaffs = () => {
+  const BranchId = sessionStorage.getItem('organizationBranchId');
   return axios
     .get(
-      `${apiBaseUrl}/v1/organization-users?organization_id=${organization_id}`,
+      `${apiBaseUrl}/v1/organization-users?organization_branch_id=${BranchId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }
     )
-    .then((response) => response.data)
+    .then((response) => response.data.data)
     .catch((error) => {
       console.error('Error response:', error.response);
       if (
