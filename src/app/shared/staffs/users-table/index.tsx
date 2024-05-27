@@ -5,7 +5,7 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/staffs/users-table/columns';
-import { deletePositionCat, deletePositions, listPositionCat, listPositions } from '@/service/page';
+import { deletePositionCat, deletePositions, listPositionCat, listPositions, listStaffs } from '@/service/page';
 import {
   CreatePositionCatResponse,
   HKSEvents,
@@ -106,8 +106,8 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     const fetchData = async () => {
       try {
         const resultData =
-          (await listPositions()) as ListPositionsInterface[];
-        console.log('result data', resultData); // Fetch data from the listHKS API
+          (await listStaffs()) as ListPositionsInterface[];
+        console.log('result data', resultData); 
         setTableData(resultData); 
         // setTotalItems(resultData.pagination.totalCount);
       } catch (err: any) {

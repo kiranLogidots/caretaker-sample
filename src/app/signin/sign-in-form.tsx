@@ -105,6 +105,9 @@ export default function SignInForm() {
       }
       else if (userRole === 'branch_admin') {
         const organizationUsers = resultData.organizationUsers;
+        const organizationId = organizationUsers[0].organization_id;
+        sessionStorage.setItem('organizationId', organizationId.toString());
+        console.log('Organization ID', organizationId);
         if (organizationUsers.length > 0 && organizationUsers[0].organization_branch_id !== null) {
           const organizationBranchId = organizationUsers[0].organization_branch_id;
           sessionStorage.setItem('organizationBranchId', organizationBranchId.toString());
