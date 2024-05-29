@@ -1,4 +1,4 @@
-import RoleCard from '@/app/shared/positions/role-card';
+import RoleCard from '@/app/shared/departments/role-card';
 import { rolesList } from '@/data/roles-permissions';
 import cn from '@/utils/class-names';
 

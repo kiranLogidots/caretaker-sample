@@ -80,6 +80,7 @@ export const routes = {
   events:'/events-hks',
   positioncategory:'/position-category',
   position:'/positions',
+  positions_under_org:'/positions-under-org',
   branches:'/branches',
   departments:'/departments',
   staffs:'/staffs',

@@ -5,6 +5,7 @@ import {
   CreateOrg,
   CreatePositionCat,
   CreatePositions,
+  CreatePositionsUnderOrg,
   CreateStaffs,
 } from '@/types';
 import axios from 'axios';
@@ -209,6 +210,20 @@ export const createPositions = async (details: CreatePositions) => {
 
   return response;
 };
+export const createOrgPositions = async (details: CreatePositionsUnderOrg) => {
+  let response = await axios.post(
+    `${apiBaseUrl}/v1/organization-positions`,
+    details,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  return response;
+};
 
 //LIST POSITIONS API
 export const listPositions = () => {
@@ -218,6 +233,35 @@ export const listPositions = () => {
         Authorization: `Bearer ${accessToken}`,
       },
     })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        // error.response?.data?.statusCode === 403 ||
+        error.response.status === 401
+      ) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+      // throw new Error('Something wrong on network connection');
+    });
+};
+export const listOrgPositions = () => {
+  const organizationId = sessionStorage.getItem('organizationId');
+
+  return axios
+    .get(
+      `${apiBaseUrl}/v1/organization-positions?organization_id=${organizationId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
     .then((response) => response.data)
     .catch((error) => {
       console.error('Error response:', error.response);
@@ -465,8 +509,6 @@ export const deleteStaffs = async (staffId: string) => {
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 // export const viewEventDetail = (id: number) => {
 //   return axios

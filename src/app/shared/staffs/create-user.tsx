@@ -83,25 +83,8 @@ export default function CreateUser() {
       return;
     }
 
-    // const formattedData = {
-    //   ...data,
-    //   organization_id: organizationId,
-    //   organization_branch_id: organizationBranchId,
-    //   onboarded_by: 'invitation',
-    //   positions: [
-    //     {
-    //       position_id: Number(data.primary_position_id),
-    //       hourly_rate: Number(data.hourly_rate),
-    //       is_primary: 1,
-    //     },
-    //   ],
-
     const formattedPositions = [
-      // {
-      //   position_id: Number(data.position_id),
-      //   hourly_rate: Number(data.hourly_rate),
-      //   is_primary: 1,
-      // },
+
       ...data.positions.map(({ position_id, hourly_rate, is_primary }) => ({
         position_id: Number(position_id),
         hourly_rate: Number(hourly_rate),
@@ -112,7 +95,9 @@ export default function CreateUser() {
       ...data,
       organization_id: organizationId,
       organization_branch_id: organizationBranchId,
-      dob: new Date(data.dob).toISOString(),
+      // onboarded_by: 'invitation',
+      dob: new Date(data.dob).toISOString().split('T')[0],
+      // dob: new Date(data.dob).toISOString(),
       positions: formattedPositions,
     };
     setLoading(true);
@@ -130,8 +115,6 @@ export default function CreateUser() {
           email: '',
           phone: '',
           primary_location: '',
-          primary_position: '',
-          secondary_positions: [],
           hourly_rate: '',
           dob: '',
           employee_start_date: '',
@@ -167,14 +150,14 @@ export default function CreateUser() {
         resetValues={reset}
         onSubmit={onSubmit}
         validationSchema={createStaffsSchema}
-        className="grid grid-cols-1 gap-6 p-6 overflow-scroll @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
+        className="grid h-[100vh] grid-cols-1 gap-6 overflow-scroll p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
           return (
             <>
               <div className="col-span-full flex items-center justify-between">
                 <Title as="h4" className="font-semibold">
-                  Add a staff
+                  Invite a staff
                 </Title>
                 <ActionIcon size="sm" variant="text" onClick={closeDrawer}>
                   <PiXBold className="h-auto w-5" />
@@ -346,9 +329,16 @@ export default function CreateUser() {
                 label="Hourly Rate"
                 className="col-span-full"
                 placeholder="Enter hourly rate"
+                {...register('positions.1.hourly_rate')}
+                error={errors.positions?.[1]?.hourly_rate?.message}
+              />
+              {/* <Input
+                label="Hourly Rate"
+                className="col-span-full"
+                placeholder="Enter hourly rate"
                 {...register('hourly_rate')}
                 error={errors.hourly_rate?.message}
-              />
+              /> */}
 
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">

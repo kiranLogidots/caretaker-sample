@@ -45,14 +45,14 @@ import {
   PiImageDuotone,
 } from 'react-icons/pi';
 import { MdOutlineDashboard, MdEventAvailable, MdInput } from 'react-icons/md';
-import { FcDepartment } from "react-icons/fc";
-import { FaHospitalUser, FaRegHospital } from "react-icons/fa";
-import { FaLocationCrosshairs } from "react-icons/fa6";
-import { VscRequestChanges } from "react-icons/vsc";
-import { TbNurse } from "react-icons/tb";
-import { SlOrganization } from "react-icons/sl";
-import { TbHierarchy3 } from "react-icons/tb";
-import { SiAwsorganizations } from "react-icons/si";
+import { FcDepartment } from 'react-icons/fc';
+import { FaHospitalUser, FaRegHospital } from 'react-icons/fa';
+import { FaLocationCrosshairs } from 'react-icons/fa6';
+import { VscRequestChanges } from 'react-icons/vsc';
+import { TbNurse } from 'react-icons/tb';
+import { SlOrganization } from 'react-icons/sl';
+import { TbHierarchy3 } from 'react-icons/tb';
+import { SiAwsorganizations } from 'react-icons/si';
 
 // Note: do not add href in the label object, it is rendering as label
 
@@ -90,6 +90,32 @@ export const menuItemsForOrgSuperAdmin = [
     href: routes.branches,
     icon: <FaLocationCrosshairs />,
   },
+  {
+    name: 'Positions',
+    href: routes.positions_under_org,
+    icon: <PiBriefcaseDuotone />,
+  },
+  // {
+  //   name: 'Settings',
+  //   href: '#',
+  //   icon: <PiShoppingCartDuotone />,
+  //   dropdownItems: [
+  //     {
+  //       name: 'Positions',
+  //       href: routes.eCommerce.products,
+  //       badge: '',
+  //     },
+  //     {
+  //       name: 'Product Details',
+  //       href: routes.eCommerce.productDetails(DUMMY_ID),
+  //     },
+  //     {
+  //       name: 'Create Product',
+  //       href: routes.eCommerce.createProduct,
+  //     },
+  //   ],
+  // },
+
 ];
 export const menuItemsForBranchAdmin = [
   {
@@ -129,7 +155,7 @@ export const menuItems = [
     name: 'Dashboard',
     href: '/',
     icon: <MdOutlineDashboard />,
-  // badge: 'New',
+    // badge: 'New',
   },
   {
     name: 'Organizations',
@@ -143,7 +169,7 @@ export const menuItems = [
   },
   {
     name: 'Positions',
-    href: routes.position,
+    href: routes.positions_under_org,
     icon: <PiBriefcaseDuotone />,
   },
   {
@@ -204,7 +230,7 @@ export const menuItems = [
   // {
   //   name: 'Users',
   // },
- 
+
   // label end
   // {
   //   name: 'E-Commerce',
@@ -363,12 +389,12 @@ export const menuItems = [
   //   href: routes.transportCoordinator,
   //   icon: <PiUserPlusDuotone />,
   // },
- 
-   // label start
+
+  // label start
   //  {
   //   name: 'Activities',
   // },
-    // label end
+  // label end
 
   // {
   //   name: 'Search & Filters',
