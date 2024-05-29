@@ -56,31 +56,6 @@ export default function CreateUser() {
 
     const organizationId = Number(sessionStorage.getItem('organizationId'));
 
-    // const formattedData = {
-    //   description: data.description,
-    //   position_id: Number(data.position_id),
-    //   hourly_rate: data.hourly_rate,
-    // };
-    // const formattedData = {
-    //   organization_positions: [
-    //     {
-    //       organization_id: organizationId, // Assuming a static organization_id, modify as needed
-    //       position_id: Number(data.position_id),
-    //       hourly_rate: data.hourly_rate, // Converting hourly_rate to string as required
-    //     },
-    //   ],
-    // };
-    // const formattedData = {
-    //   organization_positions: data.organization_positions.map((position) => ({
-    //     ...position,
-    //     organization_id: organizationId,
-    //   })),
-    // };
-    // const formattedData = data.organization_positions.map((position) => ({
-    //   organization_id: organizationId,
-    //   position_id: position.position_id,
-    //   hourly_rate: position.hourly_rate,
-    // }));
     const formattedData: CreatePositionsUnderOrg = {
       organization_positions: data.organization_positions.map(position => ({
         organization_id: organizationId,
@@ -116,7 +91,6 @@ export default function CreateUser() {
           callbackUrl: 'http://localhost:3000',
         });
       } else if (err.response?.data?.statusCode === 400) {
-        // setErrorMessage(err.response.data.message.join(' '));
         const errorMessage = err.response.data.message.join(' ');
 
         if (errorMessage.includes('organization_positions.0.position_id already exists')) {
@@ -128,7 +102,6 @@ export default function CreateUser() {
         setErrorMessage(err.message || 'An unknown error occurred');
       }
     } finally {
-      // signOut();
       setLoading(false);
     }
   };
@@ -153,13 +126,6 @@ export default function CreateUser() {
                   <PiXBold className="h-auto w-5" />
                 </ActionIcon>
               </div>
-              {/* <Input
-                label="Name"
-                placeholder="Enter name"
-                className="col-span-full"
-                {...register('name')}
-                error={errors.name?.message}
-              /> */}
 
               <Controller
                 name="organization_positions"
@@ -185,17 +151,6 @@ export default function CreateUser() {
                       name={field.name}
                       isClearable
                     />
-                    {/* <Select
-                      options={accountTypes}
-                      value={accountTypes.find(
-                        (at) => at.value === field.value
-                      )}
-                      onChange={(option) =>
-                        field.onChange(option ? option.value : null)
-                      }
-                      name={field.name}
-                      isClearable
-                    /> */}
                   </div>
                 )}
               />
@@ -208,23 +163,7 @@ export default function CreateUser() {
                 })}
                 error={errors.organization_positions?.[0]?.hourly_rate?.message}
               />
-              {/* <Input
-                label="Hourly Rate"
-                placeholder="Enter hourly rate"
-                className="col-span-full"
-                // {...register('hourly_rate')}
-                {...register('hourly_rate', {
-                  setValueAs: (value) => parseFloat(value), // Convert the input value to a number
-                })}
-                error={errors.hourly_rate?.message}
-              /> */}
-              {/* <Input
-                label="Description"
-                placeholder="Enter description"
-                className="col-span-full"
-                {...register('description')}
-                error={errors.description?.message}
-              /> */}
+          
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">
                   {errorMessage}
