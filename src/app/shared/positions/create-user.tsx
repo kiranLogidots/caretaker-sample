@@ -53,7 +53,7 @@ export default function CreateUser() {
       name: data.name,
       description: data.description,
       position_category_id: Number(data.position_category_id),
-      hourly_rate: data.hourly_rate,
+      hourly_rate: Number(data.hourly_rate),
     };
 
     setLoading(true);

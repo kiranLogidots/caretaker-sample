@@ -96,110 +96,63 @@ export const getColumns = ({
   //   ),
   // },
   {
-    title: <HeaderCell title="Location" />,
-    dataIndex: 'primary_location',
-    key: 'primary_location',
+    title: <HeaderCell title="Team member" />,
+    onHeaderCell: () => onHeaderCellClick('user.first_name'),
+    dataIndex: 'user',
+    key: 'user.first_name',
     width: 250,
-    hidden: 'primary_location',
-    // render: (_: string, user: User) => (
-    //   <AvatarCard
-    //     src={user.avatar}
-    //     name={user.fullName}
-    //     description={user.email}
-    //   />
-    // ),
-  },
-  {
-    title: <HeaderCell title="Role" />,
-    onHeaderCell: () => onHeaderCellClick('role'),
-    dataIndex: 'role',
-    key: 'role',
-    width: 250,
-    render: (role: string) => role,
-  },
-  {
-    title: <HeaderCell title="Onboarded By" />,
-    onHeaderCell: () => onHeaderCellClick('onboarded_by'),
-    dataIndex: 'onboarded_by',
-    key: 'onboarded_by',
-    width: 250,
-    render: (onboarded_by: string) => onboarded_by,
-  },
-  // {
-  //   title: <HeaderCell title="Position Category" />,
-  //   onHeaderCell: () => onHeaderCellClick('position_category_id'),
-  //   dataIndex: 'position_category_id',
-  //   key: 'position_category_id',
-  //   width: 250,
-  //   render: (position_category_id: string) => position_category_id,
-  // },
-  // {
-  //   title: <HeaderCell title="Hourly Rate" />,
-  //   onHeaderCell: () => onHeaderCellClick('hourly_rate'),
-  //   dataIndex: 'hourly_rate',
-  //   key: 'hourly_rate',
-  //   width: 250,
-  //   render: (hourly_rate: string) => hourly_rate,
-  // },
+    render: (user: { first_name: string }) =>  user.first_name,
 
+  },
   // {
-  //   title: (
-  //     <HeaderCell
-  //       title="Date"
-  //       sortable
-  //       ascending={
-  //         sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
-  //       }
-  //     />
-  //   ),
-  //   onHeaderCell: () => onHeaderCellClick('date'),
-  //   dataIndex: 'date',
-  //   key: 'date',
-  //   width: 200,
-  //   render: (value: Date) => <DateCell date={value} />,
-  // },
-  // {
-  //   title: <HeaderCell title="No of Participants" />,
-  //   onHeaderCell: () => onHeaderCellClick('expense'),
-  //   dataIndex: 'no_of_participants',
-  //   key: 'no_of_participants',
+  //   title: <HeaderCell title="Position" />,
+  //   onHeaderCell: () => onHeaderCellClick('user.first_name'),
+  //   dataIndex: 'user',
+  //   key: 'user.first_name',
   //   width: 250,
-  //   render: (no_of_participants: number) => no_of_participants,
+  //   render: (user: { first_name: string }) =>  user.first_name,
+
   // },
-  // {
-  //   title: <HeaderCell title="Organised By" />,
-  //   dataIndex: 'organised_by',
-  //   key: 'organised_by',
-  //   width: 250,
-  //   hidden: 'organised_by',
-  // },
-  // {
-  //   title: <HeaderCell title="Permissions" />,
-  //   dataIndex: 'permissions',
-  //   key: 'permissions',
-  //   width: 200,
-  //   render: (permissions: User['permissions'][]) => (
-  //     <div className="flex items-center gap-2">
-  //       {permissions.map((permission) => (
-  //         <Badge
-  //           key={permission}
-  //           rounded="lg"
-  //           variant="outline"
-  //           className="border-muted font-normal text-gray-500"
-  //         >
-  //           {permission}
-  //         </Badge>
-  //       ))}
-  //     </div>
-  //   ),
-  // },
-  // {
-  //   title: <HeaderCell title="Status" />,
-  //   dataIndex: 'status',
-  //   key: 'status',
-  //   width: 120,
-  //   render: (status: User['status']) => getStatusBadge(status),
-  // },
+  {
+    title: <HeaderCell title="Employment Status" />,
+    onHeaderCell: () => onHeaderCellClick('user.employment_status'),
+    dataIndex: 'user',
+    key: 'user.employment_status',
+    width: 250,
+    render: (user: { employment_status: string }) =>  user.employment_status,
+
+  },
+  {
+    title: <HeaderCell title="Phone" />,
+    onHeaderCell: () => onHeaderCellClick('user.phone'),
+    dataIndex: 'user',
+    key: 'user.phone',
+    width: 250,
+    render: (user: { phone: string }) =>  user.phone,
+
+  },
+  {
+    title: <HeaderCell title="Email" />,
+    onHeaderCell: () => onHeaderCellClick('user.email'),
+    dataIndex: 'user',
+    key: 'user.email',
+    width: 250,
+    render: (user: { email: string }) =>  user.email,
+
+  },
+  {
+    title: <HeaderCell title="Status" />,
+    onHeaderCell: () => onHeaderCellClick('user.status'),
+    dataIndex: 'user',
+    key: 'user.status',
+    width: 250,
+    render: (user: { status: string }) =>  user.status,
+
+  },
+
+
+
+  
   // {
   //   title: <HeaderCell title="Actions" />,
   //   dataIndex: 'action',

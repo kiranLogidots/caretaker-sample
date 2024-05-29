@@ -85,9 +85,10 @@ export default function CreateUser() {
 
     const formattedPositions = [
 
-      ...data.positions.map(({ position_id, hourly_rate, is_primary }) => ({
+      ...data.positions.map(({ position_id, is_primary }) => ({
         position_id: Number(position_id),
-        hourly_rate: Number(hourly_rate),
+        // hourly_rate: Number(hourly_rate),
+         hourly_rate: 12,
         is_primary: is_primary ? 1 : 0,
       })),
     ];
@@ -216,16 +217,35 @@ export default function CreateUser() {
                             position.is_primary
                         )
                       )}
-                      onChange={(option) => {
+                      onChange={(selectedOption) => {
+                        // Create a new position object for the selected option
                         const newPosition = {
-                          position_id: option?.value.toString(),
-                          is_primary: true,
+                          position_id: selectedOption?.value,
+                          hourly_rate: 12, // Placeholder hourly rate for the example
+                          is_primary: 1, // Set as primary
                         };
-                        field.onChange([
-                          newPosition,
-                          ...(field.value || []).filter((p) => !p.is_primary),
-                        ]);
+                      
+                        // Update the positions array in the form field
+                        const updatedPositions = [
+                          newPosition, // New primary position
+                          // Filter out any previous primary positions and update secondary positions
+                          ...(field.value || []).filter((position) => position.is_primary === 0),
+                        ];
+                      
+                        // Update the form field's value with the new positions array
+                        field.onChange(updatedPositions);
                       }}
+                      
+                      // onChange={(option) => {
+                      //   const newPosition = {
+                      //     position_id: option?.value.toString(),
+                      //     is_primary: true,
+                      //   };
+                      //   field.onChange([
+                      //     newPosition,
+                      //     ...(field.value || []).filter((p) => !p.is_primary),
+                      //   ]);
+                      // }}
                       name={field.name}
                       isClearable
                     />
@@ -252,16 +272,39 @@ export default function CreateUser() {
                             !position.is_primary
                         )
                       )}
-                      onChange={(options) => {
-                        const newPositions = options.map((option) => ({
-                          position_id: option.value.toString(),
-                          is_primary: false,
-                        }));
-                        field.onChange([
-                          ...newPositions,
-                          ...(field.value || []).filter((p) => p.is_primary),
-                        ]);
+
+                      onChange={(selectedOptions) => {
+                        // Create an array to store the updated positions
+                        const updatedPositions: { position_id: number; hourly_rate: number; is_primary: number }[] = [];                      
+                        // Loop through each selected option
+                        selectedOptions.forEach((selectedOption) => {
+                          // Create a new position object for the selected option
+                          const newPosition = {
+                            position_id: selectedOption?.value,
+                            hourly_rate: 12, // Placeholder hourly rate for the example
+                            is_primary: 0, // Set as secondary
+                          };
+                      
+                          // Add the new position to the updated positions array
+                          updatedPositions.push(newPosition);
+                        });
+                      
+                        // Update the form field's value with the updated positions array
+                        field.onChange(updatedPositions);
                       }}
+                      
+                      
+
+                      // onChange={(options) => {
+                      //   const newPositions = options.map((option) => ({
+                      //     position_id: option.value.toString(),
+                      //     is_primary: false,
+                      //   }));
+                      //   field.onChange([
+                      //     ...newPositions,
+                      //     ...(field.value || []).filter((p) => p.is_primary),
+                      //   ]);
+                      // }}
                       name={field.name}
                       isMulti
                       isClearable
@@ -325,13 +368,13 @@ export default function CreateUser() {
                 {...register('employee_id')}
                 error={errors.employee_id?.message}
               />
-              <Input
+              {/* <Input
                 label="Hourly Rate"
                 className="col-span-full"
                 placeholder="Enter hourly rate"
                 {...register('positions.1.hourly_rate')}
                 error={errors.positions?.[1]?.hourly_rate?.message}
-              />
+              /> */}
               {/* <Input
                 label="Hourly Rate"
                 className="col-span-full"

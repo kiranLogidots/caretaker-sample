@@ -486,7 +486,7 @@ export interface CreatePositionResponse {
   id: number;
   name: string;
   description: string;
-  hourly_rate: string;
+  hourly_rate: number;
   position_category_id: number;
   positionCategory: {
     id: number;

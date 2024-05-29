@@ -4,7 +4,7 @@ import { validateEmail } from '@/utils/validators/common-rules';
 
 const positionSchema = z.object({
   position_id: z.number().min(1),
-  hourly_rate: z.number().min(1, { message: messages.hourlyRateIsRequired }),
+  // hourly_rate: z.number().min(1, { message: messages.hourlyRateIsRequired }),
   is_primary: z.number(),
 });
 
