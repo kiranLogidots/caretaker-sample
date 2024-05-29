@@ -101,6 +101,13 @@ export const getColumns = ({
     key: 'branch_name',
     width: 50,
     hidden: 'branch_name',
+  },
+  {
+    title: <HeaderCell title="Location Name" />,
+    dataIndex: 'location_name',
+    key: 'location_name',
+    width: 50,
+    hidden: 'location_name',
     // render: (_: string, user: User) => (
     //   <AvatarCard
     //     src={user.avatar}
@@ -117,81 +124,6 @@ export const getColumns = ({
     width: 50,
     render: (country: string) => country,
   },
-  // {
-  //   title: <HeaderCell title="Position Category" />,
-  //   onHeaderCell: () => onHeaderCellClick('position_category_id'),
-  //   dataIndex: 'position_category_id',
-  //   key: 'position_category_id',
-  //   width: 250,
-  //   render: (position_category_id: string) => position_category_id,
-  // },
-  // {
-  //   title: <HeaderCell title="Hourly Rate" />,
-  //   onHeaderCell: () => onHeaderCellClick('hourly_rate'),
-  //   dataIndex: 'hourly_rate',
-  //   key: 'hourly_rate',
-  //   width: 250,
-  //   render: (hourly_rate: string) => hourly_rate,
-  // },
-
-  // {
-  //   title: (
-  //     <HeaderCell
-  //       title="Date"
-  //       sortable
-  //       ascending={
-  //         sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
-  //       }
-  //     />
-  //   ),
-  //   onHeaderCell: () => onHeaderCellClick('date'),
-  //   dataIndex: 'date',
-  //   key: 'date',
-  //   width: 200,
-  //   render: (value: Date) => <DateCell date={value} />,
-  // },
-  // {
-  //   title: <HeaderCell title="No of Participants" />,
-  //   onHeaderCell: () => onHeaderCellClick('expense'),
-  //   dataIndex: 'no_of_participants',
-  //   key: 'no_of_participants',
-  //   width: 250,
-  //   render: (no_of_participants: number) => no_of_participants,
-  // },
-  // {
-  //   title: <HeaderCell title="Organised By" />,
-  //   dataIndex: 'organised_by',
-  //   key: 'organised_by',
-  //   width: 250,
-  //   hidden: 'organised_by',
-  // },
-  // {
-  //   title: <HeaderCell title="Permissions" />,
-  //   dataIndex: 'permissions',
-  //   key: 'permissions',
-  //   width: 200,
-  //   render: (permissions: User['permissions'][]) => (
-  //     <div className="flex items-center gap-2">
-  //       {permissions.map((permission) => (
-  //         <Badge
-  //           key={permission}
-  //           rounded="lg"
-  //           variant="outline"
-  //           className="border-muted font-normal text-gray-500"
-  //         >
-  //           {permission}
-  //         </Badge>
-  //       ))}
-  //     </div>
-  //   ),
-  // },
-  // {
-  //   title: <HeaderCell title="Status" />,
-  //   dataIndex: 'status',
-  //   key: 'status',
-  //   width: 120,
-  //   render: (status: User['status']) => getStatusBadge(status),
-  // },
   {
     title: <HeaderCell title="Actions" />,
     dataIndex: 'action',

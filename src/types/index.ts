@@ -301,11 +301,13 @@ export interface CreateStaffs {
   first_name: string;
   last_name: string;
   email: string;
-  password: string;
-  onboarded_by: string;
-  primary_location: string;
   organization_id: number;
   organization_branch_id: number;
+  primary_location: string;
+  employee_id: string;
+  employee_start_date: string;
+  employment_status: string;
+  dob: string;
 }
 
 export interface StaffsPositions {

@@ -17,11 +17,6 @@ import { superAdminLogin } from '@/service/page';
 import { useRouter } from 'next/navigation';
 import { IoMdRefresh } from 'react-icons/io';
 
-interface UserRoles {
-  id: number;
-  name: string;
-  created_at: string;
-}
 interface UserRole {
   id: number;
   name: string;
@@ -87,16 +82,19 @@ export default function SignInForm() {
       setLoading(true);
       const response = await superAdminLogin(formattedData);
       const resultData = response.data as SALoginInterface;
-      console.log('RESULT DATA SIGNUP PAGE', resultData);
+      console.log('Login response', resultData);
+
       const accessToken = resultData.access_token;
       const user_roles = resultData.roles;
-      sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
-      // const user_roles = resultData.roles;
-      console.log('User roles array?', user_roles);
+
       sessionStorage.setItem('accessToken', accessToken);
-      // sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
+      sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
+
+      console.log('User roles array', user_roles);
+
       // Redirect based on role
       const userRole = user_roles[0].name;
+
       if (userRole === 'organization_super_admin') {
         const organizationUsers = resultData.organizationUsers;
         const organizationId = organizationUsers[0].organization_id;
@@ -115,16 +113,7 @@ export default function SignInForm() {
         }
       }
       console.log('User role now is ', userRole);
-      router.push('/');
-      // if (userRole === 'super_admin') {
-      //   router.push('/');
-      // } else if (userRole === 'organization_super_admin') {
-      //   router.push('/');
-      // } else if (userRole === 'branch_admin') {
-      //   router.push('/');
-      // } else {
-      //   router.push('/user-dashboard');
-      // }
+      // router.push('/');
     } catch (error) {
       console.error('Error during login', error);
     }
