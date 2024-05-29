@@ -203,49 +203,49 @@ export const getColumns = ({
   //   width: 120,
   //   render: (status: User['status']) => getStatusBadge(status),
   // },
-  {
-    title: <HeaderCell title="Actions" />,
-    dataIndex: 'action',
-    key: 'action',
-    width: 50,
-    render: (_: string, user: User) => (
-      <div className="justify-en flex items-center gap-3 pe-3">
-        <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
-          <ActionIcon
-            as="span"
-            size="sm"
-            variant="outline"
-            className="hover:!border-gray-900 hover:text-gray-700"
-          >
-            <PencilIcon className="h-4 w-4" />
-          </ActionIcon>
-        </Tooltip>
+  // {
+  //   title: <HeaderCell title="Actions" />,
+  //   dataIndex: 'action',
+  //   key: 'action',
+  //   width: 50,
+  //   render: (_: string, user: User) => (
+  //     <div className="justify-en flex items-center gap-3 pe-3">
+  //       <Tooltip size="sm" content={'Edit User'} placement="top" color="invert">
+  //         <ActionIcon
+  //           as="span"
+  //           size="sm"
+  //           variant="outline"
+  //           className="hover:!border-gray-900 hover:text-gray-700"
+  //         >
+  //           <PencilIcon className="h-4 w-4" />
+  //         </ActionIcon>
+  //       </Tooltip>
 
-        {/* When View user is clicked, open a drawyer which will display all the form field with the data in it , but users cant edit it, only view it like this - <DrawerButton
-            label="Add New Organization"
-            view={<CreateUser />}
-            customSize="500px"
-            placement="right"
-          /> */}
+  //       {/* When View user is clicked, open a drawyer which will display all the form field with the data in it , but users cant edit it, only view it like this - <DrawerButton
+  //           label="Add New Organization"
+  //           view={<CreateUser />}
+  //           customSize="500px"
+  //           placement="right"
+  //         /> */}
 
-        <Tooltip size="sm" content={'View User'} placement="top" color="invert">
-          <ActionIcon
-            as="span"
-            size="sm"
-            variant="outline"
-            className="hover:!border-gray-900 hover:text-gray-700"
-          >
-            <EyeIcon className="h-4 w-4" />
-          </ActionIcon>
-        </Tooltip>
+  //       <Tooltip size="sm" content={'View User'} placement="top" color="invert">
+  //         <ActionIcon
+  //           as="span"
+  //           size="sm"
+  //           variant="outline"
+  //           className="hover:!border-gray-900 hover:text-gray-700"
+  //         >
+  //           <EyeIcon className="h-4 w-4" />
+  //         </ActionIcon>
+  //       </Tooltip>
 
        
-        {/* <DeletePopover
-          title={`Delete this user`}
-          description={`Are you sure you want to delete this #${user.id} user?`}
-          onDelete={() => onDeleteItem(user.id)}
-        /> */}
-      </div>
-    ),
-  },
+  //       {/* <DeletePopover
+  //         title={`Delete this user`}
+  //         description={`Are you sure you want to delete this #${user.id} user?`}
+  //         onDelete={() => onDeleteItem(user.id)}
+  //       /> */}
+  //     </div>
+  //   ),
+  // },
 ];
