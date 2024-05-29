@@ -71,6 +71,7 @@ export default function SignInForm() {
   //TODO: why we need to reset it here
   const [reset, setReset] = useState({});
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
@@ -100,22 +101,33 @@ export default function SignInForm() {
         const organizationId = organizationUsers[0].organization_id;
         sessionStorage.setItem('organizationId', organizationId.toString());
         console.log('Organization ID', organizationId);
-      }
-      else if (userRole === 'branch_admin') {
+      } else if (userRole === 'branch_admin') {
         const organizationUsers = resultData.organizationUsers;
         const organizationId = organizationUsers[0].organization_id;
         sessionStorage.setItem('organizationId', organizationId.toString());
         console.log('Organization ID', organizationId);
-        if (organizationUsers.length > 0 && organizationUsers[0].organization_branch_id !== null) {
-          const organizationBranchId = organizationUsers[0].organization_branch_id;
-          sessionStorage.setItem('organizationBranchId', organizationBranchId.toString());
+        if (
+          organizationUsers.length > 0 &&
+          organizationUsers[0].organization_branch_id !== null
+        ) {
+          const organizationBranchId =
+            organizationUsers[0].organization_branch_id;
+          sessionStorage.setItem(
+            'organizationBranchId',
+            organizationBranchId.toString()
+          );
           console.log('Organization branch ID', organizationBranchId);
         }
       }
       console.log('User role now is ', userRole);
       // router.push('/');
-    } catch (error) {
-      console.error('Error during login', error);
+    } catch (error: any) {
+      if (error.response?.data?.message) {
+        setErrorMessage(error.response.data.message);
+        console.error('Error during login', error);
+      } else {
+        setErrorMessage(error?.message || 'An unknown error occurred');
+      }
     }
 
     signIn('credentials', {
@@ -158,6 +170,11 @@ export default function SignInForm() {
               {...register('password')}
               error={errors.password?.message}
             />
+               {errorMessage && (
+                <div className="col-span-full text-sm font-semibold text-red-500">
+                  {errorMessage}
+                </div>
+              )}
             <div className="flex items-center justify-between pb-2">
               {/* <Checkbox
                 {...register('rememberMe')}
