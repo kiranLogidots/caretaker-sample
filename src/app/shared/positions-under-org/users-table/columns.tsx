@@ -69,33 +69,6 @@ export const getColumns = ({
   handleSelectAll,
   onChecked,
 }: Columns) => [
-  // {
-  //   title: (
-  //     <div className="flex items-center gap-3 whitespace-nowrap ps-3">
-  //       <Checkbox
-  //         title={'Select All'}
-  //         onChange={handleSelectAll}
-  //         checked={checkedItems.length === data.length}
-  //         className="cursor-pointer"
-  //       />
-  //       User ID
-  //     </div>
-  //   ),
-  //   dataIndex: 'checked',
-  //   key: 'checked',
-  //   width: 30,
-  //   render: (_: any, row: User) => (
-  //     <div className="inline-flex ps-3">
-  //       <Checkbox
-  //         className="cursor-pointer"
-  //         checked={checkedItems.includes(row.id)}
-  //         {...(onChecked && { onChange: () => onChecked(row.id) })}
-  //         label={`#${row.id}`}
-  //       />
-  //     </div>
-  //   ),
-  // },
-
 
   {
     title: <HeaderCell title="Position Name" />,
@@ -130,41 +103,41 @@ export const getColumns = ({
     render: (organization: { company_name: string }) => organization.company_name,
   },
 
-  {
-    title: <HeaderCell title="Actions" />,
-    dataIndex: 'action',
-    key: 'action',
-    width: 140,
-    render: (_: string, event: HKSEvents) => (
-      <div className="justify-en flex items-center gap-3 pe-3">
-        {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">
-          <ActionIcon
-            as="span"
-            size="sm"
-            variant="outline"
-            className="hover:!border-gray-900 hover:text-gray-700"
-          >
-            <PencilIcon className="h-4 w-4" />
-          </ActionIcon>
-        </Tooltip> */}
-        {/* <Tooltip size="sm" content={'View Position'} placement="top" color="invert">
-          <Link href={routes.eventsHKS.eventDetails(event.id)}>
-          <ActionIcon
-            as="span"
-            size="sm"
-            variant="outline"
-            className="hover:!border-gray-900 hover:text-gray-700"
-          >
-            <EyeIcon className="h-4 w-4" />
-          </ActionIcon>
-          </Link>
-        </Tooltip> */}
-        <DeletePopover
-          title={`Delete`}
-          description={`Are you sure you want to delete this position ?`}
-          onDelete={() => onDeleteItem(event.id)}
-        />
-      </div>
-    ),
-  },
+  // {
+  //   title: <HeaderCell title="Actions" />,
+  //   dataIndex: 'action',
+  //   key: 'action',
+  //   width: 140,
+  //   render: (_: string, event: HKSEvents) => (
+  //     <div className="justify-en flex items-center gap-3 pe-3">
+  //       {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">
+  //         <ActionIcon
+  //           as="span"
+  //           size="sm"
+  //           variant="outline"
+  //           className="hover:!border-gray-900 hover:text-gray-700"
+  //         >
+  //           <PencilIcon className="h-4 w-4" />
+  //         </ActionIcon>
+  //       </Tooltip> */}
+  //       {/* <Tooltip size="sm" content={'View Position'} placement="top" color="invert">
+  //         <Link href={routes.eventsHKS.eventDetails(event.id)}>
+  //         <ActionIcon
+  //           as="span"
+  //           size="sm"
+  //           variant="outline"
+  //           className="hover:!border-gray-900 hover:text-gray-700"
+  //         >
+  //           <EyeIcon className="h-4 w-4" />
+  //         </ActionIcon>
+  //         </Link>
+  //       </Tooltip> */}
+  //       <DeletePopover
+  //         title={`Delete`}
+  //         description={`Are you sure you want to delete this position ?`}
+  //         onDelete={() => onDeleteItem(event.id)}
+  //       />
+  //     </div>
+  //   ),
+  // },
 ];

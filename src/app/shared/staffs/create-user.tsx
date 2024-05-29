@@ -96,7 +96,7 @@ export default function CreateUser() {
       organization_id: organizationId,
       organization_branch_id: organizationBranchId,
       // onboarded_by: 'invitation',
-      dob: new Date(data.dob).toISOString().split('T')[0],
+      // dob: new Date(data.dob).toISOString().split('T')[0],
       // dob: new Date(data.dob).toISOString(),
       positions: formattedPositions,
     };
