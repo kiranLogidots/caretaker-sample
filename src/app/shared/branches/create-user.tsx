@@ -95,19 +95,21 @@ export default function CreateUser() {
         toast.success('Location created successfully', {
           position: 'top-right',
         });
+        location.reload();
       }
     } catch (err: any) {
-      console.log('Error message ', err.response);
+      console.log('Error message ', err.message);
       if (err.response && err.response?.data?.statusCode === 401) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
-      } else if (err.response.data) {
-        setErrorMessage(err.response.data.message);
+      } else if (err.response?.data?.statusCode === 400) {
+        setErrorMessage(err.response.data.message.join(' '));
       } else {
-        setErrorMessage('Please try again');
+        setErrorMessage(err.message || 'An unknown error occurred');
       }
     } finally {
+      // signOut();
       setLoading(false);
     }
   };
@@ -119,7 +121,7 @@ export default function CreateUser() {
         resetValues={reset}
         onSubmit={onSubmit}
         validationSchema={createBranchesSchema}
-        className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
+        className="grid grid-cols-2 overflow-y-auto gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
           return (
@@ -132,31 +134,7 @@ export default function CreateUser() {
                   <PiXBold className="h-auto w-5" />
                 </ActionIcon>
               </div>
-              <Input
-                label="First Name"
-                placeholder="Enter first name"
-                {...register('first_name')}
-                error={errors.first_name?.message}
-              />
-              <Input
-                label="Last Name"
-                placeholder="Enter last name"
-                {...register('last_name')}
-                error={errors.last_name?.message}
-              />
-              <Input
-                label="Email"
-                placeholder="Enter your email"
-                {...register('email')}
-                error={errors.email?.message}
-              />
 
-              <Input
-                label="Password"
-                placeholder="Enter your password"
-                {...register('password')}
-                error={errors.password?.message}
-              />
               <Input
                 label="Location"
                 placeholder="Enter the location"
@@ -193,14 +171,14 @@ export default function CreateUser() {
               <Input
                 label="Location Address Line One"
                 placeholder="Enter location Address"
-                // className="col-span-full"
+                className="col-span-full"
                 {...register('location_address_line_one')}
                 error={errors.location_address_line_one?.message}
               />
               <Input
                 label="Location Address Line Two"
                 placeholder="Enter location Address"
-                // className="col-span-full"
+                className="col-span-full"
                 {...register('location_address_line_two')}
                 error={errors.location_address_line_two?.message}
               />
@@ -218,6 +196,32 @@ export default function CreateUser() {
                 {...register('country')}
                 error={errors.country?.message}
               />
+
+              <Input
+                label="First Name"
+                placeholder="Enter first name"
+                {...register('first_name')}
+                error={errors.first_name?.message}
+              />
+              <Input
+                label="Last Name"
+                placeholder="Enter last name"
+                {...register('last_name')}
+                error={errors.last_name?.message}
+              />
+              <Input
+                label="Email"
+                placeholder="Enter your email"
+                {...register('email')}
+                error={errors.email?.message}
+              />
+
+              <Input
+                label="Password"
+                placeholder="Enter your password"
+                {...register('password')}
+                error={errors.password?.message}
+              />
               {errorMessage && (
                 <div className="col-span-full text-sm font-semibold text-red-500">
                   {errorMessage}
@@ -234,7 +238,7 @@ export default function CreateUser() {
                 <Button
                   type="submit"
                   isLoading={isLoading}
-                  className="w-full @xl:w-auto text-white"
+                  className="w-full text-white @xl:w-auto"
                 >
                   Create Location
                 </Button>

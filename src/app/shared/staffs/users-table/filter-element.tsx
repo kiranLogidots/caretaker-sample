@@ -119,7 +119,7 @@ export default function FilterElement({
             className="mt-0"
           /> */}
           <DrawerButton
-            label="Add New Staff"
+            label="Invite New Staff"
             view={<CreateUser />}
             customSize="500px"
             placement="right"

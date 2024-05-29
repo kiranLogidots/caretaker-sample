@@ -217,7 +217,7 @@ export const getColumns = ({
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip> */}
-        <Tooltip size="sm" content={'View Position'} placement="top" color="invert">
+        <Tooltip size="sm" content={'View Staff Details'} placement="top" color="invert">
           <Link href={routes.eventsHKS.eventDetails(event.id)}>
           <ActionIcon
             as="span"
@@ -231,7 +231,7 @@ export const getColumns = ({
         </Tooltip>
         <DeletePopover
           title={`Delete`}
-          description={`Are you sure you want to delete this position ?`}
+          description={`Are you sure you want to delete this staff ?`}
           onDelete={() => onDeleteItem(event.id)}
         />
       </div>

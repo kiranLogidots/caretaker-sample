@@ -126,7 +126,7 @@ export const getColumns = ({
   //   // ),
   // },
   // {
-  //   title: <HeaderCell title="Email" />,
+  //   title: <HeaderCell title="Company Email" />,
   //   onHeaderCell: () => onHeaderCellClick('email'),
   //   dataIndex: 'email',
   //   key: 'email',
@@ -135,31 +135,47 @@ export const getColumns = ({
   // },
 
   {
+    title: <HeaderCell title="Work Email" />,
+    onHeaderCell: () => onHeaderCellClick('work_email'),
+    dataIndex: 'work_email',
+    key: 'work_email',
+    width: 30,
+    render: (work_email: string) => work_email,
+  },
+
+  {
     title: <HeaderCell title="Phone" />,
     onHeaderCell: () => onHeaderCellClick('phone'),
     dataIndex: 'work_phone',
     key: 'work_phone',
-    width: 50,
+    width: 30,
     render: (work_phone: string) => work_phone,
   },
- 
-
   {
-    title: (
-      <HeaderCell
-        title="Created"
-        sortable
-        ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
-        }
-      />
-    ),
-    onHeaderCell: () => onHeaderCellClick('created_at'),
-    dataIndex: 'created_at',
-    key: 'created_at',
-    width: 10,
-    render: (value: Date) => <DateCell date={value} />,
+    title: <HeaderCell title="Industry Type" />,
+    onHeaderCell: () => onHeaderCellClick('industryType.name'),
+    dataIndex: 'industryType',
+    key: 'industryType.name',
+    width: 50,
+    render: (industryType: { name: string }) => industryType.name,
   },
+
+  // {
+  //   title: (
+  //     <HeaderCell
+  //       title="Created"
+  //       sortable
+  //       ascending={
+  //         sortConfig?.direction === 'asc' && sortConfig?.key === 'createdAt'
+  //       }
+  //     />
+  //   ),
+  //   onHeaderCell: () => onHeaderCellClick('created_at'),
+  //   dataIndex: 'created_at',
+  //   key: 'created_at',
+  //   width: 10,
+  //   render: (value: Date) => <DateCell date={value} />,
+  // },
   // {
   //   title: <HeaderCell title="Permissions" />,
   //   dataIndex: 'permissions',
@@ -204,6 +220,14 @@ export const getColumns = ({
             <PencilIcon className="h-4 w-4" />
           </ActionIcon>
         </Tooltip>
+
+        {/* When View user is clicked, open a drawyer which will display all the form field with the data in it , but users cant edit it, only view it like this - <DrawerButton
+            label="Add New Organization"
+            view={<CreateUser />}
+            customSize="500px"
+            placement="right"
+          /> */}
+
         <Tooltip size="sm" content={'View User'} placement="top" color="invert">
           <ActionIcon
             as="span"
@@ -215,16 +239,7 @@ export const getColumns = ({
           </ActionIcon>
         </Tooltip>
 
-        {/* <Tooltip size="sm" content={'View User'} placement="top" color="invert">
-          <ActionIcon
-            as="span"
-            size="sm"
-            variant="outline"
-            className="hover:!border-gray-900 hover:text-gray-700"
-          >
-            <EyeIcon className="h-4 w-4" />
-          </ActionIcon>
-        </Tooltip> */}
+       
         {/* <DeletePopover
           title={`Delete this user`}
           description={`Are you sure you want to delete this #${user.id} user?`}

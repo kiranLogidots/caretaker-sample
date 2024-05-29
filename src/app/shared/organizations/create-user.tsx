@@ -129,12 +129,11 @@ export default function CreateUser() {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
-      } else if (err.response.data) {
-        setErrorMessage(err.response.data.message);
+      }  else if (err.response?.data?.statusCode === 400) {
+        setErrorMessage(err.response.data.message.join(' '));
       } else {
-        setErrorMessage('Please try again');
+        setErrorMessage(err.message || 'An unknown error occurred');
       }
-      setErrorMessage('Please try again');
     } finally {
       // signOut();
       setLoading(false);

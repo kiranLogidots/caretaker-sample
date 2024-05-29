@@ -9,12 +9,19 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import { createPositions, createStaffs, listPositionCat } from '@/service/page';
+import {
+  createPositions,
+  createStaffs,
+  inviteStaffs,
+  listPositionCat,
+  listPositions,
+} from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
 import {
   CreatePositionCatResponse,
   CreateStaffResponse,
   ListPositionCategoryInterface,
+  ListPositionsInterface,
 } from '@/types';
 import { signOut } from 'next-auth/react';
 import Select from 'react-select';
@@ -31,37 +38,35 @@ export default function CreateUser() {
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const onboardedByOptions = [
-    { value: 'invitation', label: 'Invitation' },
-    { value: 'super_admin', label: 'Super Admin' },
-    { value: 'organization_super_admin', label: 'Organization Super Admin' },
-    { value: 'branch_admin', label: 'Branch Admin' },
-    { value: 'branch_staff', label: 'Branch Staff' },
-  ];
+  const [positionsData, setPositionsData] = useState<
+    { value: number; label: string }[]
+  >([]);
+  // const onboardedByOptions = [
+  //   { value: 'invitation', label: 'Invitation' },
+  //   { value: 'super_admin', label: 'Super Admin' },
+  //   { value: 'organization_super_admin', label: 'Organization Super Admin' },
+  //   { value: 'branch_admin', label: 'Branch Admin' },
+  //   { value: 'branch_staff', label: 'Branch Staff' },
+  // ];
 
-  // const [accountTypes, setAccountTypes] = useState<
-  //   { value: number; label: string }[]
-  // >([]);
+  useEffect(() => {
+    const fetchPositions = async () => {
+      try {
+        const result = (await listPositions()) as ListPositionsInterface[];
+        console.log('Positions:', result);
+        setPositionsData(
+          result.map((type) => ({
+            value: type.id,
+            label: type.name,
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching Positions:', error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchAccountTypes = async () => {
-  //     try {
-  //       const result =
-  //         (await listPositionCat()) as ListPositionCategoryInterface[];
-  //       console.log('Account types:', result);
-  //       setAccountTypes(
-  //         result.map((type) => ({
-  //           value: type.id,
-  //           label: type.name,
-  //         }))
-  //       );
-  //     } catch (error) {
-  //       console.error('Error fetching account types:', error);
-  //     }
-  //   };
-
-  //   fetchAccountTypes();
-  // }, []);
+    fetchPositions();
+  }, []);
 
   const onSubmit: SubmitHandler<CreateStaffsInput> = async (data) => {
     const organizationId = Number(sessionStorage.getItem('organizationId'));
@@ -78,22 +83,42 @@ export default function CreateUser() {
       return;
     }
 
+    // const formattedData = {
+    //   ...data,
+    //   organization_id: organizationId,
+    //   organization_branch_id: organizationBranchId,
+    //   onboarded_by: 'invitation',
+    //   positions: [
+    //     {
+    //       position_id: Number(data.primary_position_id),
+    //       hourly_rate: Number(data.hourly_rate),
+    //       is_primary: 1,
+    //     },
+    //   ],
+
+    const formattedPositions = [
+      // {
+      //   position_id: Number(data.position_id),
+      //   hourly_rate: Number(data.hourly_rate),
+      //   is_primary: 1,
+      // },
+      ...data.positions.map(({ position_id, hourly_rate, is_primary }) => ({
+        position_id: Number(position_id),
+        hourly_rate: Number(hourly_rate),
+        is_primary: is_primary ? 1 : 0,
+      })),
+    ];
     const formattedData = {
       ...data,
       organization_id: organizationId,
       organization_branch_id: organizationBranchId,
-      positions: [
-        {
-          position_id: Number(data.primary_position_id),
-          hourly_rate: Number(data.hourly_rate),
-          is_primary: 1,
-        },
-      ],
+      dob: new Date(data.dob).toISOString(),
+      positions: formattedPositions,
     };
     setLoading(true);
 
     try {
-      const response = await createStaffs(formattedData);
+      const response = await inviteStaffs(formattedData);
       const resultData = response.data as CreateStaffResponse;
 
       console.log('API Response:', resultData);
@@ -103,29 +128,34 @@ export default function CreateUser() {
           first_name: '',
           last_name: '',
           email: '',
-          password: '',
-          onboarded_by: '',
+          phone: '',
           primary_location: '',
-          primary_position_id: '',
+          primary_position: '',
+          secondary_positions: [],
           hourly_rate: '',
+          dob: '',
+          employee_start_date: '',
+          employment_status: '',
         });
         closeDrawer();
         toast.success('Staff created successfully', {
           position: 'top-right',
         });
+        location.reload();
       }
     } catch (err: any) {
-      console.log('Error message ', err.response);
+      console.log('Error message ', err.message);
       if (err.response && err.response?.data?.statusCode === 401) {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
-      } else if (err.response.data) {
-        setErrorMessage(err.response.data.message);
+      } else if (err.response?.data?.statusCode === 400) {
+        setErrorMessage(err.response.data.message.join(' '));
       } else {
-        setErrorMessage('Please try again');
+        setErrorMessage(err.message || 'An unknown error occurred');
       }
     } finally {
+      // signOut();
       setLoading(false);
     }
   };
@@ -137,7 +167,7 @@ export default function CreateUser() {
         resetValues={reset}
         onSubmit={onSubmit}
         validationSchema={createStaffsSchema}
-        className="grid grid-cols-1 gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
+        className="grid grid-cols-1 gap-6 p-6 overflow-scroll @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
           return (
@@ -169,14 +199,22 @@ export default function CreateUser() {
                 error={errors.email?.message}
               />
               <Input
-                label="Password"
-                placeholder="Enter password"
-                // type="password"
-                {...register('password')}
-                error={errors.password?.message}
+                label="Phone"
+                placeholder="Enter phone number"
+                labelClassName="font-medium text-gray-900 dark:text-white"
+                {...register('phone')}
+                defaultValue="+91"
+                error={errors.phone?.message}
+              />
+              <Input
+                label="Primary Location"
+                className="col-span-full"
+                placeholder="Enter primary location"
+                {...register('primary_location')}
+                error={errors.primary_location?.message}
               />
               <Controller
-                name="onboarded_by"
+                name="positions"
                 control={control}
                 render={({ field }) => (
                   <div className="col-span-full flex flex-col gap-2">
@@ -184,13 +222,110 @@ export default function CreateUser() {
                       htmlFor={field.name}
                       className="font-medium text-gray-900 dark:text-white"
                     >
-                      Onboarded By
+                      Primary Position
                     </label>
                     <Select
-                      options={onboardedByOptions}
-                      value={onboardedByOptions.find(
-                        (option) => option.value === field.value
+                      options={positionsData}
+                      value={positionsData.find((option) =>
+                        (field.value || []).some(
+                          (position) =>
+                            Number(position.position_id) === option.value &&
+                            position.is_primary
+                        )
                       )}
+                      onChange={(option) => {
+                        const newPosition = {
+                          position_id: option?.value.toString(),
+                          is_primary: true,
+                        };
+                        field.onChange([
+                          newPosition,
+                          ...(field.value || []).filter((p) => !p.is_primary),
+                        ]);
+                      }}
+                      name={field.name}
+                      isClearable
+                    />
+                  </div>
+                )}
+              />
+              <Controller
+                name="positions"
+                control={control}
+                render={({ field }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={field.name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Secondary Positions
+                    </label>
+                    <Select
+                      options={positionsData}
+                      value={positionsData.filter((option) =>
+                        (field.value || []).some(
+                          (position) =>
+                            Number(position.position_id) === option.value &&
+                            !position.is_primary
+                        )
+                      )}
+                      onChange={(options) => {
+                        const newPositions = options.map((option) => ({
+                          position_id: option.value.toString(),
+                          is_primary: false,
+                        }));
+                        field.onChange([
+                          ...newPositions,
+                          ...(field.value || []).filter((p) => p.is_primary),
+                        ]);
+                      }}
+                      name={field.name}
+                      isMulti
+                      isClearable
+                    />
+                  </div>
+                )}
+              />
+              <Input
+                label="Date of Birth"
+                className="col-span-fu"
+                placeholder="Enter date of birth"
+                type="date"
+                {...register('dob')}
+                error={errors.dob?.message}
+              />
+              <Input
+                label="Employee Start Date"
+                className="col-span-fu"
+                placeholder="Enter employee start date"
+                type="date"
+                {...register('employee_start_date')}
+                error={errors.employee_start_date?.message}
+              />
+              <Controller
+                name="employment_status"
+                control={control}
+                render={({ field }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={field.name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Employment Status
+                    </label>
+                    <Select
+                      options={[
+                        { value: 'full_time', label: 'Full Time' },
+                        { value: 'part_time', label: 'Part Time' },
+                        { value: 'casual', label: 'Casual' },
+                        { value: 'flex', label: 'Flex' },
+                      ]}
+                      value={[
+                        { value: 'full_time', label: 'Full Time' },
+                        { value: 'part_time', label: 'Part Time' },
+                        { value: 'casual', label: 'Casual' },
+                        { value: 'flex', label: 'Flex' },
+                      ].find((option) => option.value === field.value)}
                       onChange={(option) =>
                         field.onChange(option ? option.value : null)
                       }
@@ -200,26 +335,12 @@ export default function CreateUser() {
                   </div>
                 )}
               />
-
-              {/* <Input
-                label="Onboarded By"
-                placeholder="Enter onboarded by"
-                {...register('onboarded_by')}
-                error={errors.onboarded_by?.message}
-              /> */}
               <Input
-                label="Primary Location"
+                label="Employee ID"
                 className="col-span-full"
-                placeholder="Enter primary location"
-                {...register('primary_location')}
-                error={errors.primary_location?.message}
-              />
-              <Input
-                label="Primary Position ID"
-                className="col-span-full"
-                placeholder="Enter primary position ID"
-                {...register('primary_position_id')}
-                error={errors.primary_position_id?.message}
+                placeholder="Enter employee ID"
+                {...register('employee_id')}
+                error={errors.employee_id?.message}
               />
               <Input
                 label="Hourly Rate"
@@ -247,7 +368,7 @@ export default function CreateUser() {
                   isLoading={isLoading}
                   className="w-full text-white @xl:w-auto"
                 >
-                  Create Staff
+                  Invite Staff
                 </Button>
               </div>
             </>

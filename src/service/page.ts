@@ -11,7 +11,12 @@ import axios from 'axios';
 import { signOut } from 'next-auth/react';
 
 const apiBaseUrl = 'https://api.nexsysi.alpha2.logidots.com/api';
-const accessToken = sessionStorage.getItem('accessToken');
+let accessToken: string | null = null;
+
+if (typeof window !== 'undefined') {
+  accessToken = sessionStorage.getItem('accessToken');
+}
+// const accessToken = sessionStorage.getItem('accessToken');
 // const refreshToken = sessionStorage.getItem('refreshToken');
 console.log('Access Token', accessToken);
 
@@ -384,6 +389,22 @@ export const deleteDepartments = async (departmentId: string) => {
 export const createStaffs = async (details: CreateStaffs) => {
   let response = await axios.post(
     `${apiBaseUrl}/v1/organization-users/create/branch-staff`,
+    details,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  return response;
+};
+
+//INVITE STAFFS API
+export const inviteStaffs = async (details: CreateStaffs) => {
+  let response = await axios.post(
+    `${apiBaseUrl}/v1/invitations/send`,
     details,
     {
       headers: {
