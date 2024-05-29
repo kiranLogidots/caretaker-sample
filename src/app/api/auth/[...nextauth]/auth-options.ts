@@ -35,13 +35,16 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async redirect({ url, baseUrl }) {
-      const parsedUrl = new URL(url, baseUrl);
-      if (parsedUrl.searchParams.has('callbackUrl')) {
-        return `${baseUrl}${parsedUrl.searchParams.get('callbackUrl')}`;
-      }
-      if (parsedUrl.origin === baseUrl) {
-        return url;
-      }
+      // const parsedUrl = new URL(url, baseUrl);
+      // if (parsedUrl.searchParams.has('callbackUrl')) {
+      //   alert(parsedUrl.searchParams.get('callbackUrl'))
+      //   return `${baseUrl}${parsedUrl.searchParams.get('callbackUrl')}`;
+      // }
+      // if (parsedUrl.origin === baseUrl) {
+      //   return url;
+      // }
+
+      // In our case, the redirect url will always be the base url
       return baseUrl;
     },
   },
