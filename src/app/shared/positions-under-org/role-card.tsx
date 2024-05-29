@@ -10,8 +10,8 @@ import { ActionIcon } from '@/components/ui/action-icon';
 import { Dropdown } from '@/components/ui/dropdown ';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import ModalButton from '@/app/shared/modal-button';
-import EditRole from '@/app/shared/departments/edit-role';
-import CreateUser from '@/app/shared/departments/create-user';
+import EditRole from '@/app/shared/positions-under-org/edit-role';
+import CreateUser from '@/app/shared/positions-under-org/create-user';
 
 type User = {
   id: number;

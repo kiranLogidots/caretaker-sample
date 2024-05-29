@@ -320,6 +320,18 @@ export interface CreatePositionCatResponse {
   description: string;
   id: number;
 }
+export interface CreatePositionUnderOrgResponse {
+  position_id: number;
+  hourly_rate: number;
+  organization_id: number;
+}
+export interface CreatePositionsUnderOrg {
+  organization_positions: {
+    organization_id: number;
+    position_id: number;
+    hourly_rate: number;
+  }[];
+}
 export interface CreateStaffResponse {
   first_name: string;
   last_name: string;
