@@ -16,7 +16,7 @@ export const createStaffsSchema = z.object({
   primary_location: z.string(),
   employee_id: z.string(),
   employee_start_date: z.string(),
-  employment_status: z.enum(['full_time', 'part_time', 'casual', 'flex'], { message: messages.employmentStatusIsRequired }), 
+  employment_status: z.string(), 
   dob: z.string().min(1, { message: messages.dobIsRequired }),
   // dob: z.string().min(1, { message: messages.dobIsRequired }),
   // dob: z.string(),

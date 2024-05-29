@@ -316,6 +316,23 @@ export const createBranches = async (details: CreateBranches) => {
   return response;
 };
 
+//UPDATE BRANDCHES API
+export const updateBranches = async (details: any) => {
+  const organizationId = sessionStorage.getItem('organizationId');
+
+  let response = await axios.patch(
+    `${apiBaseUrl}/v1/organization-branches/${organizationId}`,
+    details,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response;
+};
+
 //LIST BRANCHES API
 export const listBranches = () => {
   const organizationId = sessionStorage.getItem('organizationId');
