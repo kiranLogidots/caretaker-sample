@@ -73,7 +73,9 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
-
+  const handleFocus = () => {
+    setErrorMessage('');
+  };
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     const formattedData = {
       email: data.email,
@@ -120,22 +122,27 @@ export default function SignInForm() {
         }
       }
       console.log('User role now is ', userRole);
-      // router.push('/');
+      signIn('credentials', {
+        ...data,
+        // onSuccess: () => {
+        //   router.push('/');
+        // },
+      });
     } catch (error: any) {
       if (error.response?.data?.message) {
         setErrorMessage(error.response.data.message);
+        setLoading(false);
         console.error('Error during login', error);
       } else {
         setErrorMessage(error?.message || 'An unknown error occurred');
       }
     }
-
-    signIn('credentials', {
-      ...data,
-      // onSuccess: () => {
-      //   router.push('/');
-      // },
-    });
+    // signIn('credentials', {
+    //   ...data,
+    //   // onSuccess: () => {
+    //   //   router.push('/');
+    //   // },
+    // });
     // setLoading(false);
   };
 
@@ -155,6 +162,7 @@ export default function SignInForm() {
               type="email"
               size="lg"
               label="Email"
+              onFocus={handleFocus}
               placeholder="Enter your email"
               className="[&>label>span]:font-medium"
               inputClassName="text-sm"
@@ -165,6 +173,7 @@ export default function SignInForm() {
               label="Password"
               placeholder="Enter your password"
               size="lg"
+              onFocus={handleFocus}
               className="[&>label>span]:font-medium"
               inputClassName="text-sm"
               {...register('password')}
