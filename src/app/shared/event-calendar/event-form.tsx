@@ -15,22 +15,32 @@ import {
   EventFormInput,
   eventFormSchema,
 } from '@/utils/validators/create-event.schema';
+import { useEffect } from 'react';
+import { getShifts } from '@/service/page';
 
 interface CreateEventProps {
   startDate?: Date;
   endDate?: Date;
   event?: CalendarEvent;
+  user?: any;
 }
 
 export default function EventForm({
   startDate,
   endDate,
   event,
+  user
 }: CreateEventProps) {
   const { closeModal } = useModal();
   const { createEvent, updateEvent } = useEventCalendar();
 
   const isUpdateEvent = event !== undefined;
+
+  useEffect(() => {
+    if(user && user.organization_branch_id) {
+      getShifts({ branchId: user.organization_branch_id });
+    } 
+  }, [user]);
 
   const onSubmit: SubmitHandler<EventFormInput> = (data) => {
     const isNewEvent = data.id === '' || data.id === undefined;

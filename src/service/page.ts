@@ -527,6 +527,41 @@ export const deleteStaffs = async (staffId: string) => {
   }
 };
 
+export const getShifts = async ({ branchId } ) => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/v1/shifts?filter.organization_branch_id=${branchId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Could not fetch user shifts:', error);
+  }
+}
+
+
+export const getUsersWithShifts = async () => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/v1/organization-users?page=1&limit=20&sortBy=id:DESC`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Could not fetch user shifts:', error);
+  }
+}
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
