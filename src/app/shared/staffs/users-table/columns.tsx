@@ -97,11 +97,11 @@ export const getColumns = ({
   // },
   {
     title: <HeaderCell title="Team member" />,
-    onHeaderCell: () => onHeaderCellClick('user.first_name'),
-    dataIndex: 'user',
-    key: 'user.first_name',
+    onHeaderCell: () => onHeaderCellClick('user_data.first_name'),
+    dataIndex: 'user_data',
+    key: 'user_data.first_name',
     width: 250,
-    render: (user: { first_name: string }) =>  user.first_name,
+    render: (user_data: { first_name: string }) =>  user_data.first_name,
 
   },
   // {
@@ -115,38 +115,38 @@ export const getColumns = ({
   // },
   {
     title: <HeaderCell title="Employment Status" />,
-    onHeaderCell: () => onHeaderCellClick('user.employment_status'),
-    dataIndex: 'user',
-    key: 'user.employment_status',
+    onHeaderCell: () => onHeaderCellClick('inviter.employment_status'),
+    dataIndex: 'inviter',
+    key: 'inviter.employment_status',
     width: 250,
-    render: (user: { employment_status: string }) =>  user.employment_status,
+    render: (inviter: { employment_status: string }) =>  inviter.employment_status,
 
   },
   {
     title: <HeaderCell title="Phone" />,
-    onHeaderCell: () => onHeaderCellClick('user.phone'),
-    dataIndex: 'user',
-    key: 'user.phone',
+    onHeaderCell: () => onHeaderCellClick('user_data.phone'),
+    dataIndex: 'user_data',
+    key: 'user_data.phone',
     width: 250,
-    render: (user: { phone: string }) =>  user.phone,
+    render: (user_data: { phone: string }) =>  user_data.phone,
 
   },
   {
     title: <HeaderCell title="Email" />,
-    onHeaderCell: () => onHeaderCellClick('user.email'),
-    dataIndex: 'user',
-    key: 'user.email',
+    onHeaderCell: () => onHeaderCellClick('user_data.email'),
+    dataIndex: 'user_data',
+    key: 'user_data.email',
     width: 250,
-    render: (user: { email: string }) =>  user.email,
+    render: (user_data: { email: string }) =>  user_data.email,
 
   },
   {
     title: <HeaderCell title="Status" />,
-    onHeaderCell: () => onHeaderCellClick('user.status'),
-    dataIndex: 'user',
-    key: 'user.status',
+    onHeaderCell: () => onHeaderCellClick('inviter.status'),
+    dataIndex: 'inviter',
+    key: 'inviter.status',
     width: 250,
-    render: (user: { status: string }) =>  user.status,
+    render: (inviter: { status: string }) =>  inviter.status,
 
   },
 

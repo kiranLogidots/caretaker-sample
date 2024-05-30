@@ -483,7 +483,9 @@ export const listStaffs = () => {
   const BranchId = sessionStorage.getItem('organizationBranchId');
   return axios
     .get(
-      `${apiBaseUrl}/v1/organization-users?organization_branch_id=${BranchId}`,
+      `${apiBaseUrl}/v1/invitations/list-by-branch?organization_branch_id=${BranchId}`,
+     
+      // `${apiBaseUrl}/v1/organization-users?organization_branch_id=${BranchId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
