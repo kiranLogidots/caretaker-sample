@@ -250,6 +250,7 @@ export const listPositions = () => {
       // throw new Error('Something wrong on network connection');
     });
 };
+
 export const listOrgPositions = () => {
   const organizationId = sessionStorage.getItem('organizationId');
 
@@ -530,12 +531,16 @@ export const deleteStaffs = async (staffId: string) => {
 export const getShifts = async ({ branchId } ) => {
   try {
     const response = await axios.get(
-      `${apiBaseUrl}/v1/shifts?filter.organization_branch_id=${branchId}`,
+      `${apiBaseUrl}/v1/shifts`,
       {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
+        params: {
+          'filter.organization_branch_id': branchId,
+          'filter.position_id': 2
+        }
       }
     );
     return response.data;
@@ -545,7 +550,7 @@ export const getShifts = async ({ branchId } ) => {
 }
 
 
-export const getUsersWithShifts = async () => {
+export const getUsersWithShifts = async (params: { [key: string]: any} = {}) => {
   try {
     const response = await axios.get(
       `${apiBaseUrl}/v1/organization-users?page=1&limit=20&sortBy=id:DESC`,
@@ -554,6 +559,12 @@ export const getUsersWithShifts = async () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
+        params: {
+          page: 1,
+          limit: 1000,
+          sortBy: 'id:DESC',
+          'filter.assignedShifts.assigned_date': '$btw:' + params.dateRange.join(',')
+        }
       }
     );
     return response.data;

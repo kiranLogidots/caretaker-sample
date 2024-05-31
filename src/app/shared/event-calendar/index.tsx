@@ -1,28 +1,18 @@
 'use client';
 
 import type { CalendarEvent } from '@/types';
-import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import ControlledTable from '@/components/controlled-table';
+import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import EventForm from '@/app/shared/event-calendar/event-form';
 import DetailsEvents from '@/app/shared/event-calendar/details-event';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import useEventCalendar from '@/hooks/use-event-calendar';
-import cn from '@/utils/class-names';
 import moment from 'moment';
-import { getUsersWithShifts } from '@/service/page';
-
-const localizer = dayjsLocalizer(dayjs);
-
-// rbc-active -> black button active
-const calendarToolbarClassName =
-  '[&_.rbc-toolbar_.rbc-toolbar-label]:whitespace-nowrap [&_.rbc-toolbar_.rbc-toolbar-label]:my-2 [&_.rbc-toolbar]:flex [&_.rbc-toolbar]:flex-col [&_.rbc-toolbar]:items-center @[56rem]:[&_.rbc-toolbar]:flex-row [&_.rbc-btn-group_button:hover]:bg-gray-300 [&_.rbc-btn-group_button]:duration-200 [&_.rbc-btn-group_button.rbc-active:hover]:bg-gray-600 dark:[&_.rbc-btn-group_button.rbc-active:hover]:bg-gray-300 [&_.rbc-btn-group_button.rbc-active:hover]:text-gray-50 dark:[&_.rbc-btn-group_button.rbc-active:hover]:text-gray-900';
+import { getUsersWithShifts, listOrgPositions } from '@/service/page';
 
 export default function EventCalendarView() {
-  const { events } = useEventCalendar();
   const { openModal } = useModal();
 
   const handleSelectSlot = useCallback(
@@ -45,27 +35,9 @@ export default function EventCalendarView() {
     [openModal]
   );
 
-  const { views, scrollToTime, formats } = useMemo(
-    () => ({
-      views: {
-        month: true,
-        week: true,
-        day: true,
-        agenda: false,
-      },
-      scrollToTime: new Date(2023, 10, 27, 6),
-      formats: {
-        dateFormat: 'D',
-        weekdayFormat: (date: Date, culture: any, localizer: any) =>
-          localizer.format(date, 'ddd', culture),
-        dayFormat: (date: Date, culture: any, localizer: any) =>
-          localizer.format(date, 'ddd M/D', culture),
-        timeGutterFormat: (date: Date, culture: any, localizer: any) =>
-          localizer.format(date, 'hh A', culture),
-      },
-    }),
-    []
-  );
+  const [positions, setPositions]: any = useState([]);
+
+  const [selectedPositionId, setSelectedPositionId] = useState(null);
 
   const [selectedDates, setSelectedDates]: any = useState([]);
   const [columns, setColumns]: any = useState([]);
@@ -73,39 +45,55 @@ export default function EventCalendarView() {
 
   useEffect(() => {
     generateDates();
-  },[]);
+    fetchPositions();
+  }, []);
 
   useEffect(() => {
-    if(selectedDates.length) {
+    if (selectedDates.length && selectedPositionId) {
       generateTableData();
     }
-  }, [selectedDates]);
+  }, [selectedDates, selectedPositionId]);
+
+  const fetchPositions = async () => {
+    setPositions([]);
+    setSelectedPositionId(null);
+
+    let response = await listOrgPositions();
+    setPositions(response);
+
+    if(response.length > 0) {
+      setSelectedPositionId(response[0].position.id);
+    }
+  }
 
   const generateDates = (type = '') => {
     let startDate, endDate;
     let dates = [];
-    switch(type) {
+    switch (type) {
       case 'previous':
         endDate = moment(selectedDates[0], 'YYYY-MM-DD').subtract(1, 'days');
         startDate = endDate.clone().subtract(6, 'days');
         break;
-      case 'next': 
+      case 'next':
         startDate = moment(selectedDates[selectedDates.length - 1], 'YYYY-MM-DD').add(1, 'days')
         endDate = startDate.clone().add(6, 'days');
         break;
-      default: 
+      default:
         startDate = moment().clone().weekday(1);
         endDate = startDate.clone().add(6, 'days');
     }
 
     for (let m = moment(startDate); m.isSameOrBefore(endDate); m.add(1, 'days')) {
-        dates.push(m.format('YYYY-MM-DD'));
+      dates.push(m.format('YYYY-MM-DD'));
     }
     setSelectedDates(dates);
   }
 
   const generateTableData = async () => {
-    const response = await getUsersWithShifts();
+    const response = await getUsersWithShifts({
+      positionId: selectedPositionId,
+      dateRange: [selectedDates[0], selectedDates[selectedDates.length - 1]]
+    });
 
     setColumns([
       {
@@ -119,21 +107,21 @@ export default function EventCalendarView() {
         key: d,
         dataIndex: d,
         title: moment(d, 'YYYY-MM-DD').format('ddd DD'),
-        render: (data: any) => 
-          <div 
-            className='cursor-pointer px-3 py-4' 
+        render: (data: any) =>
+          <div
+            className='cursor-pointer px-3 py-4'
             onClick={() => {
-              if(data.userId) {
-                handleSelectSlot({ 
-                  start: new Date(moment(d ,'YYYY-MM-DD').format()), 
+              if (data.userId) {
+                handleSelectSlot({
+                  start: new Date(moment(d, 'YYYY-MM-DD').format()),
                   end: new Date(d),
                   user: response.data.find((u: any) => u.user_id === data.userId)
                 })
               }
             }}
           >
-            { 
-              data.userId && data.shifts.length > 0 && 
+            {
+              data.userId && data.shifts.length > 0 &&
               data.shifts.map((s: any) => (
                 <Badge
                   variant="flat"
@@ -141,13 +129,13 @@ export default function EventCalendarView() {
                   className="w-[90px] font-medium"
                   color="primary"
                 >
-                  { moment(s.shift.start_time).format('HH:mm') } -
-                  { moment(s.shift.end_time).format('HH:mm') }
+                  {moment(s.shift.start_time).format('HH:mm')} -
+                  {moment(s.shift.end_time).format('HH:mm')}
                 </Badge>
               ))
             }
-            { 
-              data.summary && 
+            {
+              data.summary &&
               <>{data.summary}</>
             }
             <span className='hidden'>No data</span>
@@ -158,38 +146,38 @@ export default function EventCalendarView() {
     setEventsData([
       {
         teamMember: <span className='font-bold'>Total Position Hours</span>,
-        ...selectedDates.reduce((prev: {[key: string]: any}, current: string) => {
+        ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
           prev[current] = {
             user_id: null,
             summary: <span className='font-bold'>0 hrs 0 mins</span>
           };
           return prev;
-        },{})
+        }, {})
       },
       {
         teamMember: <span className='font-bold'>Open Shift</span>,
-        ...selectedDates.reduce((prev: {[key: string]: any}, current: string) => {
+        ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
           prev[current] = {
             user_id: null,
             summary: ""
           };
           return prev;
-        },{})
+        }, {})
       },
       ...response.data.map((r: any) => {
         return {
           userId: r.user_id,
           teamMember: r.user.first_name + " " + r.user.last_name,
-          ...selectedDates.reduce((prev: {[key: string]: any}, current: string) => {
+          ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
             prev[current] = {
               shifts: r.assignedShifts.filter((assignedShift: any) => {
                 return moment(assignedShift.shift.start_time).format('YYYY-MM-DD') === current
               }),
-              userId: r.user_id, 
+              userId: r.user_id,
               summary: null
             };
             return prev;
-          },{})
+          }, {})
         }
       })
     ]);
@@ -203,34 +191,35 @@ export default function EventCalendarView() {
           <Button className="!w-[unset] mr-2" onClick={() => generateDates('previous')}>
             Previous
           </Button>
-            { moment(selectedDates[0],'YYYY-MM-DD').format('MMM DD, YYYY') } - 
-            { moment(selectedDates[selectedDates.length - 1],'YYYY-MM-DD').format('MMM DD, YYYY') }
+          {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD, YYYY')} -
+          {moment(selectedDates[selectedDates.length - 1], 'YYYY-MM-DD').format('MMM DD, YYYY')}
           <Button className="!w-[unset] ml-2" onClick={() => generateDates('next')}>
             Next
           </Button>
         </div>
       }
+      <div className="mb-2">
+        <Select
+          placeholder="Select a Position"
+          options={positions.map((p: any) => {
+            return {
+              label: p.position.name,
+              value: p.position.id
+            }
+          })}
+          value={selectedPositionId}
+          onChange={(e: any) => setSelectedPositionId(e.value)}
+          displayValue={(e: any) => {
+            return positions.find((p: any) => p.position.id === e).position.name
+          }}
+          className="col-span-1/2"
+        />
+      </div>
       <ControlledTable
         columns={columns}
         data={eventsData}
         variant='classic_v2'
       />
-      {/* <Calendar
-        localizer={localizer}
-        events={events}
-        views={views}
-        formats={formats}
-        startAccessor="start"
-        endAccessor="end"
-        dayLayoutAlgorithm="no-overlap"
-        onSelectEvent={handleSelectEvent}
-        onSelectSlot={handleSelectSlot}
-        selectable
-        scrollToTime={scrollToTime}
-        className={cn('h-[650px] md:h-[1000px]', calendarToolbarClassName)}
-        defaultView="week" 
-      /> */}
-
     </div>
   );
 }
