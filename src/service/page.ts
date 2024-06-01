@@ -528,7 +528,7 @@ export const deleteStaffs = async (staffId: string) => {
   }
 };
 
-export const getShifts = async ({ branchId } ) => {
+export const getShifts = async ({ branchId }: { branchId: string }) => {
   try {
     const response = await axios.get(
       `${apiBaseUrl}/v1/shifts`,

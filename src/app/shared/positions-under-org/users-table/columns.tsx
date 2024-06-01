@@ -79,7 +79,7 @@ export const getColumns = ({
     render: (position: { name: string }) => position.name,
   },
   {
-    title: <HeaderCell title="Position Name" />,
+    title: <HeaderCell title="Position Description" />,
     onHeaderCell: () => onHeaderCellClick('position.description'),
     dataIndex: 'position',
     key: 'position.description',
@@ -93,14 +93,6 @@ export const getColumns = ({
     key: 'hourly_rate',
     width: 50,
     render: (hourly_rate: string) => hourly_rate,
-  },
-  {
-    title: <HeaderCell title="Organization Name" />,
-    onHeaderCell: () => onHeaderCellClick('organization.company_name'),
-    dataIndex: 'organization',
-    key: 'organization.company_name',
-    width: 50,
-    render: (organization: { company_name: string }) => organization.company_name,
   },
 
   // {

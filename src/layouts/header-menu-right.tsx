@@ -24,7 +24,7 @@ export default function HeaderMenuRight() {
   return (
     <div className="mr-0 flex items-end justify-end gap-8">
       {/* "ms-auto grid shrink-0 grid-cols-4 items-end justify-end right-0 gap-2 text-gray-700 xs:gap-3 xl:gap-4" */}
-      <MessagesDropdown>
+      {/* <MessagesDropdown>
         <ActionIcon
           aria-label="Messages"
           variant="text"
@@ -38,7 +38,7 @@ export default function HeaderMenuRight() {
             className="absolute right-2.5 top-2.5 -translate-y-1/3 translate-x-1/2"
           />
         </ActionIcon>
-      </MessagesDropdown>
+      </MessagesDropdown> */}
       {/* <NotificationDropdown>
         <ActionIcon
           aria-label="Notification"

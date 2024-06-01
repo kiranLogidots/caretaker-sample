@@ -124,19 +124,35 @@ export const menuItemsForBranchAdmin = [
     icon: <MdOutlineDashboard />,
   },
   {
-    name: 'Departments',
-    href: routes.departments,
-    icon: <FaRegHospital />,
+    name: 'Schedule',
+    href: routes.eventCalendar,
+    icon: <PiCalendarPlusDuotone />,
   },
   {
-    name: 'Staffs',
+    name: 'Shift',
+    href: '/',
+    icon: <MdOutlineDashboard />,
+  },
+ 
+  {
+    name: 'Timesheet',
+    href: '/',
+    icon: <MdOutlineDashboard />,
+  },
+  {
+    name: 'Team members',
     href: routes.staffs,
     icon: <FaHospitalUser />,
   },
   {
-    name: 'Event Calendar',
-    href: routes.eventCalendar,
-    icon: <PiCalendarPlusDuotone />,
+    name: 'Chat',
+    href: '/',
+    icon: <MdOutlineDashboard />,
+  },
+  {
+    name: 'Departments',
+    href: routes.departments,
+    icon: <FaRegHospital />,
   },
 ];
 

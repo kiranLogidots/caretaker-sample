@@ -17,7 +17,7 @@ import {
 import Logo from '@/components/logo';
 import StatusBadge from '@/components/get-status-badge';
 import Image from 'next/image';
-import GWLogo from '../../../public/caretaker-logo-vector.png';
+import GWLogo from '../../../public/nexsysi-logo.png';
 // import { useRouter } from 'next/router';
 
 interface MenuItem {
@@ -70,7 +70,7 @@ export default function Sidebar({ className }: { className?: string }) {
           className="text-gray-800 hover:text-gray-900"
         >
           {/* <Logo className="max-w-[155px]" /> */}
-          <Image src={GWLogo} className="w-[205px]" alt="seek logo" />
+          <Image src={GWLogo} className="w-[150px]" alt="seek logo" />
         </Link>
       </div>
 

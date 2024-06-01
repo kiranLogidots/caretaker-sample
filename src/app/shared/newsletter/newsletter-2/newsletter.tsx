@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import cn from '@/utils/class-names';
-import LogoLight from '@public/logo-short-light.svg';
-import Logo from '@public/logo-short.svg';
+// import LogoLight from '@public/nexsysi-logo.png';
+import Logo from '@public/nexsysi-logo.png';
 import NewsLetterForm from './newsletter-form';
 
 export default function NewsLetter({ className }: { className?: string }) {
@@ -26,7 +26,7 @@ export default function NewsLetter({ className }: { className?: string }) {
               className="visible dark:invisible"
             />
             <Image
-              src={LogoLight}
+              src={Logo}
               alt="newsletter"
               fill
               priority
