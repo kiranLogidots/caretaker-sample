@@ -13,6 +13,7 @@ import {
   createPositions,
   createStaffs,
   inviteStaffs,
+  listOrgPositions,
   listPositionCat,
   listPositions,
 } from '@/service/page';
@@ -20,6 +21,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import {
   CreatePositionCatResponse,
   CreateStaffResponse,
+  ListOrgPositionInterface,
   ListPositionCategoryInterface,
   ListPositionsInterface,
 } from '@/types';
@@ -52,14 +54,15 @@ export default function CreateUser() {
   useEffect(() => {
     const fetchPositions = async () => {
       try {
-        const result = (await listPositions()) as ListPositionsInterface[];
+        const result = (await listOrgPositions()) as ListOrgPositionInterface[];
         console.log('Positions:', result);
         setPositionsData(
           result.map((type) => ({
-            value: type.id,
-            label: type.name,
+            value: type.position.id,
+            label: type.position.name,
           }))
         );
+        console.log('Mapped Positions Data:', positionsData);
       } catch (error) {
         console.error('Error fetching Positions:', error);
       }
