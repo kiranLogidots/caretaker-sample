@@ -509,6 +509,37 @@ export const listStaffs = () => {
       }
     });
 };
+//LIST STAFFS API
+export const listApprovedStaffs = () => {
+  const BranchId = sessionStorage.getItem('organizationBranchId');
+  return axios
+    .get(
+      `${apiBaseUrl}/v1/organization-users`,
+     
+      // `${apiBaseUrl}/v1/organization-users?organization_branch_id=${BranchId}`,
+      // https://api.nexsysi.alpha2.logidots.com/api/v1/organization-users
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then((response) => response.data.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+      if (
+        error.response &&
+        // error.response?.data?.statusCode === 403 ||
+        error.response.status === 401
+      ) {
+        signOut({
+          callbackUrl: 'http://localhost:3000',
+        });
+      } else {
+        console.error('Error fetching data:', error);
+      }
+    });
+};
 
 //DELETE STAFFS API
 export const deleteStaffs = async (staffId: string) => {

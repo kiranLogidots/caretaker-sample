@@ -97,11 +97,11 @@ export const getColumns = ({
   // },
   {
     title: <HeaderCell title="Team member" />,
-    onHeaderCell: () => onHeaderCellClick('user_data.first_name'),
-    dataIndex: 'user_data',
-    key: 'user_data.first_name',
+    onHeaderCell: () => onHeaderCellClick('user.first_name'),
+    dataIndex: 'user',
+    key: 'user.first_name',
     width: 250,
-    render: (user_data: { first_name: string }) =>  user_data.first_name,
+    render: (user: { first_name: string }) =>  user.first_name,
 
   },
   // {
@@ -115,36 +115,36 @@ export const getColumns = ({
   // },
   {
     title: <HeaderCell title="Employment Status" />,
-    onHeaderCell: () => onHeaderCellClick('user_data.employment_status'),
-    dataIndex: 'user_data',
-    key: 'user_data.employment_status',
+    onHeaderCell: () => onHeaderCellClick('user.employment_status'),
+    dataIndex: 'user',
+    key: 'user.employment_status',
     width: 250,
-    render: (user_data: { employment_status: string }) => {
+    render: (user: { employment_status: string }) => {
       const statusMap: { [key: string]: string } = {
         part_time: 'Part Time',
         full_time: 'Full Time',
         casual:"Casual",
         flex:"Flex"
       };
-      return statusMap[user_data.employment_status] || user_data.employment_status;
+      return statusMap[user.employment_status] || user.employment_status;
     },
   },
   {
     title: <HeaderCell title="Phone" />,
-    onHeaderCell: () => onHeaderCellClick('user_data.phone'),
-    dataIndex: 'user_data',
-    key: 'user_data.phone',
+    onHeaderCell: () => onHeaderCellClick('user.phone'),
+    dataIndex: 'user',
+    key: 'user.phone',
     width: 250,
-    render: (user_data: { phone: string }) =>  user_data.phone,
+    render: (user: { phone: string }) =>  user.phone,
 
   },
   {
     title: <HeaderCell title="Email" />,
-    onHeaderCell: () => onHeaderCellClick('user_data.email'),
-    dataIndex: 'user_data',
-    key: 'user_data.email',
+    onHeaderCell: () => onHeaderCellClick('user.email'),
+    dataIndex: 'user',
+    key: 'user.email',
     width: 250,
-    render: (user_data: { email: string }) =>  user_data.email,
+    render: (user: { email: string }) =>  user.email,
 
   },
   // {

@@ -91,10 +91,17 @@ export const menuItemsForOrgSuperAdmin = [
     icon: <FaLocationCrosshairs />,
   },
   {
-    name: 'Positions',
-    href: routes.positions_under_org,
+    name: 'Settings',
+    href: '#',
     icon: <PiBriefcaseDuotone />,
+    dropdownItems: [
+      {
+        name: 'Positions',
+        href: routes.positions_under_org,
+      },
+    ],
   },
+
   // {
   //   name: 'Settings',
   //   href: '#',
@@ -115,7 +122,6 @@ export const menuItemsForOrgSuperAdmin = [
   //     },
   //   ],
   // },
-
 ];
 export const menuItemsForBranchAdmin = [
   {
@@ -130,29 +136,50 @@ export const menuItemsForBranchAdmin = [
   },
   {
     name: 'Shift',
-    href: '/',
+    href: routes.support.dashboard,
     icon: <MdOutlineDashboard />,
   },
- 
+
   {
     name: 'Timesheet',
-    href: '/',
+    href: routes.analytics,
     icon: <MdOutlineDashboard />,
   },
   {
     name: 'Team members',
-    href: routes.staffs,
-    icon: <FaHospitalUser />,
+    href: '#',
+    icon: <MdOutlineDashboard />,
+    dropdownItems: [
+      {
+        name: 'Staffs',
+        href: routes.staffs.staffsApproved,
+      },
+      {
+        name: 'Invited Staffs',
+        href: routes.staffs.invitedStaffs,
+      },
+    ],
   },
   {
-    name: 'Chat',
-    href: '/',
+    name: 'Messages',
+    href: routes.executive.dashboard,
     icon: <MdOutlineDashboard />,
   },
+  // {
+  //   name: 'Departments',
+  //   href: routes.departments,
+  //   icon: <FaRegHospital />,
+  // },
   {
-    name: 'Departments',
-    href: routes.departments,
-    icon: <FaRegHospital />,
+    name: 'Settings',
+    href: '#',
+    icon: <PiBriefcaseDuotone />,
+    dropdownItems: [
+      {
+        name: 'Departments',
+        href: routes.departments,
+      },
+    ],
   },
 ];
 
@@ -243,79 +270,79 @@ export const menuItems = [
   // },
 
   // label start
-  // {
-  //   name: 'Users',
-  // },
+  {
+    name: 'Users',
+  },
 
   // label end
-  // {
-  //   name: 'E-Commerce',
-  //   href: '#',
-  //   icon: <PiShoppingCartDuotone />,
-  //   dropdownItems: [
-  //     {
-  //       name: 'Products',
-  //       href: routes.eCommerce.products,
-  //       badge: '',
-  //     },
-  //     {
-  //       name: 'Product Details',
-  //       href: routes.eCommerce.productDetails(DUMMY_ID),
-  //     },
-  //     {
-  //       name: 'Create Product',
-  //       href: routes.eCommerce.createProduct,
-  //     },
-  //     {
-  //       name: 'Edit Product',
-  //       href: routes.eCommerce.ediProduct(DUMMY_ID),
-  //     },
-  //     {
-  //       name: 'Categories',
-  //       href: routes.eCommerce.categories,
-  //     },
-  //     {
-  //       name: 'Create Category',
-  //       href: routes.eCommerce.createCategory,
-  //     },
-  //     {
-  //       name: 'Edit Category',
-  //       href: routes.eCommerce.editCategory(DUMMY_ID),
-  //     },
-  //     {
-  //       name: 'Orders',
-  //       href: routes.eCommerce.orders,
-  //     },
-  //     {
-  //       name: 'Order Details',
-  //       href: routes.eCommerce.orderDetails(DUMMY_ID),
-  //     },
-  //     {
-  //       name: 'Create Order',
-  //       href: routes.eCommerce.createOrder,
-  //     },
-  //     {
-  //       name: 'Edit Order',
-  //       href: routes.eCommerce.editOrder(DUMMY_ID),
-  //     },
-  //     {
-  //       name: 'Reviews',
-  //       href: routes.eCommerce.reviews,
-  //     },
-  //     {
-  //       name: 'Shop',
-  //       href: routes.eCommerce.shop,
-  //     },
-  //     {
-  //       name: 'Cart',
-  //       href: routes.eCommerce.cart,
-  //     },
-  //     {
-  //       name: 'Checkout & Payment',
-  //       href: routes.eCommerce.checkout,
-  //     },
-  //   ],
-  // },
+  {
+    name: 'E-Commerce',
+    href: '#',
+    icon: <PiShoppingCartDuotone />,
+    dropdownItems: [
+      {
+        name: 'Products',
+        href: routes.eCommerce.products,
+        badge: '',
+      },
+      {
+        name: 'Product Details',
+        href: routes.eCommerce.productDetails(DUMMY_ID),
+      },
+      {
+        name: 'Create Product',
+        href: routes.eCommerce.createProduct,
+      },
+      {
+        name: 'Edit Product',
+        href: routes.eCommerce.ediProduct(DUMMY_ID),
+      },
+      {
+        name: 'Categories',
+        href: routes.eCommerce.categories,
+      },
+      {
+        name: 'Create Category',
+        href: routes.eCommerce.createCategory,
+      },
+      {
+        name: 'Edit Category',
+        href: routes.eCommerce.editCategory(DUMMY_ID),
+      },
+      {
+        name: 'Orders',
+        href: routes.eCommerce.orders,
+      },
+      {
+        name: 'Order Details',
+        href: routes.eCommerce.orderDetails(DUMMY_ID),
+      },
+      {
+        name: 'Create Order',
+        href: routes.eCommerce.createOrder,
+      },
+      {
+        name: 'Edit Order',
+        href: routes.eCommerce.editOrder(DUMMY_ID),
+      },
+      {
+        name: 'Reviews',
+        href: routes.eCommerce.reviews,
+      },
+      {
+        name: 'Shop',
+        href: routes.eCommerce.shop,
+      },
+      {
+        name: 'Cart',
+        href: routes.eCommerce.cart,
+      },
+      {
+        name: 'Checkout & Payment',
+        href: routes.eCommerce.checkout,
+      },
+    ],
+  },
   // {
   //   name: 'Support',
   //   href: '#',
