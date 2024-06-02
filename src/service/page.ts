@@ -317,6 +317,21 @@ export const createBranches = async (details: CreateBranches) => {
   return response;
 };
 
+//VIEW BRANCH API
+export const viewBranch = async (id = null) => {
+  const branchId = id || sessionStorage.getItem('organizationBranchId');
+  let response = await axios.get(
+    `${apiBaseUrl}/v1/organization-branches/${branchId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
 //UPDATE BRANDCHES API
 export const updateBranches = async (details: any) => {
   const organizationId = sessionStorage.getItem('organizationId');
@@ -558,6 +573,17 @@ export const deleteStaffs = async (staffId: string) => {
     console.error('Delete event failed:', error);
   }
 };
+
+export const assignShiftToUser = async (data: any) => {
+  let response = await axios.post(`${apiBaseUrl}/v1/shift/assign-shift`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+}
 
 export const getShifts = async ({ branchId }: { branchId: string }) => {
   try {
