@@ -10,35 +10,36 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const menuItems = [
-  {
-    name: 'My Profile',
-    href: routes.profile,
-  },
+  // {
+  //   name: 'My Profile',
+  //   href: routes.profile,
+  // },
   {
     name: 'Account Settings',
     href: routes.forms.profileSettings,
   },
-  {
-    name: 'Activity Log',
-    href: '#',
-  },
+  // {
+  //   name: 'Activity Log',
+  //   href: '#',
+  // },
 ];
 
-function DropdownMenu() {
+function DropdownMenu({ user }: { user: any }) {
   return (
     <div className="w-64 text-left rtl:text-right">
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
         <Avatar
           src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-          name="Albert Flores"
+          name={`${user.first_name} ${user.last_name}`}
         />
         <div className="ms-3 flex flex-col flex-wrap text-wrap">
-          <Title as="h6" className="font-semibold"> Super Admin
-            {/* Albert Flores */}
+          <Title as="h6" className="font-semibold">
+            {`${user.first_name} ${user.last_name}`}
           </Title>
-          {/* <Text className="text-gray-600">admin@caretaker.com</Text> */}
+          <Text className="text-gray-600">{`${user.email}`}</Text>
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
@@ -67,6 +68,8 @@ function DropdownMenu() {
   );
 }
 
+
+
 export default function ProfileMenu({
   buttonClassName,
   avatarClassName,
@@ -76,6 +79,30 @@ export default function ProfileMenu({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+
+  type User = {
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+  
+  const [user, setUser] = useState<User | null>(null);
+
+  const fetchUser = async () => {
+    console.log('fetching user');
+    const token = sessionStorage.getItem('accessToken');
+    const userId = sessionStorage.getItem('userId');
+    const response = await axios.get(`https://api.nexsysi.alpha2.logidots.com/api/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    setUser(response.data);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     setIsOpen(false);
@@ -97,14 +124,14 @@ export default function ProfileMenu({
         >
           <Avatar
             src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-            name="John Doe"
+            name= {`${user?.first_name} ${user?.last_name}`}
             className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}
           />
         </button>
       </Popover.Trigger>
 
       <Popover.Content className="z-[9999] p-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100">
-        <DropdownMenu />
+        {user && <DropdownMenu user={user} />}
       </Popover.Content>
     </Popover>
   );
