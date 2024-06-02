@@ -201,7 +201,7 @@ export default function SignInForm() {
               <span>Sign in</span>{' '}
               <PiArrowRightBold className="ms-2 mt-0.5 h-5 w-5" />
             </Button> */}
-            <Button className="w-full bg-green-dark" type="submit" size="lg">
+            <Button className="w-full bg-[#6c5ce7] hover:bg-[#4c40ae]" type="submit" size="lg">
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
                   <IoMdRefresh
