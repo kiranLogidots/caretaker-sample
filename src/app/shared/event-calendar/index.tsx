@@ -14,6 +14,7 @@ import { getUsersWithShifts, listOrgPositions, viewBranch } from '@/service/page
 export default function EventCalendarView() {
   const { openModal } = useModal();
 
+  const [refreshKey, setRefreshKey] = useState(1);
   const [positions, setPositions]: any = useState([]);
 
   const [selectedPositionId, setSelectedPositionId] = useState(null);
@@ -24,21 +25,29 @@ export default function EventCalendarView() {
   const [eventsData, setEventsData]: any = useState([]);
 
   useEffect(() => {
-    generateDates();
-    fetchPositions();
-    fetchCurrentBranch();
+      generateDates();
+      fetchPositions();
+      fetchCurrentBranch();
   }, []);
 
   useEffect(() => {
-    if (selectedDates.length && selectedPositionId && shiftTemplate) {
+    if (selectedDates.length && selectedPositionId && shiftTemplate && refreshKey) {
       generateTableData();
     }
-  }, [selectedDates, selectedPositionId, shiftTemplate]);
+  }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
 
   const handleSelectSlot = useCallback(
-    ({ assignedDate, start, end, user, eventTemplate }: { assignedDate: Date, start: Date; end: Date, user: any, eventTemplate: any }) => {
+    ({ assignedDate, start, end, user, eventTemplate }: { assignedDate: string, start: Date; end: Date, user: any, eventTemplate: any }) => {
       openModal({
-        view: <EventForm assignedDate={assignedDate} startDate={start} endDate={end} eventTemplate={eventTemplate} user={user} />,
+        view: 
+        <EventForm 
+          assignedDate={assignedDate} 
+          startDate={start} 
+          endDate={end} 
+          eventTemplate={eventTemplate} 
+          user={user}
+          refresh={() => setRefreshKey(v => v + 1)}
+        />,
         customSize: '650px',
       });
     },
@@ -120,22 +129,29 @@ export default function EventCalendarView() {
         dataIndex: 'teamMember',
         title: 'Team Members',
         render: (data: string) => <div className='capitalize px-3 py-4'>{data}</div>,
-        width: 200
+        width: 180
       },
       ...selectedDates.map((d: string) => ({
         key: d,
         dataIndex: d,
-        title: moment(d, 'YYYY-MM-DD').format('ddd DD'),
+        title: 
+          <div className='flex flex-col items-center'>
+            {
+              moment(d, 'YYYY-MM-DD').format('ddd DD').split(' ').map(df => (
+                <span>{df}</span>
+              ))
+            }
+          </div>,
         render: (data: any) =>
           <div
-            className='cursor-pointer px-3 py-4 flex flex-col items-center'
+            className='cursor-pointer px-2 py-2 flex flex-col items-center'
             onClick={() => {
-              if (data.userId) {
-                let assignedDate = new Date(moment(d, 'YYYY-MM-DD').format());
+              if (data.userId && data.shifts.length === 0) {
+                let date = new Date(moment(d, 'YYYY-MM-DD').format());
                 handleSelectSlot({
-                  assignedDate: assignedDate,
-                  start: assignedDate,
-                  end: assignedDate,
+                  assignedDate: d,
+                  start: date,
+                  end: date,
                   user: response.data.find((u: any) => u.user_id === data.userId),
                   eventTemplate: {
                     ...shiftTemplate,
@@ -153,7 +169,7 @@ export default function EventCalendarView() {
                   <Badge
                     variant="flat"
                     rounded="pill"
-                    className="w-[90px] font-medium text-white whitespace-nowrap"
+                    className="w-[90px] font-medium text-white whitespace-nowrap mb-1"
                     color="primary"
                   >
                     {moment(s.shift.start_time).format('HH:mm')} -
@@ -171,6 +187,7 @@ export default function EventCalendarView() {
             }
           </div>
       }))
+     
     ]);
 
     setEventsData([

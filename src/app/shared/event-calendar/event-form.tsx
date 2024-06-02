@@ -20,12 +20,13 @@ import { useEffect } from 'react';
 import { assignShiftToUser, getShifts, viewBranch } from '@/service/page';
 
 interface CreateEventProps {
-  assignedDate: Date;
+  assignedDate: string;
   startDate?: Date;
   endDate?: Date;
   event?: any;
   eventTemplate?: any;
   user?: any;
+  refresh: Function;
 }
 
 export default function EventForm({
@@ -34,7 +35,8 @@ export default function EventForm({
   endDate,
   event,
   eventTemplate,
-  user
+  user,
+  refresh = () => { }
 }: CreateEventProps) {
   const { closeModal } = useModal();
   const unpaidBreakOptions = [
@@ -54,15 +56,16 @@ export default function EventForm({
 
   const isUpdateEvent = event !== undefined;
 
-  const onSubmit: SubmitHandler<EventFormInput> = (data) => {
-    assignShiftToUser({
+  const onSubmit: SubmitHandler<EventFormInput> = async (data) => {
+    await assignShiftToUser({
       ...eventTemplate,
       organization_branch_id: user.organization_branch_id,
       user_id: user.user_id,
       assigned_date: assignedDate,
       ...data
     });
-    //closeModal();
+    refresh();
+    closeModal();
   };
 
   return (
@@ -112,7 +115,7 @@ export default function EventForm({
                     minDate={new Date()}
                     showTimeSelect
                     dateFormat="MMMM d, yyyy h:mm aa"
-                    fixedHeight
+                    selectsRange={false}
                   />
                 )}
               />
