@@ -89,8 +89,11 @@ export default function SignInForm() {
 
       const accessToken = resultData.access_token;
       const user_roles = resultData.roles;
+      const userId = resultData.id;
 
       sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('userId', userId);
+      console.log("USER ID", userId);
       sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
 
       console.log('User roles array', user_roles);
