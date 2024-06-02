@@ -18,6 +18,8 @@ import {
 // import UploadZone from '@/components/ui/file-upload/upload-zone';
 import { countries, roles, timezones } from '@/data/forms/my-details';
 // import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Select = dynamic(
   () => import('@/components/ui/select').then((mod) => mod.Select),
@@ -42,6 +44,30 @@ export default function PersonalInfoView() {
       ...data,
     });
   };
+
+  type User = {
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+  
+  const [user, setUser] = useState<User | null>(null);
+
+  const fetchUser = async () => {
+    console.log('fetching user');
+    const token = sessionStorage.getItem('accessToken');
+    const userId = sessionStorage.getItem('userId');
+    const response = await axios.get(`https://api.nexsysi.alpha2.logidots.com/api/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    setUser(response.data);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <Form<PersonalInfoFormTypes>
@@ -73,12 +99,14 @@ export default function PersonalInfoView() {
                   {...register('first_name')}
                   error={errors.first_name?.message}
                   className="flex-grow"
+                  value={user?.first_name}
                 />
                 <Input
                   placeholder="Last Name"
                   {...register('last_name')}
                   error={errors.last_name?.message}
                   className="flex-grow"
+                  value={user?.last_name}
                 />
               </FormGroup>
 
@@ -95,6 +123,7 @@ export default function PersonalInfoView() {
                   placeholder="georgia.young@example.com"
                   {...register('email')}
                   error={errors.email?.message}
+                  value={user?.email}
                 />
               </FormGroup>
 
@@ -113,7 +142,7 @@ export default function PersonalInfoView() {
                 </div>
               </FormGroup>
 
-              <FormGroup
+              {/* <FormGroup
                 title="Role"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
@@ -204,7 +233,7 @@ export default function PersonalInfoView() {
                     />
                   )}
                 />
-              </FormGroup>
+              </FormGroup> */}
 
               {/* <FormGroup
                 title="Portfolio Projects"
