@@ -104,10 +104,10 @@ export const getColumns = ({
   },
   {
     title: <HeaderCell title="Location Name" />,
-    dataIndex: 'location_name',
-    key: 'location_name',
+    dataIndex: 'location_address_line_one',
+    key: 'location_address_line_one',
     width: 50,
-    hidden: 'location_name',
+    hidden: 'location_address_line_one',
     // render: (_: string, user: User) => (
     //   <AvatarCard
     //     src={user.avatar}
@@ -124,6 +124,15 @@ export const getColumns = ({
     width: 50,
     render: (country: string) => country,
   },
+  {
+    title: <HeaderCell title="Postal Code" />,
+    onHeaderCell: () => onHeaderCellClick('postal_code'),
+    dataIndex: 'postal_code',
+    key: 'postal_code',
+    width: 50,
+    render: (postal_code: string) => postal_code,
+  },
+
   // {
   //   title: <HeaderCell title="Actions" />,
   //   dataIndex: 'action',

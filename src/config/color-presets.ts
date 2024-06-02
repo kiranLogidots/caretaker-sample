@@ -21,12 +21,8 @@ export const DEFAULT_PRESET_COLORS = {
   lighter: '#d7e3fe',
   light: '#608efb',
   default: '#3872fa',
-  dark: '#1d58d8',
-  // lighter: '#4486F4', 
-  // light: '#4486F4', 
-  // default: '#4486F4', 
-  // dark: '#4486F4', 
-  foreground: '#d7e3fe',
+  dark: '#6c5ce7', 
+  foreground: '#ffffff',
 };
 
 export const DEFAULT_PRESET_COLOR_NAME = 'Blue';
@@ -50,24 +46,64 @@ export const usePresets = () => {
           theme === 'light' ? presetLight.foreground : presetDark.foreground,
       },
     },
-    // {
-    //   name: 'Teal',
-    //   colors: {
-    //     lighter: '#ccfbf1', // Teal 100
-    //     light: '#5eead4', // Teal 300
-    //     default: '#026163', // Teal 600 0d9488
-    //     dark: '#115e59', // Teal 800
-    //     foreground: '#ffffff',
-    //   },
-    // },
+    {
+      name: 'Red',
+      colors: {
+        lighter: '#fee2e2', // Red 100
+        light: '#fca5a5', // Red 300
+        default: '#ef4444', // Red 600
+        dark: '#b91c1c', // Red 900
+        foreground: '#ffffff',
+      },
+    },
+    {
+      name: 'Orange',
+      colors: {
+        lighter: '#fef3c7', // Orange 100
+        light: '#fcd34d', // Orange 300
+        default: '#f59e0b', // Orange 600
+        dark: '#d97706', // Orange 800
+        foreground: '#ffffff',
+      },
+    },
+    {
+      name: 'Amber',
+      colors: {
+        lighter: '#fef3c7', // Amber 100
+        light: '#fcd34d', // Amber 300
+        default: '#f59e0b', // Amber 600
+        dark: '#d97706', // Amber 800
+        foreground: '#ffffff',
+      },
+    },
+    {
+      name: 'Green',
+      colors: {
+        lighter: '#d1fae5', // Green 100
+        light: '#68d391', // Green 300
+        default: '#10b981', // Green 600
+        dark: '#047857', // Green 800
+        foreground: '#ffffff',
+      },
+    },
+    {
+      name: 'Teal',
+      colors: {
+        lighter: '#6ee7b7', // Teal 100
+        light: '#2dd4bf', // Teal 300
+        default: '#14b8a6', // Teal 600
+        dark: '#047857', // Teal 800
+        foreground: '#ffffff',
+      },
+    },
     {
       name: 'Blue',
       colors: {
-        lighter: '#4486F4', // Teal 100
-        light: '#4486F4', // Teal 300
-        default: '#4486F4', // Teal 600 0d9488
-        dark: '#4486F4', // Teal 800
-        foreground: '#4486F4',
+        lighter: '#6c5ce7', // Teal 100
+        light: '#6c5ce7', // Teal 300
+        default: '#6c5ce7', // Teal 600 0d9488
+        dark: '#6c5ce7', // Teal 800
+        foreground: '#6c5ce7',
       },
     },
     {

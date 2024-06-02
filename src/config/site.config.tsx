@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import logoImg from '@public/caretaker-logo-vector.png';
+import logoImg from '@public/nexsysi-logo.png';
 import { LAYOUT_OPTIONS } from '@/config/enums';
-import logoIconImg from '@public/caretaker.png';
+import logoIconImg from '@public/nexsysi-logo.png';
 import { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
 
 enum MODE {

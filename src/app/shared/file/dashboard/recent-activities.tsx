@@ -81,7 +81,7 @@ export function ActivityThreadCard({ thread }: any) {
             key={file}
             className="mt-2 flex items-center gap-2.5 rounded-lg border border-gray-300 px-2 py-1.5"
           >
-            <PiImageDuotone className="h-5 w-5  text-[#0761D1]" />
+            <PiImageDuotone className="h-5 w-5  text-[#6c5ce7]" />
             <Text as="span" className="text-sm text-gray-700">
               {file}
             </Text>

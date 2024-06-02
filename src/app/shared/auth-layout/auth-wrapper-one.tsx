@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import logoImg from '@public/caretaker-logo-vector.png';
+import logoImg from '@public/nexsysi-logo.png';
 import Image from 'next/image';
 import { Title, Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';

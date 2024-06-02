@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';

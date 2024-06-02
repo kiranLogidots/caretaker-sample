@@ -6,6 +6,7 @@ import { Controller, SubmitHandler } from 'react-hook-form';
 import { ActionIcon, Button, Input, Text, Textarea, Title } from 'rizzui';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
+import { Select } from '@/components/ui/select'
 import toast from 'react-hot-toast';
 import { DatePicker } from '@/components/ui/datepicker';
 import cn from '@/utils/class-names';
@@ -15,50 +16,46 @@ import {
   EventFormInput,
   eventFormSchema,
 } from '@/utils/validators/create-event.schema';
+import { useEffect } from 'react';
+import { getShifts } from '@/service/page';
 
 interface CreateEventProps {
   startDate?: Date;
   endDate?: Date;
   event?: CalendarEvent;
+  user?: any;
 }
 
 export default function EventForm({
   startDate,
   endDate,
   event,
+  user
 }: CreateEventProps) {
   const { closeModal } = useModal();
-  const { createEvent, updateEvent } = useEventCalendar();
+  const unpaidBreakOptions = [
+    {
+      label: 'No Unpaid Break',
+      value: 0
+    },
+    {
+      label: '1 hr',
+      value: 60
+    }
+  ];
 
   const isUpdateEvent = event !== undefined;
 
+  useEffect(() => {
+    if(user && user.organization_branch_id) {
+      getShifts({ 
+        branchId: user.organization_branch_id 
+      });
+    } 
+  }, [user]);
+
   const onSubmit: SubmitHandler<EventFormInput> = (data) => {
-    const isNewEvent = data.id === '' || data.id === undefined;
 
-    console.log('event_data', data);
-
-    toast.success(
-      <Text as="b">
-        Shift {isNewEvent ? 'Created' : 'Updated'} Successfully
-      </Text>
-    );
-
-    if (isNewEvent) {
-      createEvent({
-        id: uniqueId(),
-        start: data.startDate ?? startDate,
-        end: data.endDate ?? endDate,
-        title: data.title,
-        description: data.description,
-        location: data.location,
-      });
-    } else {
-      updateEvent({
-        ...data,
-        start: data.startDate,
-        end: data.endDate,
-      });
-    }
     closeModal();
   };
 
@@ -83,46 +80,20 @@ export default function EventForm({
         onSubmit={onSubmit}
         useFormProps={{
           defaultValues: {
-            title: event?.title ?? '',
-            description: event?.description ?? '',
-            location: event?.location ?? '',
-            startDate: startDate ?? event?.start,
-            endDate: endDate ?? event?.end,
+            start_time: startDate ?? event?.start,
+            end_time: endDate ?? event?.end,
+            unpaid_break: 60
           },
         }}
         className="grid grid-cols-1 gap-5 @container md:grid-cols-2 [&_label]:font-medium"
       >
         {({ register, control, watch, formState: { errors } }) => {
-          const startDate = watch('startDate');
-          const endDate = watch('endDate');
+          const startDate = watch('start_time');
+          const endDate = watch('end_time');
           return (
             <>
-              <input type="hidden" {...register('id')} value={event?.id} />
-              <Input
-                label="Position"
-                placeholder="Enter position"
-                {...register('title')}
-                className="col-span-full"
-                error={errors.title?.message}
-              />
-
-              <Textarea
-                label="Event Description"
-                placeholder="Enter your event description"
-                {...register('description')}
-                error={errors.description?.message}
-                textareaClassName="h-20"
-                className="col-span-full"
-              />
-              <Input
-                label="Event Location"
-                placeholder="Enter your location"
-                {...register('location')}
-                error={errors.location?.message}
-                className="col-span-full"
-              />
               <Controller
-                name="startDate"
+                name="start_time"
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <DatePicker
@@ -138,7 +109,7 @@ export default function EventForm({
                 )}
               />
               <Controller
-                name="endDate"
+                name="end_time"
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <DatePicker
@@ -153,6 +124,20 @@ export default function EventForm({
                   />
                 )}
               />
+              <Controller
+                  control={control}
+                  name="unpaid_break"
+                  render={({ field: { value, onChange } }) => (
+                    <Select
+                      dropdownClassName="z-[9999]"
+                      options={unpaidBreakOptions}
+                      onChange={onChange}
+                      value={value}
+                      getOptionValue={(option) => option.value}
+                      displayValue={(selected: any) => unpaidBreakOptions.find(b => b.value === selected)?.label}
+                    />
+                  )}
+                />
               <div className={cn('col-span-full grid grid-cols-2 gap-4 pt-5')}>
                 <Button
                   variant="outline"

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Avatar } from '@/components/ui/avatar';
-import logoImg from '@public/logo-short.svg';
+import logoImg from '@public/nexsysi-logo.png';
 import starImg from '@public/auth/star.svg';
 import { Title, Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
