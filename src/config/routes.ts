@@ -18,6 +18,10 @@ export const routes = {
     checkout: '/ecommerce/checkout',
     trackingId: (id: string) => `/ecommerce/tracking/${id}`,
   },
+  staffs:{
+    invitedStaffs:'/staffs/invited-staffs',
+    staffsApproved:'/staffs/team-members'
+  },
   pickUpRequest:{
     dashboard:'/pickup-request',
     requestDetails:(slug:string) => `/pickup-request/request-detail/${slug}`
@@ -83,7 +87,7 @@ export const routes = {
   positions_under_org:'/positions-under-org',
   branches:'/branches',
   departments:'/departments',
-  staffs:'/staffs',
+  // staffs:'/staffs',
   wardData:'/ward-data',
   pickupRequest:'/pickup-request',
   invoice: {

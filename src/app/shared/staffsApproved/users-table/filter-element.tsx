@@ -9,7 +9,7 @@ import { STATUSES } from '@/data/users-data';
 import { rolesList } from '@/data/roles-permissions';
 import { Input } from '@/components/ui/input';
 import ModalButton from '@/app/shared/modal-button';
-import CreateUser from '@/app/shared/staffs/create-user';
+import CreateUser from '@/app/shared/staffsApproved/create-user';
 import DrawerButton from '../../drawer-button';
 
 const statusOptions = [
@@ -53,7 +53,7 @@ export default function FilterElement({
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
         <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
-          Invited Staffs
+          All Staffs
         </Title>
 
         {/* <StatusField
