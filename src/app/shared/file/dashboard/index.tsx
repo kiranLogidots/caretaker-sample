@@ -18,12 +18,13 @@ import Image from 'next/image';
 export default function FileDashboard() {
   return (
     <div className="mt-2 @container">
-      <div className="flex items-center justify-center">
-      <Image
+      <div className="flex items-center justify-center mt-[280px] ">
+        <p className='text-4xl font-bold text-[#503ed3]'>COMING SOON</p>
+      {/* <Image
         src={ComingSoonTwoImg}
         alt="coming soon"
         className="w-[10%] top-80"
-      />
+      /> */}
       </div>
       {/* <div className="end-10 top-1/2 lg:absolute lg:-translate-y-1/2 xl:end-[10%] 3xl:end-[15%]">
         <Image

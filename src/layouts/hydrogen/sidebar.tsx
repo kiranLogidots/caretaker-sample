@@ -17,7 +17,7 @@ import {
 import Logo from '@/components/logo';
 import StatusBadge from '@/components/get-status-badge';
 import Image from 'next/image';
-import GWLogo from '../../../public/nexsysi-logo.png';
+import GWLogo from '../../../public/sidebarlogo.png';
 // import { useRouter } from 'next/router';
 
 interface MenuItem {
@@ -219,6 +219,7 @@ export default function Sidebar({ className }: { className?: string }) {
                       </Link>
                     )}
                   </>
+                  
                   // <Title
                   //   as="h6"
                   //   className={cn(

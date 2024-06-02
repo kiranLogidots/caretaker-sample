@@ -101,6 +101,29 @@ export interface Organization {
   organizationUsers: OrganizationUser[];
 }
 
+export interface Position {
+  created_at: string;
+  deleted_at: string | null;
+  description: string;
+  hourly_rate: string;
+  id: number;
+  name: string;
+  position_category_id: number;
+  updated_at: string;
+}
+
+export interface ListOrgPositionInterface {
+  created_at: string;
+  deleted_at: string | null;
+  hourly_rate: string;
+  id: number;
+  organization: Organization;
+  organization_id: number;
+  position: Position;
+  position_id: number;
+  updated_at: string;
+}
+
 // Meta data interface
 export interface Meta {
   itemsPerPage: number;
