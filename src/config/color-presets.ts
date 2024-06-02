@@ -18,9 +18,9 @@ export const presetDark = {
 
 // defaults from global css line 38
 export const DEFAULT_PRESET_COLORS = {
-  lighter: '#d7e3fe',
-  light: '#608efb',
-  default: '#3872fa',
+  lighter: '#6c5ce7',
+  light: '#6c5ce7',
+  default: '#6c5ce7',
   dark: '#6c5ce7', 
   foreground: '#ffffff',
 };
@@ -99,11 +99,12 @@ export const usePresets = () => {
     {
       name: 'Blue',
       colors: {
-        lighter: '#6c5ce7', // Teal 100
-        light: '#6c5ce7', // Teal 300
-        default: '#6c5ce7', // Teal 600 0d9488
-        dark: '#6c5ce7', // Teal 800
+        lighter: '#6c5ce7', 
+        light: '#6c5ce7', 
+        default: '#6c5ce7', 
+        dark: '#6c5ce7', 
         foreground: '#6c5ce7',
+        // #3872FA
       },
     },
     {
