@@ -52,9 +52,9 @@ export default function FilterElement({
   return (
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
-        <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
+        {/* <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
           All Locations
-        </Title>
+        </Title> */}
 
         {/* <StatusField
           className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
@@ -118,12 +118,12 @@ export default function FilterElement({
             customSize="600px"
             className="mt-0"
           /> */}
-          <DrawerButton
+          {/* <DrawerButton
             label="Add New Location"
             view={<CreateUser />}
             customSize="500px"
             placement="right"
-          />
+          /> */}
         </div>
       </div>
     </>

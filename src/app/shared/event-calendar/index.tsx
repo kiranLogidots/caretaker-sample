@@ -1,59 +1,58 @@
 /* eslint-disable */
 'use client';
 
-import type { CalendarEvent } from '@/types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ControlledTable from '@/components/controlled-table';
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import EventForm from '@/app/shared/event-calendar/event-form';
-import DetailsEvents from '@/app/shared/event-calendar/details-event';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import moment from 'moment';
-import { getUsersWithShifts, listOrgPositions } from '@/service/page';
+import { getUsersWithShifts, listOrgPositions, viewBranch } from '@/service/page';
 
 export default function EventCalendarView() {
   const { openModal } = useModal();
 
-  const handleSelectSlot = useCallback(
-    ({ start, end, user }: { start: Date; end: Date, user: any }) => {
-      openModal({
-        view: <EventForm startDate={start} endDate={end} user={user} />,
-        customSize: '650px',
-      });
-    },
-    [openModal]
-  );
-
-  const handleSelectEvent = useCallback(
-    (event: CalendarEvent) => {
-      openModal({
-        view: <DetailsEvents event={event} />,
-        customSize: '500px',
-      });
-    },
-    [openModal]
-  );
-
+  const [refreshKey, setRefreshKey] = useState(1);
   const [positions, setPositions]: any = useState([]);
 
   const [selectedPositionId, setSelectedPositionId] = useState(null);
 
   const [selectedDates, setSelectedDates]: any = useState([]);
   const [columns, setColumns]: any = useState([]);
+  const [shiftTemplate, setShiftTemplate]: any = useState(null);
   const [eventsData, setEventsData]: any = useState([]);
 
   useEffect(() => {
-    generateDates();
-    fetchPositions();
+      generateDates();
+      fetchPositions();
+      fetchCurrentBranch();
   }, []);
 
   useEffect(() => {
-    if (selectedDates.length && selectedPositionId) {
+    if (selectedDates.length && selectedPositionId && shiftTemplate && refreshKey) {
       generateTableData();
     }
-  }, [selectedDates, selectedPositionId]);
+  }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
+
+  const handleSelectSlot = useCallback(
+    ({ assignedDate, start, end, user, eventTemplate }: { assignedDate: string, start: Date; end: Date, user: any, eventTemplate: any }) => {
+      openModal({
+        view: 
+        <EventForm 
+          assignedDate={assignedDate} 
+          startDate={start} 
+          endDate={end} 
+          eventTemplate={eventTemplate} 
+          user={user}
+          refresh={() => setRefreshKey(v => v + 1)}
+        />,
+        customSize: '650px',
+      });
+    },
+    [openModal]
+  );
 
   const fetchPositions = async () => {
     setPositions([]);
@@ -61,9 +60,37 @@ export default function EventCalendarView() {
 
     let response = await listOrgPositions();
     setPositions(response);
-
+    
     if(response.length > 0) {
       setSelectedPositionId(response[0].position.id);
+    }
+  }
+
+  const fetchCurrentBranch = async () => {
+    let response = await viewBranch();
+    if(response.scheduleSettings) {
+      let settings = response.scheduleSettings;
+      let overrideSettings = response.scheduleSettings?.positionCustomSettings.find((p:any) => p.position_id === selectedPositionId) || {};
+      setShiftTemplate({
+        user_id: "",
+        position_id: "",
+        assigned_date: "",
+        start_time: "",
+        end_time: "",
+        unpaid_break: "",
+        is_over_time_allowed: false,
+        shift_notes: "No notes available",
+        shift_status: "assigned",
+        shift_type: "published",
+        schedule_settings: {
+          last_pay_period_start_date: settings.last_pay_period_start_date,
+          over_time_calculation_period_length: settings.over_time_calculation_period_length,
+          def_over_time_threshold_per_day: settings.def_over_time_threshold_per_day,
+          def_over_time_threshold_per_over_time_period: settings.def_over_time_threshold_per_over_time_period,
+          min_time_between_shifts: settings.min_time_between_shifts,
+          default_unpaid_breaks: settings.default_unpaid_breaks
+        }
+      });
     }
   }
 
@@ -102,46 +129,65 @@ export default function EventCalendarView() {
         dataIndex: 'teamMember',
         title: 'Team Members',
         render: (data: string) => <div className='capitalize px-3 py-4'>{data}</div>,
-        width: 200
+        width: 180
       },
       ...selectedDates.map((d: string) => ({
         key: d,
         dataIndex: d,
-        title: moment(d, 'YYYY-MM-DD').format('ddd DD'),
+        title: 
+          <div className='flex flex-col items-center'>
+            {
+              moment(d, 'YYYY-MM-DD').format('ddd DD').split(' ').map(df => (
+                <span>{df}</span>
+              ))
+            }
+          </div>,
         render: (data: any) =>
           <div
-            className='cursor-pointer px-3 py-4'
+            className='cursor-pointer px-2 py-2 flex flex-col items-center'
             onClick={() => {
-              if (data.userId) {
+              if (data.userId && data.shifts.length === 0) {
+                let date = new Date(moment(d, 'YYYY-MM-DD').format());
                 handleSelectSlot({
-                  start: new Date(moment(d, 'YYYY-MM-DD').format()),
-                  end: new Date(d),
-                  user: response.data.find((u: any) => u.user_id === data.userId)
+                  assignedDate: d,
+                  start: date,
+                  end: date,
+                  user: response.data.find((u: any) => u.user_id === data.userId),
+                  eventTemplate: {
+                    ...shiftTemplate,
+                    position_id: selectedPositionId
+                  }
                 })
               }
             }}
           >
             {
-              data.userId && data.shifts.length > 0 &&
-              data.shifts.map((s: any) => (
-                <Badge
-                  variant="flat"
-                  rounded="pill"
-                  className="w-[90px] font-medium"
-                  color="primary"
-                >
-                  {moment(s.shift.start_time).format('HH:mm')} -
-                  {moment(s.shift.end_time).format('HH:mm')}
-                </Badge>
-              ))
-            }
+              data.userId && 
+              (
+                data.shifts.length > 0 ?
+                data.shifts.map((s: any) => (
+                  <Badge
+                    variant="flat"
+                    rounded="pill"
+                    className="w-[90px] font-medium text-white whitespace-nowrap mb-1"
+                    color="primary"
+                  >
+                    {moment(s.shift.start_time).format('HH:mm')} -
+                    {moment(s.shift.end_time).format('HH:mm')}
+                  </Badge>
+                )) : 
+                <Button  className="w-full" variant="outline">
+                  +
+                </Button>
+              )
+            } 
             {
               data.summary &&
               <>{data.summary}</>
             }
-            <span className='hidden'>No data</span>
           </div>
       }))
+     
     ]);
 
     setEventsData([

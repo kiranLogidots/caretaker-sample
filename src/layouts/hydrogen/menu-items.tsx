@@ -53,6 +53,9 @@ import { TbNurse } from 'react-icons/tb';
 import { SlOrganization } from 'react-icons/sl';
 import { TbHierarchy3 } from 'react-icons/tb';
 import { SiAwsorganizations } from 'react-icons/si';
+import DashboardIcon from '@/components/icons/dashboard';
+import { BsFillHouseFill, BsCalendar3EventFill, BsClockFill, BsChatLeftTextFill, BsFillGearFill, BsClock, BsClockHistory } from 'react-icons/bs';
+import { HiUser } from 'react-icons/hi2';
 
 // Note: do not add href in the label object, it is rendering as label
 
@@ -60,7 +63,7 @@ export const menuItemsForSuperAdmin = [
   {
     name: 'Dashboard',
     href: '/',
-    icon: <MdOutlineDashboard />,
+    icon: <DashboardIcon />,
   },
   {
     name: 'Organizations',
@@ -83,24 +86,108 @@ export const menuItemsForOrgSuperAdmin = [
   {
     name: 'Dashboard',
     href: '/',
+    icon: <BsFillHouseFill />,
+  },
+  {
+    name: 'Schedule',
+    href: routes.eventCalendar,
+    icon: <BsCalendar3EventFill
+    // fill='rgb(108 92 231)'
+    />,
+  },
+  {
+    name: 'Batch Shift',
+    href: routes.support.dashboard,
+    icon: <BsClock />,
+  },
+  {
+    name: 'Shift',
+    href: routes.support.dashboard,
+    icon: <BsClockFill />,
+  },
+
+  {
+    name: 'Timesheet',
+    href: routes.analytics,
     icon: <MdOutlineDashboard />,
   },
   {
-    name: 'Locations',
-    href: routes.branches,
-    icon: <FaLocationCrosshairs />,
+    name: 'Team members',
+    href: '#',
+    icon: <HiUser />,
+    // dropdownItems: [
+    //   {
+    //     name: 'Staffs',
+    //     href: routes.staffs.staffsApproved,
+    //   },
+    //   {
+    //     name: 'Invited Staffs',
+    //     href: routes.staffs.invitedStaffs,
+    //   },
+    // ],
+  },
+  {
+    name: 'Communication',
+    href: routes.executive.dashboard,
+    icon: <BsChatLeftTextFill />
   },
   {
     name: 'Settings',
     href: '#',
-    icon: <PiBriefcaseDuotone />,
+    icon: <BsFillGearFill />,
     dropdownItems: [
+      {
+        name: 'Organization Profile',
+        href: routes.profile,
+        icon: <PiUserCircleDuotone />,
+      },
+      {
+        name: 'My Profile',
+        href: routes.forms.profileSettings,
+        icon: <PiUserCircleDuotone />,
+      },
+      {
+        name: 'Locations',
+        href: routes.branches,
+        icon: <FaLocationCrosshairs />,
+      },
       {
         name: 'Positions',
         href: routes.positions_under_org,
+        icon: <PiBriefcaseDuotone />,
+      },
+      {
+        name: 'Administartors',
+        href: routes.branches,
+        icon: <FaLocationCrosshairs />,
+      },
+      {
+        name: 'Departments',
+        href: routes.departments,
       },
     ],
   },
+  // {
+  //   name: 'Dashboard',
+  //   href: '/',
+  //   icon: <DashboardIcon />,
+  // },
+  // {
+  //   name: 'Locations',
+  //   href: routes.branches,
+  //   icon: <FaLocationCrosshairs />,
+  // },
+  // {
+  //   name: 'Settings',
+  //   href: '#',
+  //   icon: <SettingsIcon />,
+  //   dropdownItems: [
+  //     {
+  //       name: 'Positions',
+  //       href: routes.positions_under_org,
+  //     },
+  //   ],
+  // },
 
   // {
   //   name: 'Settings',
@@ -127,17 +214,19 @@ export const menuItemsForBranchAdmin = [
   {
     name: 'Dashboard',
     href: '/',
-    icon: <MdOutlineDashboard />,
+    icon: <BsFillHouseFill />,
   },
   {
     name: 'Schedule',
     href: routes.eventCalendar,
-    icon: <PiCalendarPlusDuotone />,
+    icon: <BsCalendar3EventFill
+    // fill='rgb(108 92 231)'
+    />,
   },
   {
     name: 'Shift',
     href: routes.support.dashboard,
-    icon: <MdOutlineDashboard />,
+    icon: <BsClockFill />,
   },
 
   {
@@ -148,7 +237,7 @@ export const menuItemsForBranchAdmin = [
   {
     name: 'Team members',
     href: '#',
-    icon: <MdOutlineDashboard />,
+    icon: <HiUser />,
     dropdownItems: [
       {
         name: 'Staffs',
@@ -161,9 +250,9 @@ export const menuItemsForBranchAdmin = [
     ],
   },
   {
-    name: 'Messages',
+    name: 'Communication',
     href: routes.executive.dashboard,
-    icon: <MdOutlineDashboard />,
+    icon: <BsChatLeftTextFill />
   },
   // {
   //   name: 'Departments',
@@ -173,7 +262,7 @@ export const menuItemsForBranchAdmin = [
   {
     name: 'Settings',
     href: '#',
-    icon: <PiBriefcaseDuotone />,
+    icon: <BsFillGearFill />,
     dropdownItems: [
       {
         name: 'Departments',

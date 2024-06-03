@@ -20,7 +20,7 @@ export default function GlobalModal() {
       customSize={customSize}
       overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-lg"
       containerClassName="dark:bg-gray-100"
-      className="z-[9999]"
+      className="z-[9999] custom-popup"
     >
       {view}
     </Modal>

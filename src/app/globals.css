@@ -350,6 +350,10 @@
   scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0);
 }
 
+.custom-popup .pointer-events-none {
+  overflow: visible;
+}
+
 /* ................................................... */
 /* Change autocomplete styles in WebKit */
 /* ................................................... */
@@ -383,6 +387,10 @@ select:-webkit-autofill:focus {
 /* time container */
 .react-datepicker .react-datepicker__time-container {
   @apply w-auto border-l-0 pr-3.5;
+}
+
+.react-datepicker__header--time {
+  margin: 12px auto;
 }
 
 .react-datepicker-popper

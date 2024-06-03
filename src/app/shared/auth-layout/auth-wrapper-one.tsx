@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import logoImg from '@public/nexsysi-logo.png';
+import logoImg from '../../../../public/rosterbees-logo.png';
 import Image from 'next/image';
 import { Title, Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
@@ -63,7 +63,7 @@ export default function AuthWrapperOne({
             <div className=" items- justify- mb-7 flex flex-col px-6 pt-3 text-center md:pt-0 lg:px-0 lg:text-start ">
               <Link
                 href={'/'}
-                className="absolute top-12 inline-flex max-w-[168px]"
+                className="absolute top-12 inline-flex max-w-[350px]"
               >
                 <Image src={logoImg} alt="Isomorphic" className="" />
 

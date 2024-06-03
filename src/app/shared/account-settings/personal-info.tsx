@@ -86,7 +86,7 @@ export default function PersonalInfoView() {
             <FormGroup
               title="Personal Info"
               description="Update your photo and personal details here"
-              className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+              className=""
             />
 
             <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">

@@ -17,20 +17,26 @@ import {
   eventFormSchema,
 } from '@/utils/validators/create-event.schema';
 import { useEffect } from 'react';
-import { getShifts } from '@/service/page';
+import { assignShiftToUser, getShifts, viewBranch } from '@/service/page';
 
 interface CreateEventProps {
+  assignedDate: string;
   startDate?: Date;
   endDate?: Date;
-  event?: CalendarEvent;
+  event?: any;
+  eventTemplate?: any;
   user?: any;
+  refresh: Function;
 }
 
 export default function EventForm({
+  assignedDate,
   startDate,
   endDate,
   event,
-  user
+  eventTemplate,
+  user,
+  refresh = () => { }
 }: CreateEventProps) {
   const { closeModal } = useModal();
   const unpaidBreakOptions = [
@@ -39,23 +45,26 @@ export default function EventForm({
       value: 0
     },
     {
-      label: '1 hr',
+      label: '30m',
+      value: 30
+    },
+    {
+      label: '1h',
       value: 60
     }
   ];
 
   const isUpdateEvent = event !== undefined;
 
-  useEffect(() => {
-    if(user && user.organization_branch_id) {
-      getShifts({ 
-        branchId: user.organization_branch_id 
-      });
-    } 
-  }, [user]);
-
-  const onSubmit: SubmitHandler<EventFormInput> = (data) => {
-
+  const onSubmit: SubmitHandler<EventFormInput> = async (data) => {
+    await assignShiftToUser({
+      ...eventTemplate,
+      organization_branch_id: user.organization_branch_id,
+      user_id: user.user_id,
+      assigned_date: assignedDate,
+      ...data
+    });
+    refresh();
     closeModal();
   };
 
@@ -97,6 +106,7 @@ export default function EventForm({
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <DatePicker
+                    title='Start time'
                     selected={value}
                     onChange={onChange}
                     selectsStart
@@ -105,6 +115,7 @@ export default function EventForm({
                     minDate={new Date()}
                     showTimeSelect
                     dateFormat="MMMM d, yyyy h:mm aa"
+                    selectsRange={false}
                   />
                 )}
               />
@@ -128,14 +139,15 @@ export default function EventForm({
                   control={control}
                   name="unpaid_break"
                   render={({ field: { value, onChange } }) => (
-                    <Select
-                      dropdownClassName="z-[9999]"
-                      options={unpaidBreakOptions}
-                      onChange={onChange}
-                      value={value}
-                      getOptionValue={(option) => option.value}
-                      displayValue={(selected: any) => unpaidBreakOptions.find(b => b.value === selected)?.label}
-                    />
+                      <Select
+                        label="Unpaid Breaks"
+                        dropdownClassName="z-[9999]"
+                        options={unpaidBreakOptions}
+                        onChange={onChange}
+                        value={value}
+                        getOptionValue={(option) => option.value}
+                        displayValue={(selected: any) => unpaidBreakOptions.find(b => b.value === selected)?.label}
+                      />
                   )}
                 />
               <div className={cn('col-span-full grid grid-cols-2 gap-4 pt-5')}>
