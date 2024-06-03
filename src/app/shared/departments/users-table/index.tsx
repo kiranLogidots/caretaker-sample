@@ -124,7 +124,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   }
 
   return (
-    <div className="mt-14">
+    <div className="">
       <FilterElement
         isFiltered={isFiltered}
         filters={filters}

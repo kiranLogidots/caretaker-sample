@@ -678,5 +678,9 @@ export const iconsData = [
   {
     "file": "CCCamera.tsx",
     "name": "CCCameraIcon"
+  },
+  {
+    "file":"Dashboard.tsx",
+    "name":"DashboardIcon"
   }
 ];
