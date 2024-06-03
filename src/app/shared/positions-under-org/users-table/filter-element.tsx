@@ -52,9 +52,9 @@ export default function FilterElement({
   return (
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
-        <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
+        {/* <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
           All Positions
-        </Title>
+        </Title> */}
 
         {/* <StatusField
           className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
@@ -99,7 +99,7 @@ export default function FilterElement({
           </Button>
         )}
 
-        <Input
+        {/* <Input
           type="search"
           placeholder="Search for Positions..."
           value={searchTerm}
@@ -109,7 +109,7 @@ export default function FilterElement({
           rounded="lg"
           clearable
           className="-order-4 w-full @xl:-order-5 @xl:ms-auto @xl:w-auto @4xl:-order-2 @4xl:w-[230px] @5xl:w-auto"
-        />
+        /> */}
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
           {/* <ModalButton
@@ -118,12 +118,12 @@ export default function FilterElement({
             customSize="600px"
             className="mt-0"
           /> */}
-          <DrawerButton
+          {/* <DrawerButton
             label="Add New Position"
             view={<CreateUser />}
             customSize="500px"
             placement="right"
-          />
+          /> */}
         </div>
       </div>
     </>
