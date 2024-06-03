@@ -143,7 +143,7 @@ export const menuItemsForOrgSuperAdmin = [
       },
       {
         name: 'My Profile',
-        href: routes.profile,
+        href: routes.forms.profileSettings,
         icon: <PiUserCircleDuotone />,
       },
       {
