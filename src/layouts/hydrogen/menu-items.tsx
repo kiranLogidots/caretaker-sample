@@ -161,10 +161,10 @@ export const menuItemsForOrgSuperAdmin = [
         href: routes.branches,
         icon: <FaLocationCrosshairs />,
       },
-      // {
-      //   name: 'Departments',
-      //   href: routes.departments,
-      // },
+      {
+        name: 'Departments',
+        href: routes.departments,
+      },
     ],
   },
   // {
