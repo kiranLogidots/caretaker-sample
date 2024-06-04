@@ -87,6 +87,7 @@ export const routes = {
   positions_under_org:'/positions-under-org',
   branches:'/branches',
   departments:'/departments',
+  org_profile: '/profile-org',
   // staffs:'/staffs',
   wardData:'/ward-data',
   pickupRequest:'/pickup-request',

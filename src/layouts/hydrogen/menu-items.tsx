@@ -138,7 +138,7 @@ export const menuItemsForOrgSuperAdmin = [
     dropdownItems: [
       {
         name: 'Organization Profile',
-        href: routes.profile,
+        href: routes.org_profile,
         icon: <PiUserCircleDuotone />,
       },
       {
