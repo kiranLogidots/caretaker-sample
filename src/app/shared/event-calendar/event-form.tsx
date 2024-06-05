@@ -16,6 +16,7 @@ import {
 import { assignShiftToUser } from '@/service/page';
 
 interface CreateEventProps {
+  id: number|null;
   assignedDate: string;
   startDate?: Date;
   endDate?: Date;
@@ -26,6 +27,7 @@ interface CreateEventProps {
 }
 
 export default function EventForm({
+  id,
   assignedDate,
   startDate,
   endDate,
@@ -50,18 +52,20 @@ export default function EventForm({
     }
   ];
 
-  const isUpdateEvent = event !== undefined;
+  const isUpdateEvent = !!id;
 
   const onSubmit: SubmitHandler<EventFormInput> = async (data) => {
-    await assignShiftToUser({
-      ...eventTemplate,
-      organization_branch_id: user.organization_branch_id,
-      user_id: user.user_id,
-      assigned_date: assignedDate,
-      ...data
-    });
-    refresh();
-    closeModal();
+    if(!isUpdateEvent) {
+      await assignShiftToUser({
+        ...eventTemplate,
+        organization_branch_id: user.organization_branch_id,
+        user_id: user.user_id,
+        assigned_date: assignedDate,
+        ...data
+      });
+      refresh();
+      closeModal();
+    }
   };
 
   return (
@@ -128,6 +132,7 @@ export default function EventForm({
                     endDate={value}
                     showTimeSelect
                     dateFormat="MMMM d, yyyy h:mm aa"
+                    selectsRange={false}
                   />
                 )}
               />

@@ -40,7 +40,8 @@ export const ShiftDataCell = ({
     shifts: [],
     summary: null
   },
-  triggerEventModal = () => { }
+  createShift = () => { },
+  editShift = (shiftData: any) => { }
 }) => {
   return (
     <div
@@ -51,20 +52,22 @@ export const ShiftDataCell = ({
         (
           data.shifts.length > 0 ?
             data.shifts.map((s: any) => (
-              <Badge
-                variant="flat"
-                rounded="pill"
-                className="w-[90px] font-medium text-white whitespace-nowrap mb-1"
-                color="primary"
-              >
-                {moment(s.shift.start_time).format('HH:mm')} -
-                {moment(s.shift.end_time).format('HH:mm')}
-              </Badge>
+              <div onClick={() => editShift(s)}>
+                <Badge
+                  variant="flat"
+                  rounded="pill"
+                  className="w-[90px] font-medium text-white whitespace-nowrap mb-1"
+                  color="primary"
+                >
+                  {moment(s.shift.start_time).format('HH:mm')} -
+                  {moment(s.shift.end_time).format('HH:mm')}
+                </Badge>
+              </div>
             )) :
             <Button
               className="w-full"
               variant="outline"
-              onClick={triggerEventModal}
+              onClick={createShift}
             >
               +
             </Button>
@@ -72,7 +75,7 @@ export const ShiftDataCell = ({
       }
       {
         data.summary &&
-        <>{data.summary}</>
+        <div className='font-bold'>{data.summary}</div>
       }
     </div>
   )

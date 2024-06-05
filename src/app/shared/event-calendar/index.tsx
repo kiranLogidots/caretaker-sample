@@ -37,10 +37,11 @@ export default function EventCalendarView() {
   }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
 
   const handleSelectSlot = useCallback(
-    ({ assignedDate, start, end, user, eventTemplate }: { assignedDate: string, start: Date; end: Date, user: any, eventTemplate: any }) => {
+    ({ id, assignedDate, start, end, user, eventTemplate }: { id: number|null, assignedDate: string, start: Date; end: Date, user: any, eventTemplate: any }) => {
       openModal({
         view:
           <EventForm
+            id={id}
             assignedDate={assignedDate}
             startDate={start}
             endDate={end}
@@ -140,12 +141,26 @@ export default function EventCalendarView() {
         render: (data: any) =>
           <ShiftDataCell
             data={data}
-            triggerEventModal={() => {
+            createShift={() => {
               let date = new Date(moment(d, 'YYYY-MM-DD').format());
               handleSelectSlot({
+                id: null,
                 assignedDate: d,
                 start: date,
                 end: date,
+                user: response.data.find((u: any) => u.user_id === data.userId),
+                eventTemplate: {
+                  ...shiftTemplate,
+                  position_id: selectedPositionId
+                }
+              })
+            }}
+            editShift={(shiftData: any) => {
+              handleSelectSlot({
+                id: shiftData.id,
+                assignedDate: shiftData.assigned_date,
+                start: new Date(moment(shiftData.shift.start_time).format()),
+                end: new Date(moment(shiftData.shift.end_time).format()),
                 user: response.data.find((u: any) => u.user_id === data.userId),
                 eventTemplate: {
                   ...shiftTemplate,
@@ -163,13 +178,13 @@ export default function EventCalendarView() {
         ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
           prev[current] = {
             user_id: null,
-            summary: <span className='font-bold'>0 hrs 0 mins</span>
+            summary: "0 hrs 0 mins"
           };
           return prev;
         }, {})
       },
       {
-        teamMember: <span className='font-bold px-3 py-4'>Open Shift</span>,
+        teamMember: <div className='font-bold px-3 py-4'>Open Shift</div>,
         ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
           prev[current] = {
             user_id: null,
