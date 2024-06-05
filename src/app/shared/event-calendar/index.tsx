@@ -172,14 +172,46 @@ export default function EventCalendarView() {
       }))
     ]);
 
+    let tableCellData = response.data.map((r: any) => {
+      return {
+        userId: r.user_id,
+        teamMember: {
+          userId: r.user_id,
+          name: [r.user.first_name, r.user.last_name].join(" "),
+          totalHours: r.totalHours
+        },
+        ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
+          prev[current] = {
+            shifts: r.assignedShifts.filter((assignedShift: any) => {
+              return moment(assignedShift.shift.start_time).format('YYYY-MM-DD') === current
+            }),
+            userId: r.user_id,
+            summary: null
+          };
+          return prev;
+        }, {})
+      }
+    })
+
     setEventsData([
       {
         teamMember: <div className='font-bold px-3 py-4'>Total Position Hours</div>,
         ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
           prev[current] = {
             user_id: null,
-            summary: "0 hrs 0 mins"
-          };
+            summary: '',
+            // summary: JSON.stringify(
+            //   tableCellData.filter((tc: any) => tc[current].shifts.length > 0)
+            //                 .map((data: any) => data[current].shifts)
+            //                 .reduce((acc: any, cur: any) => {
+            //                   acc = [
+            //                     ...acc,
+            //                     ...cur
+            //                   ]
+            //                   return acc;
+            //                 },[])
+            // )
+          };  
           return prev;
         }, {})
       },
@@ -187,32 +219,12 @@ export default function EventCalendarView() {
         teamMember: <div className='font-bold px-3 py-4'>Open Shift</div>,
         ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
           prev[current] = {
-            user_id: null,
-            summary: ""
+            user_id: null
           };
           return prev;
         }, {})
       },
-      ...response.data.map((r: any) => {
-        return {
-          userId: r.user_id,
-          teamMember: {
-            userId: r.user_id,
-            name: [r.user.first_name, r.user.last_name].join(" "),
-            totalHours: r.totalHours
-          },
-          ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
-            prev[current] = {
-              shifts: r.assignedShifts.filter((assignedShift: any) => {
-                return moment(assignedShift.shift.start_time).format('YYYY-MM-DD') === current
-              }),
-              userId: r.user_id,
-              summary: null
-            };
-            return prev;
-          }, {})
-        }
-      })
+      ...tableCellData
     ]);
   }
 
