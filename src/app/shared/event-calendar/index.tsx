@@ -11,6 +11,21 @@ import { useModal } from '@/app/shared/modal-views/use-modal';
 import moment from 'moment';
 import { getUsersWithShifts, listOrgPositions, viewBranch } from '@/service/page';
 
+const MemberProfile = ({ data = { name: '', totalHours: ''} }) => {
+  return (
+    <div className='flex px-3 py-4'>
+      <img 
+        src='https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-12.webp' 
+        className="flex-shrink-0 shadow-sm xs:!h-10 xs:!w-10 rounded-full mr-2"
+      />
+      <div className='flex flex-col'>
+        <div className='capitalize mb-1'>{data.name}</div>
+        <small><b>{data.totalHours} hrs</b></small>
+      </div>
+    </div>
+  )
+}
+
 export default function EventCalendarView() {
   const { openModal } = useModal();
 
@@ -128,7 +143,10 @@ export default function EventCalendarView() {
         key: 'userId',
         dataIndex: 'teamMember',
         title: 'Team Members',
-        render: (data: string) => <div className='capitalize px-3 py-4'>{data}</div>,
+        render: (data: any) => 
+            data?.userId ? 
+            <MemberProfile data={data}/> : 
+            <div className='px-3 py-4'>{data}</div>,
         width: 180
       },
       ...selectedDates.map((d: string) => ({
@@ -214,7 +232,11 @@ export default function EventCalendarView() {
       ...response.data.map((r: any) => {
         return {
           userId: r.user_id,
-          teamMember: r.user.first_name + " " + r.user.last_name,
+          teamMember: {
+            userId: r.user_id,
+            name: [r.user.first_name, r.user.last_name].join(" "),
+            totalHours: r.totalHours
+          },
           ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
             prev[current] = {
               shifts: r.assignedShifts.filter((assignedShift: any) => {
