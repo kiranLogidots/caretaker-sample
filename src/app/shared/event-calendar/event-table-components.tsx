@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import moment from 'moment';
+import Image from 'next/image';
 
 export const MemberProfile = ({
   data = {
@@ -10,9 +11,10 @@ export const MemberProfile = ({
 }) => {
   return (
     <div className='flex px-3 py-4'>
-      <img
+      <Image
         src='https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-12.webp'
         className="flex-shrink-0 shadow-sm xs:!h-10 xs:!w-10 rounded-full mr-2"
+        alt={data.name}
       />
       <div className='flex flex-col'>
         <div className='capitalize mb-1'>{data.name}</div>
