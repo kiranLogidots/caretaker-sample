@@ -10,6 +10,7 @@ import { useModal } from '@/app/shared/modal-views/use-modal';
 import moment from 'moment';
 import { getUsersWithShifts, listOrgPositions, viewBranch } from '@/service/page';
 import { MemberProfile, ShiftDataCell, TableHeaderCell } from './event-table-components'
+import { PiArrowLineLeft, PiArrowLineRight } from "react-icons/pi";
 
 export default function EventCalendarView() {
   const { openModal } = useModal();
@@ -71,7 +72,10 @@ export default function EventCalendarView() {
     let response = await viewBranch();
     if (response.scheduleSettings) {
       let settings = response.scheduleSettings;
+
+      // overrideSettings can be used to override branch settings for initializing a shift
       let overrideSettings = response.scheduleSettings?.positionCustomSettings.find((p: any) => p.position_id === selectedPositionId) || {};
+     
       setShiftTemplate({
         user_id: "",
         position_id: "",
@@ -151,7 +155,8 @@ export default function EventCalendarView() {
                 user: response.data.find((u: any) => u.user_id === data.userId),
                 eventTemplate: {
                   ...shiftTemplate,
-                  position_id: selectedPositionId
+                  position_id: selectedPositionId,
+                  position_name: positions.find((p: any) => p.position.id === selectedPositionId)?.position?.name
                 }
               })
             }}
@@ -200,7 +205,11 @@ export default function EventCalendarView() {
           prev[current] = {
             user_id: null,
             summary: '',
-            // summary: JSON.stringify(
+
+            // Total position hours calculation operation for summary
+            // Returns an array of assignedShifts for the particular date for all users
+
+            // summary: 
             //   tableCellData.filter((tc: any) => tc[current].shifts.length > 0)
             //                 .map((data: any) => data[current].shifts)
             //                 .reduce((acc: any, cur: any) => {
@@ -210,7 +219,6 @@ export default function EventCalendarView() {
             //                   ]
             //                   return acc;
             //                 },[])
-            // )
           };  
           return prev;
         }, {})
@@ -232,33 +240,36 @@ export default function EventCalendarView() {
     <div className="@container">
       {
         selectedDates.length &&
-        <div className="mb-2">
+        <div className="mb-2 flex items-center">
           <Button className="!w-[unset] mr-2" onClick={() => generateDates('previous')}>
-            Previous
+            <PiArrowLineLeft onClick={() => generateDates('previous')} />
           </Button>
-          {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD, YYYY')} -
-          {moment(selectedDates[selectedDates.length - 1], 'YYYY-MM-DD').format('MMM DD, YYYY')}
+          <span>
+            {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD, YYYY')} -
+            {moment(selectedDates[selectedDates.length - 1], 'YYYY-MM-DD').format('MMM DD, YYYY')}
+          </span>
           <Button className="!w-[unset] ml-2" onClick={() => generateDates('next')}>
-            Next
+            <PiArrowLineRight />
           </Button>
         </div>
       }
-      <div className="mb-2">
-        <Select
-          placeholder="Select a Position"
-          options={positions.map((p: any) => {
-            return {
-              label: p.position.name,
-              value: p.position.id
-            }
-          })}
-          value={selectedPositionId}
-          onChange={(e: any) => setSelectedPositionId(e.value)}
-          displayValue={(e: any) => {
-            return positions.find((p: any) => p.position.id === e).position.name
-          }}
-          className="col-span-1/2"
-        />
+      <div className="w-full mb-2">
+        <div className='w-72'>
+          <Select
+            placeholder="Select a Position"
+            options={(positions || []).map((p: any) => {
+              return {
+                label: p.position.name,
+                value: p.position.id
+              }
+            })}
+            value={selectedPositionId}
+            onChange={(e: any) => setSelectedPositionId(e.value)}
+            displayValue={(e: any) => {
+              return positions.find((p: any) => p.position.id === e).position.name
+            }}
+          />
+        </div>
       </div>
       <ControlledTable
         columns={columns}
