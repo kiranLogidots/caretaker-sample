@@ -16,7 +16,7 @@ import {
 import { assignShiftToUser } from '@/service/page';
 
 interface CreateEventProps {
-  id: number|null;
+  id: string|number|null|undefined;
   assignedDate: string;
   startDate?: Date;
   endDate?: Date;

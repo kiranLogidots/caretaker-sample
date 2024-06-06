@@ -15,6 +15,8 @@ export const MemberProfile = ({
         src='https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-12.webp'
         className="flex-shrink-0 shadow-sm xs:!h-10 xs:!w-10 rounded-full mr-2"
         alt={data.name}
+        width={10}
+        height={10}
       />
       <div className='flex flex-col'>
         <div className='capitalize mb-1'>{data.name}</div>
@@ -28,8 +30,8 @@ export const TableHeaderCell = ({ date = '' }) => {
   return (
     <div className='flex flex-col items-center'>
         {
-          moment(date, 'YYYY-MM-DD').format('ddd DD').split(' ').map(df => (
-            <span>{df}</span>
+          moment(date, 'YYYY-MM-DD').format('ddd DD').split(' ').map((df, i) => (
+            <span key={i + '_' + df}>{df}</span>
           ))
         }
       </div>
@@ -53,8 +55,8 @@ export const ShiftDataCell = ({
         data.userId &&
         (
           data.shifts.length > 0 ?
-            data.shifts.map((s: any) => (
-              <div onClick={() => editShift(s)}>
+            data.shifts.map((s: any, i) => (
+              <div onClick={() => editShift(s)} key={i + '_' + s.shift.id}>
                 <Badge
                   variant="flat"
                   rounded="pill"

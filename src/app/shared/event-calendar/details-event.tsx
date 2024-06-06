@@ -15,7 +15,7 @@ function DetailsEvents({ event }: { event: CalendarEvent }) {
   function handleEditModal() {
     closeModal(),
       openModal({
-        view: <EventForm event={event} assignedDate={''} refresh={() => {}} />, // Fix: Change `refresh={''}` to `refresh={() => {}}`
+        view: <EventForm event={event} assignedDate={''} refresh={() => {}} id={event?.id}/>, // Fix: Change `refresh={''}` to `refresh={() => {}}`
         customSize: '650px',
       });
   }
