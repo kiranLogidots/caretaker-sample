@@ -5,11 +5,11 @@ import { useCallback, useEffect, useState } from 'react';
 import ControlledTable from '@/components/controlled-table';
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import EventForm from '@/app/shared/event-calendar/event-form';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import moment from 'moment';
 import { getUsersWithShifts, listOrgPositions, viewBranch } from '@/service/page';
+import { MemberProfile, ShiftDataCell, TableHeaderCell } from './event-table-components'
 
 export default function EventCalendarView() {
   const { openModal } = useModal();
@@ -25,9 +25,9 @@ export default function EventCalendarView() {
   const [eventsData, setEventsData]: any = useState([]);
 
   useEffect(() => {
-      generateDates();
-      fetchPositions();
-      fetchCurrentBranch();
+    generateDates();
+    fetchPositions();
+    fetchCurrentBranch();
   }, []);
 
   useEffect(() => {
@@ -37,17 +37,18 @@ export default function EventCalendarView() {
   }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
 
   const handleSelectSlot = useCallback(
-    ({ assignedDate, start, end, user, eventTemplate }: { assignedDate: string, start: Date; end: Date, user: any, eventTemplate: any }) => {
+    ({ id, assignedDate, start, end, user, eventTemplate }: { id: number|null, assignedDate: string, start: Date; end: Date, user: any, eventTemplate: any }) => {
       openModal({
-        view: 
-        <EventForm 
-          assignedDate={assignedDate} 
-          startDate={start} 
-          endDate={end} 
-          eventTemplate={eventTemplate} 
-          user={user}
-          refresh={() => setRefreshKey(v => v + 1)}
-        />,
+        view:
+          <EventForm
+            id={id}
+            assignedDate={assignedDate}
+            startDate={start}
+            endDate={end}
+            eventTemplate={eventTemplate}
+            user={user}
+            refresh={() => setRefreshKey(v => v + 1)}
+          />,
         customSize: '650px',
       });
     },
@@ -60,17 +61,17 @@ export default function EventCalendarView() {
 
     let response = await listOrgPositions();
     setPositions(response);
-    
-    if(response.length > 0) {
+
+    if (response.length > 0) {
       setSelectedPositionId(response[0].position.id);
     }
   }
 
   const fetchCurrentBranch = async () => {
     let response = await viewBranch();
-    if(response.scheduleSettings) {
+    if (response.scheduleSettings) {
       let settings = response.scheduleSettings;
-      let overrideSettings = response.scheduleSettings?.positionCustomSettings.find((p:any) => p.position_id === selectedPositionId) || {};
+      let overrideSettings = response.scheduleSettings?.positionCustomSettings.find((p: any) => p.position_id === selectedPositionId) || {};
       setShiftTemplate({
         user_id: "",
         position_id: "",
@@ -128,105 +129,102 @@ export default function EventCalendarView() {
         key: 'userId',
         dataIndex: 'teamMember',
         title: 'Team Members',
-        render: (data: string) => <div className='capitalize px-3 py-4'>{data}</div>,
+        render: (data: any) =>
+          data?.userId ?
+            <MemberProfile data={data} /> : data,
         width: 180
       },
       ...selectedDates.map((d: string) => ({
         key: d,
         dataIndex: d,
-        title: 
-          <div className='flex flex-col items-center'>
-            {
-              moment(d, 'YYYY-MM-DD').format('ddd DD').split(' ').map(df => (
-                <span>{df}</span>
-              ))
-            }
-          </div>,
+        title: <TableHeaderCell date={d} />,
         render: (data: any) =>
-          <div
-            className='cursor-pointer px-2 py-2 flex flex-col items-center'
-            onClick={() => {
-              if (data.userId && data.shifts.length === 0) {
-                let date = new Date(moment(d, 'YYYY-MM-DD').format());
-                handleSelectSlot({
-                  assignedDate: d,
-                  start: date,
-                  end: date,
-                  user: response.data.find((u: any) => u.user_id === data.userId),
-                  eventTemplate: {
-                    ...shiftTemplate,
-                    position_id: selectedPositionId
-                  }
-                })
-              }
+          <ShiftDataCell
+            data={data}
+            createShift={() => {
+              let date = new Date(moment(d, 'YYYY-MM-DD').format());
+              handleSelectSlot({
+                id: null,
+                assignedDate: d,
+                start: date,
+                end: date,
+                user: response.data.find((u: any) => u.user_id === data.userId),
+                eventTemplate: {
+                  ...shiftTemplate,
+                  position_id: selectedPositionId
+                }
+              })
             }}
-          >
-            {
-              data.userId && 
-              (
-                data.shifts.length > 0 ?
-                data.shifts.map((s: any) => (
-                  <Badge
-                    variant="flat"
-                    rounded="pill"
-                    className="w-[90px] font-medium text-white whitespace-nowrap mb-1"
-                    color="primary"
-                  >
-                    {moment(s.shift.start_time).format('HH:mm')} -
-                    {moment(s.shift.end_time).format('HH:mm')}
-                  </Badge>
-                )) : 
-                <Button  className="w-full" variant="outline">
-                  +
-                </Button>
-              )
-            } 
-            {
-              data.summary &&
-              <>{data.summary}</>
-            }
-          </div>
+            editShift={(shiftData: any) => {
+              handleSelectSlot({
+                id: shiftData.id,
+                assignedDate: shiftData.assigned_date,
+                start: new Date(moment(shiftData.shift.start_time).format()),
+                end: new Date(moment(shiftData.shift.end_time).format()),
+                user: response.data.find((u: any) => u.user_id === data.userId),
+                eventTemplate: {
+                  ...shiftTemplate,
+                  position_id: selectedPositionId
+                }
+              })
+            }}
+          />
       }))
-     
     ]);
+
+    let tableCellData = response.data.map((r: any) => {
+      return {
+        userId: r.user_id,
+        teamMember: {
+          userId: r.user_id,
+          name: [r.user.first_name, r.user.last_name].join(" "),
+          totalHours: r.totalHours
+        },
+        ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
+          prev[current] = {
+            shifts: r.assignedShifts.filter((assignedShift: any) => {
+              return moment(assignedShift.shift.start_time).format('YYYY-MM-DD') === current
+            }),
+            userId: r.user_id,
+            summary: null
+          };
+          return prev;
+        }, {})
+      }
+    })
 
     setEventsData([
       {
-        teamMember: <span className='font-bold'>Total Position Hours</span>,
+        teamMember: <div className='font-bold px-3 py-4'>Total Position Hours</div>,
         ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
           prev[current] = {
             user_id: null,
-            summary: <span className='font-bold'>0 hrs 0 mins</span>
-          };
+            summary: '',
+            // summary: JSON.stringify(
+            //   tableCellData.filter((tc: any) => tc[current].shifts.length > 0)
+            //                 .map((data: any) => data[current].shifts)
+            //                 .reduce((acc: any, cur: any) => {
+            //                   acc = [
+            //                     ...acc,
+            //                     ...cur
+            //                   ]
+            //                   return acc;
+            //                 },[])
+            // )
+          };  
           return prev;
         }, {})
       },
       {
-        teamMember: <span className='font-bold'>Open Shift</span>,
+        teamMember: <div className='font-bold px-3 py-4'>Open Shift</div>,
         ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
           prev[current] = {
-            user_id: null,
-            summary: ""
+            user_id: null
           };
           return prev;
         }, {})
       },
-      ...response.data.map((r: any) => {
-        return {
-          userId: r.user_id,
-          teamMember: r.user.first_name + " " + r.user.last_name,
-          ...selectedDates.reduce((prev: { [key: string]: any }, current: string) => {
-            prev[current] = {
-              shifts: r.assignedShifts.filter((assignedShift: any) => {
-                return moment(assignedShift.shift.start_time).format('YYYY-MM-DD') === current
-              }),
-              userId: r.user_id,
-              summary: null
-            };
-            return prev;
-          }, {})
-        }
-      })
+      ...tableCellData
     ]);
   }
 
