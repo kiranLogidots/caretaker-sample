@@ -6,7 +6,6 @@ import { ActionIcon, Button, Title } from 'rizzui';
 import { useModal } from '@/app/shared/modal-views/use-modal';
 import { Form } from '@/components/ui/form';
 import { Select } from '@/components/ui/select'
-import toast from 'react-hot-toast';
 import { DatePicker } from '@/components/ui/datepicker';
 import cn from '@/utils/class-names';
 import {
@@ -72,7 +71,7 @@ export default function EventForm({
     <div className="m-auto p-4 md:px-7 md:py-10">
       <div className="mb-6 flex items-center justify-between">
         <Title as="h3" className="text-lg">
-          {isUpdateEvent ? 'Update Shift' : 'Create a new shift'}
+          {isUpdateEvent ? 'Update Assigned Shift' : 'New Assigned Shift' } - { user?.branch?.branch_name}
         </Title>
         <ActionIcon
           size="sm"
@@ -83,7 +82,13 @@ export default function EventForm({
           <PiXBold className="h-[18px] w-[18px]" />
         </ActionIcon>
       </div>
-
+      {
+        eventTemplate?.position_name &&
+        <div className='w-full d-flex flex-col mb-5'>
+          <p className='font-medium'>Position</p>
+          <h5 className='font-normal'>{ eventTemplate.position_name}</h5>
+        </div>
+      }
       <Form<EventFormInput>
         validationSchema={eventFormSchema}
         onSubmit={onSubmit}
@@ -105,35 +110,41 @@ export default function EventForm({
                 name="start_time"
                 control={control}
                 render={({ field: { value, onChange } }) => (
-                  <DatePicker
-                    title='Start time'
-                    selected={value}
-                    onChange={onChange}
-                    selectsStart
-                    startDate={value}
-                    endDate={endDate}
-                    minDate={new Date()}
-                    showTimeSelect
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                    selectsRange={false}
-                  />
+                  <div>
+                    <p className='font-medium mb-1'>Start Time</p>
+                    <DatePicker
+                      title='Start time'
+                      selected={value}
+                      onChange={onChange}
+                      selectsStart
+                      startDate={value}
+                      endDate={endDate}
+                      minDate={new Date()}
+                      showTimeSelect
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      selectsRange={false}
+                    />
+                  </div>
                 )}
               />
               <Controller
                 name="end_time"
                 control={control}
                 render={({ field: { value, onChange } }) => (
-                  <DatePicker
-                    selected={value}
-                    onChange={onChange}
-                    selectsEnd
-                    minDate={startDate}
-                    startDate={startDate}
-                    endDate={value}
-                    showTimeSelect
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                    selectsRange={false}
-                  />
+                  <div>
+                    <p className='font-medium mb-1'>End Time</p>
+                    <DatePicker
+                      selected={value}
+                      onChange={onChange}
+                      selectsEnd
+                      minDate={startDate}
+                      startDate={startDate}
+                      endDate={value}
+                      showTimeSelect
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      selectsRange={false}
+                    />
+                  </div>
                 )}
               />
               <Controller
