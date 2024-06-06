@@ -33,7 +33,7 @@ function EventPageHeader() {
         />
         <ModalButton
           label="Create Event"
-          view={<EventForm assignedDate={''} refresh={() => {}} />}
+          view={<EventForm id={null} assignedDate={''} refresh={() => {}} />}
           customSize="900px"
           className="mt-0 w-full hover:bg-gray-700 @lg:w-auto dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200 dark:active:bg-gray-100"
         />
