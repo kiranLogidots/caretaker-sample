@@ -12,22 +12,24 @@ export const metadata = {
 
 const pageHeader = {
   title: 'Schedule',
-  breadcrumb: [
-    {
-      href: routes.file.dashboard,
-      name: 'Home',
-    },
-    {
-      href: routes.eventCalendar,
-      name: 'Schedule',
-    },
-  ],
+  // breadcrumb: [
+  //   {
+  //     href: routes.file.dashboard,
+  //     name: 'Home',
+  //   },
+  //   {
+  //     href: routes.eventCalendar,
+  //     name: 'Schedule',
+  //   },
+  // ],
 };
 
 export default function EventCalendarPage() {
   return (
     <>
-      <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb}>
+      <PageHeader title={pageHeader.title} 
+      // breadcrumb={pageHeader.breadcrumb}
+      >
         <div className="mt-4 flex items-center gap-3 @lg:mt-0">
           {/* <ExportButton
             data={eventData}

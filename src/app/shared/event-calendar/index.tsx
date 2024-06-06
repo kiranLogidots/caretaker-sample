@@ -38,7 +38,7 @@ export default function EventCalendarView() {
   }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
 
   const handleSelectSlot = useCallback(
-    ({ id, assignedDate, start, end, user, eventTemplate }: { id: number|null, assignedDate: string, start: Date; end: Date, user: any, eventTemplate: any }) => {
+    ({ id, assignedDate, start, end, user, eventTemplate }: { id: number | null, assignedDate: string, start: Date; end: Date, user: any, eventTemplate: any }) => {
       openModal({
         view:
           <EventForm
@@ -75,7 +75,7 @@ export default function EventCalendarView() {
 
       // overrideSettings can be used to override branch settings for initializing a shift
       let overrideSettings = response.scheduleSettings?.positionCustomSettings.find((p: any) => p.position_id === selectedPositionId) || {};
-     
+
       setShiftTemplate({
         user_id: "",
         position_id: "",
@@ -219,7 +219,7 @@ export default function EventCalendarView() {
             //                   ]
             //                   return acc;
             //                 },[])
-          };  
+          };
           return prev;
         }, {})
       },
@@ -238,22 +238,8 @@ export default function EventCalendarView() {
 
   return (
     <div className="@container">
-      {
-        selectedDates.length &&
-        <div className="mb-2 flex items-center">
-          <Button className="!w-[unset] mr-2" onClick={() => generateDates('previous')}>
-            <PiArrowLineLeft onClick={() => generateDates('previous')} />
-          </Button>
-          <span>
-            {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD, YYYY')} -
-            {moment(selectedDates[selectedDates.length - 1], 'YYYY-MM-DD').format('MMM DD, YYYY')}
-          </span>
-          <Button className="!w-[unset] ml-2" onClick={() => generateDates('next')}>
-            <PiArrowLineRight />
-          </Button>
-        </div>
-      }
-      <div className="w-full mb-2">
+      <div className="w-full mb-2 flex justify-between">
+
         <div className='w-72'>
           <Select
             placeholder="Select a Position"
@@ -269,6 +255,23 @@ export default function EventCalendarView() {
               return positions.find((p: any) => p.position.id === e).position.name
             }}
           />
+        </div>
+        <div className=' mx-auto'>
+          {
+            selectedDates.length &&
+            <div className="mb-2 flex items-center">
+              <Button className="!w-[unset] mr-2 px-2 py-0" onClick={() => generateDates('previous')}>
+                <PiArrowLineLeft onClick={() => generateDates('previous')} />
+              </Button>
+              <span className=' font-semibold text-2xl'>
+                {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD, YYYY')} -
+                {moment(selectedDates[selectedDates.length - 1], 'YYYY-MM-DD').format('MMM DD, YYYY')}
+              </span>
+              <Button className="!w-[unset] ml-2 px-2 py-0" onClick={() => generateDates('next')}>
+                <PiArrowLineRight />
+              </Button>
+            </div>
+          }
         </div>
       </div>
       <ControlledTable
