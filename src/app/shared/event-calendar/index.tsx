@@ -11,6 +11,8 @@ import moment from 'moment';
 import { getUsersWithShifts, listOrgPositions, viewBranch } from '@/service/page';
 import { MemberProfile, ShiftDataCell, TableHeaderCell } from './event-table-components'
 import { PiArrowLineLeft, PiArrowLineRight } from "react-icons/pi";
+import DrawerButton from '../drawer-button';
+import EventCalendarSettings from './settings/event-calendar-settings';
 
 export default function EventCalendarView() {
   const { openModal } = useModal();
@@ -273,6 +275,12 @@ export default function EventCalendarView() {
             </div>
           }
         </div>
+        <DrawerButton
+          label="Settings"
+          view={<EventCalendarSettings />}
+          customSize="500px"
+          placement="right"
+        />
       </div>
       <ControlledTable
         columns={columns}
