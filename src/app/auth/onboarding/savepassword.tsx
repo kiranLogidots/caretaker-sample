@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Password } from '@/components/ui/password';
 import SuccessPage from './success/page';
-import logo from "../../../../../care-taker-app/public/rosterbees-logo.png";
+import logo from "../../../../public/rosterbees-logo.png";
 
 const validationSchema = z.object({
   password: z.string().min(8, 'Password must be at least 8 characters'),
