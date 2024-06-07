@@ -9,6 +9,9 @@ import ChatSolidIcon from '@/components/icons/chat-solid';
 import { Engagespot } from '@engagespot/react-component';
 import Image from 'next/image';
 import NotiEmptyImage from '../../public/noti.png';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+
 export default function HeaderMenuRight() {
   const theme = {
     colors: {
@@ -54,6 +57,11 @@ export default function HeaderMenuRight() {
           />
         </ActionIcon>
       </NotificationDropdown> */}
+      <Link href={`/event-calendar`} className=" @lg:w-auto">
+        <Button as="span" className="w-full bg-[#6c5ce7] text-xs text-white">
+          Create shift
+        </Button>
+      </Link>
       <Engagespot
         apiKey="b1vxvkz6m5txxwsas37nr"
         userId="admin@caretaker.com"
@@ -61,20 +69,22 @@ export default function HeaderMenuRight() {
         theme={theme}
         renderEmptyPlaceholderImage={() => {
           return (
-            <div className='flex flex-col gap-3 justify-center items-center'>
+            <div className="flex flex-col items-center justify-center gap-3">
               <Image
                 src={NotiEmptyImage}
                 alt="Noti Image"
                 width={200}
                 height={200}
               />
-              <h1 className='font-bold text-3xl '>You are all up to date</h1>
-              <p className='text-sm'>New notification will appear here whenever there is activity</p>
+              <h1 className="text-3xl font-bold ">You are all up to date</h1>
+              <p className="text-sm">
+                New notification will appear here whenever there is activity
+              </p>
             </div>
           );
         }}
       />
-      <SettingsButton />
+      {/* <SettingsButton /> */}
       <ProfileMenu />
     </div>
   );
