@@ -100,9 +100,8 @@ export const getColumns = ({
     onHeaderCell: () => onHeaderCellClick('user_data.first_name'),
     dataIndex: 'user_data',
     key: 'user_data.first_name',
-    width: 250,
-    render: (user_data: { first_name: string }) =>  user_data.first_name,
-
+    width: 150,
+    render: (user_data: { first_name: string }) => user_data.first_name,
   },
   // {
   //   title: <HeaderCell title="Position" />,
@@ -118,15 +117,17 @@ export const getColumns = ({
     onHeaderCell: () => onHeaderCellClick('user_data.employment_status'),
     dataIndex: 'user_data',
     key: 'user_data.employment_status',
-    width: 250,
+    width: 200,
     render: (user_data: { employment_status: string }) => {
       const statusMap: { [key: string]: string } = {
         part_time: 'Part Time',
         full_time: 'Full Time',
-        casual:"Casual",
-        flex:"Flex"
+        casual: 'Casual',
+        flex: 'Flex',
       };
-      return statusMap[user_data.employment_status] || user_data.employment_status;
+      return (
+        statusMap[user_data.employment_status] || user_data.employment_status
+      );
     },
   },
   {
@@ -134,18 +135,16 @@ export const getColumns = ({
     onHeaderCell: () => onHeaderCellClick('user_data.phone'),
     dataIndex: 'user_data',
     key: 'user_data.phone',
-    width: 250,
-    render: (user_data: { phone: string }) =>  user_data.phone,
-
+    width: 200,
+    render: (user_data: { phone: string }) => user_data.phone,
   },
   {
     title: <HeaderCell title="Email" />,
     onHeaderCell: () => onHeaderCellClick('user_data.email'),
     dataIndex: 'user_data',
     key: 'user_data.email',
-    width: 250,
-    render: (user_data: { email: string }) =>  user_data.email,
-
+    width: 200,
+    render: (user_data: { email: string }) => user_data.email,
   },
   // {
   //   title: <HeaderCell title="Status" />,
@@ -157,9 +156,6 @@ export const getColumns = ({
 
   // },
 
-
-
-  
   // {
   //   title: <HeaderCell title="Actions" />,
   //   dataIndex: 'action',
