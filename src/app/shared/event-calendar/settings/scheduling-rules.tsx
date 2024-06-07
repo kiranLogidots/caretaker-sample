@@ -63,7 +63,7 @@ function SchedulingRules() {
 
     return (
         <>
-            <div className='flex flex-col gap-8'>
+            <div className='flex flex-col gap-6'>
                 <h3>Configure default rules</h3>
                 <text className='font-bold'>These rules will be applied to shifts and call outs for this position.</text>
                 <div>
@@ -76,8 +76,8 @@ function SchedulingRules() {
                     <text className=' font-light'>(Applies to all position unless otherwise specified)</text>
                 </div>
                 <hr />
-                <div className='flex flex-col gap-5'>
-                    <text>Overtime Thresholds</text>
+                <div className='flex flex-col gap-4'>
+                    <text className=' text-base font-bold'>Overtime Thresholds</text>
                     <div className='flex justify-evenly items-center gap-4'>
                         <Select
                             // label="Select"
@@ -86,7 +86,7 @@ function SchedulingRules() {
                             value={value}
                             onChange={setValue}
                         />
-                        <text className='flex-1'>Per day *</text>
+                        <text className='flex-1 font-bold'>Per day *</text>
                     </div>
                     <div className='flex justify-evenly items-center gap-4'>
                         <Select
@@ -96,13 +96,13 @@ function SchedulingRules() {
                             value={value}
                             onChange={setValue}
                         />
-                        <text className='flex-1'>Per day *</text>
+                        <text className='flex-1 font-bold'>Per overtime period *</text>
                     </div>
-                    <text>* Excludes unpaid breaks.</text>
+                    <text className=' text-xs font-bold'>* Excludes unpaid breaks.</text>
                 </div>
                 <hr />
-                <div>
-                    <text>Minimum Time Between Shifts</text>
+                <div className='flex flex-col gap-4'>
+                    <text className='text-base font-bold'>Minimum Time Between Shifts</text>
                     <Select
                         // label="Select"
                         className=' w-1/2'
@@ -112,10 +112,10 @@ function SchedulingRules() {
                     />
                 </div>
                 <hr />
-                <div>
-                    <text>Default Unpaid Breaks</text>
+                <div className='flex flex-col gap-4'>
+                    <text className='text-base font-bold'>Default Unpaid Breaks</text>
                     <div className='flex justify-evenly'>
-                        <div><text>For shifts over or exactly</text></div>
+                        <div><text className=' font-bold justify-items-start'>For shifts over or exactly</text></div>
                         <div><text>Default unpaid break to</text></div>
                     </div>
                     <div >

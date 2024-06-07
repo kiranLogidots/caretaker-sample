@@ -30,7 +30,7 @@ function GeneralEventSettings() {
     const [startDate, setStartDate] = useState(new Date());
     return (
         <>
-            <div className='flex flex-col gap-8'>
+            <div className='flex flex-col gap-6'>
                 <h3>Overtime Calculation Period</h3>
                 <text className=' font-bold'>These settings will determine the overtime calculations and scheduling views for the location.</text>
                 <div>
