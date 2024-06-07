@@ -8,7 +8,8 @@ export const eventFormSchema = z.object({
   end_time: z.date({
     required_error: messages.endDateIsRequired,
   }),
-  unpaid_break: z.number()
+  unpaid_break: z.number(),
+  shift_notes: z.string(),
 });
 
 // generate form types from zod validation schema

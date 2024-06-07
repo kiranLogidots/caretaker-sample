@@ -138,7 +138,7 @@ export const menuItemsForOrgSuperAdmin = [
     dropdownItems: [
       {
         name: 'Organization Profile',
-        href: routes.profile,
+        href: routes.org_profile,
         icon: <PiUserCircleDuotone />,
       },
       {
@@ -264,6 +264,31 @@ export const menuItemsForBranchAdmin = [
     href: '#',
     icon: <BsFillGearFill />,
     dropdownItems: [
+      {
+        name: 'Organization Profile',
+        href: routes.org_profile,
+        icon: <PiUserCircleDuotone />,
+      },
+      {
+        name: 'My Profile',
+        href: routes.forms.profileSettings,
+        icon: <PiUserCircleDuotone />,
+      },
+      {
+        name: 'Locations',
+        href: routes.branches,
+        icon: <FaLocationCrosshairs />,
+      },
+      {
+        name: 'Positions',
+        href: routes.positions_under_org,
+        icon: <PiBriefcaseDuotone />,
+      },
+      {
+        name: 'Administartors',
+        href: routes.branches,
+        icon: <FaLocationCrosshairs />,
+      },
       {
         name: 'Departments',
         href: routes.departments,
