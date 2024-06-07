@@ -108,18 +108,18 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const { visibleColumns, checkedColumns, setCheckedColumns } =
     useColumn(columns);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resultData = (await listStaffs()) as ListPositionsInterface[];
-        console.log('result data', resultData);
-        setTableData(resultData);
-        // setTotalItems(resultData.pagination.totalCount);
-      } catch (err: any) {
-        console.log('Error response for listing users', err.response);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const resultData = (await listStaffs()) as ListPositionsInterface[];
+      console.log('result data', resultData);
+      setTableData(resultData);
+      // setTotalItems(resultData.pagination.totalCount);
+    } catch (err: any) {
+      console.log('Error response for listing users', err.response);
+    }
+  };
 
+  useEffect(() => {
     fetchData(); // Call fetchData when the component mounts
   }, [currentPage, pageSize]);
   function handlePaginate(pageNumber: number) {
@@ -135,6 +135,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         handleReset={handleReset}
         onSearch={handleSearch}
         searchTerm={searchTerm}
+        fetchData={fetchData}
       />
       <ControlledTable
         variant="modern"

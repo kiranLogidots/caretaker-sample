@@ -1,6 +1,11 @@
 'use client';
 
-import { PiTrashDuotone, PiMagnifyingGlassBold } from 'react-icons/pi';
+import {
+  PiTrashDuotone,
+  PiMagnifyingGlassBold,
+  PiArrowLineDownBold,
+  PiArrowLineUpBold,
+} from 'react-icons/pi';
 import StatusField from '@/components/controlled-table/status-field';
 import { Text, Title } from '@/components/ui/text';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +16,15 @@ import { Input } from '@/components/ui/input';
 import ModalButton from '@/app/shared/modal-button';
 import CreateUser from '@/app/shared/staffs/create-user';
 import DrawerButton from '../../drawer-button';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+import FileUploadDrawer from './FileUploadDrawer';
+import { LuUpload } from 'react-icons/lu';
+
+const Drawer = dynamic(
+  () => import('@/components/ui/drawer').then((module) => module.Drawer),
+  { ssr: false }
+);
 
 const statusOptions = [
   {
@@ -34,6 +48,7 @@ type FilterElementProps = {
   handleReset: () => void;
   onSearch: (searchTerm: string) => void;
   searchTerm: string;
+  fetchData?: any;
 };
 
 const roles = rolesList.map((role) => ({
@@ -48,7 +63,9 @@ export default function FilterElement({
   updateFilter,
   onSearch,
   searchTerm,
+  fetchData,
 }: FilterElementProps) {
+  const [importDrawer, setImportDrawer] = useState(false);
   return (
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
@@ -111,7 +128,7 @@ export default function FilterElement({
           className="-order-4 w-full @xl:-order-5 @xl:ms-auto @xl:w-auto @4xl:-order-2 @4xl:w-[230px] @5xl:w-auto"
         /> */}
 
-        <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
+        <div className="-order-5 flex basis-auto justify-end gap-2 @xl:-order-4 @4xl:-order-1">
           {/* <ModalButton
             label="Add New Staff"
             view={<CreateUser />}
@@ -124,8 +141,30 @@ export default function FilterElement({
             customSize="500px"
             placement="right"
           />
+          <Button
+            className="mt-4 w-full bg-[#6c5ce7] @lg:mt-0 @lg:w-auto"
+            onClick={() => setImportDrawer(true)}
+          >
+            <LuUpload className="me-1.5 h-[17px] w-[17px]" />
+            Upload CSV
+          </Button>
         </div>
       </div>
+      <Drawer
+        size="md"
+        isOpen={importDrawer ?? false}
+        onClose={() => {
+          setImportDrawer(false);
+        }}
+        overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-md"
+        containerClassName="dark:bg-gray-100"
+        className="z-[9999]"
+      >
+        <FileUploadDrawer
+          setOpenDrawer={setImportDrawer}
+          fetchData={fetchData}
+        />
+      </Drawer>
     </>
   );
 }
