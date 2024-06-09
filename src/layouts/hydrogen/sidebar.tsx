@@ -142,6 +142,7 @@ export default function Sidebar({ className }: { className?: string }) {
                                     ? 'text-primary'
                                     : 'text-gray-500 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900'
                                 )}
+                                onClick={() => setActiveMenuName(dropdownItem.name)}
                               >
                                 <div className="flex items-center truncate">
                                   <span
@@ -172,6 +173,7 @@ export default function Sidebar({ className }: { className?: string }) {
                               ? 'before:top-2/5 text-primary before:absolute before:-start-3 before:block before:h-4/5 before:w-1 before:rounded-ee-md before:rounded-se-md before:bg-primary 2xl:before:-start-5'
                               : 'text-gray-700 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-700/90'
                           )}
+                          onClick={() => setActiveMenuName(item.name)}
                         >
                           <div className="flex items-center truncate">
                             {item?.icon && (
