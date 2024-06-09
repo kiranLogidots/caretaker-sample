@@ -8,7 +8,6 @@ import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
 import SchedulingRules from './scheduling-rules';
 // import { Select } from '@/components/ui/select';
 import { useState, useEffect } from 'react';
-import { Select } from 'rizzui'
 import axios from 'axios';
 
 
