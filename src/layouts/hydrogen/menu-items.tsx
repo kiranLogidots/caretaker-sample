@@ -56,6 +56,12 @@ import { SiAwsorganizations } from 'react-icons/si';
 import DashboardIcon from '@/components/icons/dashboard';
 import { BsFillHouseFill, BsCalendar3EventFill, BsClockFill, BsChatLeftTextFill, BsFillGearFill, BsClock, BsClockHistory } from 'react-icons/bs';
 import { HiUser } from 'react-icons/hi2';
+import { GoHome } from 'react-icons/go';
+import { IoCalendarOutline, IoSettingsOutline } from 'react-icons/io5';
+import { CiCalendarDate } from 'react-icons/ci';
+import { FiUser, FiUsers } from 'react-icons/fi';
+import { RiMessage2Line, RiMessage3Line } from 'react-icons/ri';
+import { IoMdTime } from 'react-icons/io';
 
 // Note: do not add href in the label object, it is rendering as label
 
@@ -63,7 +69,7 @@ export const menuItemsForSuperAdmin = [
   {
     name: 'Dashboard',
     href: '/',
-    icon: <DashboardIcon />,
+    icon: <GoHome />,
   },
   {
     name: 'Organizations',
@@ -86,14 +92,12 @@ export const menuItemsForOrgSuperAdmin = [
   {
     name: 'Dashboard',
     href: '/',
-    icon: <BsFillHouseFill />,
+    icon: <GoHome />,
   },
   {
     name: 'Schedule',
     href: routes.eventCalendar,
-    icon: <BsCalendar3EventFill
-    // fill='rgb(108 92 231)'
-    />,
+    icon: <IoCalendarOutline />,
   },
   {
     name: 'Batch Shift',
@@ -103,18 +107,18 @@ export const menuItemsForOrgSuperAdmin = [
   {
     name: 'Shift',
     href: routes.support.dashboard,
-    icon: <BsClockFill />,
+    icon: <CiCalendarDate />,
   },
 
   {
     name: 'Timesheet',
     href: routes.analytics,
-    icon: <MdOutlineDashboard />,
+    icon: <IoMdTime />,
   },
   {
     name: 'Team members',
     href: '#',
-    icon: <HiUser />,
+    icon: <FiUsers />,
     // dropdownItems: [
     //   {
     //     name: 'Staffs',
@@ -129,16 +133,16 @@ export const menuItemsForOrgSuperAdmin = [
   {
     name: 'Communication',
     href: routes.executive.dashboard,
-    icon: <BsChatLeftTextFill />
+    icon: <RiMessage2Line />
   },
   {
     name: 'Settings',
     href: '#',
-    icon: <BsFillGearFill />,
+    icon: <IoSettingsOutline />,
     dropdownItems: [
       {
         name: 'Organization Profile',
-        href: routes.profile,
+        href: routes.org_profile,
         icon: <PiUserCircleDuotone />,
       },
       {
@@ -214,30 +218,28 @@ export const menuItemsForBranchAdmin = [
   {
     name: 'Dashboard',
     href: '/',
-    icon: <BsFillHouseFill />,
+    icon: <GoHome />,
   },
   {
     name: 'Schedule',
     href: routes.eventCalendar,
-    icon: <BsCalendar3EventFill
-    // fill='rgb(108 92 231)'
-    />,
+    icon: <IoCalendarOutline />,
   },
   {
     name: 'Shift',
     href: routes.support.dashboard,
-    icon: <BsClockFill />,
+    icon: <CiCalendarDate />,
   },
 
   {
     name: 'Timesheet',
     href: routes.analytics,
-    icon: <MdOutlineDashboard />,
-  },
+    icon: <IoMdTime />,
+  },  
   {
     name: 'Team members',
     href: '#',
-    icon: <HiUser />,
+    icon: <FiUsers />,
     dropdownItems: [
       {
         name: 'Staffs',
@@ -252,7 +254,7 @@ export const menuItemsForBranchAdmin = [
   {
     name: 'Communication',
     href: routes.executive.dashboard,
-    icon: <BsChatLeftTextFill />
+    icon: < RiMessage2Line />
   },
   // {
   //   name: 'Departments',
@@ -262,8 +264,33 @@ export const menuItemsForBranchAdmin = [
   {
     name: 'Settings',
     href: '#',
-    icon: <BsFillGearFill />,
+    icon: < IoSettingsOutline />,
     dropdownItems: [
+      {
+        name: 'Organization Profile',
+        href: routes.org_profile,
+        icon: <PiUserCircleDuotone />,
+      },
+      {
+        name: 'My Profile',
+        href: routes.forms.profileSettings,
+        icon: <PiUserCircleDuotone />,
+      },
+      {
+        name: 'Locations',
+        href: routes.branches,
+        icon: <FaLocationCrosshairs />,
+      },
+      {
+        name: 'Positions',
+        href: routes.positions_under_org,
+        icon: <PiBriefcaseDuotone />,
+      },
+      {
+        name: 'Administartors',
+        href: routes.branches,
+        icon: <FaLocationCrosshairs />,
+      },
       {
         name: 'Departments',
         href: routes.departments,

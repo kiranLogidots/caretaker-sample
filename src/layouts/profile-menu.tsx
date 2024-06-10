@@ -57,9 +57,11 @@ function DropdownMenu({ user }: { user: any }) {
         <Button
           className="h-auto w-full justify-start p-0 font-medium text-gray-700 outline-none focus-within:text-gray-600 hover:text-gray-900 focus-visible:ring-0"
           variant="text"
-          onClick={() => signOut({
-            callbackUrl: "http://localhost:3000"
-          })}
+          onClick={() =>
+            signOut({
+              callbackUrl: 'http://localhost:3000',
+            })
+          }
         >
           Sign Out
         </Button>
@@ -67,8 +69,6 @@ function DropdownMenu({ user }: { user: any }) {
     </div>
   );
 }
-
-
 
 export default function ProfileMenu({
   buttonClassName,
@@ -85,18 +85,21 @@ export default function ProfileMenu({
     last_name: string;
     email: string;
   };
-  
+
   const [user, setUser] = useState<User | null>(null);
 
   const fetchUser = async () => {
     console.log('fetching user');
     const token = sessionStorage.getItem('accessToken');
     const userId = sessionStorage.getItem('userId');
-    const response = await axios.get(`https://api.nexsysi.alpha2.logidots.com/api/users/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await axios.get(
+      `https://api.nexsysi.alpha2.logidots.com/api/users/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
+    );
     setUser(response.data);
   };
 
@@ -124,7 +127,7 @@ export default function ProfileMenu({
         >
           <Avatar
             src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-            name= {`${user?.first_name} ${user?.last_name}`}
+            name={`${user?.first_name} ${user?.last_name}`}
             className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}
           />
         </button>

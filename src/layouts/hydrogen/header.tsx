@@ -8,11 +8,11 @@ import Logo from '@/components/logo';
 import HeaderMenuRight from '@/layouts/header-menu-right';
 import StickyHeader from '@/layouts/sticky-header';
 import Image from 'next/image';
-import SHLogo from "../../../public/nexsysi-logo.png";
+import SHLogo from '../../../public/nexsysi-logo.png';
 
 export default function Header() {
   return (
-    <StickyHeader className="2xl:py-5 3xl:px-8 4xl:px-10 flex justify-between">
+    <StickyHeader className="flex justify-between py-3 shadow-md 3xl:px-8 4xl:px-10">
       <div className="flex w-full max-w-2xl items-center">
         <HamburgerButton
           view={<Sidebar className="static w-full 2xl:w-full" />}
@@ -23,10 +23,10 @@ export default function Header() {
           className="me-4 w-9 shrink-0 text-gray-800 hover:text-gray-900 lg:me-5 xl:hidden"
         >
           {/* <Logo iconOnly={true} /> */}
-          <Image src={SHLogo} className='w-[205px]' alt="CareTaker Logo"/>
+          <Image src={SHLogo} className="w-[205px]" alt="CareTaker Logo" />
         </Link>
 
-        <SearchWidget />
+        {/* <SearchWidget /> */}
       </div>
       <HeaderMenuRight />
     </StickyHeader>

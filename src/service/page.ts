@@ -500,7 +500,7 @@ export const listStaffs = () => {
   return axios
     .get(
       `${apiBaseUrl}/v1/invitations/list-by-branch?organization_branch_id=${BranchId}`,
-     
+
       // `${apiBaseUrl}/v1/organization-users?organization_branch_id=${BranchId}`,
       {
         headers: {
@@ -530,7 +530,7 @@ export const listApprovedStaffs = () => {
   return axios
     .get(
       `${apiBaseUrl}/v1/organization-users`,
-     
+
       // `${apiBaseUrl}/v1/organization-users?organization_branch_id=${BranchId}`,
       // https://api.nexsysi.alpha2.logidots.com/api/v1/organization-users
       {
@@ -583,31 +583,29 @@ export const assignShiftToUser = async (data: any) => {
   });
 
   return response;
-}
+};
 
 export const getShifts = async ({ branchId }: { branchId: string }) => {
   try {
-    const response = await axios.get(
-      `${apiBaseUrl}/v1/shifts`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          'filter.organization_branch_id': branchId,
-          'filter.position_id': 2
-        }
-      }
-    );
+    const response = await axios.get(`${apiBaseUrl}/v1/shifts`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        'filter.organization_branch_id': branchId,
+        'filter.position_id': 2,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error('Could not fetch user shifts:', error);
   }
-}
+};
 
-
-export const getUsersWithShifts = async (params: { [key: string]: any} = {}) => {
+export const getUsersWithShifts = async (
+  params: { [key: string]: any } = {}
+) => {
   try {
     const response = await axios.get(
       `${apiBaseUrl}/v1/organization-users?page=1&limit=20&sortBy=id:DESC`,
@@ -620,15 +618,28 @@ export const getUsersWithShifts = async (params: { [key: string]: any} = {}) => 
           page: 1,
           limit: 1000,
           sortBy: 'id:DESC',
-          'filter.assignedShifts.assigned_date': '$btw:' + params.dateRange.join(',')
-        }
+          'filter.assignedShifts.assigned_date':
+            '$btw:' + params.dateRange.join(','),
+        },
       }
     );
     return response.data;
   } catch (error) {
     console.error('Could not fetch user shifts:', error);
   }
-}
+};
+
+//Upload staff csv
+export const staffImportCsv = async (data: any) => {
+  let response = await axios.post(`${apiBaseUrl}/v1/invitations/import`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+};
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
