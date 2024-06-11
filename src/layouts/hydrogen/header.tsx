@@ -9,8 +9,12 @@ import HeaderMenuRight from '@/layouts/header-menu-right';
 import StickyHeader from '@/layouts/sticky-header';
 import Image from 'next/image';
 import SHLogo from '../../../public/nexsysi-logo.png';
+import HeaderLogo from '../../../public/rosterbees-logo.png'
+import { useActiveMenu } from './ActiveMenuContext';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 export default function Header() {
+  const { activeMenuName } = useActiveMenu();
   return (
     <StickyHeader className="flex justify-between py-3 shadow-md 3xl:px-8 4xl:px-10">
       <div className="flex w-full max-w-2xl items-center">
@@ -23,8 +27,10 @@ export default function Header() {
           className="me-4 w-9 shrink-0 text-gray-800 hover:text-gray-900 lg:me-5 xl:hidden"
         >
           {/* <Logo iconOnly={true} /> */}
-          <Image src={SHLogo} className="w-[205px]" alt="CareTaker Logo" />
+          <Image src={HeaderLogo} className="w-[205px]" alt="CareTaker Logo" />
         </Link>
+        <text className=' text-2xl font-bold mr-2'>{activeMenuName}</text>
+        <IoSettingsOutline className="text-2xl text-gray-800" />
 
         {/* <SearchWidget /> */}
       </div>
