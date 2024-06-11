@@ -22,6 +22,16 @@ import {
 import { PiArrowLineLeft, PiArrowLineRight } from 'react-icons/pi';
 import DrawerButton from '../drawer-button';
 import EventCalendarSettings from './settings/event-calendar-settings';
+import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
+import { FiSearch } from 'react-icons/fi';
+import dynamic from 'next/dynamic';
+import FilterDrawer from './FilterDrawer';
+import { TbFilter } from 'react-icons/tb';
+
+const Drawer = dynamic(
+  () => import('@/components/ui/drawer').then((module) => module.Drawer),
+  { ssr: false }
+);
 
 export default function EventCalendarView() {
   const { openModal } = useModal();
@@ -35,6 +45,7 @@ export default function EventCalendarView() {
   const [columns, setColumns]: any = useState([]);
   const [shiftTemplate, setShiftTemplate]: any = useState(null);
   const [eventsData, setEventsData]: any = useState([]);
+  const [drawer, setDrawer] = useState(false);
 
   useEffect(() => {
     generateDates();
@@ -307,6 +318,63 @@ export default function EventCalendarView() {
 
   return (
     <div className="@container">
+      <div className="mb-2 flex w-full items-center justify-between rounded-md border">
+        <div className="">
+          {selectedDates.length && (
+            <div className=" flex items-center">
+              <button
+                className="mr-2 "
+                onClick={() => generateDates('previous')}
+              >
+                <IoMdArrowDropleft
+                  onClick={() => generateDates('previous')}
+                  size={30}
+                />
+              </button>
+              <span className=" text-xl font-semibold">
+                {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD')} -
+                {moment(
+                  selectedDates[selectedDates.length - 1],
+                  'YYYY-MM-DD'
+                ).format('MMM DD')}
+              </span>
+              <button className="ml-2 " onClick={() => generateDates('next')}>
+                <IoMdArrowDropright size={30} />
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="flex ">
+          <div
+            onClick={() => setDrawer(true)}
+            className="flex cursor-pointer items-center gap-1 border border-y-0 border-r-0 px-2"
+          >
+            <TbFilter />
+            <span>Filter</span>
+          </div>
+          <div className="ml-auto flex items-center">
+            {' '}
+            <input
+              type="text"
+              className="w-48 rounded-r-md border-y-0 border-r-0 border-l-gray-200 focus:border-l-gray-200 focus:outline-none focus:ring-0"
+              placeholder="Search member"
+            />
+            <button className="p-2 focus:outline-none focus:ring-0">
+              <FiSearch className="text-slate-500" size={25} />
+            </button>
+          </div>
+          {/* <div className="flex justify-between">
+            <input
+              type="text"
+              className="rounded-r-md border-y-0 border-r-0 border-l-gray-200 focus:border-l-gray-200  focus:outline-none focus:ring-0"
+              placeholder="Search member"
+            />
+            <button className="p-2 focus:outline-none focus:ring-0">
+              <FiSearch className="text-slate-500" size={25} />
+            </button>
+          </div> */}
+        </div>
+      </div>
       <div className="mb-2 flex w-full justify-between">
         <div className="w-72">
           <Select
@@ -325,32 +393,20 @@ export default function EventCalendarView() {
             }}
           />
         </div>
-        <div className=" mx-auto">
-          {selectedDates.length && (
-            <div className="mb-2 flex items-center">
-              <Button
-                className="mr-2 !w-[unset] px-2 py-0"
-                onClick={() => generateDates('previous')}
-              >
-                <PiArrowLineLeft onClick={() => generateDates('previous')} />
-              </Button>
-              <span className=" text-2xl font-semibold">
-                {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD, YYYY')}{' '}
-                -
-                {moment(
-                  selectedDates[selectedDates.length - 1],
-                  'YYYY-MM-DD'
-                ).format('MMM DD, YYYY')}
-              </span>
-              <Button
-                className="ml-2 !w-[unset] px-2 py-0"
-                onClick={() => generateDates('next')}
-              >
-                <PiArrowLineRight />
-              </Button>
-            </div>
-          )}
-        </div>
+
+        <Drawer
+          size="md"
+          isOpen={drawer ?? false}
+          onClose={() => {
+            setDrawer(false);
+          }}
+          overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-md"
+          containerClassName="dark:bg-gray-100"
+          className="z-[9999]"
+        >
+          <FilterDrawer setDrawer={setDrawer} />
+        </Drawer>
+
         <DrawerButton
           label="Settings"
           view={<EventCalendarSettings />}

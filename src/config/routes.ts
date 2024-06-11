@@ -18,17 +18,17 @@ export const routes = {
     checkout: '/ecommerce/checkout',
     trackingId: (id: string) => `/ecommerce/tracking/${id}`,
   },
-  staffs:{
-    invitedStaffs:'/staffs/invited-staffs',
-    staffsApproved:'/staffs/team-members'
+  staffs: {
+    invitedStaffs: '/staffs/invited-staffs',
+    staffsApproved: '/staffs/team-members',
   },
-  pickUpRequest:{
-    dashboard:'/pickup-request',
-    requestDetails:(slug:string) => `/pickup-request/request-detail/${slug}`
+  pickUpRequest: {
+    dashboard: '/pickup-request',
+    requestDetails: (slug: string) => `/pickup-request/request-detail/${slug}`,
   },
-  eventsHKS:{
-    dashboard:'/events-hks',
-    eventDetails:(slug:number) => `/events-hks/event-detail/${slug}`
+  eventsHKS: {
+    dashboard: '/events-hks',
+    eventDetails: (slug: number) => `/events-hks/event-detail/${slug}`,
   },
   searchAndFilter: {
     realEstate: '/search/real-estate',
@@ -77,20 +77,21 @@ export const routes = {
   eventCalendar: '/event-calendar',
   rolesPermissions: '/roles-permissions',
   organizations: '/organizations',
-  clusterAdmins:'/cluster-admins',
-  drivers:'/drivers',
-  projectAssociates:'/project-associates',
-  transportCoordinator:'/transport-coordinator',
-  events:'/events-hks',
-  positioncategory:'/position-category',
-  position:'/positions',
-  positions_under_org:'/positions-under-org',
-  branches:'/branches',
-  departments:'/departments',
+  clusterAdmins: '/cluster-admins',
+  drivers: '/drivers',
+  projectAssociates: '/project-associates',
+  transportCoordinator: '/transport-coordinator',
+  events: '/events-hks',
+  positioncategory: '/position-category',
+  position: '/positions',
+  positions_under_org: '/positions-under-org',
+  branches: '/branches',
+  departments: '/departments',
+  administrators: '/administrators',
   org_profile: '/profile-org',
   // staffs:'/staffs',
-  wardData:'/ward-data',
-  pickupRequest:'/pickup-request',
+  wardData: '/ward-data',
+  pickupRequest: '/pickup-request',
   invoice: {
     home: '/invoice',
     create: '/invoice/create',

@@ -54,7 +54,15 @@ import { SlOrganization } from 'react-icons/sl';
 import { TbHierarchy3 } from 'react-icons/tb';
 import { SiAwsorganizations } from 'react-icons/si';
 import DashboardIcon from '@/components/icons/dashboard';
-import { BsFillHouseFill, BsCalendar3EventFill, BsClockFill, BsChatLeftTextFill, BsFillGearFill, BsClock, BsClockHistory } from 'react-icons/bs';
+import {
+  BsFillHouseFill,
+  BsCalendar3EventFill,
+  BsClockFill,
+  BsChatLeftTextFill,
+  BsFillGearFill,
+  BsClock,
+  BsClockHistory,
+} from 'react-icons/bs';
 import { HiUser } from 'react-icons/hi2';
 import { GoHome } from 'react-icons/go';
 import { IoCalendarOutline, IoSettingsOutline } from 'react-icons/io5';
@@ -133,7 +141,7 @@ export const menuItemsForOrgSuperAdmin = [
   {
     name: 'Communication',
     href: routes.executive.dashboard,
-    icon: <RiMessage2Line />
+    icon: <RiMessage2Line />,
   },
   {
     name: 'Settings',
@@ -161,8 +169,8 @@ export const menuItemsForOrgSuperAdmin = [
         icon: <PiBriefcaseDuotone />,
       },
       {
-        name: 'Administartors',
-        href: routes.branches,
+        name: 'Administrators',
+        href: routes.administrators,
         icon: <FaLocationCrosshairs />,
       },
       {
@@ -235,7 +243,7 @@ export const menuItemsForBranchAdmin = [
     name: 'Timesheet',
     href: routes.analytics,
     icon: <IoMdTime />,
-  },  
+  },
   {
     name: 'Team members',
     href: '#',
@@ -254,7 +262,7 @@ export const menuItemsForBranchAdmin = [
   {
     name: 'Communication',
     href: routes.executive.dashboard,
-    icon: < RiMessage2Line />
+    icon: <RiMessage2Line />,
   },
   // {
   //   name: 'Departments',
@@ -264,7 +272,7 @@ export const menuItemsForBranchAdmin = [
   {
     name: 'Settings',
     href: '#',
-    icon: < IoSettingsOutline />,
+    icon: <IoSettingsOutline />,
     dropdownItems: [
       {
         name: 'Organization Profile',
@@ -287,8 +295,8 @@ export const menuItemsForBranchAdmin = [
         icon: <PiBriefcaseDuotone />,
       },
       {
-        name: 'Administartors',
-        href: routes.branches,
+        name: 'Administrators',
+        href: routes.administrators,
         icon: <FaLocationCrosshairs />,
       },
       {
