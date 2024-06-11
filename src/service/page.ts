@@ -641,6 +641,39 @@ export const staffImportCsv = async (data: any) => {
   return response;
 };
 
+// List branches for administrators create
+
+export const listOrgBranches = (id: any) => {
+  return axios
+    .get(`${apiBaseUrl}/v1/organization-branches`, {
+      params: { organization_id: id },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+    });
+};
+
+// Create Administration
+
+export const addAdministration = async (data: any) => {
+  let response = await axios.post(
+    `${apiBaseUrl}/v1/organization-users/create/organization_admin`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  return response;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
