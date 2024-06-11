@@ -1,16 +1,11 @@
+"use client";
+import React from 'react';
+import SavePasswordForm from './savepassword';
 
-import { Metadata } from "next";
-import React from "react";
-
-export const metadata: Metadata = {
-  title: "Onboarding ",
-};
-
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Page() {
   return (
     <>
-      
-      {children}
+      <SavePasswordForm />
     </>
   );
 }

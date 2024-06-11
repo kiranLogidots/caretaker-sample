@@ -1,16 +1,17 @@
 'use client';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Password } from '@/components/ui/password';
 import SuccessPage from './success/page';
+import Image from 'next/image'; 
 import logo from "../../../../public/rosterbees-logo.png";
 
 const validationSchema = z.object({
   password: z.string().min(8, 'Password must be at least 8 characters'),
-  confirmPassword: z.string().min(8, 'Confirm Password must be at least 8 characters')
+  confirmPassword: z.string().min(8, 'Confirm Password must be at least 8 characters'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ['confirmPassword'],
@@ -30,14 +31,13 @@ export default function SavePasswordForm() {
     router.push('/auth/onboarding/success');
   };
 
-  
-
   return (
     <div className="mt-48 md:mt-56 lg:mt-40 flex justify-center"> 
       <div className="w-full max-w-md p-4 ">
         {!isSuccess && ( 
           <>
-            <img src={logo.src} alt="RosterBees Logo" className="h-12 mx-auto mb-2 mt-1" /> 
+            <Image src={logo} alt="RosterBees Logo" width={170} height={50} className="mx-auto mb-2 mt-1" />
+
             <h1 className="text-2xl font-semibold text-center mb-4">Set up your Account</h1> 
           </>
         )}
