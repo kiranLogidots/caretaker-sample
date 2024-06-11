@@ -7,6 +7,7 @@ import { useDrawer } from '../../drawer-views/use-drawer';
 
 interface GeneralEventSettingsProps {
   schedulingSettings: SchedulingSettings;
+  setDrawer: any;
 }
 
 interface SchedulingSettings {
@@ -46,7 +47,7 @@ const OvertimePeriodOption: OptionType[] = [
   },
 ];
 
-const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({ schedulingSettings }) => {
+const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({ schedulingSettings , setDrawer}) => {
   const { closeDrawer } = useDrawer();
   const { setValue, formState: { errors } } = useFormContext();
   const [isLoading, setLoading] = useState(false);
@@ -123,7 +124,7 @@ const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({ schedulingS
       <div className="flex items-center justify-end gap-4">
         <Button
           variant="outline"
-          onClick={closeDrawer}
+          onClick={() => setDrawer(false)}
           className="w-full xl:w-auto"
         >
           Cancel

@@ -28,6 +28,9 @@ import dynamic from 'next/dynamic';
 import FilterDrawer from './FilterDrawer';
 import { TbFilter } from 'react-icons/tb';
 import { IoSettingsOutline } from 'react-icons/io5';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -36,6 +39,7 @@ const Drawer = dynamic(
 
 export default function EventCalendarView() {
   const { openModal } = useModal();
+  const [tabvalue, setTabValue] = useState('1');
 
   const [refreshKey, setRefreshKey] = useState(1);
   const [positions, setPositions]: any = useState([]);
@@ -47,6 +51,8 @@ export default function EventCalendarView() {
   const [shiftTemplate, setShiftTemplate]: any = useState(null);
   const [eventsData, setEventsData]: any = useState([]);
   const [drawer, setDrawer] = useState(false);
+  const [settingsdrawer, setSettingsDrawer] = useState(false);
+
 
   useEffect(() => {
     generateDates();
@@ -64,6 +70,10 @@ export default function EventCalendarView() {
       generateTableData();
     }
   }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
+
+  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+    setTabValue(newValue);
+  }
 
   const handleSelectSlot = useCallback(
     ({
@@ -318,9 +328,10 @@ export default function EventCalendarView() {
   };
 
   return (
-    <div className="@container">
+    <div className="@container mt-5">
       <div className="mb-2 flex w-full items-center justify-between rounded-md border">
-        <div className="">
+        <div className="flex items-center">
+          <div>
           {selectedDates.length && (
             <div className=" flex items-center">
               <button
@@ -344,16 +355,30 @@ export default function EventCalendarView() {
               </button>
             </div>
           )}
+          </div>
+          <div>
+            <Tabs value={tabvalue} onChange={handleTabChange} textColor='inherit' >
+              <Tab label="Week 1" value='1'/>
+              <Tab label="Week 2" value='2'/>
+            </Tabs>
+          </div>
         </div>
         <div className="flex ">
-          <DrawerButton
+          {/* <DrawerButton
             className=''
             label="Settings"
             view={<EventCalendarSettings />}
             customSize="500px"
             placement="right"
             icon={<IoSettingsOutline className='mr-1' />}
-          />
+          /> */}
+          <div
+            onClick={() => setSettingsDrawer(true)}
+            className="flex cursor-pointer items-center gap-1 border border-y-0 border-r-0 px-2"
+          >
+            <IoSettingsOutline />
+            <span>Settings</span>
+          </div>
           <div
             onClick={() => setDrawer(true)}
             className="flex cursor-pointer items-center gap-1 border border-y-0 border-r-0 px-2"
@@ -414,6 +439,19 @@ export default function EventCalendarView() {
           className="z-[9999]"
         >
           <FilterDrawer setDrawer={setDrawer} />
+        </Drawer>
+
+        <Drawer
+          size="md"
+          isOpen={settingsdrawer ?? false}
+          onClose={() => {
+            setSettingsDrawer(false);
+          }}
+          overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-md"
+          containerClassName="dark:bg-gray-100"
+          className="z-[9999]"
+        >
+          <EventCalendarSettings setDrawer={setSettingsDrawer}/>
         </Drawer>
 
         {/* <DrawerButton

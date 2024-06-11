@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-export default function EventCalendarSettings() {
+export default function EventCalendarSettings({ setDrawer }: { setDrawer: any }) {
     const { closeDrawer } = useDrawer();
     const methods = useForm();
     const [selectedTab, setSelectedTab] = useState('general'); // State to track selected navigation option
@@ -43,7 +43,7 @@ export default function EventCalendarSettings() {
                     <div className="flex items-center justify-between mb-5 mt-4">
                         <div></div>
                         <h3 className=' text-center '>Schedule Settings</h3>
-                        <ActionIcon size="sm" variant="text" onClick={closeDrawer}>
+                        <ActionIcon size="sm" variant="text" onClick={() => setDrawer(false)}>
                             <PiXBold className="h-auto w-5" />
                         </ActionIcon>
                     </div>
@@ -55,8 +55,8 @@ export default function EventCalendarSettings() {
                     <hr />
 
                     <div className='m-10'>
-                        {schedulingSettings && selectedTab === 'general' && <GeneralEventSettings schedulingSettings={schedulingSettings} />}
-                        {schedulingSettings && selectedTab === 'scheduling' && <SchedulingRules schedulingSettings={schedulingSettings} />}
+                        {schedulingSettings && selectedTab === 'general' && <GeneralEventSettings schedulingSettings={schedulingSettings} setDrawer={setDrawer}/>}
+                        {schedulingSettings && selectedTab === 'scheduling' && <SchedulingRules schedulingSettings={schedulingSettings} setDrawer={setDrawer}/>}
                     </div>
                 </FormProvider>
             </div>

@@ -8,6 +8,7 @@ import { PiXBold } from 'react-icons/pi';
 
 interface SchedulingSettingsProps {
   schedulingSettings: SchedulingSettings;
+  setDrawer: any;
 }
 
 interface SchedulingSettings {
@@ -108,7 +109,7 @@ const unpaidbreakOptions: OptionType[] = [
 ];
 
 
-const SchedulingRules: React.FC<SchedulingSettingsProps> = ({ schedulingSettings }) => {
+const SchedulingRules: React.FC<SchedulingSettingsProps> = ({ schedulingSettings, setDrawer }) => {
   const { closeDrawer } = useDrawer();
   const { formState: { errors } } = useFormContext();
   const [isLoading, setLoading] = useState(false);
@@ -307,7 +308,7 @@ const SchedulingRules: React.FC<SchedulingSettingsProps> = ({ schedulingSettings
       <div className="flex items-center justify-end gap-4">
         <Button
           variant="outline"
-          onClick={closeDrawer}
+          onClick={() => setDrawer(false)}
           className="w-full @xl:w-auto"
         >
           Cancel
