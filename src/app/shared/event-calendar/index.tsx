@@ -27,6 +27,7 @@ import { FiSearch } from 'react-icons/fi';
 import dynamic from 'next/dynamic';
 import FilterDrawer from './FilterDrawer';
 import { TbFilter } from 'react-icons/tb';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -345,6 +346,14 @@ export default function EventCalendarView() {
           )}
         </div>
         <div className="flex ">
+          <DrawerButton
+            className=''
+            label="Settings"
+            view={<EventCalendarSettings />}
+            customSize="500px"
+            placement="right"
+            icon={<IoSettingsOutline className='mr-1' />}
+          />
           <div
             onClick={() => setDrawer(true)}
             className="flex cursor-pointer items-center gap-1 border border-y-0 border-r-0 px-2"
@@ -356,7 +365,7 @@ export default function EventCalendarView() {
             {' '}
             <input
               type="text"
-              className="w-48 rounded-r-md border-y-0 border-r-0 border-l-gray-200 focus:border-l-gray-200 focus:outline-none focus:ring-0"
+              className=" w-60 rounded-r-md border-y-0 border-r-0 border-l-gray-200 focus:border-l-gray-200 focus:outline-none focus:ring-0"
               placeholder="Search member"
             />
             <button className="p-2 focus:outline-none focus:ring-0">
@@ -407,12 +416,12 @@ export default function EventCalendarView() {
           <FilterDrawer setDrawer={setDrawer} />
         </Drawer>
 
-        <DrawerButton
+        {/* <DrawerButton
           label="Settings"
           view={<EventCalendarSettings />}
           customSize="500px"
           placement="right"
-        />
+        /> */}
       </div>
       <ControlledTable
         columns={columns}

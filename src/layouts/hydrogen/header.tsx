@@ -30,7 +30,6 @@ export default function Header() {
           <Image src={HeaderLogo} className="w-[205px]" alt="CareTaker Logo" />
         </Link>
         <text className=' text-2xl font-bold mr-2'>{activeMenuName}</text>
-        <IoSettingsOutline className="text-2xl text-gray-800" />
 
         {/* <SearchWidget /> */}
       </div>
