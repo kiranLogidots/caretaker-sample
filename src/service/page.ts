@@ -251,12 +251,14 @@ export const listPositions = () => {
     });
 };
 
-export const listOrgPositions = () => {
-  const organizationId = sessionStorage.getItem('organizationId');
+export const listOrgPositions = (branchId: number) => {
+  if (branchId == 0) {
+    return;
+  }
 
   return axios
     .get(
-      `${apiBaseUrl}/v1/organization-positions?organization_id=${organizationId}`,
+      `${apiBaseUrl}/v1/department-position?organization_branch_id=${branchId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -498,11 +500,10 @@ export const inviteStaffs = async (details: CreateStaffs) => {
 };
 
 //LIST STAFFS API
-export const listStaffs = () => {
-  const BranchId = sessionStorage.getItem('organizationBranchId');
+export const listStaffs = (branchId: number) => {
   return axios
     .get(
-      `${apiBaseUrl}/v1/invitations/list-by-branch?organization_branch_id=${BranchId}`,
+      `${apiBaseUrl}/v1/invitations/list-by-branch?organization_branch_id=${branchId}`,
 
       // `${apiBaseUrl}/v1/organization-users?organization_branch_id=${BranchId}`,
       {
@@ -528,11 +529,13 @@ export const listStaffs = () => {
     });
 };
 //LIST STAFFS API
-export const listApprovedStaffs = () => {
-  const BranchId = sessionStorage.getItem('organizationBranchId');
+export const listApprovedStaffs = (branchId: number) => {
+  if (branchId == 0) {
+    return;
+  }
   return axios
     .get(
-      `${apiBaseUrl}/v1/organization-users`,
+      `${apiBaseUrl}/v1/organization-users/list-branch-staffs?filter.organization_branch_id=${branchId}`,
 
       // `${apiBaseUrl}/v1/organization-users?organization_branch_id=${BranchId}`,
       // https://api.nexsysi.alpha2.logidots.com/api/v1/organization-users
@@ -611,7 +614,7 @@ export const getUsersWithShifts = async (
 ) => {
   try {
     const response = await axios.get(
-      `${apiBaseUrl}/v1/organization-users?page=1&limit=20&sortBy=id:DESC`,
+      `${apiBaseUrl}/v1/organization-users/schedule-users`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -623,6 +626,8 @@ export const getUsersWithShifts = async (
           sortBy: 'id:DESC',
           'filter.assignedShifts.assigned_date':
             '$btw:' + params.dateRange.join(','),
+          'filter.organization_branch_id': params?.branchId,
+          'filter.organizationUserPositions.position_id': params?.positionId,
         },
       }
     );

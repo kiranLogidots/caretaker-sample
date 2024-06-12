@@ -19,6 +19,9 @@ import {
   ListPositionsInterface,
 } from '@/types';
 import toast from 'react-hot-toast';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
+
 const FilterElement = dynamic(
   () => import('@/app/shared/staffs/users-table/filter-element'),
   { ssr: false }
@@ -33,6 +36,8 @@ const filterState = {
 };
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
   const [pageSize, setPageSize] = useState(10);
   const [tableData, setTableData] = useState<ListPositionsInterface[]>([]);
   const onHeaderCellClick = (value: string) => ({
@@ -110,7 +115,9 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
 
   const fetchData = async () => {
     try {
-      const resultData = (await listStaffs()) as ListPositionsInterface[];
+      const resultData = (await listStaffs(
+        Number(branchId)
+      )) as ListPositionsInterface[];
       console.log('result data', resultData);
       setTableData(resultData);
       // setTotalItems(resultData.pagination.totalCount);
@@ -121,7 +128,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
 
   useEffect(() => {
     fetchData(); // Call fetchData when the component mounts
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, branchId]);
   function handlePaginate(pageNumber: number) {
     setCurrentPage(pageNumber);
   }

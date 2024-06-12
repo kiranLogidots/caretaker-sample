@@ -127,16 +127,16 @@ export const menuItemsForOrgSuperAdmin = [
     name: 'Team members',
     href: '#',
     icon: <FiUsers />,
-    // dropdownItems: [
-    //   {
-    //     name: 'Staffs',
-    //     href: routes.staffs.staffsApproved,
-    //   },
-    //   {
-    //     name: 'Invited Staffs',
-    //     href: routes.staffs.invitedStaffs,
-    //   },
-    // ],
+    dropdownItems: [
+      {
+        name: 'Staffs',
+        href: routes.staffs.staffsApproved,
+      },
+      {
+        name: 'Invited Staffs',
+        href: routes.staffs.invitedStaffs,
+      },
+    ],
   },
   {
     name: 'Communication',

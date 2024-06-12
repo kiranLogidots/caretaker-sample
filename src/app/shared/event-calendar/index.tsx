@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import ControlledTable from '@/components/controlled-table';
-import { Select } from '@/components/ui/select';
+// import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import EventForm from '@/app/shared/event-calendar/event-form';
 import { useModal } from '@/app/shared/modal-views/use-modal';
@@ -30,7 +30,9 @@ import { TbFilter } from 'react-icons/tb';
 import { IoSettingsOutline } from 'react-icons/io5';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
+import { Select } from 'rizzui';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -38,11 +40,14 @@ const Drawer = dynamic(
 );
 
 export default function EventCalendarView() {
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
   const { openModal } = useModal();
   const [tabvalue, setTabValue] = useState('1');
 
   const [refreshKey, setRefreshKey] = useState(1);
   const [positions, setPositions]: any = useState([]);
+  const [selectedPositionArr, setSelectedPositionArr] = useState([]);
 
   const [selectedPositionId, setSelectedPositionId] = useState(null);
 
@@ -53,27 +58,15 @@ export default function EventCalendarView() {
   const [drawer, setDrawer] = useState(false);
   const [settingsdrawer, setSettingsDrawer] = useState(false);
 
-
   useEffect(() => {
     generateDates();
-    fetchPositions();
+
     fetchCurrentBranch();
   }, []);
 
-  useEffect(() => {
-    if (
-      selectedDates.length &&
-      selectedPositionId &&
-      shiftTemplate &&
-      refreshKey
-    ) {
-      generateTableData();
-    }
-  }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
-
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setTabValue(newValue);
-  }
+  };
 
   const handleSelectSlot = useCallback(
     ({
@@ -119,13 +112,28 @@ export default function EventCalendarView() {
     setPositions([]);
     setSelectedPositionId(null);
 
-    let response = await listOrgPositions();
-    setPositions(response);
+    let response = await listOrgPositions(Number(branchId));
+    console.log(response, 'responseposition');
+
+    const transformedArray = response.map((item: any) => ({
+      label: item?.position?.name,
+      value: item?.position?.id,
+    }));
+
+    console.log(transformedArray, 'transformedArray');
+    setPositions(transformedArray);
 
     if (response.length > 0) {
+      setSelectedPositionArr(transformedArray[0]);
       setSelectedPositionId(response[0].position.id);
     }
   };
+
+  useEffect(() => {
+    fetchPositions();
+    setSelectedPositionId(null);
+    setSelectedPositionArr([]);
+  }, [branchId]);
 
   const fetchCurrentBranch = async () => {
     let response = await viewBranch();
@@ -196,6 +204,7 @@ export default function EventCalendarView() {
 
   const generateTableData = async () => {
     const response = await getUsersWithShifts({
+      branchId: branchId,
       positionId: selectedPositionId,
       dateRange: [selectedDates[0], selectedDates[selectedDates.length - 1]],
     });
@@ -228,8 +237,8 @@ export default function EventCalendarView() {
                   ...shiftTemplate,
                   position_id: selectedPositionId,
                   position_name: positions.find(
-                    (p: any) => p.position.id === selectedPositionId
-                  )?.position?.name,
+                    (p: any) => p.value === selectedPositionId
+                  )?.label,
                 },
               });
             }}
@@ -327,39 +336,54 @@ export default function EventCalendarView() {
     ]);
   };
 
+  useEffect(() => {
+    if (
+      selectedDates.length &&
+      selectedPositionId &&
+      shiftTemplate &&
+      refreshKey
+    ) {
+      generateTableData();
+    }
+  }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey, branchId]);
+
   return (
-    <div className="@container mt-5">
+    <div className="mt-5 @container">
       <div className="mb-2 flex w-full items-center justify-between rounded-md border">
         <div className="flex items-center">
           <div>
-          {selectedDates.length && (
-            <div className=" flex items-center">
-              <button
-                className="mr-2 "
-                onClick={() => generateDates('previous')}
-              >
-                <IoMdArrowDropleft
+            {selectedDates.length && (
+              <div className=" flex items-center">
+                <button
+                  className="mr-2 "
                   onClick={() => generateDates('previous')}
-                  size={30}
-                />
-              </button>
-              <span className=" text-xl font-semibold">
-                {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD')} -
-                {moment(
-                  selectedDates[selectedDates.length - 1],
-                  'YYYY-MM-DD'
-                ).format('MMM DD')}
-              </span>
-              <button className="ml-2 " onClick={() => generateDates('next')}>
-                <IoMdArrowDropright size={30} />
-              </button>
-            </div>
-          )}
+                >
+                  <IoMdArrowDropleft
+                    onClick={() => generateDates('previous')}
+                    size={30}
+                  />
+                </button>
+                <span className=" text-xl font-semibold">
+                  {moment(selectedDates[0], 'YYYY-MM-DD').format('MMM DD')} -
+                  {moment(
+                    selectedDates[selectedDates.length - 1],
+                    'YYYY-MM-DD'
+                  ).format('MMM DD')}
+                </span>
+                <button className="ml-2 " onClick={() => generateDates('next')}>
+                  <IoMdArrowDropright size={30} />
+                </button>
+              </div>
+            )}
           </div>
           <div>
-            <Tabs value={tabvalue} onChange={handleTabChange} textColor='inherit' >
-              <Tab label="Week 1" value='1'/>
-              <Tab label="Week 2" value='2'/>
+            <Tabs
+              value={tabvalue}
+              onChange={handleTabChange}
+              textColor="inherit"
+            >
+              <Tab label="Week 1" value="1" />
+              <Tab label="Week 2" value="2" />
             </Tabs>
           </div>
         </div>
@@ -411,20 +435,31 @@ export default function EventCalendarView() {
       </div>
       <div className="mb-2 flex w-full justify-between">
         <div className="w-72">
-          <Select
+          {/* <Select
             placeholder="Select a Position"
             options={(positions || []).map((p: any) => {
               return {
-                label: p.position.name,
-                value: p.position.id,
+                label: p?.departmentPositions?.positions?.name,
+                value: p?.departmentPositions?.positions?.id,
               };
             })}
             value={selectedPositionId}
             onChange={(e: any) => setSelectedPositionId(e.value)}
-            displayValue={(e: any) => {
-              return positions.find((p: any) => p.position.id === e).position
-                .name;
+            // displayValue={(e: any) => {
+            //   return positions.find((p: any) => p?.position?.id === e).position
+            //     .name;
+            // }}
+          /> */}
+          <Select
+            value={selectedPositionArr}
+            // onChange={setSelectedUserBranch}
+            onChange={(selected: any) => {
+              setSelectedPositionArr(selected);
+              setSelectedPositionId(selected?.value);
             }}
+            options={positions || []}
+            placeholder="Select Position"
+            style={{ width: '100%' }}
           />
         </div>
 
@@ -451,7 +486,7 @@ export default function EventCalendarView() {
           containerClassName="dark:bg-gray-100"
           className="z-[9999]"
         >
-          <EventCalendarSettings setDrawer={setSettingsDrawer}/>
+          <EventCalendarSettings setDrawer={setSettingsDrawer} />
         </Drawer>
 
         {/* <DrawerButton

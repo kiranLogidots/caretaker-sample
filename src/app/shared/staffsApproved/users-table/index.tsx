@@ -20,6 +20,9 @@ import {
   ListPositionsInterface,
 } from '@/types';
 import toast from 'react-hot-toast';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
+
 const FilterElement = dynamic(
   () => import('@/app/shared/staffsApproved/users-table/filter-element'),
   { ssr: false }
@@ -34,6 +37,8 @@ const filterState = {
 };
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
   const [pageSize, setPageSize] = useState(10);
   const [tableData, setTableData] = useState<ListPositionsInterface[]>([]);
   const onHeaderCellClick = (value: string) => ({
@@ -109,21 +114,22 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const { visibleColumns, checkedColumns, setCheckedColumns } =
     useColumn(columns);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resultData =
-          (await listApprovedStaffs()) as ListPositionsInterface[];
-        console.log('result data', resultData);
-        setTableData(resultData);
-        // setTotalItems(resultData.pagination.totalCount);
-      } catch (err: any) {
-        console.log('Error response for listing users', err.response);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const resultData = (await listApprovedStaffs(
+        Number(branchId)
+      )) as ListPositionsInterface[];
+      console.log('result data', resultData);
+      setTableData(resultData);
+      // setTotalItems(resultData.pagination.totalCount);
+    } catch (err: any) {
+      console.log('Error response for listing users', err.response);
+    }
+  };
 
+  useEffect(() => {
     fetchData(); // Call fetchData when the component mounts
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, branchId]);
   function handlePaginate(pageNumber: number) {
     setCurrentPage(pageNumber);
   }
