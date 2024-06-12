@@ -100,7 +100,7 @@ export const getColumns = ({
     dataIndex: 'name',
     key: 'name',
     width: 250,
-    hidden: 'name',
+    render: (name: string) => name,
     // render: (_: string, user: User) => (
     //   <AvatarCard
     //     src={user.avatar}

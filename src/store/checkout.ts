@@ -49,6 +49,16 @@ export const defaultCheckout: CheckoutState = {
   use_wallet: false,
 };
 
+export interface UserBranch {
+  label: string;
+  value: string;
+}
+
+export const selectedBranchAtom = atom<UserBranch>({
+  label: '',
+  value: '',
+});
+
 // Original atom.
 export const checkoutAtom = atomWithStorage(CHECKOUT, defaultCheckout);
 export const clearCheckoutAtom = atom(null, (_get, set, _data) => {

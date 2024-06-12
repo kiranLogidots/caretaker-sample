@@ -14,10 +14,14 @@ import { Button } from '@/components/ui/button';
 import { Select } from 'rizzui';
 import { useEffect, useState } from 'react';
 import { listUserBranches } from '@/service/page';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
 
 export default function HeaderMenuRight() {
   const [selectedUserBranch, setSelectedUserBranch] = useState([]);
   const [userBranches, setUserBranches] = useState([]);
+  const [selectedBranch, setSelectedBranch] = useAtom(selectedBranchAtom);
+
   const theme = {
     colors: {
       colorPrimary: 'black',
@@ -40,6 +44,7 @@ export default function HeaderMenuRight() {
       }));
       setUserBranches(transformedArray);
       setSelectedUserBranch(transformedArray[0]);
+      setSelectedBranch(transformedArray[0]);
     } catch (err: any) {
       console.log('Error message ', err.response.data.message);
     }
@@ -85,7 +90,11 @@ export default function HeaderMenuRight() {
       <Select
         id="department-select"
         value={selectedUserBranch}
-        onChange={setSelectedUserBranch}
+        // onChange={setSelectedUserBranch}
+        onChange={(selected: any) => {
+          setSelectedUserBranch(selected);
+          setSelectedBranch(selected);
+        }}
         options={userBranches}
         placeholder="Select Department"
         optionClassName="z-[100]"
