@@ -114,7 +114,7 @@ export default function EventForm({
     defaultValues: {
       start_time: startDate ?? event?.start,
       end_time: endDate ?? event?.end,
-      unpaid_break: unpaid_break ?? 60,
+      unpaid_break: unpaid_break ?? 0,
       shift_notes: shift_notes ?? '',
     },
   });
@@ -159,7 +159,7 @@ export default function EventForm({
           defaultValues: {
             start_time: startDate ?? event?.start,
             end_time: endDate ?? event?.end,
-            unpaid_break: unpaid_break ?? 60,
+            unpaid_break: unpaid_break ?? 0,
             shift_notes: shift_notes ?? '',
           },
         }}

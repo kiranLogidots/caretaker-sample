@@ -88,7 +88,6 @@ export default function HeaderMenuRight() {
         </ActionIcon>
       </NotificationDropdown> */}
       <Select
-        id="department-select"
         value={selectedUserBranch}
         // onChange={setSelectedUserBranch}
         onChange={(selected: any) => {
