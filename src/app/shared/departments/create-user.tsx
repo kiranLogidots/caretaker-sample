@@ -9,9 +9,18 @@ import { Button } from '@/components/ui/button';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { Title } from '@/components/ui/text';
 import { useModal } from '@/app/shared/modal-views/use-modal';
-import {  createDepartments, createPositions, listBranches, listPositionCat } from '@/service/page';
+import {
+  createDepartments,
+  createPositions,
+  listBranches,
+  listPositionCat,
+} from '@/service/page';
 import toast, { Toaster } from 'react-hot-toast';
-import { CreatePositionCatResponse, ListBranchesInterface, ListPositionCategoryInterface } from '@/types';
+import {
+  CreatePositionCatResponse,
+  ListBranchesInterface,
+  ListPositionCategoryInterface,
+} from '@/types';
 import { signOut } from 'next-auth/react';
 import {
   PositionsFormInput,
@@ -19,16 +28,26 @@ import {
 } from '@/utils/validators/create-position.schema';
 import Select from 'react-select';
 import { useDrawer } from '../drawer-views/use-drawer';
-import { DepartmentFormInput, createDepartmentSchema } from '@/utils/validators/create-department.schema';
+import {
+  DepartmentFormInput,
+  createDepartmentSchema,
+} from '@/utils/validators/create-department.schema';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
 
 export default function CreateUser() {
   const { getValues, setValue, control } = useForm();
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
+  console.log(branchId, 'selectedBranch');
   // const { closeModal } = useModal();
   const { closeDrawer } = useDrawer();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [accountTypes, setAccountTypes] = useState< { value: number; label: string }[]>([]);
+  const [accountTypes, setAccountTypes] = useState<
+    { value: number; label: string }[]
+  >([]);
 
   // useEffect(() => {
   //   const fetchBranches = async () => {
@@ -50,17 +69,18 @@ export default function CreateUser() {
   // }, []);
 
   const onSubmit: SubmitHandler<DepartmentFormInput> = async (data) => {
-    const BranchId = sessionStorage.getItem('organizationBranchId');
+    // const BranchId = sessionStorage.getItem('organizationBranchId');
 
     const formattedData = {
       name: data.name,
-      description: data.description,
-      organization_branch_id: Number(BranchId),
+      ...(data.description && { description: data.description }),
+      organization_branch_id: Number(branchId),
     };
 
     setLoading(true);
 
     try {
+      //@ts-ignore
       const response = await createDepartments(formattedData);
       const resultData = response.data as CreatePositionCatResponse[];
 
@@ -83,7 +103,7 @@ export default function CreateUser() {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
-      }  else if (err.response?.data?.statusCode === 400) {
+      } else if (err.response?.data?.statusCode === 400) {
         setErrorMessage(err.response.data.message.join(' '));
       } else {
         setErrorMessage(err.message || 'An unknown error occurred');

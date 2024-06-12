@@ -13,6 +13,9 @@ import {
 } from '@/service/page';
 import { DepartmentResponseInterface, ListPositionsInterface } from '@/types';
 import toast from 'react-hot-toast';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
+
 const FilterElement = dynamic(
   () => import('@/app/shared/departments/users-table/filter-element'),
   { ssr: false }
@@ -27,6 +30,9 @@ const filterState = {
 };
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
+  console.log(branchId, 'branchId');
   const [pageSize, setPageSize] = useState(10);
   const [tableData, setTableData] = useState<ListPositionsInterface[]>([]);
   const onHeaderCellClick = (value: string) => ({
@@ -102,23 +108,24 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const { visibleColumns, checkedColumns, setCheckedColumns } =
     useColumn(columns);
 
+  const fetchData = async () => {
+    try {
+      // const branchId = sessionStorage.getItem('organizationBranchId');
+      const resultData = (await listDepartments(
+        Number(branchId)
+      )) as DepartmentResponseInterface[];
+      console.log('result data', resultData); // Fetch data from the listHKS API
+      setTableData(resultData);
+
+      // setTotalItems(resultData.pagination.totalCount);
+    } catch (err: any) {
+      console.log('Error response for listing users', err.response);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const branchId = sessionStorage.getItem('organizationBranchId');
-        const resultData =
-          (await listDepartments()) as DepartmentResponseInterface[];
-        console.log('result data', resultData); // Fetch data from the listHKS API
-        setTableData(resultData);
-
-        // setTotalItems(resultData.pagination.totalCount);
-      } catch (err: any) {
-        console.log('Error response for listing users', err.response);
-      }
-    };
-
     fetchData(); // Call fetchData when the component mounts
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, branchId]);
   function handlePaginate(pageNumber: number) {
     setCurrentPage(pageNumber);
   }

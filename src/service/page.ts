@@ -414,11 +414,14 @@ export const createDepartments = async (details: CreateDepartments) => {
 };
 
 //LIST DEPARTMENTS API
-export const listDepartments = () => {
-  const BranchId = sessionStorage.getItem('organizationBranchId');
+export const listDepartments = (id: number) => {
+  console.log('idBranch', id);
+  if (id === 0) {
+    return;
+  }
   return axios
     .get(
-      `${apiBaseUrl}/v1/organization-branch-departments?organization_branch_id=${BranchId}`,
+      `${apiBaseUrl}/v1/organization-branch-departments?organization_branch_id=${id}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -672,6 +675,21 @@ export const addAdministration = async (data: any) => {
   );
 
   return response;
+};
+
+// List branches for user
+
+export const listUserBranches = () => {
+  return axios
+    .get(`${apiBaseUrl}/v1/user-branches`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+    });
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
