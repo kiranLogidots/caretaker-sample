@@ -222,6 +222,7 @@ export default function EventCalendarView() {
         key: d,
         dataIndex: d,
         title: <TableHeaderCell date={d} />,
+        width: 150,
         render: (data: any) => (
           <ShiftDataCell
             data={data}
@@ -269,6 +270,7 @@ export default function EventCalendarView() {
           userId: r.user_id,
           name: [r.user.first_name, r.user.last_name].join(' '),
           totalHours: r.totalHours,
+          employment_status: r?.user?.employment_status,
         },
         ...selectedDates.reduce(
           (prev: { [key: string]: any }, current: string) => {
