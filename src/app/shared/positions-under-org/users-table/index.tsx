@@ -5,7 +5,13 @@ import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/positions-under-org/users-table/columns';
-import { deletePositionCat, deletePositions, listOrgPositions, listPositionCat, listPositions } from '@/service/page';
+import {
+  deletePositionCat,
+  deletePositions,
+  listOrgPositions,
+  listPositionCat,
+  listPositions,
+} from '@/service/page';
 import {
   CreatePositionCatResponse,
   HKSEvents,
@@ -13,6 +19,9 @@ import {
   ListPositionsInterface,
 } from '@/types';
 import toast from 'react-hot-toast';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
+
 const FilterElement = dynamic(
   () => import('@/app/shared/positions-under-org/users-table/filter-element'),
   { ssr: false }
@@ -27,6 +36,8 @@ const filterState = {
 };
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
   const [pageSize, setPageSize] = useState(10);
   const [tableData, setTableData] = useState<ListPositionsInterface[]>([]);
   const onHeaderCellClick = (value: string) => ({
@@ -102,21 +113,23 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const { visibleColumns, checkedColumns, setCheckedColumns } =
     useColumn(columns);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resultData =
-          (await listOrgPositions()) as ListPositionsInterface[];
-        console.log('List org positions resposne', resultData); // Fetch data from the listHKS API
-        setTableData(resultData); 
-        // setTotalItems(resultData.pagination.totalCount);
-      } catch (err: any) {
-        console.log('Error response for listing users', err.response);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const resultData = (await listOrgPositions(
+        Number(branchId)
+      )) as ListPositionsInterface[];
+      console.log('List org positions resposne', resultData); // Fetch data from the listHKS API
+      setTableData(resultData);
+      // setTotalItems(resultData.pagination.totalCount);
+    } catch (err: any) {
+      console.log('Error response for listing users', err.response);
+    }
+  };
 
-    fetchData(); // Call fetchData when the component mounts
-  }, [currentPage, pageSize]);
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, pageSize, branchId]);
   function handlePaginate(pageNumber: number) {
     setCurrentPage(pageNumber);
   }
@@ -132,7 +145,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         searchTerm={searchTerm}
       /> */}
       <ControlledTable
-        variant="modern"  
+        variant="modern"
         data={tableData}
         isLoading={isLoading}
         showLoadingText={true}
