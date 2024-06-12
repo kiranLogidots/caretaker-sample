@@ -11,8 +11,13 @@ import Image from 'next/image';
 import NotiEmptyImage from '../../public/noti.png';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Select } from 'rizzui';
+import { useEffect, useState } from 'react';
+import { listUserBranches } from '@/service/page';
 
 export default function HeaderMenuRight() {
+  const [selectedUserBranch, setSelectedUserBranch] = useState([]);
+  const [userBranches, setUserBranches] = useState([]);
   const theme = {
     colors: {
       colorPrimary: 'black',
@@ -24,8 +29,28 @@ export default function HeaderMenuRight() {
     },
   };
 
+  const fetchUserBranches = async () => {
+    try {
+      const response = await listUserBranches();
+      const resultData = response?.data;
+
+      const transformedArray = resultData.map((item: any) => ({
+        label: item.branch.branch_name,
+        value: item.branch.id,
+      }));
+      setUserBranches(transformedArray);
+      setSelectedUserBranch(transformedArray[0]);
+    } catch (err: any) {
+      console.log('Error message ', err.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserBranches();
+  }, []);
+
   return (
-    <div className="mr-0 flex items-end justify-end gap-8">
+    <div className="mr-0 flex w-3/5 items-end justify-end gap-4">
       {/* "ms-auto grid shrink-0 grid-cols-4 items-end justify-end right-0 gap-2 text-gray-700 xs:gap-3 xl:gap-4" */}
       {/* <MessagesDropdown>
         <ActionIcon
@@ -57,8 +82,17 @@ export default function HeaderMenuRight() {
           />
         </ActionIcon>
       </NotificationDropdown> */}
-      <Link href={`/event-calendar`} className=" @lg:w-auto">
-        <Button as="span" className="w-full bg-[#6c5ce7] text-xs text-white">
+      <Select
+        id="department-select"
+        value={selectedUserBranch}
+        onChange={setSelectedUserBranch}
+        options={userBranches}
+        placeholder="Select Department"
+        optionClassName="z-[100]"
+        style={{ width: '50%', zIndex: 100 }}
+      />
+      <Link href={`/event-calendar`} className="flex w-44">
+        <Button as="span" className=" bg-[#6c5ce7] text-xs text-white">
           Create shift
         </Button>
       </Link>

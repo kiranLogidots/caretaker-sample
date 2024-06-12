@@ -674,6 +674,21 @@ export const addAdministration = async (data: any) => {
   return response;
 };
 
+// List branches for user
+
+export const listUserBranches = () => {
+  return axios
+    .get(`${apiBaseUrl}/v1/user-branches`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+    });
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
