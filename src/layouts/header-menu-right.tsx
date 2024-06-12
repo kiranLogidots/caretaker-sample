@@ -55,7 +55,7 @@ export default function HeaderMenuRight() {
   }, []);
 
   return (
-    <div className="mr-0 flex w-3/5 items-end justify-end gap-4">
+    <div className="mr-0 flex w-1/2 items-end justify-end gap-4">
       {/* "ms-auto grid shrink-0 grid-cols-4 items-end justify-end right-0 gap-2 text-gray-700 xs:gap-3 xl:gap-4" */}
       {/* <MessagesDropdown>
         <ActionIcon
@@ -87,23 +87,25 @@ export default function HeaderMenuRight() {
           />
         </ActionIcon>
       </NotificationDropdown> */}
-      <Select
-        value={selectedUserBranch}
-        // onChange={setSelectedUserBranch}
-        onChange={(selected: any) => {
-          setSelectedUserBranch(selected);
-          setSelectedBranch(selected);
-        }}
-        options={userBranches}
-        placeholder="Select Department"
-        optionClassName="z-[100]"
-        style={{ width: '50%', zIndex: 100 }}
-      />
-      <Link href={`/event-calendar`} className="flex w-44">
-        <Button as="span" className=" bg-[#6c5ce7] text-xs text-white">
-          Create shift
-        </Button>
-      </Link>
+      <div className="flex w-full gap-3">
+        <Select
+          value={selectedUserBranch}
+          // onChange={setSelectedUserBranch}
+          onChange={(selected: any) => {
+            setSelectedUserBranch(selected);
+            setSelectedBranch(selected);
+          }}
+          options={userBranches}
+          placeholder="Select Department"
+          optionClassName="z-[100]"
+          style={{ width: '50%', zIndex: 100 }}
+        />
+        <Link href={`/event-calendar`} className="flex w-[50%]">
+          <Button as="span" className="w-full bg-[#6c5ce7] text-xs text-white">
+            Create shift
+          </Button>
+        </Link>
+      </div>
       <Engagespot
         apiKey="b1vxvkz6m5txxwsas37nr"
         userId="admin@caretaker.com"
