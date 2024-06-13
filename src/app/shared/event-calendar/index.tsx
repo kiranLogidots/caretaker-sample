@@ -60,8 +60,6 @@ export default function EventCalendarView() {
 
   useEffect(() => {
     generateDates();
-
-    fetchCurrentBranch();
   }, []);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: string) => {
@@ -129,14 +127,8 @@ export default function EventCalendarView() {
     }
   };
 
-  useEffect(() => {
-    fetchPositions();
-    setSelectedPositionId(null);
-    setSelectedPositionArr([]);
-  }, [branchId]);
-
   const fetchCurrentBranch = async () => {
-    let response = await viewBranch();
+    let response = await viewBranch(Number(branchId));
     if (response.scheduleSettings) {
       let settings = response.scheduleSettings;
 
@@ -171,6 +163,13 @@ export default function EventCalendarView() {
       });
     }
   };
+
+  useEffect(() => {
+    fetchPositions();
+    fetchCurrentBranch();
+    setSelectedPositionId(null);
+    setSelectedPositionArr([]);
+  }, [branchId]);
 
   const generateDates = (type = '') => {
     let startDate, endDate;
