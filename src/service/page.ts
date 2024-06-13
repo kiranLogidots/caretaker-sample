@@ -320,8 +320,9 @@ export const createBranches = async (details: CreateBranches) => {
 };
 
 //VIEW BRANCH API
-export const viewBranch = async (id = null) => {
-  const branchId = id || sessionStorage.getItem('organizationBranchId');
+export const viewBranch = async (branchId: number) => {
+  // const branchId = id || sessionStorage.getItem('organizationBranchId');
+  if (branchId == 0) return;
   let response = await axios.get(
     `${apiBaseUrl}/v1/organization-branches/${branchId}`,
     {

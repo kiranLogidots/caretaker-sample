@@ -55,7 +55,7 @@ export const ShiftDataCell = ({
   editShift = (shiftData: any) => {},
 }) => {
   return (
-    <div className="flex cursor-pointer flex-col items-center px-2 py-2">
+    <div className="flex cursor-pointer flex-col items-center gap-1 px-2 py-2">
       {data.userId &&
         (data.shifts.length > 0 ? (
           data.shifts.map((s: any, i) => (
