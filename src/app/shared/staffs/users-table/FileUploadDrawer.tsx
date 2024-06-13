@@ -95,6 +95,15 @@ export default function FileUploadDrawer({
               </button>
             </div>
           )}
+          <div className="mt-2 flex w-full justify-end ">
+            <a
+              href="/sampleCsv/samplecsv.csv"
+              target="_blank"
+              className="text-blue underline"
+            >
+              Download sample csv download
+            </a>
+          </div>
           <button
             type="submit"
             className="mt-3 w-full rounded-md bg-blue-500 py-2 text-white"

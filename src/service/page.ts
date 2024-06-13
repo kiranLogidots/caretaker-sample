@@ -717,6 +717,19 @@ export const listUserBranches = () => {
     });
 };
 
+//Profile Update
+
+export const profileUpdate = async (data: any) => {
+  let response = await axios.patch(`${apiBaseUrl}/auth/profile`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {

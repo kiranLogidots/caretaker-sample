@@ -121,7 +121,7 @@ export default function CreateUser() {
         resetValues={reset}
         onSubmit={onSubmit}
         validationSchema={createBranchesSchema}
-        className="grid grid-cols-2 overflow-y-auto gap-6 p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
+        className="grid grid-cols-2 gap-6 overflow-y-auto p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
           return (
@@ -136,7 +136,7 @@ export default function CreateUser() {
               </div>
 
               <Input
-                label="Location"
+                label="Location name"
                 placeholder="Enter the location"
                 className="col-span-full"
                 {...register('branch_name')}

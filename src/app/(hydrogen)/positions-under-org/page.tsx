@@ -67,7 +67,7 @@ const getColumns = (
       render: (_, record) => (
         <div style={{ textAlign: 'right', paddingRight: '170px' }}>
           <input
-            type="text"
+            type="number"
             value={record.hourly_rate}
             onChange={(e) => handleInputChange(record.id, e.target.value)}
             style={{

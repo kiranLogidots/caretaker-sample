@@ -23,15 +23,27 @@ import {
 } from '@/types';
 import { useDrawer } from '../drawer-views/use-drawer';
 import { signOut } from 'next-auth/react';
+import { PhoneNumber } from '@/components/ui/phone-input';
 
 export default function CreateUser() {
   const { closeDrawer } = useDrawer();
   const [reset, setReset] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [accountTypes, setAccountTypes] = useState< { value: number; label: string }[]>([]);
-  const { register, control, watch, setValue, handleSubmit, formState: { errors },} = useForm();
-  const [industryTypes, setIndustryTypes] = useState< { value: number; label: string }[]>([]);
+  const [accountTypes, setAccountTypes] = useState<
+    { value: number; label: string }[]
+  >([]);
+  const {
+    register,
+    control,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [industryTypes, setIndustryTypes] = useState<
+    { value: number; label: string }[]
+  >([]);
 
   useEffect(() => {
     const fetchIndustryTypes = async () => {
@@ -90,7 +102,7 @@ export default function CreateUser() {
       company_address_line_two: data.company_address_line_two,
       country: data.country,
       postal_code: data.postal_code,
-      work_phone: data.work_phone,
+      work_phone: '+' + data.work_phone,
       work_email: data.work_email,
     };
 
@@ -101,7 +113,10 @@ export default function CreateUser() {
       const resultData = response.data as CreateUserResponse;
       console.log('API Response of create Org:', resultData);
 
-      if (resultData.message = "Organization and Organization Admin created successfully") {
+      if (
+        (resultData.message =
+          'Organization and Organization Admin created successfully')
+      ) {
         setReset({
           first_name: '',
           last_name: '',
@@ -129,7 +144,7 @@ export default function CreateUser() {
         signOut({
           callbackUrl: 'http://localhost:3000',
         });
-      }  else if (err.response?.data?.statusCode === 400) {
+      } else if (err.response?.data?.statusCode === 400) {
         setErrorMessage(err.response.data.message.join(' '));
       } else {
         setErrorMessage(err.message || 'An unknown error occurred');
@@ -194,62 +209,86 @@ export default function CreateUser() {
                 error={errors.work_email?.message}
               />
 
-              <Input
+              {/* <Input
                 label="Phone"
                 placeholder="Enter work phone number"
                 labelClassName="font-medium text-gray-900 dark:text-white"
                 {...register('work_phone')}
                 defaultValue="+91"
                 error={errors.work_phone?.message}
-              />
-              
+              /> */}
+
               <Controller
-              name="account_type_id"
-              control={control}
-              render={({ field }) => (
-                <div className="col-span- flex flex-col gap-2">
-                  <label
-                    htmlFor={field.name}
-                    className="font-medium text-gray-900 dark:text-white"
-                  >
-                    Account Type
-                  </label>
-                  <Select
-                    options={accountTypes}
-                    value={accountTypes.find(at => at.value === field.value)}
-                    onChange={option => field.onChange(option ? option.value : null)}
-                    name={field.name}
-                    isClearable
+                name="work_phone"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <PhoneNumber
+                    label="Phone"
+                    placeholder="Enter work phone number"
+                    country="us"
+                    labelClassName="font-medium text-gray-900"
+                    value={value}
+                    onChange={onChange}
+                    error={errors?.work_phone?.message as string}
                   />
-                </div>
-              )}
-            />
-            <Controller
-              name="industry_type_id"
-              control={control}
-              render={({ field }) => (
-                <div className="col-span- flex flex-col gap-2">
-                  <label
-                    htmlFor={field.name}
-                    className="font-medium text-gray-900 dark:text-white"
-                  >
-                    Industry Type
-                  </label>
-                  <Select
-                    options={industryTypes}
-                    value={industryTypes.find(it => it.value === field.value)}
-                    onChange={option => field.onChange(option ? option.value : null)}
-                    name={field.name}
-                    isClearable
-                    // menuPortalTarget={document.body}
-                    // styles={{
-                    //   menuPortal: base => ({ ...base, zIndex: 9999 }),
-                    //   menu: base => ({ ...base, maxHeight: '200px', overflowY: 'auto' }),
-                    // }}
-                  />
-                </div>
-              )}
-            />
+                )}
+              />
+
+              <Controller
+                name="account_type_id"
+                control={control}
+                render={({ field }) => (
+                  <div className="col-span- flex flex-col gap-2">
+                    <label
+                      htmlFor={field.name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Account Type
+                    </label>
+                    <Select
+                      options={accountTypes}
+                      value={accountTypes.find(
+                        (at) => at.value === field.value
+                      )}
+                      onChange={(option) =>
+                        field.onChange(option ? option.value : null)
+                      }
+                      name={field.name}
+                      isClearable
+                    />
+                  </div>
+                )}
+              />
+              <Controller
+                name="industry_type_id"
+                control={control}
+                render={({ field }) => (
+                  <div className="col-span- flex flex-col gap-2">
+                    <label
+                      htmlFor={field.name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Industry Type
+                    </label>
+                    <Select
+                      options={industryTypes}
+                      value={industryTypes.find(
+                        (it) => it.value === field.value
+                      )}
+                      onChange={(option) =>
+                        field.onChange(option ? option.value : null)
+                      }
+                      name={field.name}
+                      isClearable
+                      // menuPortalTarget={document.body}
+                      // styles={{
+                      //   menuPortal: base => ({ ...base, zIndex: 9999 }),
+                      //   menu: base => ({ ...base, maxHeight: '200px', overflowY: 'auto' }),
+                      // }}
+                    />
+                  </div>
+                )}
+              />
 
               <Input
                 label="Company Name"
