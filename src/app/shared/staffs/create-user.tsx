@@ -91,18 +91,18 @@ export default function CreateUser() {
 
   const onSubmit: SubmitHandler<CreateStaffsInput> = async (data) => {
     const organizationId = Number(sessionStorage.getItem('organizationId'));
-    const organizationBranchId = Number(
-      sessionStorage.getItem('organizationBranchId')
-    );
+    // const organizationBranchId = Number(
+    //   sessionStorage.getItem('organizationBranchId')
+    // );
 
     if (!organizationId) {
       setErrorMessage('Organization ID not found in session storage.');
       return;
     }
-    if (!organizationBranchId) {
-      setErrorMessage('Branch ID not found in session storage.');
-      return;
-    }
+    // if (!organizationBranchId) {
+    //   setErrorMessage('Branch ID not found in session storage.');
+    //   return;
+    // }
 
     const formattedPositions = [
       ...data.positions.map(({ position_id, is_primary }) => ({
@@ -119,7 +119,7 @@ export default function CreateUser() {
       ...restData,
       organization_id: organizationId,
       phone: '+' + phone,
-      organization_branch_id: organizationBranchId,
+      organization_branch_id: Number(branchId),
       // onboarded_by: 'invitation',
       // dob: new Date(data.dob).toISOString().split('T')[0],
       // dob: new Date(data.dob).toISOString(),
@@ -154,10 +154,10 @@ export default function CreateUser() {
         location.reload();
       }
     } catch (err: any) {
-      console.log('Error message ', err.message);
+      console.log('Error message ', err.response);
       if (err.response && err.response?.data?.statusCode === 401) {
         signOut({
-          callbackUrl: 'http://localhost:3000',
+          callbackUrl: '/signin',
         });
       } else if (err.response?.data?.statusCode === 400) {
         setErrorMessage(err.response.data.message.join(' '));

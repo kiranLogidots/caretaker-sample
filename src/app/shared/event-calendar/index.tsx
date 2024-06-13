@@ -129,6 +129,7 @@ export default function EventCalendarView() {
 
   const fetchCurrentBranch = async () => {
     let response = await viewBranch(Number(branchId));
+    console.log(response.scheduleSettings, 'response.scheduleSettings');
     if (response.scheduleSettings) {
       let settings = response.scheduleSettings;
 
@@ -163,13 +164,6 @@ export default function EventCalendarView() {
       });
     }
   };
-
-  useEffect(() => {
-    fetchPositions();
-    fetchCurrentBranch();
-    setSelectedPositionId(null);
-    setSelectedPositionArr([]);
-  }, [branchId]);
 
   const generateDates = (type = '') => {
     let startDate, endDate;
@@ -336,6 +330,13 @@ export default function EventCalendarView() {
       ...tableCellData,
     ]);
   };
+
+  useEffect(() => {
+    fetchPositions();
+    fetchCurrentBranch();
+    setSelectedPositionId(null);
+    setSelectedPositionArr([]);
+  }, [branchId]);
 
   useEffect(() => {
     if (
