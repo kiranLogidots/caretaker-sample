@@ -9,6 +9,7 @@ import {
   CreateStaffs,
 } from '@/types';
 import axios from 'axios';
+import { StringChain } from 'lodash';
 import { signOut } from 'next-auth/react';
 
 const apiBaseUrl = 'https://api.nexsysi.alpha2.logidots.com/api';
@@ -31,6 +32,21 @@ export const superAdminLogin = async (details: AdminLogin) => {
     },
   });
   console.log('RESULT FROM SERVICE PAGE', response);
+  return response;
+};
+
+//PASSWORD CREATE
+
+export const createPassword = async (details: { password: string }) => {
+  let response = await axios.post(
+    `${apiBaseUrl}/v1/invitations/complete`,
+    details,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
   return response;
 };
 
