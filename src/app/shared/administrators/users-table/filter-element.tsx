@@ -9,8 +9,8 @@ import { STATUSES } from '@/data/users-data';
 import { rolesList } from '@/data/roles-permissions';
 import { Input } from '@/components/ui/input';
 import ModalButton from '@/app/shared/modal-button';
-import CreateUser from '@/app/shared/branches/create-user';
 import DrawerButton from '../../drawer-button';
+import CreateUser from '../create-user';
 
 const statusOptions = [
   {
@@ -49,12 +49,17 @@ export default function FilterElement({
   onSearch,
   searchTerm,
 }: FilterElementProps) {
+  const roles = sessionStorage.getItem('userRoles');
+  //@ts-ignore
+  const parsedRole = JSON.parse(roles);
+  console.log(parsedRole[0]?.name, 'parsedRole');
+
   return (
     <>
-      <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
-        {/* <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
-          All Locations
-        </Title> */}
+      <div className="relative z-50 mb-4 mt-8 flex w-full flex-wrap items-center justify-between gap-2.5 @container ">
+        <Title as="h5" className="-order-6 basis-2/5 @xl:basis-auto">
+          Administrators
+        </Title>
 
         {/* <StatusField
           className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
@@ -88,7 +93,7 @@ export default function FilterElement({
           }
         /> */}
 
-        {isFiltered && (
+        {/* {isFiltered && (
           <Button
             size="sm"
             onClick={handleReset}
@@ -97,7 +102,7 @@ export default function FilterElement({
           >
             <PiTrashDuotone className="me-1.5 h-[17px] w-[17px]" /> Clear
           </Button>
-        )}
+        )} */}
 
         {/* <Input
           type="search"
@@ -124,6 +129,14 @@ export default function FilterElement({
             customSize="500px"
             placement="right"
           /> */}
+          {parsedRole[0]?.name !== 'branch_admin' && (
+            <DrawerButton
+              label="Add New Administrators"
+              view={<CreateUser />}
+              customSize="500px"
+              placement="right"
+            />
+          )}
         </div>
       </div>
     </>

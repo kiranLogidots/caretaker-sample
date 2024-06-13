@@ -3,9 +3,12 @@ import React, { useState, useEffect } from 'react';
 import PageHeader from '@/app/shared/page-header';
 import ControlledTable from '@/components/controlled-table';
 import axios from 'axios';
-import { Select, Button } from "rizzui";
+import { Select, Button } from 'rizzui';
 import { MultiSelect } from 'react-multi-select-component';
 import { ColumnType } from 'rc-table/es/interface';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
+import toast from 'react-hot-toast';
 
 interface Position {
   id: string;
@@ -83,8 +86,12 @@ const getColumns = (
 };
 
 export default function UsersTable() {
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
+
   const [departments, setDepartments] = useState<Department[]>([]);
-  const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
+  const [selectedDepartment, setSelectedDepartment] =
+    useState<Department | null>(null);
   const [Names, setNames] = useState<SelectedName[]>([]);
   const [selectedNames, setSelectedNames] = useState<SelectedName[]>([]);
   const [positions, setPositions] = useState<Position[]>([]);
@@ -99,19 +106,23 @@ export default function UsersTable() {
         return;
       }
 
+      if (Number(branchId) == 0) return;
+
       try {
         const response = await axios.get(
-          'https://api.nexsysi.alpha2.logidots.com/api/v1/organization-branch-departments?organization_branch_id=16',
+          `https://api.nexsysi.alpha2.logidots.com/api/v1/organization-branch-departments?organization_branch_id=${branchId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           }
         );
-        const departmentOptions: Department[] = response.data.map((department: { id: string; name: string }) => ({
-          value: department.id,
-          label: department.name,
-        }));
+        const departmentOptions: Department[] = response.data.map(
+          (department: { id: string; name: string }) => ({
+            value: department.id,
+            label: department.name,
+          })
+        );
         setDepartments(departmentOptions);
       } catch (error) {
         console.error('Error fetching departments:', error);
@@ -119,7 +130,7 @@ export default function UsersTable() {
     }
 
     fetchDepartments();
-  }, []);
+  }, [branchId]);
 
   useEffect(() => {
     async function fetchNames() {
@@ -130,27 +141,37 @@ export default function UsersTable() {
       }
 
       try {
-        const response = await axios.get('https://api.nexsysi.alpha2.logidots.com/api/v1/position-categories', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await axios.get(
+          'https://api.nexsysi.alpha2.logidots.com/api/v1/position-categories',
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
         const categories = response.data;
-        const positionNames: SelectedName[] = categories.map((category: any) => {
-          return { value: category.id.toString(), label: category.name };
-        });
+        const positionNames: SelectedName[] = categories.map(
+          (category: any) => {
+            return { value: category.id.toString(), label: category.name };
+          }
+        );
         setNames(positionNames);
 
-        const allPositions = categories.reduce((acc: Position[], category: any) => {
-          const positionsWithCategory = category.positions.map((position: any) => ({
-            ...position,
-            id: position.id.toString(),
-            position_category_id: category.id,
-            categoryName: category.name,
-            selected: false, 
-          }));
-          return acc.concat(positionsWithCategory);
-        }, []);
+        const allPositions = categories.reduce(
+          (acc: Position[], category: any) => {
+            const positionsWithCategory = category.positions.map(
+              (position: any) => ({
+                ...position,
+                id: position.id.toString(),
+                position_category_id: category.id,
+                categoryName: category.name,
+                selected: false,
+              })
+            );
+            return acc.concat(positionsWithCategory);
+          },
+          []
+        );
         setPositions(allPositions);
       } catch (error) {
         console.error('Error fetching positions:', error);
@@ -162,11 +183,15 @@ export default function UsersTable() {
 
   const handleInputChange = (id: string, value: string) => {
     setPositions((prevPositions) =>
-      prevPositions.map((position) => (position.id === id ? { ...position, hourly_rate: value } : position))
+      prevPositions.map((position) =>
+        position.id === id ? { ...position, hourly_rate: value } : position
+      )
     );
 
     setUpdatedPositions((prevUpdatedPositions) => {
-      const existingPositionIndex = prevUpdatedPositions.findIndex((position) => position.id === id);
+      const existingPositionIndex = prevUpdatedPositions.findIndex(
+        (position) => position.id === id
+      );
       if (existingPositionIndex > -1) {
         const updatedPositions = [...prevUpdatedPositions];
         updatedPositions[existingPositionIndex].hourly_rate = value;
@@ -174,7 +199,10 @@ export default function UsersTable() {
       } else {
         const newPosition = positions.find((position) => position.id === id);
         if (newPosition) {
-          return [...prevUpdatedPositions, { ...newPosition, hourly_rate: value }];
+          return [
+            ...prevUpdatedPositions,
+            { ...newPosition, hourly_rate: value },
+          ];
         }
         return prevUpdatedPositions;
       }
@@ -183,11 +211,16 @@ export default function UsersTable() {
 
   const handleCheckboxChange = (id: string, checked: boolean) => {
     setPositions((prevPositions) =>
-      prevPositions.map((position) => (position.id === id ? { ...position, selected: checked } : position))
+      prevPositions.map((position) =>
+        position.id === id ? { ...position, selected: checked } : position
+      )
     );
 
     if (checked) {
-      setSelectedPositions((prevSelectedPositions) => [...prevSelectedPositions, id]);
+      setSelectedPositions((prevSelectedPositions) => [
+        ...prevSelectedPositions,
+        id,
+      ]);
     } else {
       setSelectedPositions((prevSelectedPositions) =>
         prevSelectedPositions.filter((positionId) => positionId !== id)
@@ -207,7 +240,9 @@ export default function UsersTable() {
       return;
     }
 
-    const selectedAndUpdatedPositions = positions.filter((position) => selectedPositions.includes(position.id));
+    const selectedAndUpdatedPositions = positions.filter((position) =>
+      selectedPositions.includes(position.id)
+    );
 
     const payload = {
       positions: selectedAndUpdatedPositions.map((position) => ({
@@ -218,34 +253,43 @@ export default function UsersTable() {
     };
 
     console.log('Selected Department:', selectedDepartment);
-    console.log('Updated Positions:', JSON.stringify(updatedPositions, null, 2));
+    console.log(
+      'Updated Positions:',
+      JSON.stringify(updatedPositions, null, 2)
+    );
     console.log('Payload:', JSON.stringify(payload, null, 2));
 
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/department-position/assign', payload, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.post(
+        'https://api.nexsysi.alpha2.logidots.com/api/v1/department-position/assign',
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      console.log('Response:', response.data); 
-      alert('Data saved successfully');
-    } catch (error) {
+      console.log('Response:', response.data);
+      location.reload();
+    } catch (error: any) {
       console.error('Error saving data:', error);
-      alert('Error saving data');
+      toast.error(error?.response?.data?.message);
     }
   };
 
   const filteredPositions = positions.filter((position) =>
-    selectedNames.some((selected) => selected.value === position.position_category_id.toString())
+    selectedNames.some(
+      (selected) => selected.value === position.position_category_id.toString()
+    )
   );
 
   return (
     <>
       <style>
         {`
-        
+
         .save-button-container {
           display: flex;
           justify-content: flex-end;
@@ -257,37 +301,88 @@ export default function UsersTable() {
       </style>
       <div style={{ marginTop: '25px' }}>
         <PageHeader title={pageHeader.title} />
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            width: '100%',
+          }}
+        >
           <div style={{ marginBottom: '10px', marginTop: '-40px' }}>
             <p style={{ marginBottom: '40px', fontWeight: 'bold' }}>
-              Please select all the positions that this location can work and pick up jobs for. Rates can <br /> be
-              customized from the default rates shown.
+              Please select all the positions that this location can work and
+              pick up jobs for. Rates can <br /> be customized from the default
+              rates shown.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', marginTop: '-20px', width: '400px' }}>
-              <label htmlFor="department-select" style={{ marginBottom: '5px', fontWeight: 'bold' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginLeft: '10px',
+                marginTop: '-20px',
+                width: '400px',
+              }}
+            >
+              <label
+                htmlFor="department-select"
+                style={{ marginBottom: '5px', fontWeight: 'bold' }}
+              >
                 Select Department
               </label>
               <Select
                 id="department-select"
                 value={selectedDepartment}
-                onChange={(selected) => setSelectedDepartment(selected as Department)}
-                options={departments.map((department) => ({ value: department.value, label: department.label }))}
+                onChange={(selected) =>
+                  setSelectedDepartment(selected as Department)
+                }
+                options={departments.map((department) => ({
+                  value: department.value,
+                  label: department.label,
+                }))}
                 clearable={true}
                 placeholder="Select Department"
                 style={{ width: '100%' }}
               />
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', marginTop: '20px', width: '400px' }}>
-            <label htmlFor="position-select" style={{ marginBottom: '5px', fontWeight: 'bold' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginLeft: '10px',
+              marginTop: '20px',
+              width: '400px',
+            }}
+          >
+            <label
+              htmlFor="position-select"
+              style={{ marginBottom: '5px', fontWeight: 'bold' }}
+            >
               Position Categories
             </label>
             <div style={{ width: '100%' }}>
-              <MultiSelect options={Names} value={selectedNames} onChange={setSelectedNames} labelledBy="Select Positions" />
+              <MultiSelect
+                options={Names}
+                value={selectedNames}
+                onChange={setSelectedNames}
+                labelledBy="Select Positions"
+              />
             </div>
           </div>
-          <div className="save-button-container" style={{ marginRight: '30px', marginTop: '-20px' }}>
-            <Button onClick={handleSave} variant="solid" style={{ backgroundColor: '#6c5ce7', width: '150px', color: 'white' }}>
+          <div
+            className="save-button-container"
+            style={{ marginRight: '30px', marginTop: '-20px' }}
+          >
+            <Button
+              onClick={handleSave}
+              variant="solid"
+              style={{
+                backgroundColor: '#6c5ce7',
+                width: '150px',
+                color: 'white',
+              }}
+            >
               Save
             </Button>
           </div>
@@ -296,15 +391,26 @@ export default function UsersTable() {
       <div style={{ marginTop: '40px' }}>
         {selectedNames.length === 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h2 style={{ fontWeight: 'normal', fontSize: '14px' }}>No position categories selected</h2>
-            <ControlledTable data={[]} columns={getColumns(handleInputChange, handleCheckboxChange)} />
+            <h2 style={{ fontWeight: 'normal', fontSize: '14px' }}>
+              No position categories selected
+            </h2>
+            <ControlledTable
+              data={[]}
+              columns={getColumns(handleInputChange, handleCheckboxChange)}
+            />
           </div>
         )}
         {selectedNames.map((selectedName, index) => (
           <div key={index} style={{ marginBottom: '20px' }}>
-            <h2 style={{ fontWeight: 'normal', fontSize: '14px' }}>{selectedName.label}</h2>
+            <h2 style={{ fontWeight: 'normal', fontSize: '14px' }}>
+              {selectedName.label}
+            </h2>
             <ControlledTable
-              data={filteredPositions.filter((position) => position.position_category_id.toString() === selectedName.value)}
+              data={filteredPositions.filter(
+                (position) =>
+                  position.position_category_id.toString() ===
+                  selectedName.value
+              )}
               columns={getColumns(handleInputChange, handleCheckboxChange)}
             />
           </div>

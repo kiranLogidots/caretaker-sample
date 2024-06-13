@@ -101,7 +101,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = (await listBranches()) as Branch[];
+        const resultData = await listBranches();
         console.log('result data', resultData); // Fetch data from the listHKS API
         setTableData(resultData);
         // setTotalItems(resultData.pagination.totalCount);

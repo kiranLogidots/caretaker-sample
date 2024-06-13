@@ -683,6 +683,25 @@ export const addAdministration = async (data: any) => {
   return response;
 };
 
+//List Administrators
+export const listAdministrators = (branchId: number) => {
+  if (branchId == 0) return;
+
+  return axios
+    .get(
+      `${apiBaseUrl}/v1/organization-users?filter.userBranches.branch_id=${branchId}&filter.role=$in:organization_admin,organization_super_admin,branch_admin`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+    });
+};
+
 // List branches for user
 
 export const listUserBranches = () => {

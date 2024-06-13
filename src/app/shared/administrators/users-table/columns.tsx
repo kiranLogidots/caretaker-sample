@@ -96,18 +96,20 @@ export const getColumns = ({
   //   ),
   // },
   {
-    title: <HeaderCell title="Location" />,
-    dataIndex: 'branch_name',
-    key: 'branch_name',
+    title: <HeaderCell title="First Name" />,
+    dataIndex: 'first_name',
+    key: 'first_name',
     width: 50,
-    hidden: 'branch_name',
+    render: (_: any, administrator: any) => (
+      <p>{administrator?.user.first_name}</p>
+    ),
   },
   {
-    title: <HeaderCell title="Location Name" />,
-    dataIndex: 'location_address_line_one',
-    key: 'location_address_line_one',
+    title: <HeaderCell title="Email" />,
+    dataIndex: 'email',
+    key: 'email',
     width: 50,
-    hidden: 'location_address_line_one',
+    render: (_: any, administrator: any) => <p>{administrator?.user?.email}</p>,
     // render: (_: string, user: User) => (
     //   <AvatarCard
     //     src={user.avatar}
@@ -117,21 +119,35 @@ export const getColumns = ({
     // ),
   },
   {
-    title: <HeaderCell title="Country" />,
-    onHeaderCell: () => onHeaderCellClick('country'),
-    dataIndex: 'country',
-    key: 'country',
+    title: <HeaderCell title="Phone" />,
+    dataIndex: 'phone',
+    key: 'phone',
     width: 50,
-    render: (country: string) => country,
+    render: (_: any, administrator: any) => <p>{administrator?.user.phone}</p>,
   },
   {
-    title: <HeaderCell title="Postal Code" />,
-    onHeaderCell: () => onHeaderCellClick('postal_code'),
-    dataIndex: 'postal_code',
-    key: 'postal_code',
+    title: <HeaderCell title="Role" />,
+    dataIndex: 'role',
+    key: 'role',
     width: 50,
-    render: (postal_code: string) => postal_code,
+    render: (_: any, administrator: any) => <p>{administrator?.role}</p>,
   },
+  // {
+  //   title: <HeaderCell title="Country" />,
+  //   onHeaderCell: () => onHeaderCellClick('country'),
+  //   dataIndex: 'country',
+  //   key: 'country',
+  //   width: 50,
+  //   render: (country: string) => country,
+  // },
+  // {
+  //   title: <HeaderCell title="Postal Code" />,
+  //   onHeaderCell: () => onHeaderCellClick('postal_code'),
+  //   dataIndex: 'postal_code',
+  //   key: 'postal_code',
+  //   width: 50,
+  //   render: (postal_code: string) => postal_code,
+  // },
 
   // {
   //   title: <HeaderCell title="Actions" />,
