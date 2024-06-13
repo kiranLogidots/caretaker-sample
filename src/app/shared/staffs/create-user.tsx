@@ -34,6 +34,7 @@ import {
 } from '@/utils/validators/create-staffs.schema';
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
+import { PhoneNumber } from '@/components/ui/phone-input';
 
 export default function CreateUser() {
   const [selectedBranch] = useAtom(selectedBranchAtom);
@@ -54,6 +55,16 @@ export default function CreateUser() {
   //   { value: 'branch_admin', label: 'Branch Admin' },
   //   { value: 'branch_staff', label: 'Branch Staff' },
   // ];
+  const [maxDate, setMaxDate] = useState('');
+
+  useEffect(() => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start at 0!
+    const dd = String(today.getDate()).padStart(2, '0');
+
+    setMaxDate(`${yyyy}-${mm}-${dd}`);
+  }, []);
 
   const fetchPositions = async () => {
     try {
@@ -101,9 +112,13 @@ export default function CreateUser() {
         is_primary: is_primary ? 1 : 0,
       })),
     ];
+
+    const { phone, ...restData } = data;
+
     const formattedData = {
-      ...data,
+      ...restData,
       organization_id: organizationId,
+      phone: '+' + phone,
       organization_branch_id: organizationBranchId,
       // onboarded_by: 'invitation',
       // dob: new Date(data.dob).toISOString().split('T')[0],
@@ -111,6 +126,8 @@ export default function CreateUser() {
       positions: formattedPositions,
     };
     setLoading(true);
+
+    console.log(formattedData);
 
     try {
       const response = await inviteStaffs(formattedData);
@@ -191,13 +208,28 @@ export default function CreateUser() {
                 {...register('email')}
                 error={errors.email?.message}
               />
-              <Input
+              {/* <Input
                 label="Phone"
                 placeholder="Enter phone number"
                 labelClassName="font-medium text-gray-900 dark:text-white"
                 {...register('phone')}
                 defaultValue="+91"
                 error={errors.phone?.message}
+              /> */}
+
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field: { value, onChange } }) => (
+                  <PhoneNumber
+                    label="Phone number"
+                    country="us"
+                    labelClassName="font-medium text-gray-900"
+                    value={value}
+                    onChange={onChange}
+                    error={errors?.phone?.message as string}
+                  />
+                )}
               />
               <Input
                 label="Primary Location"
@@ -327,6 +359,7 @@ export default function CreateUser() {
                 className="col-span-fu"
                 placeholder="Enter date of birth"
                 type="date"
+                max={maxDate}
                 {...register('dob')}
                 error={errors.dob?.message}
               />

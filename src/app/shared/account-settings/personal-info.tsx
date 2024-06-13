@@ -20,6 +20,7 @@ import { countries, roles, timezones } from '@/data/forms/my-details';
 // import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { profileUpdate } from '@/service/page';
 
 const Select = dynamic(
   () => import('@/components/ui/select').then((mod) => mod.Select),
@@ -37,32 +38,47 @@ const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
   ssr: false,
 });
 
+type User = {
+  first_name: string;
+  last_name: string;
+  email: string;
+};
+
 export default function PersonalInfoView() {
-  const onSubmit: SubmitHandler<PersonalInfoFormTypes> = (data) => {
-    toast.success(<Text as="b">Successfully added!</Text>);
-    console.log('Profile settings data ->', {
-      ...data,
-    });
+  const onSubmit: SubmitHandler<PersonalInfoFormTypes> = async (data) => {
+    const formattedData = {
+      first_name: data.first_name,
+      last_name: data.last_name,
+    };
+
+    try {
+      await profileUpdate(formattedData);
+      toast.success('Profile Updated');
+    } catch (err: any) {
+      console.log('Error message ', err.message);
+      toast.error(err?.response?.data?.message);
+    }
   };
 
-  type User = {
-    first_name: string;
-    last_name: string;
-    email: string;
-  };
-  
   const [user, setUser] = useState<User | null>(null);
+  const [reset, setReset] = useState({});
 
   const fetchUser = async () => {
-    console.log('fetching user');
     const token = sessionStorage.getItem('accessToken');
     const userId = sessionStorage.getItem('userId');
-    const response = await axios.get(`https://api.nexsysi.alpha2.logidots.com/api/users/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await axios.get(
+      `https://api.nexsysi.alpha2.logidots.com/api/users/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
+    );
     setUser(response.data);
+    setReset({
+      first_name: response?.data?.first_name,
+      last_name: response?.data?.last_name,
+    });
   };
 
   useEffect(() => {
@@ -72,7 +88,7 @@ export default function PersonalInfoView() {
   return (
     <Form<PersonalInfoFormTypes>
       validationSchema={personalInfoFormSchema}
-      // resetValues={reset}
+      resetValues={reset}
       onSubmit={onSubmit}
       className="@container"
       useFormProps={{
@@ -99,14 +115,14 @@ export default function PersonalInfoView() {
                   {...register('first_name')}
                   error={errors.first_name?.message}
                   className="flex-grow"
-                  value={user?.first_name}
+                  // value={user?.first_name}
                 />
                 <Input
                   placeholder="Last Name"
                   {...register('last_name')}
                   error={errors.last_name?.message}
                   className="flex-grow"
-                  value={user?.last_name}
+                  // value={user?.last_name}
                 />
               </FormGroup>
 

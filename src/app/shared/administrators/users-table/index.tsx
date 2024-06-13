@@ -5,12 +5,19 @@ import dynamic from 'next/dynamic';
 import { useTable } from '@/hooks/use-table';
 import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
-import { getColumns } from '@/app/shared/branches/users-table/columns';
-import { deleteBranches, listBranches } from '@/service/page';
+import { getColumns } from '@/app/shared/administrators/users-table/columns';
+import {
+  deleteBranches,
+  listAdministrators,
+  listBranches,
+} from '@/service/page';
 import { Branch } from '@/types';
 import toast from 'react-hot-toast';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
+
 const FilterElement = dynamic(
-  () => import('@/app/shared/branches/users-table/filter-element'),
+  () => import('@/app/shared/administrators/users-table/filter-element'),
   { ssr: false }
 );
 const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
@@ -23,6 +30,9 @@ const filterState = {
 };
 
 export default function UsersTable({ data = [] }: { data: any[] }) {
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
+
   const [pageSize, setPageSize] = useState(10);
   const [tableData, setTableData] = useState<Branch[]>([]);
   const onHeaderCellClick = (value: string) => ({
@@ -101,9 +111,9 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resultData = (await listBranches()) as Branch[];
-        console.log('result data', resultData); // Fetch data from the listHKS API
-        setTableData(resultData);
+        const resultData = await listAdministrators(Number(branchId));
+        console.log('result data', resultData?.data); // Fetch data from the listHKS API
+        setTableData(resultData?.data);
         // setTotalItems(resultData.pagination.totalCount);
       } catch (err: any) {
         console.log('Error response for listing users', err.response);
@@ -111,7 +121,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     };
 
     fetchData(); // Call fetchData when the component mounts
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, branchId]);
   function handlePaginate(pageNumber: number) {
     setCurrentPage(pageNumber);
   }

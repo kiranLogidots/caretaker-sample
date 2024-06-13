@@ -100,14 +100,14 @@ export const getColumns = ({
     dataIndex: 'branch_name',
     key: 'branch_name',
     width: 50,
-    hidden: 'branch_name',
+    render: (branch_name: string) => branch_name,
   },
   {
-    title: <HeaderCell title="Location Name" />,
+    title: <HeaderCell title="Address" />,
     dataIndex: 'location_address_line_one',
     key: 'location_address_line_one',
     width: 50,
-    hidden: 'location_address_line_one',
+    render: (location_address_line_one: string) => location_address_line_one,
     // render: (_: string, user: User) => (
     //   <AvatarCard
     //     src={user.avatar}

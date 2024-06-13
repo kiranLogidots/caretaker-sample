@@ -11,9 +11,9 @@ import Spinner from '@/components/ui/spinner';
 import FormGroup from '@/app/shared/form-group';
 import FormFooter from '@/components/form-footer';
 import {
-    defaultValues,
-    personalInfoFormSchema,
-    PersonalInfoFormTypes,
+  defaultValues,
+  personalInfoFormSchema,
+  PersonalInfoFormTypes,
 } from '@/utils/validators/personal-info.schema';
 // import UploadZone from '@/components/ui/file-upload/upload-zone';
 // import { countries, roles, timezones } from '@/data/forms/my-details';
@@ -38,140 +38,160 @@ import axios from 'axios';
 // });
 
 export default function OrgInfoView() {
-    // const onSubmit: SubmitHandler<PersonalInfoFormTypes> = (data) => {
-    //     toast.success(<Text as="b">Successfully added!</Text>);
-    //     console.log('Profile settings data ->', {
-    //         ...data,
-    //     });
-    // };
-    const onSubmit = () => {
-        toast.success(<Text as="b">Successfully added!</Text>);
-    }
-    type Org = {
-        company_name: string;
-        company_address_line_one: string;
-        company_address_line_two: string;
-        work_email: string;
-        industryType: {
-            name: string;
-        };
+  // const onSubmit: SubmitHandler<PersonalInfoFormTypes> = (data) => {
+  //     toast.success(<Text as="b">Successfully added!</Text>);
+  //     console.log('Profile settings data ->', {
+  //         ...data,
+  //     });
+  // };
+  const onSubmit = () => {
+    toast.success(<Text as="b">Successfully added!</Text>);
+  };
+  type Org = {
+    company_name: string;
+    company_address_line_one: string;
+    company_address_line_two: string;
+    work_email: string;
+    industryType: {
+      name: string;
     };
-
-    const [org, setOrg] = useState<Org | null>(null);
-
-    const fetchUser = async () => {
-        console.log('fetching user');
-        const token = sessionStorage.getItem('accessToken');
-        const OrgId = sessionStorage.getItem('organizationId');
-        const response = await axios.get(`https://api.nexsysi.alpha2.logidots.com/api/v1/organizations/${OrgId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        setOrg(response.data);
-        console.log('user ->', response.data);
+    accountType: {
+      name: string;
     };
+  };
 
-    useEffect(() => {
-        fetchUser();
-    }, []);
+  const [org, setOrg] = useState<Org | null>(null);
 
-    return (
-        <Form
-            //   validationSchema={personalInfoFormSchema}
-            // resetValues={reset}
-            onSubmit={onSubmit}
-            className="@container"
-            useFormProps={{
-                mode: 'onChange',
-                defaultValues,
-            }}
-        >
-            {({ register, control, setValue, getValues, formState: { errors } }) => {
-                return (
-                    <>
-                        {/* <FormGroup
+  const fetchUser = async () => {
+    console.log('fetching user');
+    const token = sessionStorage.getItem('accessToken');
+    const OrgId = sessionStorage.getItem('organizationId');
+    const response = await axios.get(
+      `https://api.nexsysi.alpha2.logidots.com/api/v1/organizations/${OrgId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setOrg(response.data);
+    console.log('user ->', response.data);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  return (
+    <Form
+      //   validationSchema={personalInfoFormSchema}
+      // resetValues={reset}
+      onSubmit={onSubmit}
+      className="@container"
+      useFormProps={{
+        mode: 'onChange',
+        defaultValues,
+      }}
+    >
+      {({ register, control, setValue, getValues, formState: { errors } }) => {
+        return (
+          <>
+            {/* <FormGroup
               title="Personal Info"
               description="Update your photo and personal details here"
               className=""
             /> */}
 
-                        <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
-                            <FormGroup
-                                title="Organization Name"
-                                className="@3xl:grid-cols-12 "
-                            >
-                                <Input
-                                    placeholder="Organization Name"
-                                    //   {...register('first_name')}
-                                    //   error={errors.first_name?.message}
-                                    className="col-span-full"
-                                    value={org?.company_name}
-                                    disabled
-                                />
-                            </FormGroup>
+            <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
+              <FormGroup
+                title="Organization Name"
+                className="@3xl:grid-cols-12 "
+              >
+                <Input
+                  placeholder="Organization Name"
+                  //   {...register('first_name')}
+                  //   error={errors.first_name?.message}
+                  className="col-span-full"
+                  value={org?.company_name}
+                  disabled
+                />
+              </FormGroup>
 
-                            <FormGroup
-                                title="Address"
-                                className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
-                            >
-                                <Input
-                                    className="col-span-full"
-                                    //   prefix={
-                                    //     <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
-                                    //   }
-                                    //   type="email"
-                                    placeholder="Address Line 1"
-                                    //   {...register('email')}
-                                    //   error={errors.email?.message}
-                                    value={org?.company_address_line_one}
-                                    disabled
-                                />
-                                <Input
-                                    className="col-span-full"
-                                    //   prefix={
-                                    //     <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
-                                    //   }
-                                    //   type="email"
-                                    placeholder="Address Line 2"
-                                    //   {...register('email')}
-                                    //   error={errors.email?.message}
-                                    value={org?.company_address_line_two}
-                                    disabled
-                                />
-                            </FormGroup>
-                            <FormGroup
-                                title="Email Address"
-                                className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
-                            >
-                                <Input
-                                    className="col-span-full"
-                                    prefix={
-                                        <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
-                                    }
-                                    type="email"
-                                    placeholder="email@example.com"
-                                    // {...register('email')}
-                                    // error={errors.email?.message}
-                                    value={org?.work_email}
-                                    disabled
-                                />
-                            </FormGroup>
-                            <FormGroup
-                                title="Industry Type"
-                                className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
-                            >
-                                <Input
-                                    placeholder="Industry Type"
-                                    //   {...register('first_name')}
-                                    //   error={errors.first_name?.message}
-                                    className="col-span-full"
-                                    value={org?.industryType.name}
-                                    disabled
-                                />
-                            </FormGroup>
+              <FormGroup
+                title="Address"
+                className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+              >
+                <Input
+                  className="col-span-full"
+                  //   prefix={
+                  //     <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
+                  //   }
+                  //   type="email"
+                  placeholder="Address Line 1"
+                  //   {...register('email')}
+                  //   error={errors.email?.message}
+                  value={org?.company_address_line_one}
+                  disabled
+                />
+                <Input
+                  className="col-span-full"
+                  //   prefix={
+                  //     <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
+                  //   }
+                  //   type="email"
+                  placeholder="Address Line 2"
+                  //   {...register('email')}
+                  //   error={errors.email?.message}
+                  value={org?.company_address_line_two}
+                  disabled
+                />
+              </FormGroup>
+              <FormGroup
+                title="Email Address"
+                className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+              >
+                <Input
+                  className="col-span-full"
+                  prefix={
+                    <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
+                  }
+                  type="email"
+                  placeholder="email@example.com"
+                  // {...register('email')}
+                  // error={errors.email?.message}
+                  value={org?.work_email}
+                  disabled
+                />
+              </FormGroup>
+              <FormGroup
+                title="Industry Type"
+                className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+              >
+                <Input
+                  placeholder="Industry Type"
+                  //   {...register('first_name')}
+                  //   error={errors.first_name?.message}
+                  className="col-span-full"
+                  value={org?.industryType.name}
+                  disabled
+                />
+              </FormGroup>
 
-                            {/* <FormGroup
+              <FormGroup
+                title="Account Type"
+                className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+              >
+                <Input
+                  placeholder="Account Type"
+                  //   {...register('first_name')}
+                  //   error={errors.first_name?.message}
+                  className="col-span-full"
+                  value={org?.accountType.name}
+                  disabled
+                />
+              </FormGroup>
+
+              {/* <FormGroup
                                 title="Your Photo"
                                 description="This will be displayed on your profile."
                                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
@@ -186,7 +206,7 @@ export default function OrgInfoView() {
                                 </div>
                             </FormGroup> */}
 
-                            {/* <FormGroup
+              {/* <FormGroup
                 title="Role"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
               >
@@ -279,7 +299,7 @@ export default function OrgInfoView() {
                 />
               </FormGroup> */}
 
-                            {/* <FormGroup
+              {/* <FormGroup
                 title="Portfolio Projects"
                 description="Share a few snippets of your work"
                 className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
@@ -293,16 +313,16 @@ export default function OrgInfoView() {
                   />
                 </div>
               </FormGroup> */}
-                        </div>
+            </div>
 
-                        {/* <FormFooter
+            {/* <FormFooter
                             // isLoading={isLoading}
                             altBtnText="Cancel"
                             submitBtnText="Save"
                         /> */}
-                    </>
-                );
-            }}
-        </Form>
-    );
+          </>
+        );
+      }}
+    </Form>
+  );
 }

@@ -64,16 +64,16 @@ export default function Sidebar({ className }: { className?: string }) {
         className
       )}
     >
-      <div className="h-full text-black p-1.5 pl-0  pr-1.5 xl:rounded-2xl dark:bg-gray-100/70">
+      <div className="h-full p-1.5 pl-0 pr-1.5  text-black dark:bg-gray-100/70 xl:rounded-2xl">
         <div className="sticky top-0 z-40 flex justify-center px-6 pb-5 pt-5 2xl:px-8 2xl:pt-6">
-        <Link
-          href={'/'}
-          aria-label="Site Logo"
-          className="text-gray-800 hover:text-gray-900"
-        >
-          {/* <Logo className="max-w-[155px]" /> */}
-          <Image src={GWLogo} className="w-[150px]" alt="seek logo" />
-        </Link>
+          <Link
+            href={'/'}
+            aria-label="Site Logo"
+            className="text-gray-800 hover:text-gray-900"
+          >
+            {/* <Logo className="max-w-[155px]" /> */}
+            <Image src={GWLogo} className="w-[150px]" alt="seek logo" />
+          </Link>
         </div>
 
         <SimpleBar className="h-[calc(100%-80px)]">
@@ -95,7 +95,7 @@ export default function Sidebar({ className }: { className?: string }) {
                           header={({ open, toggle }) => (
                             <div
                               onClick={toggle}
-                              className={cn(  
+                              className={cn(
                                 'group relative mx-3 flex cursor-pointer items-center justify-between rounded-md px-3 py-2 font-medium lg:my-1 2xl:mx-5 2xl:my-2',
                                 isDropdownOpen
                                   ? 'before:top-2/5 text-primary before:absolute before:-start-3 before:block before:h-4/5 before:w-1 before:rounded-ee-md before:rounded-se-md before:bg-primary 2xl:before:-start-5'
@@ -105,12 +105,12 @@ export default function Sidebar({ className }: { className?: string }) {
                               <span className="flex items-center">
                                 {item?.icon && (
                                   <span
-                                  className={cn(
-                                    'me-2 inline-flex h-5 w-5 items-center justify-center rounded-md [&>svg]:h-[20px] [&>svg]:w-[20px]',
-                                    isDropdownOpen
-                                      ? 'text-primary'
-                                      : 'text-gray-800 dark:text-gray-500 dark:group-hover:text-gray-700'
-                                  )}
+                                    className={cn(
+                                      'me-2 inline-flex h-5 w-5 items-center justify-center rounded-md [&>svg]:h-[20px] [&>svg]:w-[20px]',
+                                      isDropdownOpen
+                                        ? 'text-primary'
+                                        : 'text-gray-800 dark:text-gray-500 dark:group-hover:text-gray-700'
+                                    )}
                                   >
                                     {item?.icon}
                                   </span>
@@ -142,7 +142,7 @@ export default function Sidebar({ className }: { className?: string }) {
                                     ? 'text-primary'
                                     : 'text-gray-500 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900'
                                 )}
-                                onClick={() => setActiveMenuName(dropdownItem.name)}
+                                onClick={() => setActiveMenuName(item?.name)}
                               >
                                 <div className="flex items-center truncate">
                                   <span
@@ -178,12 +178,12 @@ export default function Sidebar({ className }: { className?: string }) {
                           <div className="flex items-center truncate">
                             {item?.icon && (
                               <span
-                              className={cn(
-                                'me-2 inline-flex h-5 w-5 items-center justify-center rounded-md [&>svg]:h-[20px] [&>svg]:w-[20px]',
-                                isActive
-                                  ? 'text-primary'
-                                  : 'text-gray-800 dark:text-gray-500 dark:group-hover:text-gray-700'
-                              )}
+                                className={cn(
+                                  'me-2 inline-flex h-5 w-5 items-center justify-center rounded-md [&>svg]:h-[20px] [&>svg]:w-[20px]',
+                                  isActive
+                                    ? 'text-primary'
+                                    : 'text-gray-800 dark:text-gray-500 dark:group-hover:text-gray-700'
+                                )}
                               >
                                 {item?.icon}
                               </span>
@@ -200,7 +200,7 @@ export default function Sidebar({ className }: { className?: string }) {
                     <Title
                       as="h6"
                       className={cn(
-                        'mb-2 truncate px-6 text-xs font-normal uppercase tracking-widest text-gray-500 2xl:px-8 dark:text-gray-500',
+                        'mb-2 truncate px-6 text-xs font-normal uppercase tracking-widest text-gray-500 dark:text-gray-500 2xl:px-8',
                         index !== 0 && 'mt-6 3xl:mt-7'
                       )}
                     >

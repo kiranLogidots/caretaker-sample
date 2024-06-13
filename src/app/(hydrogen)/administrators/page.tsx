@@ -14,19 +14,6 @@ const pageHeader = {
 export default function Administrators() {
   return (
     <>
-      <PageHeader
-        title={pageHeader.title}
-        // breadcrumb={pageHeader.breadcrumb}
-      >
-        {/* <ModalButton label="Add New Role" view={<CreateRole />} /> */}
-        <DrawerButton
-          label="Add New Administrators"
-          view={<CreateUser />}
-          customSize="500px"
-          placement="right"
-        />
-      </PageHeader>
-      {/* <RolesGrid /> */}
       <UsersTable data={usersData} />
     </>
   );
