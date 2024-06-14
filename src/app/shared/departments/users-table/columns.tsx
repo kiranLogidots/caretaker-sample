@@ -117,6 +117,18 @@ export const getColumns = ({
     width: 250,
     render: (description: string) => description,
   },
+  {
+    title: <HeaderCell title="View Position" />,
+    // onHeaderCell: () => onHeaderCellClick('description'),
+    dataIndex: 'position',
+    key: 'position',
+    width: 250,
+    render: (_: any, department: any) => (
+      <div className="text-blue underline">
+        <a href={`/departments/${department.id}/positions`}>View positions</a>
+      </div>
+    ),
+  },
   // {
   //   title: <HeaderCell title="Position Category" />,
   //   onHeaderCell: () => onHeaderCellClick('position_category_id'),

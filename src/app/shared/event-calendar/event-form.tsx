@@ -62,36 +62,36 @@ export default function EventForm({
 
   const onSubmit: SubmitHandler<EventFormInput> = async (data) => {
     console.log(data);
-    if (!isUpdateEvent) {
-      const requestData = {
-        ...eventTemplate,
-        organization_branch_id: user.organization_branch_id,
-        user_id: user.user_id,
-        assigned_date: assignedDate,
-        ...data,
-      };
+    // if (!isUpdateEvent) {
+    //   const requestData = {
+    //     ...eventTemplate,
+    //     organization_branch_id: user.organization_branch_id,
+    //     user_id: user.user_id,
+    //     assigned_date: assignedDate,
+    //     ...data,
+    //   };
 
-      // Only include shift_notes if it is not empty
-      if (!data.shift_notes) {
-        delete requestData.shift_notes;
-      }
-      try {
-        await assignShiftToUser(requestData);
-      } catch (error: any) {
-        console.log(error);
-        const err = error?.response?.data?.message;
-        const errorAr = error?.response?.data?.message[0];
-        if (err) {
-          toast.error(err);
-        } else if (errorAr) {
-          toast.error(errorAr);
-        } else {
-          toast.error('Somethng went wrong');
-        }
-      }
-      refresh();
-      closeModal();
-    }
+    //   // Only include shift_notes if it is not empty
+    //   if (!data.shift_notes) {
+    //     delete requestData.shift_notes;
+    //   }
+    //   try {
+    //     await assignShiftToUser(requestData);
+    //   } catch (error: any) {
+    //     console.log(error);
+    //     const err = error?.response?.data?.message;
+    //     const errorAr = error?.response?.data?.message[0];
+    //     if (err) {
+    //       toast.error(err);
+    //     } else if (errorAr) {
+    //       toast.error(errorAr);
+    //     } else {
+    //       toast.error('Somethng went wrong');
+    //     }
+    //   }
+    //   refresh();
+    //   closeModal();
+    // }
   };
 
   const calculateTotalTime = (start: any, end: any, breakMinutes: any) => {
@@ -181,7 +181,7 @@ export default function EventForm({
                 render={({ field: { value, onChange } }) => (
                   <div>
                     <p className="mb-1 font-medium">Start Time</p>
-                    <DatePicker
+                    {/* <DatePicker
                       title="Start time"
                       selected={value}
                       onChange={onChange}
@@ -192,6 +192,19 @@ export default function EventForm({
                       showTimeSelect
                       dateFormat=" h:mm aa"
                       selectsRange={false}
+                    /> */}
+                    <DatePicker
+                      selected={value}
+                      onChange={onChange}
+                      showTimeSelect
+                      showTimeSelectOnly
+                      timeIntervals={15} // Adjust the intervals as needed
+                      timeCaption="Time"
+                      dateFormat="h:mm aa"
+                      //@ts-ignore
+                      minTime={new Date().setHours(0, 0, 0, 0)} // Min time set to midnight
+                      //@ts-ignore
+                      maxTime={new Date().setHours(23, 59, 59, 999)} // Max time set to one minute before midnight
                     />
                   </div>
                 )}
@@ -202,7 +215,7 @@ export default function EventForm({
                 render={({ field: { value, onChange } }) => (
                   <div>
                     <p className="mb-1 font-medium">End Time</p>
-                    <DatePicker
+                    {/* <DatePicker
                       selected={value}
                       onChange={onChange}
                       selectsEnd
@@ -212,6 +225,19 @@ export default function EventForm({
                       showTimeSelect
                       dateFormat=" h:mm aa"
                       selectsRange={false}
+                    /> */}
+                    <DatePicker
+                      selected={value}
+                      onChange={onChange}
+                      showTimeSelect
+                      showTimeSelectOnly
+                      timeIntervals={30}
+                      timeCaption="Time"
+                      dateFormat="h:mm aa"
+                      //@ts-ignore
+                      minTime={new Date().setHours(0, 0, 0, 0)}
+                      //@ts-ignore
+                      maxTime={new Date().setHours(23, 59, 59, 999)}
                     />
                   </div>
                 )}
