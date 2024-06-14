@@ -62,36 +62,36 @@ export default function EventForm({
 
   const onSubmit: SubmitHandler<EventFormInput> = async (data) => {
     console.log(data);
-    // if (!isUpdateEvent) {
-    //   const requestData = {
-    //     ...eventTemplate,
-    //     organization_branch_id: user.organization_branch_id,
-    //     user_id: user.user_id,
-    //     assigned_date: assignedDate,
-    //     ...data,
-    //   };
+    if (!isUpdateEvent) {
+      const requestData = {
+        ...eventTemplate,
+        organization_branch_id: user.organization_branch_id,
+        user_id: user.user_id,
+        assigned_date: assignedDate,
+        ...data,
+      };
 
-    //   // Only include shift_notes if it is not empty
-    //   if (!data.shift_notes) {
-    //     delete requestData.shift_notes;
-    //   }
-    //   try {
-    //     await assignShiftToUser(requestData);
-    //   } catch (error: any) {
-    //     console.log(error);
-    //     const err = error?.response?.data?.message;
-    //     const errorAr = error?.response?.data?.message[0];
-    //     if (err) {
-    //       toast.error(err);
-    //     } else if (errorAr) {
-    //       toast.error(errorAr);
-    //     } else {
-    //       toast.error('Somethng went wrong');
-    //     }
-    //   }
-    //   refresh();
-    //   closeModal();
-    // }
+      // Only include shift_notes if it is not empty
+      if (!data.shift_notes) {
+        delete requestData.shift_notes;
+      }
+      try {
+        await assignShiftToUser(requestData);
+      } catch (error: any) {
+        console.log(error);
+        const err = error?.response?.data?.message;
+        const errorAr = error?.response?.data?.message[0];
+        if (err) {
+          toast.error(err);
+        } else if (errorAr) {
+          toast.error(errorAr);
+        } else {
+          toast.error('Somethng went wrong');
+        }
+      }
+      refresh();
+      closeModal();
+    }
   };
 
   const calculateTotalTime = (start: any, end: any, breakMinutes: any) => {

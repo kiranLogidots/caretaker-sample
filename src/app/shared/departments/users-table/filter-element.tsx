@@ -34,6 +34,7 @@ type FilterElementProps = {
   handleReset: () => void;
   onSearch: (searchTerm: string) => void;
   searchTerm: string;
+  fetchData: any;
 };
 
 const roles = rolesList.map((role) => ({
@@ -48,13 +49,14 @@ export default function FilterElement({
   updateFilter,
   onSearch,
   searchTerm,
+  fetchData,
 }: FilterElementProps) {
   return (
     <>
       <div className="relative z-50 mb-4 flex flex-wrap items-center justify-between gap-2.5 @container ">
-        {/* <Title as="h3" className="-order-6 basis-2/5 @xl:basis-auto">
+        <Title as="h2" className="-order-6 basis-2/5 @xl:basis-auto">
           Departments
-        </Title> */}
+        </Title>
 
         {/* <StatusField
           className=" -order-3 w-full @[25rem]:w-[calc(calc(100%_-_10px)_/_2)] @4xl:-order-5 @4xl:w-auto"
@@ -112,6 +114,12 @@ export default function FilterElement({
         /> */}
 
         <div className="-order-5 flex basis-auto justify-end @xl:-order-4 @4xl:-order-1">
+          <DrawerButton
+            label="Add New Department"
+            view={<CreateUser fetchData={fetchData} />}
+            customSize="500px"
+            placement="right"
+          />
           {/* <ModalButton
             label="Add New Department"
             view={<CreateUser />}

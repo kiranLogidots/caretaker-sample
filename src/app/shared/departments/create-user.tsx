@@ -35,7 +35,7 @@ import {
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
 
-export default function CreateUser() {
+export default function CreateUser({ fetchData }: { fetchData: any }) {
   const { getValues, setValue, control } = useForm();
   const [selectedBranch] = useAtom(selectedBranchAtom);
   const branchId = selectedBranch?.value;
@@ -95,7 +95,7 @@ export default function CreateUser() {
         toast.success('Departments created successfully', {
           position: 'top-right',
         });
-        location.reload();
+        fetchData();
       }
     } catch (err: any) {
       console.log('Error message ', err.message);

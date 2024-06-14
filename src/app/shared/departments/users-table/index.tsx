@@ -7,6 +7,7 @@ import { useColumn } from '@/hooks/use-column';
 import ControlledTable from '@/components/controlled-table';
 import { getColumns } from '@/app/shared/departments/users-table/columns';
 import {
+  deleteDepartments,
   deletePositions,
   listDepartments,
   listPositions,
@@ -45,15 +46,15 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   const onDeleteItem = useCallback(
     async (id: number) => {
       try {
-        await deletePositions(id.toString());
+        await deleteDepartments(Number(id));
 
         const updatedTableData = tableData.filter((event) => event.id !== id);
         setTableData(updatedTableData);
-        toast.success('Position deleted succesfully', {
+        toast.success('Department deleted succesfully', {
           position: 'top-right',
         });
       } catch (error) {
-        toast.error('Failed to delete the position', {
+        toast.error('Failed to delete the department', {
           position: 'top-right',
         });
         console.error('Delete position failed:', error);
@@ -131,7 +132,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   }
 
   return (
-    <div className="">
+    <div className="mt-8">
       <FilterElement
         isFiltered={isFiltered}
         filters={filters}
@@ -139,6 +140,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         handleReset={handleReset}
         onSearch={handleSearch}
         searchTerm={searchTerm}
+        fetchData={fetchData}
       />
       <ControlledTable
         variant="modern"
