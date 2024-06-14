@@ -43,7 +43,7 @@ export default function EventCalendarView() {
   const [selectedBranch] = useAtom(selectedBranchAtom);
   const branchId = selectedBranch?.value;
   const { openModal } = useModal();
-  const [tabvalue, setTabValue] = useState('1');
+  const [tabvalue, setTabValue] = useState(1);
 
   const [refreshKey, setRefreshKey] = useState(1);
   const [positions, setPositions]: any = useState([]);
@@ -60,11 +60,22 @@ export default function EventCalendarView() {
 
   useEffect(() => {
     generateDates();
-  }, []);
+  }, [tabvalue]);
 
-  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+  useEffect(() => {
+    if (
+      selectedDates.length &&
+      selectedPositionId &&
+      shiftTemplate &&
+      refreshKey
+    ) {
+      generateTableData();
+    }
+  }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
+
+  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
-  };
+  }
 
   const handleSelectSlot = useCallback(
     ({
@@ -177,18 +188,18 @@ export default function EventCalendarView() {
     switch (type) {
       case 'previous':
         endDate = moment(selectedDates[0], 'YYYY-MM-DD').subtract(1, 'days');
-        startDate = endDate.clone().subtract(6, 'days');
+        startDate = endDate.clone().subtract((7 * tabvalue) - 1, 'days');
         break;
       case 'next':
         startDate = moment(
           selectedDates[selectedDates.length - 1],
           'YYYY-MM-DD'
         ).add(1, 'days');
-        endDate = startDate.clone().add(6, 'days');
+        endDate = startDate.clone().add((7 * tabvalue) - 1, 'days');
         break;
       default:
         startDate = moment().clone().weekday(1);
-        endDate = startDate.clone().add(6, 'days');
+        endDate = startDate.clone().add((7 * tabvalue) - 1, 'days');
     }
 
     for (
@@ -383,8 +394,8 @@ export default function EventCalendarView() {
               onChange={handleTabChange}
               textColor="inherit"
             >
-              <Tab label="Week 1" value="1" />
-              <Tab label="Week 2" value="2" />
+              <Tab label="Week 1" value={1} key={'week-1'} />
+              <Tab label="Week 2" value={2} key={'week-2'}/>
             </Tabs>
           </div>
         </div>
