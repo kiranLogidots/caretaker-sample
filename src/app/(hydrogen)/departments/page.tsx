@@ -1,11 +1,5 @@
-import { usersData } from '@/data/users-data';
-import PageHeader from '@/app/shared/page-header';
-import ModalButton from '@/app/shared/modal-button';
-import RolesGrid from '@/app/shared/departments/roles-grid';
 import UsersTable from '@/app/shared/departments/users-table';
-import CreateRole from '@/app/shared/departments/create-role';
-import DrawerButton from '@/app/shared/drawer-button';
-import CreateUser from '@/app/shared/departments/create-user';
+import { usersData } from '@/data/users-data';
 
 const pageHeader = {
   title: 'Departments',
