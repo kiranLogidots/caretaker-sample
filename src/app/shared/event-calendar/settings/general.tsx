@@ -4,6 +4,11 @@ import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useFormContext } from 'react-hook-form';
 import { useDrawer } from '../../drawer-views/use-drawer';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
+import toast from 'react-hot-toast';
+import { scheduleSettingsUpdate } from '@/service/page';
+import { duration } from 'moment';
 
 interface GeneralEventSettingsProps {
   schedulingSettings: SchedulingSettings;
@@ -47,14 +52,24 @@ const OvertimePeriodOption: OptionType[] = [
   },
 ];
 
-const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({ schedulingSettings , setDrawer}) => {
+const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({
+  schedulingSettings,
+  setDrawer,
+}) => {
   const { closeDrawer } = useDrawer();
-  const { setValue, formState: { errors } } = useFormContext();
+  const {
+    setValue,
+    formState: { errors },
+  } = useFormContext();
   const [isLoading, setLoading] = useState(false);
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+  const branchId = selectedBranch?.value;
 
   // Set default start date
   const defaultStartDate = new Date('2024-05-01');
-  const initialStartDate = schedulingSettings?.last_pay_period_start_date ? new Date(schedulingSettings.last_pay_period_start_date) : defaultStartDate;
+  const initialStartDate = schedulingSettings?.last_pay_period_start_date
+    ? new Date(schedulingSettings.last_pay_period_start_date)
+    : defaultStartDate;
 
   const [startDate, setStartDate] = useState<Date>(initialStartDate);
   const [overtimePeriod, setOvertimePeriod] = useState<string>(
@@ -63,11 +78,47 @@ const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({ schedulingS
       : OvertimePeriodOption[0].label
   );
 
-  const [tempData, setTempData] = useState<SchedulingSettings>(schedulingSettings);
+  const [tempData, setTempData] =
+    useState<SchedulingSettings>(schedulingSettings);
+
+  const handleSave = async () => {
+    const {
+      last_pay_period_start_date,
+      over_time_calculation_period_length,
+      createdAt,
+      deleted_at,
+      updatedAt,
+      positionCustomSettings,
+      id,
+      ...restData
+    } = tempData;
+    const formattedData = {
+      ...restData,
+      last_pay_period_start_date: last_pay_period_start_date,
+      over_time_calculation_period_length: Number(
+        over_time_calculation_period_length
+      ),
+      organization_branch_id: branchId,
+    };
+
+    try {
+      await scheduleSettingsUpdate(Number(id), formattedData);
+      toast.success('Update general settings');
+    } catch (error: any) {
+      console.log(error?.response);
+      toast.error(error?.response?.data?.message, {
+        duration: 5000,
+      });
+    } finally {
+      setDrawer(false);
+    }
+  };
 
   useEffect(() => {
     if (schedulingSettings) {
-      const newStartDate = schedulingSettings.last_pay_period_start_date ? new Date(schedulingSettings.last_pay_period_start_date) : defaultStartDate;
+      const newStartDate = schedulingSettings.last_pay_period_start_date
+        ? new Date(schedulingSettings.last_pay_period_start_date)
+        : defaultStartDate;
       setStartDate(newStartDate);
       setOvertimePeriod(
         schedulingSettings.over_time_calculation_period_length
@@ -85,24 +136,33 @@ const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({ schedulingS
 
   const handleDateChange = (date: Date) => {
     setStartDate(date);
-    setTempData((prevData) => ({ ...prevData, last_pay_period_start_date: date.toISOString().split('T')[0] }));
+    setTempData((prevData) => ({
+      ...prevData,
+      last_pay_period_start_date: date.toISOString().split('T')[0],
+    }));
   };
 
   const handlePeriodChange = (selectedOption: OptionType) => {
     setOvertimePeriod(selectedOption.label);
-    setTempData((prevData) => ({ ...prevData, over_time_calculation_period_length: selectedOption.value }));
+    setTempData((prevData) => ({
+      ...prevData,
+      over_time_calculation_period_length: selectedOption.value,
+    }));
   };
 
   return (
-    <div className='flex flex-col gap-6'>
+    <div className="flex flex-col gap-6">
       <h3>Overtime Calculation Period</h3>
-      <p className='font-bold'>These settings will determine the overtime calculations and scheduling views for the location.</p>
+      <p className="font-bold">
+        These settings will determine the overtime calculations and scheduling
+        views for the location.
+      </p>
       <div>
         <p>Location</p>
-        <p className='font-bold'>{tempData.organization_branch_id}</p>
+        <p className="font-bold">{tempData.organization_branch_id}</p>
       </div>
       <div>
-        <p className='mb-2'>Last pay period start date</p>
+        <p className="mb-2">Last pay period start date</p>
         <DatePicker
           selected={startDate}
           onChange={handleDateChange}
@@ -116,8 +176,10 @@ const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({ schedulingS
           label="Overtime Calculation Period"
           options={OvertimePeriodOption}
           value={overtimePeriod}
-          onChange={(selectedOption: OptionType) => handlePeriodChange(selectedOption)}
-          dropdownClassName='z-[10000]'
+          onChange={(selectedOption: OptionType) =>
+            handlePeriodChange(selectedOption)
+          }
+          dropdownClassName="z-[10000]"
           error={errors?.overtimePeriod?.message as string}
         />
       </div>
@@ -133,13 +195,13 @@ const GeneralEventSettings: React.FC<GeneralEventSettingsProps> = ({ schedulingS
           type="submit"
           isLoading={isLoading}
           className="w-full xl:w-auto"
-          onClick={() => {alert('Save clicked' + JSON.stringify(tempData));}}
+          onClick={() => handleSave()}
         >
           Save
         </Button>
       </div>
     </div>
   );
-}
+};
 
 export default GeneralEventSettings;

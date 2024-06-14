@@ -58,16 +58,17 @@ export const ShiftDataCell = ({
     <div className="flex cursor-pointer flex-col items-center gap-1 px-2 py-2">
       {data.userId &&
         (data.shifts.length > 0 ? (
-          data.shifts.map((s: any, i) => (
-            <div onClick={() => editShift(s)} key={i + '_' + s.shift.id}>
-              <Button
-                className="disabled w-full border-green-400 px-5"
-                variant="outline"
-              >
-                {moment(s.shift.start_time).format('HH:mm')} -
-                {moment(s.shift.end_time).format('HH:mm')}
-              </Button>
-              {/* <Badge
+          <>
+            {data.shifts.map((s: any, i) => (
+              <div onClick={() => editShift(s)} key={i + '_' + s.shift.id}>
+                <Button
+                  className="disabled w-full border-green-400 px-5"
+                  variant="outline"
+                >
+                  {moment(s.shift.start_time).format('HH:mm')} -
+                  {moment(s.shift.end_time).format('HH:mm')}
+                </Button>
+                {/* <Badge
                 variant="flat"
                 rounded="pill"
                 className="mb-1 w-[90px] whitespace-nowrap font-medium text-white"
@@ -76,8 +77,12 @@ export const ShiftDataCell = ({
                 {moment(s.shift.start_time).format('HH:mm')} -
                 {moment(s.shift.end_time).format('HH:mm')}
               </Badge> */}
-            </div>
-          ))
+              </div>
+            ))}
+            <Button className="w-full" variant="outline" onClick={createShift}>
+              +
+            </Button>
+          </>
         ) : (
           <Button className="w-full" variant="outline" onClick={createShift}>
             +

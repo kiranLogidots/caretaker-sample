@@ -204,41 +204,41 @@ export const getColumns = ({
   //   width: 120,
   //   render: (status: User['status']) => getStatusBadge(status),
   // },
-  // {
-  //   title: <HeaderCell title="Actions" />,
-  //   dataIndex: 'action',
-  //   key: 'action',
-  //   width: 140,
-  //   render: (_: string, event: HKSEvents) => (
-  //     <div className="justify-en flex items-center gap-3 pe-3">
-  //       {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">
-  //         <ActionIcon
-  //           as="span"
-  //           size="sm"
-  //           variant="outline"
-  //           className="hover:!border-gray-900 hover:text-gray-700"
-  //         >
-  //           <PencilIcon className="h-4 w-4" />
-  //         </ActionIcon>
-  //       </Tooltip> */}
-  //       {/* <Tooltip size="sm" content={'View Department'} placement="top" color="invert">
-  //         <Link href={routes.eventsHKS.eventDetails(event.id)}>
-  //         <ActionIcon
-  //           as="span"
-  //           size="sm"
-  //           variant="outline"
-  //           className="hover:!border-gray-900 hover:text-gray-700"
-  //         >
-  //           <EyeIcon className="h-4 w-4" />
-  //         </ActionIcon>
-  //         </Link>
-  //       </Tooltip> */}
-  //       <DeletePopover
-  //         title={`Delete`}
-  //         description={`Are you sure you want to delete this department ?`}
-  //         onDelete={() => onDeleteItem(event.id)}
-  //       />
-  //     </div>
-  //   ),
-  // },
+  {
+    title: <HeaderCell title="Actions" />,
+    dataIndex: 'action',
+    key: 'action',
+    width: 140,
+    render: (_: string, event: HKSEvents) => (
+      <div className="justify-en flex items-center gap-3 pe-3">
+        {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            className="hover:!border-gray-900 hover:text-gray-700"
+          >
+            <PencilIcon className="h-4 w-4" />
+          </ActionIcon>
+        </Tooltip> */}
+        {/* <Tooltip size="sm" content={'View Department'} placement="top" color="invert">
+          <Link href={routes.eventsHKS.eventDetails(event.id)}>
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            className="hover:!border-gray-900 hover:text-gray-700"
+          >
+            <EyeIcon className="h-4 w-4" />
+          </ActionIcon>
+          </Link>
+        </Tooltip> */}
+        <DeletePopover
+          title={`Delete`}
+          description={`Are you sure you want to delete this department ?`}
+          onDelete={() => onDeleteItem(event.id)}
+        />
+      </div>
+    ),
+  },
 ];

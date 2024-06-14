@@ -476,7 +476,7 @@ export const listDepartments = (id: number) => {
 };
 
 ///DELETE DEPARTMENTS API
-export const deleteDepartments = async (departmentId: string) => {
+export const deleteDepartments = async (departmentId: number) => {
   try {
     const response = await axios.delete(
       `${apiBaseUrl}/v1/organization-branch-departments/${departmentId}`,
@@ -753,6 +753,23 @@ export const profileUpdate = async (data: any) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+
+  return response;
+};
+
+// SCHEDULE Settings update
+
+export const scheduleSettingsUpdate = async (id: number, data: any) => {
+  let response = await axios.patch(
+    `${apiBaseUrl}/v1/scheduling-settings/${id}`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
 
   return response;
 };
