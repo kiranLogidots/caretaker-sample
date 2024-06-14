@@ -228,7 +228,7 @@ export default function CreateUser() {
                     isLoading={isLoading}
                     className="w-full text-white @xl:w-auto"
                   >
-                    Create Location
+                    Create administrator
                   </Button>
                 </div>
               </>

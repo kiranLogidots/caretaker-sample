@@ -267,6 +267,17 @@ export const listPositions = () => {
     });
 };
 
+//LIST DEPARTMENT POSITIONS API
+export const listDepartmentPositions = (id: number) => {
+  return axios
+    .get(`${apiBaseUrl}/v1/organization-branch-departments/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data);
+};
+
 export const listOrgPositions = (branchId: number) => {
   if (branchId == 0) {
     return;
