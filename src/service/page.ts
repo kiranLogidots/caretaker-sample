@@ -641,6 +641,27 @@ export const getUsersWithShifts = async (
   params: { [key: string]: any } = {}
 ) => {
   try {
+    const filters = {
+      page: 1,
+      limit: 1000,
+      sortBy: 'id:DESC',
+      'filter.assignedShifts.assigned_date':
+        '$btw:' + params.dateRange.join(','),
+      'filter.organization_branch_id': params.branchId,
+      'filter.organizationUserPositions.position_id': params.positionId,
+      search: params?.memberName,
+    };
+
+    if (params.employStatus) {
+      //@ts-ignore
+      filters['filter.user.employment_status'] = '$in:' + params.employStatus;
+    }
+
+    if (params.shiftStatus) {
+      //@ts-ignore
+      filters['filter.assignedShifts.shift_status'] =
+        '$in:' + params.shiftStatus;
+    }
     const response = await axios.get(
       `${apiBaseUrl}/v1/organization-users/schedule-users`,
       {
@@ -648,15 +669,19 @@ export const getUsersWithShifts = async (
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        params: {
-          page: 1,
-          limit: 1000,
-          sortBy: 'id:DESC',
-          'filter.assignedShifts.assigned_date':
-            '$btw:' + params.dateRange.join(','),
-          'filter.organization_branch_id': params?.branchId,
-          'filter.organizationUserPositions.position_id': params?.positionId,
-        },
+        params: filters,
+
+        // params: {
+        //   page: 1,
+        //   limit: 1000,
+        //   sortBy: 'id:DESC',
+        //   'filter.assignedShifts.assigned_date':
+        //     '$btw:' + params.dateRange.join(','),
+        //   'filter.organization_branch_id': params?.branchId,
+        //   'filter.organizationUserPositions.position_id': params?.positionId,
+        //   'filter.user.employment_status': '$in:' + params?.employStatus,
+        //   'filter.assignedShifts.shift_status': '$in:' + params?.shiftStatus,
+        // },
       }
     );
     return response.data;
@@ -772,6 +797,21 @@ export const scheduleSettingsUpdate = async (id: number, data: any) => {
   );
 
   return response;
+};
+
+// SHIFT STATUS Schedule filter
+
+export const scheduleShiftStatus = () => {
+  return axios
+    .get(`${apiBaseUrl}/v1/shift-status`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+    });
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
