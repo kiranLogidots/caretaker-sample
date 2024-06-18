@@ -59,6 +59,9 @@ export const selectedBranchAtom = atom<UserBranch>({
   value: '',
 });
 
+export const selectedShiftAtom = atom([]);
+export const selectedEmployStatusAtom = atom([]);
+
 // Original atom.
 export const checkoutAtom = atomWithStorage(CHECKOUT, defaultCheckout);
 export const clearCheckoutAtom = atom(null, (_get, set, _data) => {

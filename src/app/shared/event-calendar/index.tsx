@@ -58,6 +58,11 @@ export default function EventCalendarView() {
   const [drawer, setDrawer] = useState(false);
   const [settingsdrawer, setSettingsDrawer] = useState(false);
 
+  //Filter state value
+  const [shiftStatus, setShiftStatus] = useState<string[]>([]);
+  const [employStatus, setEmployStatus] = useState<string[]>([]);
+  const [memberName, setMemberName] = useState('');
+
   useEffect(() => {
     generateDates();
   }, [tabvalue]);
@@ -217,6 +222,9 @@ export default function EventCalendarView() {
       branchId: branchId,
       positionId: selectedPositionId,
       dateRange: [selectedDates[0], selectedDates[selectedDates.length - 1]],
+      shiftStatus: shiftStatus.join(','),
+      employStatus: employStatus.join(','),
+      memberName,
     });
 
     setColumns([
@@ -357,7 +365,16 @@ export default function EventCalendarView() {
     ) {
       generateTableData();
     }
-  }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey, branchId]);
+  }, [
+    selectedDates,
+    selectedPositionId,
+    shiftTemplate,
+    refreshKey,
+    branchId,
+    shiftStatus,
+    employStatus,
+    memberName,
+  ]);
 
   return (
     <div className="mt-5 @container">
@@ -426,6 +443,8 @@ export default function EventCalendarView() {
             {' '}
             <input
               type="text"
+              onChange={(e) => setMemberName(e.target.value)}
+              value={memberName}
               className=" w-60 rounded-r-md border-y-0 border-r-0 border-l-gray-200 focus:border-l-gray-200 focus:outline-none focus:ring-0"
               placeholder="Search member"
             />
@@ -485,7 +504,11 @@ export default function EventCalendarView() {
           containerClassName="dark:bg-gray-100"
           className="z-[9999]"
         >
-          <FilterDrawer setDrawer={setDrawer} />
+          <FilterDrawer
+            setDrawer={setDrawer}
+            setShiftStatus={setShiftStatus}
+            setEmployStatus={setEmployStatus}
+          />
         </Drawer>
 
         <Drawer
