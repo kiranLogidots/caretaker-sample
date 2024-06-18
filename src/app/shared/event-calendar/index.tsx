@@ -80,11 +80,12 @@ export default function EventCalendarView() {
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
-  }
+  };
 
   const handleSelectSlot = useCallback(
     ({
       id,
+      shift_id,
       assignedDate,
       start,
       end,
@@ -94,6 +95,7 @@ export default function EventCalendarView() {
       eventTemplate,
     }: {
       id: number | null;
+      shift_id: number | null;
       assignedDate: string;
       start: Date;
       end: Date;
@@ -106,6 +108,7 @@ export default function EventCalendarView() {
         view: (
           <EventForm
             id={id}
+            shift_id={shift_id}
             assignedDate={assignedDate}
             startDate={start}
             endDate={end}
@@ -193,18 +196,18 @@ export default function EventCalendarView() {
     switch (type) {
       case 'previous':
         endDate = moment(selectedDates[0], 'YYYY-MM-DD').subtract(1, 'days');
-        startDate = endDate.clone().subtract((7 * tabvalue) - 1, 'days');
+        startDate = endDate.clone().subtract(7 * tabvalue - 1, 'days');
         break;
       case 'next':
         startDate = moment(
           selectedDates[selectedDates.length - 1],
           'YYYY-MM-DD'
         ).add(1, 'days');
-        endDate = startDate.clone().add((7 * tabvalue) - 1, 'days');
+        endDate = startDate.clone().add(7 * tabvalue - 1, 'days');
         break;
       default:
         startDate = moment().clone().weekday(1);
-        endDate = startDate.clone().add((7 * tabvalue) - 1, 'days');
+        endDate = startDate.clone().add(7 * tabvalue - 1, 'days');
     }
 
     for (
@@ -248,6 +251,7 @@ export default function EventCalendarView() {
               let date = new Date(moment(d, 'YYYY-MM-DD').format());
               handleSelectSlot({
                 id: null,
+                shift_id: null,
                 assignedDate: d,
                 start: date,
                 end: date,
@@ -264,6 +268,7 @@ export default function EventCalendarView() {
             editShift={(shiftData: any) => {
               handleSelectSlot({
                 id: shiftData.id,
+                shift_id: shiftData?.shift_id,
                 assignedDate: shiftData.assigned_date,
                 start: new Date(moment(shiftData.shift.start_time).format()),
                 end: new Date(moment(shiftData.shift.end_time).format()),
@@ -412,7 +417,7 @@ export default function EventCalendarView() {
               textColor="inherit"
             >
               <Tab label="Week 1" value={1} key={'week-1'} />
-              <Tab label="Week 2" value={2} key={'week-2'}/>
+              <Tab label="Week 2" value={2} key={'week-2'} />
             </Tabs>
           </div>
         </div>

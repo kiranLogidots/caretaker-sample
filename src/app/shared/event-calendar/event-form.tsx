@@ -12,12 +12,13 @@ import {
   EventFormInput,
   eventFormSchema,
 } from '@/utils/validators/create-event.schema';
-import { assignShiftToUser } from '@/service/page';
+import { assignShiftToUser, editAssignShiftToUser } from '@/service/page';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 interface CreateEventProps {
   id: string | number | null | undefined;
+  shift_id?: string | number | null | undefined;
   assignedDate: string;
   startDate?: Date;
   endDate?: Date;
@@ -39,6 +40,7 @@ export default function EventForm({
   user,
   unpaid_break,
   shift_notes,
+  shift_id,
   refresh = () => {},
 }: CreateEventProps) {
   const { closeModal } = useModal();
@@ -61,22 +63,24 @@ export default function EventForm({
   const [duration, setDuration] = useState('');
 
   const onSubmit: SubmitHandler<EventFormInput> = async (data) => {
-    console.log(data);
-    if (!isUpdateEvent) {
-      const requestData = {
-        ...eventTemplate,
-        organization_branch_id: user.organization_branch_id,
-        user_id: user.user_id,
-        assigned_date: assignedDate,
-        ...data,
-      };
+    console.log(isUpdateEvent, 'isUpdateEvent');
+    const requestData = {
+      ...eventTemplate,
+      organization_branch_id: user.organization_branch_id,
+      user_id: user.user_id,
+      assigned_date: assignedDate,
+      ...data,
+    };
 
+    if (!data.shift_notes) {
+      delete requestData.shift_notes;
+    }
+
+    if (!isUpdateEvent) {
       // Only include shift_notes if it is not empty
-      if (!data.shift_notes) {
-        delete requestData.shift_notes;
-      }
       try {
         await assignShiftToUser(requestData);
+        refresh();
       } catch (error: any) {
         console.log(error);
         const err = error?.response?.data?.message;
@@ -86,12 +90,27 @@ export default function EventForm({
         } else if (errorAr) {
           toast.error(errorAr);
         } else {
-          toast.error('Somethng went wrong');
+          toast.error('Something went wrong');
         }
       }
-      refresh();
-      closeModal();
+    } else {
+      try {
+        await editAssignShiftToUser(Number(shift_id), requestData);
+        refresh();
+      } catch (error: any) {
+        console.log(error);
+        const err = error?.response?.data?.message;
+        const errorAr = error?.response?.data?.message[0];
+        if (err) {
+          toast.error(err);
+        } else if (errorAr) {
+          toast.error(errorAr);
+        } else {
+          toast.error('Something went wrong');
+        }
+      }
     }
+    closeModal();
   };
 
   const calculateTotalTime = (start: any, end: any, breakMinutes: any) => {

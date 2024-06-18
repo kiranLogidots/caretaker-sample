@@ -619,6 +619,18 @@ export const assignShiftToUser = async (data: any) => {
   return response;
 };
 
+// Edit shift
+export const editAssignShiftToUser = async (id: number, data: any) => {
+  let response = await axios.patch(`${apiBaseUrl}/v1/shifts/${id}`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+};
+
 export const getShifts = async ({ branchId }: { branchId: string }) => {
   try {
     const response = await axios.get(`${apiBaseUrl}/v1/shifts`, {
