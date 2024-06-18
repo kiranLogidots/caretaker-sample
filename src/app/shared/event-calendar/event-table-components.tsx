@@ -11,7 +11,6 @@ export const MemberProfile = ({
     employment_status: '',
   },
 }) => {
-  console.log(data.employment_status, 'employment_status');
   return (
     <div className="flex w-full px-3 py-4">
       <Image
