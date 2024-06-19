@@ -92,12 +92,12 @@ export const ShiftDataCell = ({
   );
 };
 
-{
-  /* <Button
-                className="disabled w-full cursor-default border-green-400 hover:border-green-400 hover:text-black"
-                variant="outline"
-              >
-                {moment(s.shift.start_time).format('HH:mm')} -
-                {moment(s.shift.end_time).format('HH:mm')}
-              </Button> */
-}
+export const PositionHoursDataCell = ({ data }: { data: any }) => {
+  const hours = Math.floor(data?.totalMinutes / 60);
+  const minutes = data?.totalMinutes % 60;
+  return (
+    <div className="flex items-center justify-center px-2 py-2">
+      {hours} hr {minutes} min
+    </div>
+  );
+};

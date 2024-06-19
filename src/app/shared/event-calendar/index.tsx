@@ -16,6 +16,7 @@ import {
 } from '@/service/page';
 import {
   MemberProfile,
+  PositionHoursDataCell,
   ShiftDataCell,
   TableHeaderCell,
 } from './event-table-components';
@@ -39,6 +40,19 @@ const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
   { ssr: false }
 );
+
+interface ShiftData {
+  shift: {
+    start_time: string;
+    end_time: string;
+  };
+}
+
+interface TableCellData {
+  [key: string]: {
+    shifts: ShiftData[];
+  };
+}
 
 export default function EventCalendarView() {
   const [selectedBranch] = useAtom(selectedBranchAtom);
@@ -241,6 +255,14 @@ export default function EventCalendarView() {
     setSelectedDates(dates);
   };
 
+  const calculateTotalMinutes = (shifts: ShiftData[]): number => {
+    return shifts.reduce((total, shiftData) => {
+      const startTime = moment(shiftData.shift.start_time);
+      const endTime = moment(shiftData.shift.end_time);
+      return total + endTime.diff(startTime, 'minutes');
+    }, 0);
+  };
+
   const generateTableData = async () => {
     const response = await getUsersWithShifts({
       branchId: branchId,
@@ -265,45 +287,53 @@ export default function EventCalendarView() {
         dataIndex: d,
         title: <TableHeaderCell date={d} />,
         width: 150,
-        render: (data: any) => (
-          <ShiftDataCell
-            data={data}
-            createShift={() => {
-              let date = new Date(moment(d, 'YYYY-MM-DD').format());
-              handleSelectSlot({
-                id: null,
-                shift_id: null,
-                assignedDate: d,
-                start: date,
-                end: date,
-                user: response.data.find((u: any) => u.user_id === data.userId),
-                eventTemplate: {
-                  ...shiftTemplate,
-                  position_id: selectedPositionId,
-                  position_name: positions.find(
-                    (p: any) => p.value === selectedPositionId
-                  )?.label,
-                },
-              });
-            }}
-            editShift={(shiftData: any) => {
-              handleSelectSlot({
-                id: shiftData.id,
-                shift_id: shiftData?.shift_id,
-                assignedDate: shiftData.assigned_date,
-                start: new Date(moment(shiftData.shift.start_time).format()),
-                end: new Date(moment(shiftData.shift.end_time).format()),
-                user: response.data.find((u: any) => u.user_id === data.userId),
-                unpaid_break: shiftData.shift.unpaid_break,
-                shift_notes: shiftData.shift.shift_notes,
-                eventTemplate: {
-                  ...shiftTemplate,
-                  position_id: selectedPositionId,
-                },
-              });
-            }}
-          />
-        ),
+        render: (data: any) => {
+          return data?.totalMinutes ? (
+            <PositionHoursDataCell data={data} />
+          ) : (
+            <ShiftDataCell
+              data={data}
+              createShift={() => {
+                let date = new Date(moment(d, 'YYYY-MM-DD').format());
+                handleSelectSlot({
+                  id: null,
+                  shift_id: null,
+                  assignedDate: d,
+                  start: date,
+                  end: date,
+                  user: response.data.find(
+                    (u: any) => u.user_id === data.userId
+                  ),
+                  eventTemplate: {
+                    ...shiftTemplate,
+                    position_id: selectedPositionId,
+                    position_name: positions.find(
+                      (p: any) => p.value === selectedPositionId
+                    )?.label,
+                  },
+                });
+              }}
+              editShift={(shiftData: any) => {
+                handleSelectSlot({
+                  id: shiftData.id,
+                  shift_id: shiftData?.shift_id,
+                  assignedDate: shiftData.assigned_date,
+                  start: new Date(moment(shiftData.shift.start_time).format()),
+                  end: new Date(moment(shiftData.shift.end_time).format()),
+                  user: response.data.find(
+                    (u: any) => u.user_id === data.userId
+                  ),
+                  unpaid_break: shiftData.shift.unpaid_break,
+                  shift_notes: shiftData.shift.shift_notes,
+                  eventTemplate: {
+                    ...shiftTemplate,
+                    position_id: selectedPositionId,
+                  },
+                });
+              }}
+            />
+          );
+        },
       })),
     ]);
 
@@ -343,24 +373,24 @@ export default function EventCalendarView() {
         ),
         ...selectedDates.reduce(
           (prev: { [key: string]: any }, current: string) => {
+            const totalMinutesSum = tableCellData.reduce(
+              (sum: any, data: TableCellData) => {
+                return (
+                  sum +
+                  (data[current]?.shifts
+                    ? calculateTotalMinutes(data[current].shifts)
+                    : 0)
+                );
+              },
+              0
+            );
+
             prev[current] = {
               user_id: null,
               summary: '',
-
-              // Total position hours calculation operation for summary
-              // Returns an array of assignedShifts for the particular date for all users
-
-              // summary:
-              // tableCellData.filter((tc: any) => tc[current].shifts.length > 0)
-              //               .map((data: any) => data[current].shifts)
-              //               .reduce((acc: any, cur: any) => {
-              //                 acc = [
-              //                   ...acc,
-              //                   ...cur
-              //                 ]
-              //                 return acc;
-              //               },[])
+              totalMinutes: totalMinutesSum,
             };
+
             return prev;
           },
           {}
