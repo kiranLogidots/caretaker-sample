@@ -88,6 +88,8 @@ export default {
       backgroundImage: {
         skeleton: `linear-gradient(90deg,transparent,#ecebeb,transparent)`,
         'skeleton-dark': `linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)`,
+        'diagonal-lines':
+          'repeating-linear-gradient(45deg, #ffffff, #ffffff 3px, #eaedf0 3px, #eaedf0 5px)',
       },
       keyframes: {
         blink: {

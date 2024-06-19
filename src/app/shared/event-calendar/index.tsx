@@ -33,6 +33,7 @@ import Tab from '@mui/material/Tab';
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
 import { Select } from 'rizzui';
+import ThreeDotMenu from './ThreeDotMenu';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -67,6 +68,17 @@ export default function EventCalendarView() {
     generateDates();
   }, [tabvalue]);
 
+  // useEffect(() => {
+  //   if (
+  //     selectedDates.length &&
+  //     selectedPositionId &&
+  //     shiftTemplate &&
+  //     refreshKey
+  //   ) {
+  //     generateTableData();
+  //   }
+  // }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
+
   useEffect(() => {
     if (
       selectedDates.length &&
@@ -76,7 +88,16 @@ export default function EventCalendarView() {
     ) {
       generateTableData();
     }
-  }, [selectedDates, selectedPositionId, shiftTemplate, refreshKey]);
+  }, [
+    selectedDates,
+    selectedPositionId,
+    shiftTemplate,
+    refreshKey,
+    branchId,
+    shiftStatus,
+    employStatus,
+    memberName,
+  ]);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
@@ -132,7 +153,7 @@ export default function EventCalendarView() {
     let response = await listOrgPositions(Number(branchId));
     console.log(response, 'responseposition');
 
-    const transformedArray = response.map((item: any) => ({
+    const transformedArray = response?.map((item: any) => ({
       label: item?.position?.name,
       value: item?.position?.id,
     }));
@@ -140,7 +161,7 @@ export default function EventCalendarView() {
     console.log(transformedArray, 'transformedArray');
     setPositions(transformedArray);
 
-    if (response.length > 0) {
+    if (response?.length > 0) {
       setSelectedPositionArr(transformedArray[0]);
       setSelectedPositionId(response[0].position.id);
     }
@@ -148,7 +169,7 @@ export default function EventCalendarView() {
 
   const fetchCurrentBranch = async () => {
     let response = await viewBranch(Number(branchId));
-    if (response.scheduleSettings) {
+    if (response?.scheduleSettings) {
       let settings = response.scheduleSettings;
 
       // overrideSettings can be used to override branch settings for initializing a shift
@@ -330,15 +351,15 @@ export default function EventCalendarView() {
               // Returns an array of assignedShifts for the particular date for all users
 
               // summary:
-              //   tableCellData.filter((tc: any) => tc[current].shifts.length > 0)
-              //                 .map((data: any) => data[current].shifts)
-              //                 .reduce((acc: any, cur: any) => {
-              //                   acc = [
-              //                     ...acc,
-              //                     ...cur
-              //                   ]
-              //                   return acc;
-              //                 },[])
+              // tableCellData.filter((tc: any) => tc[current].shifts.length > 0)
+              //               .map((data: any) => data[current].shifts)
+              //               .reduce((acc: any, cur: any) => {
+              //                 acc = [
+              //                   ...acc,
+              //                   ...cur
+              //                 ]
+              //                 return acc;
+              //               },[])
             };
             return prev;
           },
@@ -360,26 +381,6 @@ export default function EventCalendarView() {
       ...tableCellData,
     ]);
   };
-
-  useEffect(() => {
-    if (
-      selectedDates.length &&
-      selectedPositionId &&
-      shiftTemplate &&
-      refreshKey
-    ) {
-      generateTableData();
-    }
-  }, [
-    selectedDates,
-    selectedPositionId,
-    shiftTemplate,
-    refreshKey,
-    branchId,
-    shiftStatus,
-    employStatus,
-    memberName,
-  ]);
 
   return (
     <div className="mt-5 @container">
@@ -456,6 +457,9 @@ export default function EventCalendarView() {
             <button className="p-2 focus:outline-none focus:ring-0">
               <FiSearch className="text-slate-500" size={25} />
             </button>
+          </div>
+          <div className="flex items-center justify-center">
+            <ThreeDotMenu />
           </div>
           {/* <div className="flex justify-between">
             <input
