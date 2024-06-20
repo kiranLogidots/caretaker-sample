@@ -35,6 +35,8 @@ import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
 import { Select } from 'rizzui';
 import ThreeDotMenu from './ThreeDotMenu';
+import { CgTemplate } from 'react-icons/cg';
+import TemplateDrawer from './TemplateDrawer';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -77,6 +79,10 @@ export default function EventCalendarView() {
   const [shiftStatus, setShiftStatus] = useState<string[]>([]);
   const [employStatus, setEmployStatus] = useState<string[]>([]);
   const [memberName, setMemberName] = useState('');
+
+  //Template drawer
+  const [templateDrawer, setTemplateDrawer] = useState(false);
+  const [templateTableCellData, setTemplateTableCellData] = useState([]);
 
   useEffect(() => {
     generateDates();
@@ -366,6 +372,8 @@ export default function EventCalendarView() {
       };
     });
 
+    setTemplateTableCellData(tableCellData);
+
     setEventsData([
       {
         teamMember: (
@@ -461,6 +469,14 @@ export default function EventCalendarView() {
             placement="right"
             icon={<IoSettingsOutline className='mr-1' />}
           /> */}
+          <div
+            onClick={() => setTemplateDrawer(true)}
+            className="flex cursor-pointer items-center gap-1 border border-y-0 border-r-0 px-2"
+          >
+            <CgTemplate />
+            <span>Templates</span>
+          </div>
+
           <div
             onClick={() => setSettingsDrawer(true)}
             className="flex cursor-pointer items-center gap-1 border border-y-0 border-r-0 px-2"
@@ -561,6 +577,23 @@ export default function EventCalendarView() {
           className="z-[9999]"
         >
           <EventCalendarSettings setDrawer={setSettingsDrawer} />
+        </Drawer>
+
+        <Drawer
+          size="md"
+          isOpen={templateDrawer ?? false}
+          onClose={() => {
+            setTemplateDrawer(false);
+          }}
+          overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-md"
+          containerClassName="dark:bg-gray-100"
+          className="z-[9999]"
+        >
+          <TemplateDrawer
+            setTemplateDrawer={setTemplateDrawer}
+            tabvalue={tabvalue}
+            eventsData={templateTableCellData}
+          />
         </Drawer>
 
         {/* <DrawerButton
