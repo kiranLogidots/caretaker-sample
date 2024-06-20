@@ -826,6 +826,46 @@ export const scheduleShiftStatus = () => {
     });
 };
 
+// Template create shift
+
+export const createTemplate = async (data: any) => {
+  let response = await axios.post(`${apiBaseUrl}/v1/templates`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+};
+
+// List template shift
+
+export const listTemplate = (id: number) => {
+  return axios
+    .get(`${apiBaseUrl}/v1/templates?organization_branch_id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Error response:', error.response);
+    });
+};
+
+// Template shift delete
+
+export const deleteTemplate = async (id: number) => {
+  const response = await axios.delete(`${apiBaseUrl}/v1/templates/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
