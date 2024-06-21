@@ -42,16 +42,33 @@ export default function HeaderMenuRight() {
         label: item.branch.branch_name,
         value: item.branch.id,
       }));
+      // Check if there's a saved branch in local storage
+      const savedBranch: any = JSON.parse(
+        localStorage.getItem('selectedBranch') || '{}'
+      );
+
       setUserBranches(transformedArray);
-      setSelectedUserBranch(transformedArray[0]);
-      setSelectedBranch(transformedArray[0]);
+      const initialBranch =
+        transformedArray.find(
+          (branch: any) => branch.value === savedBranch.value
+        ) || transformedArray[0];
+      setSelectedUserBranch(initialBranch);
+      setSelectedBranch(initialBranch);
+      // setUserBranches(transformedArray);
+      // setSelectedUserBranch(transformedArray[0]);
+      // setSelectedBranch(transformedArray[0]);
     } catch (err: any) {
       console.log('Error message ', err.response.data.message);
     }
   };
 
   useEffect(() => {
+    localStorage.setItem('selectedBranch', JSON.stringify(selectedBranch));
+  }, [selectedBranch]);
+
+  useEffect(() => {
     fetchUserBranches();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

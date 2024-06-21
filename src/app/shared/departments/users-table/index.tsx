@@ -33,7 +33,7 @@ const filterState = {
 export default function UsersTable({ data = [] }: { data: any[] }) {
   const [selectedBranch] = useAtom(selectedBranchAtom);
   const branchId = selectedBranch?.value;
-  console.log(branchId, 'branchId');
+
   const [pageSize, setPageSize] = useState(10);
   const [tableData, setTableData] = useState<ListPositionsInterface[]>([]);
   const onHeaderCellClick = (value: string) => ({

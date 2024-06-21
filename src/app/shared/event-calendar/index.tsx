@@ -302,13 +302,16 @@ export default function EventCalendarView() {
             <ShiftDataCell
               data={data}
               createShift={() => {
-                let date = new Date(moment(d, 'YYYY-MM-DD').format());
+                let startDate = new Date(moment(d, 'YYYY-MM-DD').format());
+                let endDate = new Date(moment(d, 'YYYY-MM-DD').format());
+                startDate.setHours(8, 0, 0, 0);
+                endDate.setHours(17, 0, 0, 0);
                 handleSelectSlot({
                   id: null,
                   shift_id: null,
                   assignedDate: d,
-                  start: date,
-                  end: date,
+                  start: startDate,
+                  end: endDate,
                   user: response.data.find(
                     (u: any) => u.user_id === data.userId
                   ),
