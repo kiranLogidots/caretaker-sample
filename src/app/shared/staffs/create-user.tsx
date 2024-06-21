@@ -35,6 +35,7 @@ import {
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
 import { PhoneNumber } from '@/components/ui/phone-input';
+import { divide } from 'lodash';
 
 export default function CreateUser() {
   const [selectedBranch] = useAtom(selectedBranchAtom);
@@ -46,7 +47,7 @@ export default function CreateUser() {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [positionsData, setPositionsData] = useState<
-    { value: number; label: string }[]
+    { value: number; label: string; hourly_rate: string }[]
   >([]);
   // const onboardedByOptions = [
   //   { value: 'invitation', label: 'Invitation' },
@@ -76,6 +77,7 @@ export default function CreateUser() {
         result.map((type) => ({
           value: type.position.id,
           label: type.position.name,
+          hourly_rate: type.position.hourly_rate,
         }))
       );
       console.log('Mapped Positions Data:', positionsData);
@@ -91,27 +93,31 @@ export default function CreateUser() {
 
   const onSubmit: SubmitHandler<CreateStaffsInput> = async (data) => {
     const organizationId = Number(sessionStorage.getItem('organizationId'));
-    // const organizationBranchId = Number(
-    //   sessionStorage.getItem('organizationBranchId')
-    // );
 
     if (!organizationId) {
       setErrorMessage('Organization ID not found in session storage.');
       return;
     }
-    // if (!organizationBranchId) {
-    //   setErrorMessage('Branch ID not found in session storage.');
-    //   return;
-    // }
 
-    const formattedPositions = [
-      ...data.positions.map(({ position_id, is_primary }) => ({
-        position_id: Number(position_id),
-        // hourly_rate: Number(hourly_rate),
-        hourly_rate: 12,
-        is_primary: is_primary ? 1 : 0,
-      })),
-    ];
+    //@ts-ignore
+    const formattedPositions = [...data?.positions, ...data?.primary_positions];
+
+    // filter if same value for primary and secondary
+    const filteredPositions = formattedPositions.reduce((acc, current) => {
+      const foundIndex = acc.findIndex(
+        (item: any) => item.position_id === current.position_id
+      );
+
+      if (foundIndex === -1) {
+        // If the position_id is not found, add the current object
+        acc.push(current);
+      } else if (acc[foundIndex].is_primary === 0 && current.is_primary === 1) {
+        // If a duplicate with is_primary 0 is found, replace it with the current object if it has is_primary 1
+        acc[foundIndex] = current;
+      }
+
+      return acc;
+    }, []);
 
     const { phone, ...restData } = data;
 
@@ -123,17 +129,14 @@ export default function CreateUser() {
       // onboarded_by: 'invitation',
       // dob: new Date(data.dob).toISOString().split('T')[0],
       // dob: new Date(data.dob).toISOString(),
-      positions: formattedPositions,
+
+      positions: filteredPositions,
     };
     setLoading(true);
-
-    console.log(formattedData);
 
     try {
       const response = await inviteStaffs(formattedData);
       const resultData = response.data as CreateStaffResponse;
-
-      console.log('API Response:', resultData);
 
       if (resultData) {
         setReset({
@@ -180,6 +183,7 @@ export default function CreateUser() {
         className="grid h-[100vh] grid-cols-1 gap-6 overflow-scroll p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
+          console.log(errors);
           return (
             <>
               <div className="col-span-full flex items-center justify-between">
@@ -239,7 +243,7 @@ export default function CreateUser() {
                 error={errors.primary_location?.message}
               />
               <Controller
-                name="positions"
+                name="primary_positions"
                 control={control}
                 render={({ field }) => (
                   <div className="col-span-full flex flex-col gap-2">
@@ -251,22 +255,20 @@ export default function CreateUser() {
                     </label>
                     <Select
                       options={positionsData}
-                      value={positionsData.find((option) =>
+                      value={positionsData.find((option: any) =>
                         (field.value || []).some(
-                          (position) =>
+                          (position: any) =>
                             Number(position.position_id) === option.value &&
                             position.is_primary
                         )
                       )}
                       onChange={(selectedOption) => {
-                        // Create a new position object for the selected option
                         const newPosition = {
                           position_id: selectedOption?.value,
-                          hourly_rate: 12, // Placeholder hourly rate for the example
-                          is_primary: 1, // Set as primary
+                          hourly_rate: selectedOption?.hourly_rate,
+                          is_primary: 1,
                         };
 
-                        // Update the positions array in the form field
                         const updatedPositions = [
                           newPosition, // New primary position
                           // Filter out any previous primary positions and update secondary positions
@@ -291,6 +293,11 @@ export default function CreateUser() {
                       name={field.name}
                       isClearable
                     />
+                    {errors.primary_positions?.message && (
+                      <div className="mt-1 w-full text-sm text-red">
+                        {errors.primary_positions?.message}
+                      </div>
+                    )}
                   </div>
                 )}
               />
@@ -318,7 +325,7 @@ export default function CreateUser() {
                         // Create an array to store the updated positions
                         const updatedPositions: {
                           position_id: number;
-                          hourly_rate: number;
+                          hourly_rate: string;
                           is_primary: number;
                         }[] = [];
                         // Loop through each selected option
@@ -326,7 +333,7 @@ export default function CreateUser() {
                           // Create a new position object for the selected option
                           const newPosition = {
                             position_id: selectedOption?.value,
-                            hourly_rate: 12, // Placeholder hourly rate for the example
+                            hourly_rate: selectedOption?.hourly_rate,
                             is_primary: 0, // Set as secondary
                           };
 
@@ -351,6 +358,11 @@ export default function CreateUser() {
                       isMulti
                       isClearable
                     />
+                    {errors.positions?.message && (
+                      <div className=" mt-1 w-full text-sm text-red">
+                        {errors.positions?.message}
+                      </div>
+                    )}
                   </div>
                 )}
               />
