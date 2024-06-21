@@ -304,67 +304,77 @@ export default function CreateUser() {
               <Controller
                 name="positions"
                 control={control}
-                render={({ field }) => (
-                  <div className="col-span-full flex flex-col gap-2">
-                    <label
-                      htmlFor={field.name}
-                      className="font-medium text-gray-900 dark:text-white"
-                    >
-                      Secondary Positions
-                    </label>
-                    <Select
-                      options={positionsData}
-                      value={positionsData.filter((option) =>
-                        (field.value || []).some(
-                          (position) =>
-                            Number(position.position_id) === option.value &&
-                            !position.is_primary
-                        )
+                render={({ field }) => {
+                  const primaryPositionIds = (
+                    watch('primary_positions') || []
+                  ).map((position) => position.position_id);
+
+                  const filteredPositions = positionsData.filter(
+                    (position) => !primaryPositionIds.includes(position.value)
+                  );
+
+                  return (
+                    <div className="col-span-full flex flex-col gap-2">
+                      <label
+                        htmlFor={field.name}
+                        className="font-medium text-gray-900 dark:text-white"
+                      >
+                        Secondary Positions
+                      </label>
+                      <Select
+                        options={filteredPositions}
+                        value={positionsData.filter((option) =>
+                          (field.value || []).some(
+                            (position) =>
+                              Number(position.position_id) === option.value &&
+                              !position.is_primary
+                          )
+                        )}
+                        onChange={(selectedOptions) => {
+                          // Create an array to store the updated positions
+                          const updatedPositions: {
+                            position_id: number;
+                            hourly_rate: string;
+                            is_primary: number;
+                          }[] = [];
+                          // Loop through each selected option
+                          selectedOptions.forEach((selectedOption) => {
+                            // Create a new position object for the selected option
+                            const newPosition = {
+                              position_id: selectedOption?.value,
+                              hourly_rate: selectedOption?.hourly_rate,
+                              is_primary: 0, // Set as secondary
+                            };
+
+                            // Add the new position to the updated positions array
+                            updatedPositions.push(newPosition);
+                          });
+
+                          // Update the form field's value with the updated positions array
+                          field.onChange(updatedPositions);
+                        }}
+                        // onChange={(options) => {
+                        //   const newPositions = options.map((option) => ({
+                        //     position_id: option.value.toString(),
+                        //     is_primary: false,
+                        //   }));
+                        //   field.onChange([
+                        //     ...newPositions,
+                        //     ...(field.value || []).filter((p) => p.is_primary),
+                        //   ]);
+                        // }}
+                        name={field.name}
+                        isMulti
+                        isClearable
+                      />
+                      {errors.positions?.message && (
+                        <div className=" mt-1 w-full text-sm text-red">
+                          {errors.positions?.message}
+                        </div>
                       )}
-                      onChange={(selectedOptions) => {
-                        // Create an array to store the updated positions
-                        const updatedPositions: {
-                          position_id: number;
-                          hourly_rate: string;
-                          is_primary: number;
-                        }[] = [];
-                        // Loop through each selected option
-                        selectedOptions.forEach((selectedOption) => {
-                          // Create a new position object for the selected option
-                          const newPosition = {
-                            position_id: selectedOption?.value,
-                            hourly_rate: selectedOption?.hourly_rate,
-                            is_primary: 0, // Set as secondary
-                          };
-
-                          // Add the new position to the updated positions array
-                          updatedPositions.push(newPosition);
-                        });
-
-                        // Update the form field's value with the updated positions array
-                        field.onChange(updatedPositions);
-                      }}
-                      // onChange={(options) => {
-                      //   const newPositions = options.map((option) => ({
-                      //     position_id: option.value.toString(),
-                      //     is_primary: false,
-                      //   }));
-                      //   field.onChange([
-                      //     ...newPositions,
-                      //     ...(field.value || []).filter((p) => p.is_primary),
-                      //   ]);
-                      // }}
-                      name={field.name}
-                      isMulti
-                      isClearable
-                    />
-                    {errors.positions?.message && (
-                      <div className=" mt-1 w-full text-sm text-red">
-                        {errors.positions?.message}
-                      </div>
-                    )}
-                  </div>
-                )}
+                    </div>
+                  );
+                }}
               />
               <Input
                 label="Date of Birth"
