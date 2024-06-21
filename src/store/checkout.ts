@@ -54,10 +54,17 @@ export interface UserBranch {
   value: string;
 }
 
-export const selectedBranchAtom = atom<UserBranch>({
-  label: '',
-  value: '',
-});
+// export const selectedBranchAtom = atom<UserBranch>({
+//   label: '',
+//   value: '',
+// });
+export const selectedBranchAtom = atomWithStorage<UserBranch | null>(
+  'selectedBranch',
+  {
+    label: '',
+    value: '',
+  }
+);
 
 export const selectedShiftAtom = atom([]);
 export const selectedEmployStatusAtom = atom([]);

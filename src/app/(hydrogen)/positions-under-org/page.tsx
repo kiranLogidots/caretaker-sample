@@ -99,6 +99,10 @@ export default function UsersTable() {
   const [selectedPositions, setSelectedPositions] = useState<string[]>([]);
 
   useEffect(() => {
+    setSelectedDepartment(null);
+    setSelectedNames([]);
+    setSelectedPositions([]);
+
     async function fetchDepartments() {
       const accessToken = sessionStorage.getItem('accessToken');
       if (!accessToken) {

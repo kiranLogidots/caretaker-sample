@@ -1,4 +1,5 @@
 import AnalyticsDashboard from '@/app/shared/analytics-dashboard';
+import FileDashboard from '@/app/shared/file/dashboard';
 import { metaObject } from '@/config/site.config';
 
 export const metadata = {
@@ -8,7 +9,8 @@ export const metadata = {
 export default function AnalyticsPage() {
   return (
     <>
-      <AnalyticsDashboard />
+      {/* <AnalyticsDashboard /> */}
+      <FileDashboard />
     </>
   );
 }
