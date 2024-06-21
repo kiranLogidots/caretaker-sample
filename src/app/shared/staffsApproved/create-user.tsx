@@ -46,7 +46,7 @@ export default function CreateUser() {
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [positionsData, setPositionsData] = useState<
-    { value: number; label: string }[]
+    { value: number; label: string; hourly_rate: string }[]
   >([]);
   // const onboardedByOptions = [
   //   { value: 'invitation', label: 'Invitation' },
@@ -76,6 +76,7 @@ export default function CreateUser() {
         result.map((type) => ({
           value: type?.position?.id,
           label: type?.position?.name,
+          hourly_rate: type.position.hourly_rate,
         }))
       );
       console.log('Mapped Positions Data:', positionsData);
@@ -99,19 +100,26 @@ export default function CreateUser() {
       setErrorMessage('Organization ID not found in session storage.');
       return;
     }
-    // if (!organizationBranchId) {
-    //   setErrorMessage('Branch ID not found in session storage.');
-    //   return;
-    // }
 
-    const formattedPositions = [
-      ...data.positions.map(({ position_id, is_primary }) => ({
-        position_id: Number(position_id),
-        // hourly_rate: Number(hourly_rate),
-        hourly_rate: 12,
-        is_primary: is_primary ? 1 : 0,
-      })),
-    ];
+    //@ts-ignore
+    const formattedPositions = [...data?.positions, ...data?.primary_positions];
+
+    // filter if same value for primary and secondary
+    const filteredPositions = formattedPositions.reduce((acc, current) => {
+      const foundIndex = acc.findIndex(
+        (item: any) => item.position_id === current.position_id
+      );
+
+      if (foundIndex === -1) {
+        // If the position_id is not found, add the current object
+        acc.push(current);
+      } else if (acc[foundIndex].is_primary === 0 && current.is_primary === 1) {
+        // If a duplicate with is_primary 0 is found, replace it with the current object if it has is_primary 1
+        acc[foundIndex] = current;
+      }
+
+      return acc;
+    }, []);
 
     const { phone, ...restData } = data;
 
@@ -123,7 +131,7 @@ export default function CreateUser() {
       // onboarded_by: 'invitation',
       // dob: new Date(data.dob).toISOString().split('T')[0],
       // dob: new Date(data.dob).toISOString(),
-      positions: formattedPositions,
+      positions: filteredPositions,
     };
     setLoading(true);
 
@@ -235,7 +243,133 @@ export default function CreateUser() {
                 {...register('primary_location')}
                 error={errors.primary_location?.message}
               />
+
               <Controller
+                name="primary_positions"
+                control={control}
+                render={({ field }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={field.name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Primary Position
+                    </label>
+                    <Select
+                      options={positionsData}
+                      value={positionsData.find((option: any) =>
+                        (field.value || []).some(
+                          (position: any) =>
+                            Number(position.position_id) === option.value &&
+                            position.is_primary
+                        )
+                      )}
+                      onChange={(selectedOption) => {
+                        const newPosition = {
+                          position_id: selectedOption?.value,
+                          hourly_rate: selectedOption?.hourly_rate,
+                          is_primary: 1,
+                        };
+
+                        const updatedPositions = [
+                          newPosition, // New primary position
+                          // Filter out any previous primary positions and update secondary positions
+                          ...(field.value || []).filter(
+                            (position) => position.is_primary === 0
+                          ),
+                        ];
+
+                        // Update the form field's value with the new positions array
+                        field.onChange(updatedPositions);
+                      }}
+                      // onChange={(option) => {
+                      //   const newPosition = {
+                      //     position_id: option?.value.toString(),
+                      //     is_primary: true,
+                      //   };
+                      //   field.onChange([
+                      //     newPosition,
+                      //     ...(field.value || []).filter((p) => !p.is_primary),
+                      //   ]);
+                      // }}
+                      name={field.name}
+                      isClearable
+                    />
+                    {errors.primary_positions?.message && (
+                      <div className="mt-1 w-full text-sm text-red">
+                        {errors.primary_positions?.message}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
+              <Controller
+                name="positions"
+                control={control}
+                render={({ field }) => (
+                  <div className="col-span-full flex flex-col gap-2">
+                    <label
+                      htmlFor={field.name}
+                      className="font-medium text-gray-900 dark:text-white"
+                    >
+                      Secondary Positions
+                    </label>
+                    <Select
+                      options={positionsData}
+                      value={positionsData.filter((option) =>
+                        (field.value || []).some(
+                          (position) =>
+                            Number(position.position_id) === option.value &&
+                            !position.is_primary
+                        )
+                      )}
+                      onChange={(selectedOptions) => {
+                        // Create an array to store the updated positions
+                        const updatedPositions: {
+                          position_id: number;
+                          hourly_rate: string;
+                          is_primary: number;
+                        }[] = [];
+                        // Loop through each selected option
+                        selectedOptions.forEach((selectedOption) => {
+                          // Create a new position object for the selected option
+                          const newPosition = {
+                            position_id: selectedOption?.value,
+                            hourly_rate: selectedOption?.hourly_rate,
+                            is_primary: 0, // Set as secondary
+                          };
+
+                          // Add the new position to the updated positions array
+                          updatedPositions.push(newPosition);
+                        });
+
+                        // Update the form field's value with the updated positions array
+                        field.onChange(updatedPositions);
+                      }}
+                      // onChange={(options) => {
+                      //   const newPositions = options.map((option) => ({
+                      //     position_id: option.value.toString(),
+                      //     is_primary: false,
+                      //   }));
+                      //   field.onChange([
+                      //     ...newPositions,
+                      //     ...(field.value || []).filter((p) => p.is_primary),
+                      //   ]);
+                      // }}
+                      name={field.name}
+                      isMulti
+                      isClearable
+                    />
+                    {errors.positions?.message && (
+                      <div className="mt-1 w-full text-sm text-red">
+                        {errors.positions?.message}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
+
+              {/* <Controller
                 name="positions"
                 control={control}
                 render={({ field }) => (
@@ -350,7 +484,8 @@ export default function CreateUser() {
                     />
                   </div>
                 )}
-              />
+              /> */}
+
               <Input
                 label="Date of Birth"
                 className="col-span-fu"
