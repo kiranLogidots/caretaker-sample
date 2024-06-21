@@ -866,6 +866,18 @@ export const deleteTemplate = async (id: number) => {
   return response.data;
 };
 
+// Template shift Apply
+
+export const applyTemplate = async (data: any) => {
+  const response = await axios.post(`${apiBaseUrl}/v1/templates/apply`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {

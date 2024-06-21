@@ -83,6 +83,7 @@ export default function EventCalendarView() {
   //Template drawer
   const [templateDrawer, setTemplateDrawer] = useState(false);
   const [templateTableCellData, setTemplateTableCellData] = useState([]);
+  const [applyChange, setApplyChange] = useState(1);
 
   useEffect(() => {
     generateDates();
@@ -117,6 +118,7 @@ export default function EventCalendarView() {
     shiftStatus,
     employStatus,
     memberName,
+    applyChange,
   ]);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -356,11 +358,13 @@ export default function EventCalendarView() {
           (prev: { [key: string]: any }, current: string) => {
             prev[current] = {
               shifts: r.assignedShifts.filter((assignedShift: any) => {
-                return (
-                  moment(assignedShift.shift.start_time).format(
-                    'YYYY-MM-DD'
-                  ) === current
-                );
+                return assignedShift.assigned_date === current;
+
+                // return (
+                //   moment(assignedShift.shift.start_time).format(
+                //     'YYYY-MM-DD'
+                //   ) === current
+                // );
               }),
               userId: r.user_id,
               summary: null,
@@ -593,6 +597,8 @@ export default function EventCalendarView() {
             setTemplateDrawer={setTemplateDrawer}
             tabvalue={tabvalue}
             eventsData={templateTableCellData}
+            selectedDates={selectedDates}
+            setApplyChange={setApplyChange}
           />
         </Drawer>
 

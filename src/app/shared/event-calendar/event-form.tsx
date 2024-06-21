@@ -61,9 +61,10 @@ export default function EventForm({
 
   const isUpdateEvent = !!id;
   const [duration, setDuration] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onSubmit: SubmitHandler<EventFormInput> = async (data) => {
-    console.log(isUpdateEvent, 'isUpdateEvent');
+    setLoading(true);
     const requestData = {
       ...eventTemplate,
       organization_branch_id: user.organization_branch_id,
@@ -77,7 +78,6 @@ export default function EventForm({
     }
 
     if (!isUpdateEvent) {
-      // Only include shift_notes if it is not empty
       try {
         await assignShiftToUser(requestData);
         refresh();
@@ -301,6 +301,8 @@ export default function EventForm({
                   Cancel
                 </Button>
                 <Button
+                  disabled={loading}
+                  isLoading={loading}
                   type="submit"
                   className="hover:gray-700 w-full text-white hover:bg-gray-700 @xl:w-auto dark:bg-gray-200 dark:hover:bg-gray-300 dark:active:enabled:bg-gray-300"
                 >
