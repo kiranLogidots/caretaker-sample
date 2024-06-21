@@ -5,25 +5,56 @@ import { PiXBold } from 'react-icons/pi';
 import { BiTrash } from 'react-icons/bi';
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
-import { createTemplate, deleteTemplate, listTemplate } from '@/service/page';
+import {
+  applyTemplate,
+  createTemplate,
+  deleteTemplate,
+  listTemplate,
+} from '@/service/page';
+import Spinner from '@/components/ui/spinner';
+import moment from 'moment';
 
 interface TemplateDrawerProps {
   setTemplateDrawer: Dispatch<SetStateAction<boolean>>;
   tabvalue: number;
   eventsData: any;
+  selectedDates: string[];
+  setApplyChange: Dispatch<SetStateAction<number>>;
 }
 
 const TemplateDrawer: React.FC<TemplateDrawerProps> = ({
   setTemplateDrawer,
   tabvalue,
   eventsData,
+  selectedDates,
+  setApplyChange,
 }) => {
   const [selectedBranch] = useAtom(selectedBranchAtom);
   const branchId = selectedBranch?.value;
 
+  const [loading, setLoading] = useState(false);
   const [templateName, setTemplateName] = useState('');
   const [error, setError] = useState('');
   const [templateArray, setTemplateArray] = useState([]);
+
+  function convertToISOWithCurrentTime(dateString: string) {
+    // Get the current time
+    const currentTime = moment();
+
+    // Parse the input date and set the time to the current time
+    const dateWithCurrentTime = moment(dateString).set({
+      hour: currentTime.hour(),
+      minute: currentTime.minute(),
+      second: currentTime.second(),
+      millisecond: currentTime.millisecond(),
+    });
+
+    // Convert to ISO string
+    const isoString = dateWithCurrentTime.toISOString();
+    // const isoString = dateWithCurrentTime.format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+    return isoString;
+  }
 
   const results = eventsData.map((user: any) => {
     const userResults: { day: number; shift_id: number }[] = [];
@@ -70,12 +101,34 @@ const TemplateDrawer: React.FC<TemplateDrawerProps> = ({
     }
   };
 
+  const handleApply = async (templateId: number) => {
+    const dateString = selectedDates[0];
+    const result = convertToISOWithCurrentTime(dateString);
+    const applyData = {
+      template_id: templateId,
+      start_date: result,
+    };
+
+    try {
+      await applyTemplate(applyData);
+      setError('');
+      setTemplateDrawer(false);
+      setApplyChange((prev: number) => prev + 1);
+    } catch (error: any) {
+      console.log(error?.response?.data?.message);
+      setError(error?.response?.data?.message);
+    }
+  };
+
   const fetchTemplate = async () => {
     try {
+      setLoading(true);
       const response = await listTemplate(Number(branchId));
       setTemplateArray(response);
     } catch (error: any) {
       console.log(error.response.data.message, 'List template error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -140,29 +193,38 @@ const TemplateDrawer: React.FC<TemplateDrawerProps> = ({
         </Button>
       </div>
 
-      <div className="flex w-full flex-col gap-2 px-4">
-        {templateArray?.map((template: any) => (
-          <div
-            key={template?.id}
-            className="flex w-full items-center justify-between rounded-md border px-4 py-3"
-          >
-            <div className="w-full">
-              <p>Template: {template?.name}</p>
-              <p>{template?.week} week</p>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="flex w-full flex-col gap-2 px-4">
+          {templateArray?.map((template: any) => (
+            <div
+              key={template?.id}
+              className="flex w-full items-center justify-between rounded-md border px-4 py-3"
+            >
+              <div className="w-full">
+                <p>Template: {template?.name}</p>
+                <p>{template?.week} week</p>
+              </div>
+              <div className="flex items-center gap-1">
+                <div
+                  className="cursor-pointer text-xs"
+                  onClick={() => handleApply(Number(template?.id))}
+                >
+                  Apply{' '}
+                </div>
+                <ActionIcon
+                  size="sm"
+                  variant="text"
+                  onClick={() => handleDelete(template?.id)}
+                >
+                  <BiTrash className="h-auto w-5" />
+                </ActionIcon>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <div className="text-xs">Apply </div>
-              <ActionIcon
-                size="sm"
-                variant="text"
-                onClick={() => handleDelete(template?.id)}
-              >
-                <BiTrash className="h-auto w-5" />
-              </ActionIcon>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
