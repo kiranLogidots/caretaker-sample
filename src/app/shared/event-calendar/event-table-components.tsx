@@ -3,11 +3,13 @@ import { Button } from '@/components/ui/button';
 import moment from 'moment';
 import Image from 'next/image';
 import { Fragment } from 'react';
+import { BiCopy, BiSolidPaste } from 'react-icons/bi';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 export const MemberProfile = ({
   data = {
     name: '',
-    totalHours: '',
+    totalHours: 0,
     employment_status: '',
   },
 }) => {
@@ -24,7 +26,7 @@ export const MemberProfile = ({
         <div className="mb-1 flex capitalize">{data.name}</div>
         <p className="text-gray text-xs font-light">{data.employment_status}</p>
         <small className="flex justify-end">
-          <b>{data.totalHours} hrs</b>
+          <b>{data.totalHours !== 0 ? data.totalHours.toFixed(2) : '0'} hrs</b>
         </small>
       </div>
     </div>
@@ -52,6 +54,10 @@ export const ShiftDataCell = ({
   },
   createShift = () => {},
   editShift = (shiftData: any) => {},
+  handleCopy = (shift: any) => {},
+  //@ts-ignore
+  cellKey,
+  handlePasteData = (cellKey: any, id: any) => {},
 }) => {
   return (
     <div className="flex cursor-pointer flex-col items-center gap-1 px-2 py-2">
@@ -59,33 +65,74 @@ export const ShiftDataCell = ({
         (data.shifts.length > 0 ? (
           <>
             {data.shifts.map((s: any, i) => (
-              <div onClick={() => editShift(s)} key={i + '_' + s.shift.id}>
-                <Button
-                  className="disabled w-full border-green-400 px-5"
-                  variant="outline"
-                >
-                  {moment(s.shift.start_time).format('HH:mm')} -
-                  {moment(s.shift.end_time).format('HH:mm')}
-                </Button>
-                {/* <Badge
-                variant="flat"
-                rounded="pill"
-                className="mb-1 w-[90px] whitespace-nowrap font-medium text-white"
-                color="secondary"
+              <div
+                className="w-full"
+                onClick={() => editShift(s)}
+                key={i + '_' + s.shift.id}
               >
-                {moment(s.shift.start_time).format('HH:mm')} -
-                {moment(s.shift.end_time).format('HH:mm')}
-              </Badge> */}
+                <div className="relative w-full">
+                  <Button
+                    className="disabled relative w-full border-green-400 px-5"
+                    variant="outline"
+                  >
+                    {moment(s.shift.start_time).format('HH:mm')} -
+                    {moment(s.shift.end_time).format('HH:mm')}
+                  </Button>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCopy(s);
+                      }}
+                      className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                    >
+                      <BiCopy className="h-5 w-5" />
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
+            {/* <Button className="w-full" variant="outline" onClick={createShift}>
+              +
+            </Button> */}
+            <div className="relative w-full">
+              <Button
+                className="w-full"
+                variant="outline"
+                onClick={createShift}
+              >
+                +
+              </Button>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePasteData(cellKey, data.userId);
+                  }}
+                  className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                >
+                  <BiSolidPaste className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="relative w-full">
             <Button className="w-full" variant="outline" onClick={createShift}>
               +
             </Button>
-          </>
-        ) : (
-          <Button className="w-full" variant="outline" onClick={createShift}>
-            +
-          </Button>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePasteData(cellKey, data.userId);
+                }}
+                className="text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                <BiSolidPaste className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
         ))}
       {data.summary && <div className="font-bold">{data.summary}</div>}
     </div>
