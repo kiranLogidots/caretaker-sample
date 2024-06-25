@@ -12,9 +12,15 @@ import {
   EventFormInput,
   eventFormSchema,
 } from '@/utils/validators/create-event.schema';
-import { assignShiftToUser, editAssignShiftToUser } from '@/service/page';
+import {
+  assignShiftToUser,
+  editAssignShiftToUser,
+  getSchedulingSettings,
+} from '@/service/page';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useAtom } from 'jotai';
+import { selectedBranchAtom } from '@/store/checkout';
 
 interface CreateEventProps {
   id: string | number | null | undefined;
@@ -30,6 +36,19 @@ interface CreateEventProps {
   shift_notes?: string | undefined;
 }
 
+const unpaidBreakOptions = [
+  {
+    label: 'No Unpaid Break',
+    value: 0,
+  },
+  { label: '10 mins', value: 10 },
+  { label: '20 mins', value: 20 },
+  { label: '30 mins', value: 30 },
+  { label: '40 mins', value: 40 },
+  { label: '50 mins', value: 50 },
+  { label: '60 mins', value: 60 },
+];
+
 export default function EventForm({
   id,
   assignedDate,
@@ -44,20 +63,10 @@ export default function EventForm({
   refresh = () => {},
 }: CreateEventProps) {
   const { closeModal } = useModal();
-  const unpaidBreakOptions = [
-    {
-      label: 'No Unpaid Break',
-      value: 0,
-    },
-    {
-      label: '30m',
-      value: 30,
-    },
-    {
-      label: '1h',
-      value: 60,
-    },
-  ];
+  const [selectedBranch] = useAtom(selectedBranchAtom);
+
+  const [defaultUnpaidBreaks, setDefaultUnpaidBreaks] = useState<any[]>([]);
+  const branchId = selectedBranch?.value;
 
   const isUpdateEvent = !!id;
   const [duration, setDuration] = useState('');
@@ -113,10 +122,44 @@ export default function EventForm({
     closeModal();
   };
 
+  useEffect(() => {
+    const fetchScheduleSettings = async () => {
+      try {
+        const response = await getSchedulingSettings(Number(branchId));
+        setDefaultUnpaidBreaks(response?.default_unpaid_breaks);
+        console.log(response?.default_unpaid_breaks);
+      } catch (error) {
+        console.error('Failed to fetch scheduling settings:', error);
+      }
+    };
+
+    fetchScheduleSettings();
+  }, [branchId]);
+
+  const findUnpaidBreak = (start: any, end: any) => {
+    const diffMs = end.getTime() - start.getTime();
+    const diffMins = diffMs / (1000 * 60);
+
+    defaultUnpaidBreaks.sort(
+      (a, b) => a.for_shifts_over_or_exact - b.for_shifts_over_or_exact
+    );
+
+    for (let i = defaultUnpaidBreaks.length - 1; i >= 0; i--) {
+      if (diffMins >= defaultUnpaidBreaks[i]?.for_shifts_over_or_exact) {
+        return defaultUnpaidBreaks[i]?.default_unpaid_break_to;
+      }
+    }
+    return 0; // or any default value if no match is found
+  };
+
   const calculateTotalTime = (start: any, end: any, breakMinutes: any) => {
     const diffMs = end.getTime() - start.getTime();
     const diffMins = diffMs / (1000 * 60); // convert milliseconds to minutes
     const totalTimeMins = diffMins - breakMinutes;
+
+    // const unpaidBreak = findUnpaidBreak(diffMins);
+    // setValue('unpaid_break', unpaidBreak);
+    // console.log(diffMins, unpaidBreak, 'unpaidBreak');
 
     const hours = Math.floor(totalTimeMins / 60);
     const minutes = Math.floor(totalTimeMins % 60);
@@ -128,6 +171,7 @@ export default function EventForm({
     control,
     watch,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -146,7 +190,21 @@ export default function EventForm({
     setDuration(
       calculateTotalTime(watchedStartDate, watchedEndDate, watchedUnpaidBreak)
     );
-  }, [watchedStartDate, watchedEndDate, watchedUnpaidBreak]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    watchedStartDate,
+    watchedEndDate,
+    watchedUnpaidBreak,
+    defaultUnpaidBreaks,
+  ]);
+
+  useEffect(() => {
+    const unpaidBreak = findUnpaidBreak(watchedStartDate, watchedEndDate);
+    if (!unpaid_break || unpaid_break === 0) {
+      setValue('unpaid_break', unpaidBreak);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedStartDate, watchedEndDate, defaultUnpaidBreaks]);
 
   return (
     <div className="m-auto p-4 md:px-7 md:py-10">

@@ -150,6 +150,7 @@ const SchedulingRules: React.FC<SchedulingSettingsProps> = ({
   );
 
   const handleSave = async () => {
+    setLoading(true);
     const {
       def_over_time_threshold_per_day,
       def_over_time_threshold_per_over_time_period,
@@ -184,12 +185,12 @@ const SchedulingRules: React.FC<SchedulingSettingsProps> = ({
       });
     } finally {
       setDrawer(false);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     setTempData(schedulingSettings);
-    console.log(rules);
   }, [schedulingSettings]);
 
   const handleovertimethresholdsChange = (selectedOption: OptionType) => {
@@ -222,7 +223,7 @@ const SchedulingRules: React.FC<SchedulingSettingsProps> = ({
         // Use the index to find the correct rule
         return {
           ...rule,
-          for_shifts_over_or_exact: Number(selectedOption.value),
+          for_shifts_over_or_exact: Number(selectedOption.value) * 60,
         };
       }
       return rule;
@@ -379,7 +380,7 @@ const SchedulingRules: React.FC<SchedulingSettingsProps> = ({
                 className="mt-4 flex items-center justify-evenly gap-3"
               >
                 <Select
-                  value={rule.for_shifts_over_or_exact} // Set the actual value based on your state or props
+                  value={Math.floor(rule?.for_shifts_over_or_exact / 60)} // Set the actual value based on your state or props
                   onChange={(selectedOption: OptionType) =>
                     handleForShiftsChange(selectedOption, index)
                   }
