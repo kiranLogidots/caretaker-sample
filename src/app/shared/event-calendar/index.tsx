@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import ControlledTable from '@/components/controlled-table';
 // import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { useModal } from '@/app/shared/modal-views/use-modal';
 import moment from 'moment';
 
 import {
+  assignShiftToUser,
   getUsersWithShifts,
   listOrgPositions,
   viewBranch,
@@ -37,6 +38,7 @@ import { Select } from 'rizzui';
 import ThreeDotMenu from './ThreeDotMenu';
 import { CgTemplate } from 'react-icons/cg';
 import TemplateDrawer from './TemplateDrawer';
+import toast from 'react-hot-toast';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -56,11 +58,29 @@ interface TableCellData {
   };
 }
 
+type CopyDataType = {
+  is_over_time_allowed: any;
+  schedule_settings: any;
+  organization_branch_id: string | undefined;
+  position_id: any; // Assuming `selectedPositionId` can be null
+  shift_status: any;
+  shift_type: any;
+  start_time: string;
+  end_time: string;
+  unpaid_break: any;
+  shift_notes: any;
+};
+
 export default function EventCalendarView() {
+  // const [selectedCopyShift, setSelectedCopyShift] = useAtom(
+  //   selectedCopyShiftAtom
+  // );
   const [selectedBranch] = useAtom(selectedBranchAtom);
   const branchId = selectedBranch?.value;
   const { openModal } = useModal();
   const [tabvalue, setTabValue] = useState(1);
+
+  const copyRef = useRef<CopyDataType | null>(null);
 
   const [refreshKey, setRefreshKey] = useState(1);
   const [positions, setPositions]: any = useState([]);
@@ -271,6 +291,74 @@ export default function EventCalendarView() {
     }, 0);
   };
 
+  const UtcToIst = (time: any) => {
+    const utcDate = new Date(time);
+
+    // Convert to IST (UTC+5:30)
+    const istOffset = 5 * 60 + 30; // IST is UTC+5:30
+    const istDate = new Date(utcDate.getTime() + istOffset * 60 * 1000);
+
+    // Format the IST date
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      weekday: 'short',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZoneName: 'short',
+    };
+
+    return istDate.toLocaleString('en-US', options);
+  };
+
+  const handleCopy = (shift: any) => {
+    const copyData = {
+      is_over_time_allowed: shiftTemplate?.is_over_time_allowed,
+      schedule_settings: shiftTemplate?.schedule_settings,
+      organization_branch_id: branchId,
+      position_id: selectedPositionId,
+      shift_status: shiftTemplate?.shift_status,
+      shift_type: shiftTemplate?.shift_type,
+      // start_time: UtcToIst(shift?.shift?.start_time),
+      // end_time: UtcToIst(shift?.shift?.end_time),
+      start_time: shift?.shift?.start_time,
+      end_time: shift?.shift?.end_time,
+      unpaid_break: shift?.shift?.unpaid_break,
+      shift_notes: shift?.shift?.shift_notes,
+    };
+
+    copyRef.current = copyData;
+
+    toast.success('Copied the shift');
+  };
+
+  const handlePasteData = async (date: any, userId: any) => {
+    const pasteData = {
+      assigned_date: date,
+      user_id: userId,
+      ...copyRef.current,
+    };
+
+    try {
+      await assignShiftToUser(pasteData);
+      setRefreshKey((v) => v + 1);
+    } catch (error: any) {
+      console.log(error);
+      const err = error?.response?.data?.message;
+      const errorAr = error?.response?.data?.message[0];
+      if (err) {
+        toast.error(err);
+      } else if (errorAr) {
+        toast.error(errorAr);
+      } else {
+        toast.error('Something went wrong');
+      }
+    }
+  };
+
   const generateTableData = async () => {
     const response = await getUsersWithShifts({
       branchId: branchId,
@@ -342,6 +430,9 @@ export default function EventCalendarView() {
                   },
                 });
               }}
+              handleCopy={handleCopy}
+              cellKey={d}
+              handlePasteData={handlePasteData}
             />
           );
         },
