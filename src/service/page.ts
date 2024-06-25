@@ -878,6 +878,20 @@ export const applyTemplate = async (data: any) => {
   return response.data;
 };
 
+//Scheduling settings fetch
+export const getSchedulingSettings = async (branchId: any) => {
+  const response = await axios.get(
+    `${apiBaseUrl}/v1/scheduling-settings/branch/${branchId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
