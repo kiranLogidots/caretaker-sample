@@ -1,8 +1,9 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useCopy } from '@/store/quick-cart/copy.context';
 import moment from 'moment';
 import Image from 'next/image';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { BiCopy, BiSolidPaste } from 'react-icons/bi';
 import { IoSettingsOutline } from 'react-icons/io5';
 
@@ -59,6 +60,7 @@ export const ShiftDataCell = ({
   cellKey,
   handlePasteData = (cellKey: any, id: any) => {},
 }) => {
+  const { isCopy } = useCopy();
   return (
     <div className="flex cursor-pointer flex-col items-center gap-1 px-2 py-2">
       {data.userId &&
@@ -66,19 +68,19 @@ export const ShiftDataCell = ({
           <>
             {data.shifts.map((s: any, i) => (
               <div
-                className="w-full"
+                className="group w-full"
                 onClick={() => editShift(s)}
                 key={i + '_' + s.shift.id}
               >
                 <div className="relative w-full">
                   <Button
-                    className="disabled relative w-full border-green-400 px-5"
+                    className="disabled relative w-full border-green-400 text-xs"
                     variant="outline"
                   >
-                    {moment(s.shift.start_time).format('HH:mm')} -
+                    {moment(s.shift.start_time).format('HH:mm')}-
                     {moment(s.shift.end_time).format('HH:mm')}
                   </Button>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="absolute inset-y-0 -right-2 flex items-center pr-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -95,7 +97,7 @@ export const ShiftDataCell = ({
             {/* <Button className="w-full" variant="outline" onClick={createShift}>
               +
             </Button> */}
-            <div className="relative w-full">
+            <div className="group relative w-full">
               <Button
                 className="w-full"
                 variant="outline"
@@ -103,7 +105,28 @@ export const ShiftDataCell = ({
               >
                 +
               </Button>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+              {isCopy && (
+                <div className="absolute inset-y-0 -right-2 flex items-center pr-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePasteData(cellKey, data.userId);
+                    }}
+                    className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                  >
+                    <BiSolidPaste className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="group relative w-full">
+            <Button className="w-full" variant="outline" onClick={createShift}>
+              +
+            </Button>
+            {isCopy && (
+              <div className="absolute inset-y-0 -right-2 flex items-center pr-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -114,24 +137,7 @@ export const ShiftDataCell = ({
                   <BiSolidPaste className="h-5 w-5" />
                 </button>
               </div>
-            </div>
-          </>
-        ) : (
-          <div className="relative w-full">
-            <Button className="w-full" variant="outline" onClick={createShift}>
-              +
-            </Button>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePasteData(cellKey, data.userId);
-                }}
-                className="text-gray-500 hover:text-gray-700 focus:outline-none"
-              >
-                <BiSolidPaste className="h-5 w-5" />
-              </button>
-            </div>
+            )}
           </div>
         ))}
       {data.summary && <div className="font-bold">{data.summary}</div>}

@@ -39,6 +39,7 @@ import ThreeDotMenu from './ThreeDotMenu';
 import { CgTemplate } from 'react-icons/cg';
 import TemplateDrawer from './TemplateDrawer';
 import toast from 'react-hot-toast';
+import { useCopy } from '@/store/quick-cart/copy.context';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -72,9 +73,6 @@ type CopyDataType = {
 };
 
 export default function EventCalendarView() {
-  // const [selectedCopyShift, setSelectedCopyShift] = useAtom(
-  //   selectedCopyShiftAtom
-  // );
   const [selectedBranch] = useAtom(selectedBranchAtom);
   const branchId = selectedBranch?.value;
   const { openModal } = useModal();
@@ -94,6 +92,8 @@ export default function EventCalendarView() {
   const [eventsData, setEventsData]: any = useState([]);
   const [drawer, setDrawer] = useState(false);
   const [settingsdrawer, setSettingsDrawer] = useState(false);
+
+  const { setIsCopy } = useCopy();
 
   //Filter state value
   const [shiftStatus, setShiftStatus] = useState<string[]>([]);
@@ -193,7 +193,6 @@ export default function EventCalendarView() {
     setSelectedPositionId(null);
 
     let response = await listOrgPositions(Number(branchId));
-    console.log(response, 'responseposition');
 
     const transformedArray = response?.map((item: any) => ({
       label: item?.position?.name,
@@ -291,28 +290,28 @@ export default function EventCalendarView() {
     }, 0);
   };
 
-  const UtcToIst = (time: any) => {
-    const utcDate = new Date(time);
+  // const UtcToIst = (time: any) => {
+  //   const utcDate = new Date(time);
 
-    // Convert to IST (UTC+5:30)
-    const istOffset = 5 * 60 + 30; // IST is UTC+5:30
-    const istDate = new Date(utcDate.getTime() + istOffset * 60 * 1000);
+  //   // Convert to IST (UTC+5:30)
+  //   const istOffset = 5 * 60 + 30; // IST is UTC+5:30
+  //   const istDate = new Date(utcDate.getTime() + istOffset * 60 * 1000);
 
-    // Format the IST date
-    const options: Intl.DateTimeFormatOptions = {
-      timeZone: 'Asia/Kolkata',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      weekday: 'short',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short',
-    };
+  //   // Format the IST date
+  //   const options: Intl.DateTimeFormatOptions = {
+  //     timeZone: 'Asia/Kolkata',
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //     weekday: 'short',
+  //     hour: 'numeric',
+  //     minute: 'numeric',
+  //     second: 'numeric',
+  //     timeZoneName: 'short',
+  //   };
 
-    return istDate.toLocaleString('en-US', options);
-  };
+  //   return istDate.toLocaleString('en-US', options);
+  // };
 
   const handleCopy = (shift: any) => {
     const copyData = {
@@ -322,8 +321,6 @@ export default function EventCalendarView() {
       position_id: selectedPositionId,
       shift_status: shiftTemplate?.shift_status,
       shift_type: shiftTemplate?.shift_type,
-      // start_time: UtcToIst(shift?.shift?.start_time),
-      // end_time: UtcToIst(shift?.shift?.end_time),
       start_time: shift?.shift?.start_time,
       end_time: shift?.shift?.end_time,
       unpaid_break: shift?.shift?.unpaid_break,
@@ -333,6 +330,7 @@ export default function EventCalendarView() {
     copyRef.current = copyData;
 
     toast.success('Copied the shift');
+    setIsCopy(true);
   };
 
   const handlePasteData = async (date: any, userId: any) => {

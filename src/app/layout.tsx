@@ -15,6 +15,7 @@ const NextProgress = dynamic(() => import('@/components/next-progress'), {
 });
 // styles
 import '@/app/globals.css';
+import { CopyProvider } from '@/store/quick-cart/copy.context';
 
 export const metadata = {
   title: siteConfig.title,
@@ -41,11 +42,13 @@ export default async function RootLayout({
       >
         <AuthProvider session={session}>
           <ThemeProvider>
-            <NextProgress />
-            {children}
-            <Toaster />
-            <GlobalDrawer />
-            <GlobalModal />
+            <CopyProvider>
+              <NextProgress />
+              {children}
+              <Toaster />
+              <GlobalDrawer />
+              <GlobalModal />
+            </CopyProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>
