@@ -631,6 +631,17 @@ export const editAssignShiftToUser = async (id: number, data: any) => {
   return response;
 };
 
+// Delete schedule shift
+export const deleteAssignShift = async (id: number) => {
+  const response = await axios.delete(`${apiBaseUrl}/v1/shifts/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+};
+
 export const getShifts = async ({ branchId }: { branchId: string }) => {
   try {
     const response = await axios.get(`${apiBaseUrl}/v1/shifts`, {

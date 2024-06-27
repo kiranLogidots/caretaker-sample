@@ -11,6 +11,7 @@ import moment from 'moment';
 
 import {
   assignShiftToUser,
+  deleteAssignShift,
   getUsersWithShifts,
   listOrgPositions,
   viewBranch,
@@ -185,6 +186,22 @@ export default function EventCalendarView() {
     },
     [openModal]
   );
+
+  const handleShiftDelete = async (shiftId: number) => {
+    try {
+      await deleteAssignShift(Number(shiftId));
+      toast.success('Shift removed', {
+        position: 'top-right',
+      });
+
+      setRefreshKey((v) => v + 1);
+    } catch (error) {
+      toast.error('Failed to delete the shift', {
+        position: 'top-right',
+      });
+      console.error('Delete position failed:', error);
+    }
+  };
 
   const fetchPositions = async () => {
     setPositions([]);
@@ -429,6 +446,9 @@ export default function EventCalendarView() {
                     position_id: selectedPositionId,
                   },
                 });
+              }}
+              deleteShift={(shiftId) => {
+                handleShiftDelete(shiftId);
               }}
               handleCopy={handleCopy}
               cellKey={d}
@@ -687,7 +707,7 @@ export default function EventCalendarView() {
           }}
           overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-md"
           containerClassName="dark:bg-gray-100"
-          className="z-[9999]"
+          className="z-[999]"
         >
           <TemplateDrawer
             setTemplateDrawer={setTemplateDrawer}

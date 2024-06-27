@@ -32,7 +32,7 @@ export default function DeletePopover({
       </Popover.Trigger>
       <Popover.Content>
         {({ setOpen }) => (
-          <div className="w-56 pb-2 pt-1 text-left rtl:text-right">
+          <div className="z-9999 w-56 pb-2 pt-1 text-left rtl:text-right">
             <Title
               as="h6"
               className="mb-0.5 flex items-start text-sm text-gray-700 sm:items-center"
@@ -43,7 +43,11 @@ export default function DeletePopover({
               {description}
             </Text>
             <div className="flex items-center justify-end">
-              <Button size="sm" className="me-1.5 h-7 text-white" onClick={onDelete}>
+              <Button
+                size="sm"
+                className="me-1.5 h-7 text-white"
+                onClick={onDelete}
+              >
                 Yes
               </Button>
               <Button
