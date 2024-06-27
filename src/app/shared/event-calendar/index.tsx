@@ -103,7 +103,6 @@ export default function EventCalendarView() {
   //Template drawer
   const [templateDrawer, setTemplateDrawer] = useState(false);
   const [templateTableCellData, setTemplateTableCellData] = useState([]);
-  const [applyChange, setApplyChange] = useState(1);
 
   useEffect(() => {
     generateDates();
@@ -138,7 +137,6 @@ export default function EventCalendarView() {
     shiftStatus,
     employStatus,
     memberName,
-    applyChange,
   ]);
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -268,7 +266,11 @@ export default function EventCalendarView() {
         endDate = startDate.clone().add(7 * tabvalue - 1, 'days');
         break;
       default:
-        startDate = moment().clone().weekday(1);
+        // startDate = moment().clone().weekday(1);
+        startDate =
+          selectedDates.length > 0
+            ? moment(selectedDates[0], 'YYYY-MM-DD')
+            : moment().clone().weekday(1);
         endDate = startDate.clone().add(7 * tabvalue - 1, 'days');
     }
 
@@ -467,6 +469,8 @@ export default function EventCalendarView() {
         ),
       };
     });
+
+    console.log(tableCellData, 'tableCellData');
 
     setTemplateTableCellData(tableCellData);
 
@@ -690,7 +694,7 @@ export default function EventCalendarView() {
             tabvalue={tabvalue}
             eventsData={templateTableCellData}
             selectedDates={selectedDates}
-            setApplyChange={setApplyChange}
+            setApplyChange={setRefreshKey}
           />
         </Drawer>
 

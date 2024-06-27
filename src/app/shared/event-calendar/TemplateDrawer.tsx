@@ -113,11 +113,13 @@ const TemplateDrawer: React.FC<TemplateDrawerProps> = ({
       await applyTemplate(applyData);
       setError('');
       setTemplateDrawer(false);
-      setApplyChange((prev: number) => prev + 1);
+      // setApplyChange((v) => v + 1);
     } catch (error: any) {
       console.log(error?.response?.data?.message);
       setError(error?.response?.data?.message);
     }
+
+    setApplyChange((v) => v + 1);
   };
 
   const fetchTemplate = async () => {
