@@ -13,6 +13,7 @@ import {
 } from '@/service/page';
 import Spinner from '@/components/ui/spinner';
 import moment from 'moment';
+import DeletePopover from '../delete-popover';
 
 interface TemplateDrawerProps {
   setTemplateDrawer: Dispatch<SetStateAction<boolean>>;
@@ -84,6 +85,7 @@ const TemplateDrawer: React.FC<TemplateDrawerProps> = ({
       const resp = await createTemplate(requestData);
       fetchTemplate();
       setError('');
+      setTemplateName('');
     } catch (error: any) {
       console.log(error?.response?.data?.message, 'template error');
       setError(error?.response?.data?.message);
@@ -91,6 +93,7 @@ const TemplateDrawer: React.FC<TemplateDrawerProps> = ({
   };
 
   const handleDelete = async (id: number) => {
+    console.log('hello');
     try {
       await deleteTemplate(Number(id));
       fetchTemplate();
@@ -113,6 +116,7 @@ const TemplateDrawer: React.FC<TemplateDrawerProps> = ({
       await applyTemplate(applyData);
       setError('');
       setTemplateDrawer(false);
+
       // setApplyChange((v) => v + 1);
     } catch (error: any) {
       console.log(error?.response?.data?.message);
@@ -215,13 +219,20 @@ const TemplateDrawer: React.FC<TemplateDrawerProps> = ({
                 >
                   Apply{' '}
                 </div>
-                <ActionIcon
+                {/* <ActionIcon
                   size="sm"
                   variant="text"
                   onClick={() => handleDelete(template?.id)}
                 >
                   <BiTrash className="h-auto w-5" />
-                </ActionIcon>
+                </ActionIcon> */}
+                <DeletePopover
+                  title={`Delete`}
+                  description={`Are you sure you want to delete this department ?`}
+                  onDelete={() => {
+                    handleDelete(template?.id);
+                  }}
+                />
               </div>
             </div>
           ))}

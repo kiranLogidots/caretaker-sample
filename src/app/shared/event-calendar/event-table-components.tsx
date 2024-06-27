@@ -4,8 +4,9 @@ import { useCopy } from '@/store/quick-cart/copy.context';
 import moment from 'moment';
 import Image from 'next/image';
 import { Fragment, useEffect } from 'react';
-import { BiCopy, BiSolidPaste } from 'react-icons/bi';
+import { BiCopy, BiSolidPaste, BiTrash } from 'react-icons/bi';
 import { IoSettingsOutline } from 'react-icons/io5';
+import DeletePopover from '../delete-popover';
 
 export const MemberProfile = ({
   data = {
@@ -59,8 +60,24 @@ export const ShiftDataCell = ({
   //@ts-ignore
   cellKey,
   handlePasteData = (cellKey: any, id: any) => {},
+  deleteShift = (id: number) => {},
 }) => {
   const { isCopy } = useCopy();
+
+  // const handleShiftDelete = async (shiftId: number) => {
+  //   try {
+  //     await deleteAssignShift(Number(shiftId));
+  //     toast.success('Shift removed', {
+  //       position: 'top-right',
+  //     });
+  //   } catch (error) {
+  //     toast.error('Failed to delete the shift', {
+  //       position: 'top-right',
+  //     });
+  //     console.error('Delete position failed:', error);
+  //   }
+  // };
+
   return (
     <div className="flex cursor-pointer flex-col items-center gap-1 px-2 py-2">
       {data.userId &&
@@ -72,8 +89,37 @@ export const ShiftDataCell = ({
                 onClick={() => editShift(s)}
                 key={i + '_' + s.shift.id}
               >
-                <div className="relative w-full">
-                  <Button
+                {/* <div className="relative flex w-full flex-col"> */}
+                <div className="flex w-full flex-col items-center justify-center gap-1 rounded-md border border-green-400 p-1">
+                  <p className="text-xs">
+                    {moment(s.shift.start_time).format('HH:mm')}-
+                    {moment(s.shift.end_time).format('HH:mm')}
+                  </p>
+                  <div className="flex items-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCopy(s);
+                      }}
+                      className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                    >
+                      <BiCopy className="h-5 w-5" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                    >
+                      <DeletePopover
+                        title={`Delete`}
+                        description={`Are you sure you want to delete this shift ?`}
+                        onDelete={() => deleteShift(s.shift_id)}
+                      />
+                    </button>
+                  </div>
+                </div>
+                {/* <Button
                     className="disabled relative w-full border-green-400 text-xs"
                     variant="outline"
                   >
@@ -90,8 +136,8 @@ export const ShiftDataCell = ({
                     >
                       <BiCopy className="h-5 w-5" />
                     </button>
-                  </div>
-                </div>
+                  </div> */}
+                {/* </div> */}
               </div>
             ))}
             {/* <Button className="w-full" variant="outline" onClick={createShift}>
