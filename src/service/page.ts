@@ -891,8 +891,25 @@ export const applyTemplate = async (data: any) => {
 
 //Scheduling settings fetch
 export const getSchedulingSettings = async (branchId: any) => {
+  if (branchId == 0) return;
   const response = await axios.get(
     `${apiBaseUrl}/v1/scheduling-settings/branch/${branchId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// Create open shift
+
+export const createOpenShift = async (data: any) => {
+  const response = await axios.post(
+    `${apiBaseUrl}/v1/shifts/open-shift`,
+    data,
     {
       headers: {
         'Content-Type': 'application/json',

@@ -114,7 +114,7 @@ export const menuItemsForOrgSuperAdmin = [
   },
   {
     name: 'Shift',
-    href: routes.support.dashboard,
+    href: routes.shifts,
     icon: <CiCalendarDate />,
   },
 
@@ -235,7 +235,7 @@ export const menuItemsForBranchAdmin = [
   },
   {
     name: 'Shift',
-    href: routes.support.dashboard,
+    href: routes.shifts,
     icon: <CiCalendarDate />,
   },
 
