@@ -101,13 +101,6 @@ const CreateShiftCard = () => {
     };
 
     console.log(requestDate);
-    try {
-      await createOpenShift(requestDate);
-      toast.success('Open shift added');
-    } catch (error: any) {
-      console.error('Failed to create open shift', error);
-      toast.error(error.response.data.message);
-    }
   };
 
   const fetchPositions = async () => {
@@ -250,22 +243,7 @@ const CreateShiftCard = () => {
             <SiGoogledocs />
             <p className="text-xs">Edit Details</p>
           </button>
-          {/* <div className="flex items-center gap-2 ">
-          <p className="font-medium text-black">Allow Overtime?</p>
-          <Switch
-            checked={enabled}
-            onChange={(value: boolean) => setEnabled(value)}
-            className={`${
-              enabled ? 'bg-gray-600' : 'bg-gray-200'
-            } group inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out`}
-          >
-            <span
-              className={`${
-                enabled ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out`}
-            />
-          </Switch>
-        </div> */}
+          {/* switch */}
         </div>
         <Drawer
           size="md"
@@ -277,7 +255,7 @@ const CreateShiftCard = () => {
           containerClassName="dark:bg-gray-100"
           className="z-[9999]"
         >
-          <NotesDrawer
+          {/* <NotesDrawer
             setDrawer={setNotesDrawer}
             shiftQuantity={selectedShiftQuantity}
             startTime={selectedStartTime}
@@ -287,7 +265,7 @@ const CreateShiftCard = () => {
             shiftNote={shiftNote}
             //@ts-ignore
             positionName={selectedPositionArr?.label}
-          />
+          /> */}
         </Drawer>
       </div>
 

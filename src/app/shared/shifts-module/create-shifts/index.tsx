@@ -1,25 +1,31 @@
 'use client';
 
-import React from 'react';
-import CreateShiftCard from './CreateShiftCard';
-import { FaCirclePlus } from 'react-icons/fa6';
+import React, { useState } from 'react';
+import CreateShifts from './CreateShifts';
+import SummaryPage from './SummaryPage';
 
-const CreateShifts = () => {
+const CreateShiftsIndex = () => {
+  const [openSummary, setOpenSummary] = useState(false);
+  const [summaryData, setSummaryData] = useState(null);
+
   return (
-    <div className="mt-2 h-full w-full space-y-5">
-      <div className="">Select Date</div>
-      <CreateShiftCard />
-      {/* <button className="flex items-center gap-2 pt-4">
-        <FaCirclePlus />
-        Add another shift
-      </button> */}
-      {/* <div className=" flex w-full justify-end">
-        <button className="rounded-md bg-green-700 px-4 py-2 text-white">
-          Confirm booking
-        </button>
-      </div> */}
+    <div className="mt-8 h-full w-full space-y-5">
+      {openSummary ? (
+        <div>
+          <SummaryPage
+            summaryData={summaryData}
+            setOpenSummary={setOpenSummary}
+          />
+        </div>
+      ) : (
+        <CreateShifts
+          setOpenSummary={setOpenSummary}
+          setSummaryData={setSummaryData}
+          summaryData={summaryData}
+        />
+      )}
     </div>
   );
 };
 
-export default CreateShifts;
+export default CreateShiftsIndex;
