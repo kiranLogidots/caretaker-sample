@@ -920,6 +920,23 @@ export const createOpenShift = async (data: any) => {
   return response.data;
 };
 
+//List open shifts
+export const getOpenShifts = async (params: any) => {
+  if (params.branchId == 0) return;
+  const filters = {
+    'filter.organizations.organization_branch_id': params.branchId,
+    'filter.shift_status': params.status,
+  };
+  const response = await axios.get(`${apiBaseUrl}/v1/shifts?`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params: filters,
+  });
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
