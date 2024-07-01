@@ -55,7 +55,15 @@ const SummaryPage = ({
   const handleSubmit = async () => {
     setLoading(true);
     const updatedShifts = summaryData?.shifts.map((shift: any) => {
-      const { start_time, end_time, ...rest } = shift;
+      const {
+        start_time,
+        end_time,
+        end_date,
+        starting_day,
+        interval_type,
+        interval_count,
+        ...rest
+      } = shift;
 
       const startDate = new Date(shift.date);
       const startTime = new Date(start_time);
@@ -81,11 +89,15 @@ const SummaryPage = ({
         schedule_settings: scheduleSettings,
         is_over_time_allowed: false,
         organization_branch_id: branchId,
+        recurring_shift: {
+          end_date,
+          starting_day,
+          interval_type,
+          interval_count,
+        },
       };
     });
     const shiftsData = { shifts: updatedShifts };
-
-    console.log(shiftsData);
 
     try {
       const resp = await createOpenShift(shiftsData);

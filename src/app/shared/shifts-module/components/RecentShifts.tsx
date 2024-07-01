@@ -20,8 +20,6 @@ const RecentShifts = ({ shiftsDataArray }: { shiftsDataArray: any }) => {
       minute: '2-digit',
     })}`;
 
-    console.log(`${formattedDate} at ${formattedTime}`);
-    // Combine date and time
     return `${formattedDate} at ${formattedTime}`;
   };
   return (

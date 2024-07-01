@@ -24,7 +24,6 @@ const CreateShifts = ({
   const branchId = selectedBranch?.value;
 
   const [positions, setPositions]: any = useState([]);
-  const [scheduleSettings, setScheduleSettings] = useState({});
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const datePickerRef = useRef<HTMLDivElement>(null);
@@ -58,6 +57,10 @@ const CreateShifts = ({
               unpaid_break: 0,
               quantity: 1,
               shift_notes: '',
+              interval_count: 1,
+              interval_type: 'day',
+              starting_day: null,
+              end_date: null,
             },
           ],
     },
@@ -91,6 +94,10 @@ const CreateShifts = ({
       unpaid_break: 0,
       quantity: 1,
       shift_notes: '',
+      interval_count: 1,
+      interval_type: 'day',
+      starting_day: null,
+      end_date: null,
     });
   };
 
@@ -142,6 +149,10 @@ const CreateShifts = ({
       unpaid_break: 0,
       quantity: 1,
       shift_notes: '',
+      interval_count: 1,
+      interval_type: 'day',
+      starting_day: null,
+      end_date: null,
     });
     setSelectedDate(date);
   };
@@ -160,6 +171,10 @@ const CreateShifts = ({
             unpaid_break: 0,
             quantity: 1,
             shift_notes: '',
+            interval_count: 1,
+            interval_type: 'day',
+            starting_day: null,
+            end_date: null,
           },
         ],
       });
