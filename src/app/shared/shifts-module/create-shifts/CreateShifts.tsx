@@ -1,18 +1,15 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
-import CreateShiftCard from './CreateShiftCard';
-import { FaCirclePlus } from 'react-icons/fa6';
-import CreateShiftCard2 from './CreateShiftCard2';
-import { AnyNode } from 'postcss';
-import { getSchedulingSettings, listOrgPositions } from '@/service/page';
-import { useAtom } from 'jotai';
+import { listOrgPositions } from '@/service/page';
 import { selectedBranchAtom } from '@/store/checkout';
-import moment from 'moment';
+import { useAtom } from 'jotai';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { FaCirclePlus } from 'react-icons/fa6';
+import CreateShiftCard2 from './CreateShiftCard2';
 
 const CreateShifts = ({
   setOpenSummary,
@@ -43,21 +40,6 @@ const CreateShifts = ({
     return defaultEndTime;
   };
 
-  // const methods = useForm({
-  //   defaultValues: {
-  //     shifts: [
-  //       {
-  //         position: '',
-  //         date: null,
-  //         start_time: setDefaultStartTime(),
-  //         end_time: setDefaultEndTime(),
-  //         unpaid_break: 0,
-  //         quantity: 1,
-  //         shift_notes: '',
-  //       },
-  //     ],
-  //   },
-  // });
   const methods = useForm({
     defaultValues: {
       shifts: summaryData
@@ -98,16 +80,6 @@ const CreateShifts = ({
     } else {
       toast.error('Option or date field missing');
     }
-    // const updatedShifts = data.shifts.map((shift: any) => ({
-    //   ...shift,
-    //   assigned_date: moment(shift.date).format('YYYY-MM-DD'),
-    //   position_id: shift.position.value,
-    //   schedule_settings: scheduleSettings,
-    // }));
-
-    // const shiftsData = { shifts: updatedShifts };
-
-    // console.log(shiftsData);
   };
 
   const handleAddShift = () => {
@@ -135,32 +107,9 @@ const CreateShifts = ({
     setPositions(transformedArray);
   };
 
-  const fetchScheduleSettings = async () => {
-    try {
-      const response = await getSchedulingSettings(Number(branchId));
-      setScheduleSettings(response);
-    } catch (error) {
-      console.error('Failed to fetch scheduling settings:', error);
-    }
-  };
-
   useEffect(() => {
-    console.log('hello', branchId);
     fetchPositions();
-    fetchScheduleSettings();
-    // reset({
-    //   shifts: [
-    //     {
-    //       position: '',
-    //       date: null,
-    //       start_time: setDefaultStartTime(),
-    //       end_time: setDefaultEndTime(),
-    //       unpaid_break: 0,
-    //       quantity: 1,
-    //       shift_notes: '',
-    //     },
-    //   ],
-    // });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [branchId]);
 
