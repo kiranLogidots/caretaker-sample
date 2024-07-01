@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormContext, useFieldArray, Controller } from 'react-hook-form';
 import { Select } from 'rizzui';
 import DatePicker from 'react-datepicker';
@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 import moment from 'moment';
 import NotesDrawer from './NotesDrawer';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import RecurringDrawer from './RecurringDrawer';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -53,6 +54,7 @@ const CreateShiftCard2 = ({
 }) => {
   const { control, register } = useFormContext();
   const [notesDrawer, setNotesDrawer] = React.useState(false);
+  const [recurringDrawer, setRecurringDrawer] = useState(false);
 
   const shiftValues = watch(`shifts[${index}]`);
 
@@ -191,9 +193,22 @@ const CreateShiftCard2 = ({
         <hr className="my-3 border-t border-gray-300" />
         <div className="flex w-full gap-3">
           <button
-            className="flex cursor-pointer items-center gap-2 disabled:text-gray-200"
             type="button"
-            disabled
+            className={`flex cursor-pointer items-center gap-2 ${
+              shiftValues.date &&
+              shiftValues.start_time &&
+              shiftValues.end_time &&
+              shiftValues.position
+                ? 'text-gray-600'
+                : 'text-gray-100'
+            }`}
+            onClick={() => setRecurringDrawer(true)}
+            disabled={
+              !shiftValues.date ||
+              !shiftValues.start_time ||
+              !shiftValues.end_time ||
+              !shiftValues.position
+            }
           >
             <HiOutlineArrowPathRoundedSquare />
             <p className="text-xs">Recurring Shift</p>
@@ -240,6 +255,27 @@ const CreateShiftCard2 = ({
             shiftNote={shiftValues.shift_notes}
             positionName={shiftValues.position?.label}
             index={index}
+          />
+        </Drawer>
+        <Drawer
+          size="md"
+          isOpen={recurringDrawer ?? false}
+          onClose={() => setRecurringDrawer(false)}
+          overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-md"
+          containerClassName="dark:bg-gray-100"
+          className="z-[999]"
+        >
+          <RecurringDrawer
+            setDrawer={setRecurringDrawer}
+            shiftQuantity={shiftValues.quantity}
+            intervalCount={shiftValues.interval_count}
+            intervalType={shiftValues.interval_type}
+            startTime={shiftValues.start_time}
+            endTime={shiftValues.end_time}
+            date={shiftValues.date}
+            positionName={shiftValues.position?.label}
+            index={index}
+            watch={watch}
           />
         </Drawer>
       </div>
