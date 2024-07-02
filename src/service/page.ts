@@ -937,6 +937,22 @@ export const getOpenShifts = async (params: any) => {
   return response.data;
 };
 
+// Send to agencies
+
+export const sendToAgencies = async (data: any) => {
+  const response = await axios.post(
+    `${apiBaseUrl}/v1/shifts/send-to-agencies`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {

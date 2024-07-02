@@ -32,6 +32,7 @@ const ShiftsModule = () => {
   const branchId = selectedBranch?.value;
   const [tabValue, setTabValue] = React.useState(2);
   const [shiftsDataArray, setShiftsDataArray] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleTabChange = (event: any, newValue: any) => {
     setTabValue(newValue);
@@ -57,21 +58,26 @@ const ShiftsModule = () => {
     );
   };
 
-  useEffect(() => {
-    const fetchShifts = async () => {
-      const params = {
-        branchId: branchId,
-        status: 'open',
-      };
-      try {
-        const resp = await getOpenShifts(params);
-        setShiftsDataArray(resp?.data);
-        console.log(resp);
-      } catch (error: any) {
-        console.log(error?.response?.data?.message);
-      }
+  const fetchShifts = async () => {
+    setLoading(true);
+    const params = {
+      branchId: branchId,
+      status: 'open',
     };
+    try {
+      const resp = await getOpenShifts(params);
+      setShiftsDataArray(resp?.data);
+      console.log(resp);
+    } catch (error: any) {
+      console.log(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchShifts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [branchId]);
 
   return (
@@ -110,7 +116,11 @@ const ShiftsModule = () => {
         <PastShifts />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <RecentShifts shiftsDataArray={shiftsDataArray} />
+        <RecentShifts
+          shiftsDataArray={shiftsDataArray}
+          fetchShifts={fetchShifts}
+          loading={loading}
+        />
       </TabPanel>
     </div>
   );

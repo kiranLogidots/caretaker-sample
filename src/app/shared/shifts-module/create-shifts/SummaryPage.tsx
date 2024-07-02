@@ -89,12 +89,14 @@ const SummaryPage = ({
         schedule_settings: scheduleSettings,
         is_over_time_allowed: false,
         organization_branch_id: branchId,
-        recurring_shift: {
-          end_date,
-          starting_day,
-          interval_type,
-          interval_count,
-        },
+        ...(end_date && {
+          recurring_shift: {
+            end_date,
+            starting_day,
+            interval_type,
+            interval_count,
+          },
+        }),
       };
     });
     const shiftsData = { shifts: updatedShifts };
