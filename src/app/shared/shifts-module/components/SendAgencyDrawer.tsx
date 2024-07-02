@@ -3,6 +3,9 @@ import { ActionIcon } from '@/components/ui/action-icon';
 import { PiXBold } from 'react-icons/pi';
 import { Select } from 'rizzui';
 import AgencySummary from './AgencySummary';
+import AgencySpecific from './AgencySpecific';
+import { TiArrowLeft } from 'react-icons/ti';
+import RequestAgencyMember from './RequestAgencyMember';
 
 const radioOptions = [
   { label: 'Send to all agencies', value: 'all_agencies' },
@@ -129,6 +132,8 @@ const SendAgencyDrawer = ({
   const [selectedOption, setSelectedOption] = useState('all_agencies');
   const [selectedPublish, setSelectedPublish] = useState('now');
   const [summaryPage, setSummaryPage] = useState(false);
+  const [specificAgency, setSpecificAgency] = useState(false);
+  const [agencyMember, setAgencyMember] = useState(false);
 
   const handleRadioChange = (value: string) => {
     setSelectedOption(value);
@@ -136,6 +141,16 @@ const SendAgencyDrawer = ({
 
   const handleNext = () => {
     console.log(selectedOption, selectedPublish);
+    if (selectedOption === 'all_agencies') setSummaryPage(true);
+    if (selectedOption === 'specific_agencies') setSpecificAgency(true);
+    if (selectedOption === 'request_for_agency_member') setAgencyMember(true);
+  };
+
+  const handleAgencyMemberNext = () => {
+    setSummaryPage(true);
+  };
+
+  const handleSpecificAgencyNext = () => {
     setSummaryPage(true);
   };
 
@@ -153,6 +168,18 @@ const SendAgencyDrawer = ({
       ) : (
         <>
           <div className="mb-5 mt-4 flex items-center justify-between ">
+            {(specificAgency || agencyMember) && (
+              <ActionIcon
+                size="sm"
+                variant="text"
+                onClick={() => {
+                  setSpecificAgency(false);
+                  setAgencyMember(false);
+                }}
+              >
+                <TiArrowLeft className="h-auto w-5" />
+              </ActionIcon>
+            )}
             <h6 className=" flex-1 text-center">Send to Agencies</h6>
             <ActionIcon
               size="sm"
@@ -162,52 +189,74 @@ const SendAgencyDrawer = ({
               <PiXBold className="h-auto w-5" />
             </ActionIcon>
           </div>
-          <div className="space-y-5">
-            <p className="text-2xl font-semibold">I want to</p>
-            <div className="space-y-2">
-              {radioOptions.map((option) => (
-                <label
-                  key={option.value}
-                  className="flex items-center space-x-2"
+          {specificAgency ? (
+            <AgencySpecific
+              handleSpecificAgencyNext={handleSpecificAgencyNext}
+            />
+          ) : agencyMember ? (
+            <RequestAgencyMember
+              handleAgencyMemberNext={handleAgencyMemberNext}
+            />
+          ) : (
+            <>
+              <div className="space-y-5">
+                <p className="text-2xl font-semibold">I want to</p>
+                <div className="space-y-2">
+                  {radioOptions.map((option) => (
+                    <label
+                      key={option.value}
+                      className="flex items-center space-x-2"
+                    >
+                      <input
+                        type="radio"
+                        value={option.value}
+                        checked={selectedOption === option.value}
+                        onChange={() => handleRadioChange(option.value)}
+                        className="form-radio"
+                      />
+                      <span>{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+
+                <hr className="my-3 border-t border-gray-300" />
+                {selectedOption === 'request_for_agency_member' ? (
+                  <p className="text-xs font-medium">
+                    Requested agency member will be notified upon send and have
+                    4 hours to accept or decline the shift before it
+                    automatically becomes available to other agency members.
+                  </p>
+                ) : (
+                  <div>
+                    <p className="text-sm font-medium">For when: </p>
+
+                    <Select
+                      size="sm"
+                      value={selectedPublish}
+                      onChange={(selected: string) =>
+                        setSelectedPublish(selected)
+                      }
+                      options={publishOptions}
+                      getOptionValue={(option) => option.value}
+                      displayValue={(selected) =>
+                        publishOptions.find((b) => b.value === selected)?.label
+                      }
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="absolute bottom-5 right-5 flex space-x-2">
+                <button
+                  className="rounded-md bg-blue-500 px-4 py-2 text-white"
+                  onClick={() => handleNext()}
+                  type="button"
                 >
-                  <input
-                    type="radio"
-                    value={option.value}
-                    checked={selectedOption === option.value}
-                    onChange={() => handleRadioChange(option.value)}
-                    className="form-radio"
-                  />
-                  <span>{option.label}</span>
-                </label>
-              ))}
-            </div>
-
-            <hr className="my-3 border-t border-gray-300" />
-            <div>
-              <p className="text-sm font-medium">For when: </p>
-
-              <Select
-                size="sm"
-                value={selectedPublish}
-                onChange={(selected: string) => setSelectedPublish(selected)}
-                options={publishOptions}
-                getOptionValue={(option) => option.value}
-                displayValue={(selected) =>
-                  publishOptions.find((b) => b.value === selected)?.label
-                }
-              />
-            </div>
-          </div>
-
-          <div className="absolute bottom-5 right-5 flex space-x-2">
-            <button
-              className="rounded-md bg-blue-500 px-4 py-2 text-white"
-              onClick={() => handleNext()}
-              type="button"
-            >
-              Next
-            </button>
-          </div>
+                  Next
+                </button>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>
