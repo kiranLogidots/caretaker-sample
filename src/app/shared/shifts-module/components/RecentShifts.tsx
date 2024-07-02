@@ -1,7 +1,26 @@
-import React from 'react';
+import dynamic from 'next/dynamic';
+import React, { useState } from 'react';
 import { IoPersonSharp } from 'react-icons/io5';
+import SendAgencyDrawer from './SendAgencyDrawer';
+import Spinner from '@/components/ui/spinner';
 
-const RecentShifts = ({ shiftsDataArray }: { shiftsDataArray: any }) => {
+const Drawer = dynamic(
+  () => import('@/components/ui/drawer').then((module) => module.Drawer),
+  { ssr: false }
+);
+
+const RecentShifts = ({
+  shiftsDataArray,
+  fetchShifts,
+  loading,
+}: {
+  shiftsDataArray: any;
+  fetchShifts: any;
+  loading: boolean;
+}) => {
+  const [agencyDrawer, setAgencyDrawer] = useState(false);
+  const [selectedAgency, setSelectedAgency] = useState<any>();
+
   const formatDateTime = (start: any, end: any) => {
     const startTime = new Date(start);
     const endTime = new Date(end);
@@ -22,7 +41,9 @@ const RecentShifts = ({ shiftsDataArray }: { shiftsDataArray: any }) => {
 
     return `${formattedDate} at ${formattedTime}`;
   };
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div className="space-y-5">
       {shiftsDataArray?.map((shifts: any) => (
         <div
@@ -40,7 +61,16 @@ const RecentShifts = ({ shiftsDataArray }: { shiftsDataArray: any }) => {
               <IoPersonSharp size={30} />
             </div>
             <div className="flex flex-col gap-1">
-              <p className="text-sm font-bold">{shifts?.shift_status} shift</p>
+              <div className="flex gap-2">
+                <p className="text-sm font-bold">
+                  {shifts?.shift_status} shift
+                </p>
+                {shifts?.agency_shift && (
+                  <div className="flex items-center justify-center bg-slate-600 px-1 text-center text-xs font-medium text-white">
+                    Agency
+                  </div>
+                )}
+              </div>
               <p className="text-sm font-medium">{shifts?.position?.name}</p>
             </div>
           </div>
@@ -54,12 +84,32 @@ const RecentShifts = ({ shiftsDataArray }: { shiftsDataArray: any }) => {
               </p>
               <p className="text-sm font-medium">BookJane Training</p>
             </div>
-            <button className="rounded-md bg-[#6c5ce7] px-4 py-2 font-medium text-white">
-              Send to Agency
-            </button>
+            {!shifts?.agency_shift && (
+              <button
+                onClick={() => {
+                  setAgencyDrawer(true);
+                  setSelectedAgency(shifts);
+                }}
+                className="rounded-md bg-[#6c5ce7] px-4 py-2 font-medium text-white"
+              >
+                Send to Agency
+              </button>
+            )}
           </div>
         </div>
       ))}
+      <Drawer
+        size="md"
+        isOpen={agencyDrawer ?? false}
+        onClose={() => setAgencyDrawer(false)}
+        className="z-[99]"
+      >
+        <SendAgencyDrawer
+          setDrawer={setAgencyDrawer}
+          selectedAgency={selectedAgency}
+          fetchShifts={fetchShifts}
+        />
+      </Drawer>
     </div>
   );
 };
