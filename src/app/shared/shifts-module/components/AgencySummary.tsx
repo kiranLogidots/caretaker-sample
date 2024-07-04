@@ -8,6 +8,7 @@ import moment from 'moment';
 import { shiftArrayType } from './SendAgencyDrawer';
 import { sendToAgencies } from '@/service/page';
 import toast from 'react-hot-toast';
+import { Avatar } from '@/components/ui/avatar';
 
 const AgencySummary = ({
   setDrawer,
@@ -16,6 +17,7 @@ const AgencySummary = ({
   selectedOption,
   selectedPublish,
   fetchShifts,
+  selectedRequestMember,
 }: {
   setDrawer: React.Dispatch<React.SetStateAction<boolean>>;
   setSummaryPage: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,13 +25,27 @@ const AgencySummary = ({
   selectedOption: string;
   selectedPublish: string;
   fetchShifts: any;
+  selectedRequestMember: any;
 }) => {
   const handleSend = async () => {
-    const params = {
-      agency_send_options: selectedOption,
-      shift_id: selectedAgency?.id,
-      publishable_option: selectedPublish,
-    };
+    let params;
+
+    if (selectedOption === 'all_agencies') {
+      params = {
+        agency_send_options: selectedOption,
+        shift_id: selectedAgency?.id,
+        publishable_option: selectedPublish,
+      };
+    } else if (selectedOption === 'request_for_agency_member') {
+      params = {
+        agency_send_options: selectedOption,
+        shift_id: selectedAgency?.id,
+        publishable_option: 'now',
+        agency_member_id: selectedRequestMember?.id,
+      };
+    }
+
+    console.log(params);
 
     try {
       await sendToAgencies(params);
@@ -39,6 +55,7 @@ const AgencySummary = ({
       toast.error(error?.response?.data?.message);
     }
   };
+
   return (
     <div className="relative flex h-full w-full flex-col space-y-5 overflow-y-auto px-2">
       <div className="mb-5 mt-4 flex items-center justify-between ">
@@ -91,6 +108,37 @@ const AgencySummary = ({
                     : selectedPublish === '48hrs_before'
                       ? 'Shift will be sent to agencies 48 hrs before shift time'
                       : 'Shift will be sent to agencies 72 hrs before shift time'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {selectedOption === 'request_for_agency_member' && (
+        <div className="space-y-3">
+          <p className="text-sm font-semibold">Direct Request (1)</p>
+          <div className="flex w-full gap-4 rounded-md bg-sky-50 p-3">
+            <div className="flex h-16 w-16 items-center rounded-full ">
+              <Avatar
+                src={
+                  selectedRequestMember?.profile_pic
+                    ? selectedRequestMember?.profile_pic
+                    : `https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp`
+                }
+                name={selectedRequestMember?.first_name}
+                className=""
+              />
+            </div>
+            <div className="flex flex-col justify-center">
+              <p className="text-xs font-semibold">
+                {' '}
+                {selectedRequestMember?.first_name?.charAt(0).toUpperCase() +
+                  selectedRequestMember?.first_name.slice(1).toLowerCase()}{' '}
+                {selectedRequestMember?.last_name}
+              </p>
+              <p className="text-xs font-medium">
+                Requests have a 4 hr acceptance window. If not accepted, sent
+                to: All available agency members
               </p>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { PiXBold } from 'react-icons/pi';
 import { Select } from 'rizzui';
@@ -135,6 +135,8 @@ const SendAgencyDrawer = ({
   const [specificAgency, setSpecificAgency] = useState(false);
   const [agencyMember, setAgencyMember] = useState(false);
 
+  const [selectedRequestMember, setSelectedRequestMember] = useState(null);
+
   const handleRadioChange = (value: string) => {
     setSelectedOption(value);
   };
@@ -154,6 +156,17 @@ const SendAgencyDrawer = ({
     setSummaryPage(true);
   };
 
+  const calculateTimeDifference = (start: any, end: any) => {
+    console.log(start, end);
+    const startTime = new Date(start);
+    const endTime = new Date(end);
+
+    const differenceInMs = endTime.getTime() - startTime.getTime();
+    const differenceInHours = differenceInMs / (1000 * 60 * 60);
+
+    return differenceInHours;
+  };
+
   return (
     <div className="relative flex h-full w-full flex-col space-y-5 overflow-y-auto px-5">
       {summaryPage ? (
@@ -164,6 +177,7 @@ const SendAgencyDrawer = ({
           selectedOption={selectedOption}
           selectedPublish={selectedPublish}
           fetchShifts={fetchShifts}
+          selectedRequestMember={selectedRequestMember}
         />
       ) : (
         <>
@@ -196,6 +210,13 @@ const SendAgencyDrawer = ({
           ) : agencyMember ? (
             <RequestAgencyMember
               handleAgencyMemberNext={handleAgencyMemberNext}
+              setSelectedRequestMember={setSelectedRequestMember}
+              selectedRequestMember={selectedRequestMember}
+              positionId={selectedAgency.position_id}
+              totalHours={calculateTimeDifference(
+                selectedAgency?.start_time,
+                selectedAgency?.end_time
+              )}
             />
           ) : (
             <>
