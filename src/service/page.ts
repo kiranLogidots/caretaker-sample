@@ -953,6 +953,25 @@ export const sendToAgencies = async (data: any) => {
   return response.data;
 };
 
+//List request agency member
+
+export const getRequestAgencyMember = async (params: any) => {
+  const filters = {
+    'filter.userPositions.position_id ': params.position_id,
+  };
+  const response = await axios.get(
+    `${apiBaseUrl}/v1/organization-users/agency/branch-staffs`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: filters,
+    }
+  );
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
