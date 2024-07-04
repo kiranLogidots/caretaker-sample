@@ -94,6 +94,7 @@ const CreateShiftCard2 = ({
                     onChange={(date) => field.onChange(date)}
                     dateFormat="eee, MMM d"
                     placeholderText="Select date"
+                    minDate={new Date()}
                   />
                 )}
               />
@@ -211,7 +212,34 @@ const CreateShiftCard2 = ({
             }
           >
             <HiOutlineArrowPathRoundedSquare />
-            <p className="text-xs">Recurring Shift</p>
+            {shiftValues.end_date &&
+              (shiftValues.interval_type === 'week' ? (
+                <p className="text-xs">
+                  Repeat every week on {shiftValues.starting_day}
+                </p>
+              ) : shiftValues.interval_type === 'day' ? (
+                <p className="text-xs">
+                  Repeat every day from{' '}
+                  <span className="font-medium">
+                    {moment(shiftValues.date).format('ddd MMMM, DD')}
+                  </span>{' '}
+                  to{' '}
+                  <span className="font-medium">
+                    {moment(shiftValues.end_date).format('ddd MMMM, DD')}
+                  </span>
+                </p>
+              ) : (
+                <p className="text-xs">
+                  Repeat every month until{' '}
+                  <span className="font-medium">
+                    {moment(shiftValues.end_date).format('ddd MMMM, DD')}
+                  </span>
+                </p>
+              ))}
+
+            {!shiftValues.end_date && (
+              <p className="text-xs">Recurring Shift</p>
+            )}
           </button>
           <button
             type="button"
