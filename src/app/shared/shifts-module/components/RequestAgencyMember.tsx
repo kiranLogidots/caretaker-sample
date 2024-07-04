@@ -84,68 +84,74 @@ const RequestAgencyMember = ({
           <Spinner />
         ) : (
           <div className="grid grid-cols-3 gap-2">
-            {agencyMemberArray.map((member: any) => (
-              <div
-                className="flex cursor-pointer flex-col rounded-md border border-gray-100 shadow-md"
-                key={member?.id}
-                onClick={() => {
-                  setSelectedRequestMember(member);
-                  setButtonDisable(false);
-                }}
-              >
-                <div className="relative h-24 w-full">
-                  <Image
-                    src={
-                      member.profile_pic
-                        ? member.profile_pic
-                        : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
-                    }
-                    alt="memberImage"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-t-md"
-                  />
-                </div>
-                <div className="flex flex-col gap-2 px-2 pb-6 pt-3">
-                  <p className="text-xs font-bold text-black">
-                    {member?.first_name?.charAt(0).toUpperCase() +
-                      member?.first_name.slice(1).toLowerCase()}{' '}
-                    {member?.last_name}
-                  </p>
+            {agencyMemberArray.length > 0 ? (
+              agencyMemberArray.map((member: any) => (
+                <div
+                  className="flex cursor-pointer flex-col rounded-md border border-gray-100 shadow-md"
+                  key={member?.id}
+                  onClick={() => {
+                    setSelectedRequestMember(member);
+                    setButtonDisable(false);
+                  }}
+                >
+                  <div className="relative h-24 w-full">
+                    <Image
+                      src={
+                        member.profile_pic
+                          ? member.profile_pic
+                          : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
+                      }
+                      alt="memberImage"
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-t-md"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2 px-2 pb-6 pt-3">
+                    <p className="text-xs font-bold text-black">
+                      {member?.first_name?.charAt(0).toUpperCase() +
+                        member?.first_name.slice(1).toLowerCase()}{' '}
+                      {member?.last_name}
+                    </p>
 
-                  <p className="text-xs text-gray-500">
-                    {member?.organizationUsers[0]?.branch?.branch_name}
-                  </p>
+                    <p className="text-xs text-gray-500">
+                      {member?.organizationUsers[0]?.branch?.branch_name}
+                    </p>
 
-                  {member?.userPositions.map((position: any) =>
-                    position?.position_id == positionId ? (
-                      <p
-                        key={position?.id}
-                        className="text-xs font-medium text-black "
-                      >
-                        ${position.hourly_rate}/hr
-                      </p>
-                    ) : (
-                      ''
-                    )
-                  )}
+                    {member?.userPositions.map((position: any) =>
+                      position?.position_id == positionId ? (
+                        <p
+                          key={position?.id}
+                          className="text-xs font-medium text-black "
+                        >
+                          ${position.hourly_rate}/hr
+                        </p>
+                      ) : (
+                        ''
+                      )
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 bg-gray-50 p-2">
+                    <input
+                      type="radio"
+                      name="requestMember"
+                      value={selectedRequestMember?.id}
+                      checked={selectedRequestMember?.id === member?.id}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        setSelectedRequestMember(member);
+                        setButtonDisable(false);
+                      }}
+                    />
+                    <p className="text-sm font-semibold">Request</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-4 bg-gray-50 p-2">
-                  <input
-                    type="radio"
-                    name="requestMember"
-                    value={selectedRequestMember?.id}
-                    checked={selectedRequestMember?.id === member?.id}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      setSelectedRequestMember(member);
-                      setButtonDisable(false);
-                    }}
-                  />
-                  <p className="text-sm font-semibold">Request</p>
-                </div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center text-gray-500">
+                No agency member found
               </div>
-            ))}
+            )}
           </div>
         )}
       </div>
