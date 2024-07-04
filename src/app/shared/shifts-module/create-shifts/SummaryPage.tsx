@@ -5,6 +5,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
+import { HiOutlineArrowPathRoundedSquare } from 'react-icons/hi2';
 
 const SummaryPage = ({
   summaryData,
@@ -182,6 +183,32 @@ const SummaryPage = ({
                   ))}
                 </tbody>
               </table>
+              <div className="flex gap-2 px-4 py-3">
+                <HiOutlineArrowPathRoundedSquare />
+                {summary.interval_type === 'week' ? (
+                  <p className="text-xs">
+                    Repeat every week on {summary.starting_day}
+                  </p>
+                ) : summary.interval_type === 'day' ? (
+                  <p className="text-xs">
+                    Repeat every day from{' '}
+                    <span className="font-medium">
+                      {moment(summary.date).format('ddd MMMM, DD')}
+                    </span>{' '}
+                    to{' '}
+                    <span className="font-medium">
+                      {moment(summary.end_date).format('ddd MMMM, DD')}
+                    </span>
+                  </p>
+                ) : (
+                  <p className="text-xs">
+                    Repeat every month until{' '}
+                    <span className="font-medium">
+                      {moment(summary.end_date).format('ddd MMMM, DD')}
+                    </span>
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         ))}

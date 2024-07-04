@@ -175,6 +175,7 @@ const RecurringDrawer: React.FC<RecurringDrawerProps> = ({
           dateFormat="eee, MMM d"
           placeholderText="Select date"
           wrapperClassName="w-full"
+          minDate={shiftValues.date}
         />
       </div>
       {error && <p className="pt-2 text-xs text-red-400">{error}</p>}
