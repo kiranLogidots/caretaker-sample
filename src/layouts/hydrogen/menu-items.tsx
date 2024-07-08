@@ -120,7 +120,7 @@ export const menuItemsForOrgSuperAdmin = [
 
   {
     name: 'Timesheet',
-    href: routes.analytics,
+    href: routes.timeSheets,
     icon: <IoMdTime />,
   },
   {
@@ -241,7 +241,7 @@ export const menuItemsForBranchAdmin = [
 
   {
     name: 'Timesheet',
-    href: routes.analytics,
+    href: routes.timeSheets,
     icon: <IoMdTime />,
   },
   {

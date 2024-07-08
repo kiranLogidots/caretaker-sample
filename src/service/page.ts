@@ -972,6 +972,28 @@ export const getRequestAgencyMember = async (params: any) => {
   return response.data;
 };
 
+// List time sheet data
+
+export const getTimeSheetData = async (params: any) => {
+  const filters = {
+    'filter.userPositions.position_id ': params.position_id,
+    start_date: params.startDate,
+    end_date: params.endDate,
+    organization_branch_id: params.branchId,
+  };
+  const response = await axios.get(
+    `${apiBaseUrl}/v1/shift-attendences/time-sheet`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: filters,
+    }
+  );
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
