@@ -155,4 +155,5 @@ export const routes = {
   },
   signIn: '/signin',
   shifts: '/shifts',
+  timeSheets: '/time-sheets',
 };
