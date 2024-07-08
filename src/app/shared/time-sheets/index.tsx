@@ -16,6 +16,7 @@ import { Select } from 'rizzui';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
+import Link from 'next/link';
 
 interface MappedShiftAttendence {
   [key: string]: {
@@ -52,7 +53,7 @@ interface UserPosition {
   deleted_at: string | null;
 }
 
-interface DataItem {
+export interface DataItem {
   id: string;
   first_name: string;
   last_name: string;
@@ -156,8 +157,12 @@ const TimeSheetsModule: React.FC = () => {
       dataIndex: 'member',
       key: 'member',
       width: 300,
-      render: (_: any, record: DataItem) =>
-        `${record.first_name} ${record.last_name}`,
+      className: ' !p-0',
+      render: (_: any, record: DataItem) => (
+        <Link href={`/time-sheets/${record.id}`}>
+          <p className="h-full  w-full py-4 pl-3">{`${record.first_name} ${record.last_name}`}</p>
+        </Link>
+      ),
     },
     {
       title: 'Total Working Hours',
@@ -175,7 +180,9 @@ const TimeSheetsModule: React.FC = () => {
         key: date,
         width: 200,
         render: (_: any, record: DataItem) =>
-          record.mappedShiftAttendence[date]?.total_working_hours || 0,
+          record?.mappedShiftAttendence[date]?.on_leave
+            ? 'Leave'
+            : record.mappedShiftAttendence[date]?.total_working_hours || 0,
       })),
   ];
 
