@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import {
   format,
@@ -20,46 +20,26 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Spinner from '@/components/ui/spinner';
+import { Button } from '@/components/ui/button';
+import { PiArrowLeftBold } from 'react-icons/pi';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const localizer = momentLocalizer(moment);
 
 const TimeSheetCalender = () => {
-  const router = useParams();
-  const { id } = router;
+  const router = useRouter();
+  const params = useParams();
+  const queryParams = useSearchParams();
+  const selectedPositionId = queryParams.get('positionId');
+  const { id } = params;
 
   const [selectedBranch] = useAtom(selectedBranchAtom);
   const branchId = selectedBranch?.value;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-  const [positions, setPositions] = useState([]);
-  const [selectedPositionArr, setSelectedPositionArr] = useState([]);
-  const [selectedPositionId, setSelectedPositionId] = useState(null);
+
   const [events, setEvents] = useState([]);
   const [name, setName] = useState('');
-
-  const fetchPositions = async () => {
-    setPositions([]);
-    setSelectedPositionId(null);
-
-    let response = await listOrgPositions(Number(branchId));
-
-    const transformedArray = response?.map((item: any) => ({
-      label: item?.position?.name,
-      value: item?.position?.id,
-    }));
-
-    setPositions(transformedArray);
-
-    if (response?.length > 0) {
-      setSelectedPositionArr(transformedArray[0]);
-      setSelectedPositionId(response[0].position.id);
-    }
-  };
-
-  useEffect(() => {
-    fetchPositions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [branchId]);
 
   const fetchData = async (startDate: string, endDate: string) => {
     setIsLoading(true);
@@ -105,7 +85,7 @@ const TimeSheetCalender = () => {
     const endDate = format(endOfMonth(currentMonth), 'yyyy-MM-dd');
     fetchData(startDate, endDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentMonth, selectedPositionId, branchId]);
+  }, [currentMonth, branchId]);
 
   const handlePrevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -165,20 +145,19 @@ const TimeSheetCalender = () => {
             }
         `}
       </style>
-      <h3>Time Sheet - {name}</h3>
-      <CustomToolbar label={format(currentMonth, 'MMM yyyy')} />
-      <div className="w-72">
-        <Select
-          value={selectedPositionArr}
-          onChange={(selected: any) => {
-            setSelectedPositionArr(selected);
-            setSelectedPositionId(selected?.value);
-          }}
-          options={positions}
-          placeholder="Select Position"
-          style={{ width: '100%' }}
-        />
+      <div className="flex items-center gap-3">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => router.back()}
+          className="flex items-center"
+        >
+          <FaArrowLeft size={20} />
+        </Button>
+        <h3>Time Sheet - {name}</h3>
       </div>
+      <CustomToolbar label={format(currentMonth, 'MMM yyyy')} />
+
       {isLoading ? (
         <Spinner />
       ) : (
