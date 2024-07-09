@@ -17,6 +17,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
 import Link from 'next/link';
+import { ClassNames } from '@emotion/react';
 
 interface MappedShiftAttendence {
   [key: string]: {
@@ -159,7 +160,9 @@ const TimeSheetsModule: React.FC = () => {
       width: 300,
       className: ' !p-0',
       render: (_: any, record: DataItem) => (
-        <Link href={`/time-sheets/${record.id}`}>
+        <Link
+          href={`/time-sheets/${record.id}?positionId=${selectedPositionId}`}
+        >
           <p className="h-full  w-full py-4 pl-3">{`${record.first_name} ${record.last_name}`}</p>
         </Link>
       ),
@@ -169,16 +172,19 @@ const TimeSheetsModule: React.FC = () => {
       dataIndex: 'total_working_hours',
       key: 'total_working_hours',
       width: 150,
-      render: (_: any, record: DataItem) =>
-        record.mappedShiftAttendence.total_working_hours || 0,
+      render: (_: any, record: DataItem) => (
+        <p className="pl-4">
+          {`${record.mappedShiftAttendence.total_working_hours}` || 0}
+        </p>
+      ),
     },
     ...Object.keys(data[0]?.mappedShiftAttendence || {})
       .filter((date) => date !== 'total_working_hours')
       .map((date) => ({
-        title: date,
+        title: date.slice(-2),
         dataIndex: date,
         key: date,
-        width: 200,
+        width: 150,
         render: (_: any, record: DataItem) =>
           record?.mappedShiftAttendence[date]?.on_leave
             ? 'Leave'
@@ -247,7 +253,7 @@ const TimeSheetsModule: React.FC = () => {
         data={tableData}
         columns={columns as any}
         rowKey="id"
-        scroll={4000}
+        scroll={2000}
       />
     </div>
   );
