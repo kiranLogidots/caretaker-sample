@@ -9,13 +9,21 @@ import {
   subMonths,
   addMonths,
 } from 'date-fns';
-import { getTimeSheetData, listOrgPositions } from '@/service/page';
+import {
+  downloadTimeSheet,
+  getTimeSheetData,
+  listOrgPositions,
+} from '@/service/page';
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
 import { Select } from 'rizzui';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
+import {
+  IoMdArrowDropleft,
+  IoMdArrowDropright,
+  IoMdCloudDownload,
+} from 'react-icons/io';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -23,6 +31,7 @@ import Spinner from '@/components/ui/spinner';
 import { Button } from '@/components/ui/button';
 import { PiArrowLeftBold } from 'react-icons/pi';
 import { FaArrowLeft } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 const localizer = momentLocalizer(moment);
 
@@ -40,6 +49,9 @@ const TimeSheetCalender = () => {
 
   const [events, setEvents] = useState([]);
   const [name, setName] = useState('');
+  const [downloadStartDate, setDownloadStartDate] = useState<string>();
+  const [downloadEndDate, setDownloadEndDate] = useState<string>();
+  const [downloadLoading, setDownloadLoading] = useState(false);
 
   const fetchData = async (startDate: string, endDate: string) => {
     setIsLoading(true);
@@ -84,6 +96,8 @@ const TimeSheetCalender = () => {
     const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');
     const endDate = format(endOfMonth(currentMonth), 'yyyy-MM-dd');
     fetchData(startDate, endDate);
+    setDownloadStartDate(startDate);
+    setDownloadEndDate(endDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentMonth, branchId]);
 
@@ -97,6 +111,26 @@ const TimeSheetCalender = () => {
 
   const handleDateChange = (date: Date) => {
     setCurrentMonth(date);
+  };
+
+  const handleDownload = async () => {
+    setDownloadLoading(true);
+    const params = {
+      startDate: downloadStartDate,
+      endDate: downloadEndDate,
+      branchId,
+      position_id: selectedPositionId,
+      userId: id,
+    };
+    try {
+      const resp = await downloadTimeSheet(params);
+      window.open(resp.url, '_self');
+      toast.success('Successfully downloaded');
+    } catch (error) {
+      console.error('Error downloading data:', error);
+    } finally {
+      setDownloadLoading(false);
+    }
   };
 
   const CustomToolbar = ({ label }: { label: any }) => (
@@ -119,6 +153,16 @@ const TimeSheetCalender = () => {
             <IoMdArrowDropright size={30} />
           </button>
         </div>
+      </div>
+      <div>
+        <button
+          onClick={handleDownload}
+          disabled={downloadLoading}
+          className="flex items-center gap-2 rounded-md bg-[#6c5ce7] px-3 py-2 text-white "
+        >
+          <IoMdCloudDownload />
+          <p className="font-medium text-white">Download</p>
+        </button>
       </div>
     </div>
   );

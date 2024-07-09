@@ -188,11 +188,31 @@ const SummaryPage = ({
                   <HiOutlineArrowPathRoundedSquare />
                   {summary.interval_type === 'week' ? (
                     <p className="text-xs">
-                      Repeat every week on {summary.starting_day}
+                      Repeat{' '}
+                      {summary?.interval_count === 1
+                        ? 'every'
+                        : summary?.interval_count === 2
+                          ? 'twice'
+                          : summary?.interval_count === 3
+                            ? 'thrice'
+                            : summary?.interval_count === 4
+                              ? 'four times'
+                              : ''}{' '}
+                      week on {summary.starting_day}
                     </p>
                   ) : summary.interval_type === 'day' ? (
                     <p className="text-xs">
-                      Repeat every day from{' '}
+                      Repeat{' '}
+                      {summary?.interval_count === 1
+                        ? 'every'
+                        : summary?.interval_count === 2
+                          ? 'twice'
+                          : summary?.interval_count === 3
+                            ? 'thrice'
+                            : summary?.interval_count === 4
+                              ? 'four times'
+                              : ''}{' '}
+                      day from{' '}
                       <span className="font-medium">
                         {moment(summary.date).format('ddd MMMM, DD')}
                       </span>{' '}
@@ -203,7 +223,17 @@ const SummaryPage = ({
                     </p>
                   ) : (
                     <p className="text-xs">
-                      Repeat every month until{' '}
+                      Repeat{' '}
+                      {summary?.interval_count === 1
+                        ? 'every'
+                        : summary?.interval_count === 2
+                          ? 'twice'
+                          : summary?.interval_count === 3
+                            ? 'thrice'
+                            : summary?.interval_count === 4
+                              ? 'four times'
+                              : ''}{' '}
+                      month until{' '}
                       <span className="font-medium">
                         {moment(summary.end_date).format('ddd MMMM, DD')}
                       </span>

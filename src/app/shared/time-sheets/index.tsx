@@ -9,15 +9,24 @@ import {
   addMonths,
 } from 'date-fns';
 import ControlledTable from '@/components/controlled-table';
-import { getTimeSheetData, listOrgPositions } from '@/service/page';
+import {
+  downloadTimeSheet,
+  getTimeSheetData,
+  listOrgPositions,
+} from '@/service/page';
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
 import { Select } from 'rizzui';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { IoMdArrowDropleft, IoMdArrowDropright } from 'react-icons/io';
+import {
+  IoMdArrowDropleft,
+  IoMdArrowDropright,
+  IoMdCloudDownload,
+} from 'react-icons/io';
 import Link from 'next/link';
 import { ClassNames } from '@emotion/react';
+import toast from 'react-hot-toast';
 
 interface MappedShiftAttendence {
   [key: string]: {
@@ -89,6 +98,9 @@ const TimeSheetsModule: React.FC = () => {
   const [positions, setPositions]: any = useState([]);
   const [selectedPositionArr, setSelectedPositionArr] = useState([]);
   const [selectedPositionId, setSelectedPositionId] = useState(null);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [downloadStartDate, setDownloadStartDate] = useState<string>();
+  const [downloadEndDate, setDownloadEndDate] = useState<string>();
 
   const fetchPositions = async () => {
     setPositions([]);
@@ -137,6 +149,8 @@ const TimeSheetsModule: React.FC = () => {
     const startDate = format(startOfMonth(currentMonth), 'yyyy-MM-dd');
     const endDate = format(endOfMonth(currentMonth), 'yyyy-MM-dd');
     fetchData(startDate, endDate);
+    setDownloadStartDate(startDate);
+    setDownloadEndDate(endDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentMonth, selectedPositionId, branchId]);
 
@@ -150,6 +164,25 @@ const TimeSheetsModule: React.FC = () => {
 
   const handleDateChange = (date: Date) => {
     setCurrentMonth(date);
+  };
+
+  const handleDownload = async () => {
+    setDownloadLoading(true);
+    const params = {
+      startDate: downloadStartDate,
+      endDate: downloadEndDate,
+      branchId,
+      position_id: selectedPositionId,
+    };
+    try {
+      const resp = await downloadTimeSheet(params);
+      window.open(resp.url, '_self');
+      toast.success('Successfully downloaded');
+    } catch (error) {
+      console.error('Error downloading data:', error);
+    } finally {
+      setDownloadLoading(false);
+    }
   };
 
   const columns = [
@@ -233,6 +266,16 @@ const TimeSheetsModule: React.FC = () => {
               <IoMdArrowDropright size={30} />
             </button>
           </div>
+        </div>
+        <div>
+          <button
+            onClick={handleDownload}
+            disabled={downloadLoading}
+            className="flex items-center gap-2 rounded-md bg-[#6c5ce7] px-3 py-2 text-white "
+          >
+            <IoMdCloudDownload />
+            <p className="font-medium text-white">Download</p>
+          </button>
         </div>
       </div>
       <div className="w-72">
