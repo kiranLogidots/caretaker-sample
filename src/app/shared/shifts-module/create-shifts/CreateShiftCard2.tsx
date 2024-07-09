@@ -215,11 +215,31 @@ const CreateShiftCard2 = ({
             {shiftValues.end_date &&
               (shiftValues.interval_type === 'week' ? (
                 <p className="text-xs">
-                  Repeat every week on {shiftValues.starting_day}
+                  Repeat{' '}
+                  {shiftValues?.interval_count === 1
+                    ? 'every'
+                    : shiftValues?.interval_count === 2
+                      ? 'twice'
+                      : shiftValues?.interval_count === 3
+                        ? 'thrice'
+                        : shiftValues?.interval_count === 4
+                          ? 'four times'
+                          : ''}{' '}
+                  week on {shiftValues.starting_day}
                 </p>
               ) : shiftValues.interval_type === 'day' ? (
                 <p className="text-xs">
-                  Repeat every day from{' '}
+                  Repeat{' '}
+                  {shiftValues?.interval_count === 1
+                    ? 'every'
+                    : shiftValues?.interval_count === 2
+                      ? 'twice'
+                      : shiftValues?.interval_count === 3
+                        ? 'thrice'
+                        : shiftValues?.interval_count === 4
+                          ? 'four times'
+                          : ''}{' '}
+                  day from{' '}
                   <span className="font-medium">
                     {moment(shiftValues.date).format('ddd MMMM, DD')}
                   </span>{' '}
@@ -230,7 +250,17 @@ const CreateShiftCard2 = ({
                 </p>
               ) : (
                 <p className="text-xs">
-                  Repeat every month until{' '}
+                  Repeat{' '}
+                  {shiftValues?.interval_count === 1
+                    ? 'every'
+                    : shiftValues?.interval_count === 2
+                      ? 'twice'
+                      : shiftValues?.interval_count === 3
+                        ? 'thrice'
+                        : shiftValues?.interval_count === 4
+                          ? 'four times'
+                          : ''}{' '}
+                  month until{' '}
                   <span className="font-medium">
                     {moment(shiftValues.end_date).format('ddd MMMM, DD')}
                   </span>

@@ -997,6 +997,31 @@ export const getTimeSheetData = async (params: any) => {
   return response.data;
 };
 
+// Time sheet download
+
+export const downloadTimeSheet = async (params: any) => {
+  if (params?.branchId == 0) return;
+
+  const filters = {
+    'filter.userPositions.position_id ': params.position_id,
+    start_date: params.startDate,
+    end_date: params.endDate,
+    organization_branch_id: params.branchId,
+    ...(params.userId && { 'filter.user.id': params.userId }),
+  };
+  const response = await axios.get(
+    `${apiBaseUrl}/v1/shift-attendences/time-sheet/download`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: filters,
+    }
+  );
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {
