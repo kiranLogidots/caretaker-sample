@@ -124,7 +124,7 @@ const TimeSheetCalender = () => {
     };
     try {
       const resp = await downloadTimeSheet(params);
-      window.open(resp.url, '_self');
+      window.open(resp, '_self');
       toast.success('Successfully downloaded');
     } catch (error) {
       console.error('Error downloading data:', error);

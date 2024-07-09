@@ -1003,23 +1003,18 @@ export const downloadTimeSheet = async (params: any) => {
   if (params?.branchId == 0) return;
 
   const filters = {
-    'filter.userPositions.position_id ': params.position_id,
+    'filter.userPositions.position_id': params.position_id,
     start_date: params.startDate,
     end_date: params.endDate,
     organization_branch_id: params.branchId,
     ...(params.userId && { 'filter.user.id': params.userId }),
   };
-  const response = await axios.get(
-    `${apiBaseUrl}/v1/shift-attendences/time-sheet/download`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: filters,
-    }
-  );
-  return response.data;
+
+  const queryString = new URLSearchParams(filters).toString();
+
+  const url = `${apiBaseUrl}/v1/shift-attendences/time-sheet/download?${queryString}`;
+
+  return url;
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
