@@ -226,7 +226,7 @@ const CreateShifts = ({
         <div className=" flex w-full justify-end">
           <button
             type="submit"
-            className="rounded-md bg-green-700 px-4 py-2 font-medium text-white"
+            className="rounded-md bg-[#6c5ce7] px-4 py-2 font-medium text-white"
           >
             Confirm booking
           </button>

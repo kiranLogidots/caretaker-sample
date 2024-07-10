@@ -109,12 +109,12 @@ export const menuItemsForOrgSuperAdmin = [
   },
   {
     name: 'Batch Shift',
-    href: routes.support.dashboard,
+    href: routes.shifts,
     icon: <BsClock />,
   },
   {
     name: 'Shift',
-    href: routes.shifts,
+    href: routes.support.dashboard,
     icon: <CiCalendarDate />,
   },
 
@@ -235,7 +235,7 @@ export const menuItemsForBranchAdmin = [
   },
   {
     name: 'Shift',
-    href: routes.shifts,
+    href: routes.support.dashboard,
     icon: <CiCalendarDate />,
   },
 

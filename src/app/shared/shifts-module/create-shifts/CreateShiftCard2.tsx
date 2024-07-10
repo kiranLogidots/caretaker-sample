@@ -219,11 +219,11 @@ const CreateShiftCard2 = ({
                   {shiftValues?.interval_count === 1
                     ? 'every'
                     : shiftValues?.interval_count === 2
-                      ? 'twice'
+                      ? 'two'
                       : shiftValues?.interval_count === 3
-                        ? 'thrice'
+                        ? 'three'
                         : shiftValues?.interval_count === 4
-                          ? 'four times'
+                          ? 'four'
                           : ''}{' '}
                   week on {shiftValues.starting_day}
                 </p>
@@ -233,11 +233,11 @@ const CreateShiftCard2 = ({
                   {shiftValues?.interval_count === 1
                     ? 'every'
                     : shiftValues?.interval_count === 2
-                      ? 'twice'
+                      ? 'two'
                       : shiftValues?.interval_count === 3
-                        ? 'thrice'
+                        ? 'three'
                         : shiftValues?.interval_count === 4
-                          ? 'four times'
+                          ? 'four'
                           : ''}{' '}
                   day from{' '}
                   <span className="font-medium">
@@ -254,11 +254,11 @@ const CreateShiftCard2 = ({
                   {shiftValues?.interval_count === 1
                     ? 'every'
                     : shiftValues?.interval_count === 2
-                      ? 'twice'
+                      ? 'two'
                       : shiftValues?.interval_count === 3
-                        ? 'thrice'
+                        ? 'three'
                         : shiftValues?.interval_count === 4
-                          ? 'four times'
+                          ? 'four'
                           : ''}{' '}
                   month until{' '}
                   <span className="font-medium">
