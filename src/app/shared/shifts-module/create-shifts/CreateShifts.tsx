@@ -15,10 +15,12 @@ const CreateShifts = ({
   setOpenSummary,
   setSummaryData,
   summaryData,
+  scheduleSettings,
 }: {
   setOpenSummary: any;
   setSummaryData: any;
   summaryData: any;
+  scheduleSettings: any;
 }) => {
   const [selectedBranch] = useAtom(selectedBranchAtom);
   const branchId = selectedBranch?.value;
@@ -213,6 +215,7 @@ const CreateShifts = ({
             remove={remove}
             watch={watch}
             positions={positions}
+            scheduleSettings={scheduleSettings}
           />
         ))}
         <button
