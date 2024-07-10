@@ -144,7 +144,7 @@ const RecurringDrawer: React.FC<RecurringDrawerProps> = ({
           />
         </div>
       </div>
-      <div className="w-full space-y-2">
+      {/* <div className="w-full space-y-2">
         <p className="">Repeat on:</p>
         <div className="flex space-x-2 pl-3">
           {repeatOn.map((day) => (
@@ -161,7 +161,7 @@ const RecurringDrawer: React.FC<RecurringDrawerProps> = ({
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div className="w-full space-y-2">
         <p>Ends:</p>

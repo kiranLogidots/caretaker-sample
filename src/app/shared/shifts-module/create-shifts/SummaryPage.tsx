@@ -192,11 +192,11 @@ const SummaryPage = ({
                       {summary?.interval_count === 1
                         ? 'every'
                         : summary?.interval_count === 2
-                          ? 'twice'
+                          ? 'two'
                           : summary?.interval_count === 3
-                            ? 'thrice'
+                            ? 'three'
                             : summary?.interval_count === 4
-                              ? 'four times'
+                              ? 'four'
                               : ''}{' '}
                       week on {summary.starting_day}
                     </p>
@@ -206,11 +206,11 @@ const SummaryPage = ({
                       {summary?.interval_count === 1
                         ? 'every'
                         : summary?.interval_count === 2
-                          ? 'twice'
+                          ? 'two'
                           : summary?.interval_count === 3
-                            ? 'thrice'
+                            ? 'three'
                             : summary?.interval_count === 4
-                              ? 'four times'
+                              ? 'four'
                               : ''}{' '}
                       day from{' '}
                       <span className="font-medium">
@@ -227,11 +227,11 @@ const SummaryPage = ({
                       {summary?.interval_count === 1
                         ? 'every'
                         : summary?.interval_count === 2
-                          ? 'twice'
+                          ? 'two'
                           : summary?.interval_count === 3
-                            ? 'thrice'
+                            ? 'three'
                             : summary?.interval_count === 4
-                              ? 'four times'
+                              ? 'four'
                               : ''}{' '}
                       month until{' '}
                       <span className="font-medium">
@@ -249,13 +249,13 @@ const SummaryPage = ({
       <div className="flex w-full justify-end gap-2 pt-3">
         <button
           onClick={() => setOpenSummary(false)}
-          className="rounded bg-gray-300 px-8 py-2 font-bold text-white hover:bg-gray-500"
+          className="rounded bg-gray-400 px-8 py-2 font-bold text-white "
         >
           Edit
         </button>
         <button
           onClick={handleSubmit}
-          className={`rounded bg-blue-500 px-8 py-2 font-bold text-white hover:bg-blue-700 ${
+          className={`rounded bg-[#6c5ce7] px-8 py-2 font-bold text-white ${
             loading ? 'cursor-not-allowed opacity-50' : ''
           }`}
           disabled={loading}
