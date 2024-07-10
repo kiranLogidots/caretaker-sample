@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext, useFieldArray, Controller } from 'react-hook-form';
 import { Select } from 'rizzui';
 import DatePicker from 'react-datepicker';
@@ -46,17 +46,85 @@ const CreateShiftCard2 = ({
   remove,
   watch,
   positions,
+  scheduleSettings,
 }: {
   index: any;
   remove: any;
   watch: any;
   positions: any;
+  scheduleSettings: any;
 }) => {
-  const { control, register } = useFormContext();
+  const { control, register, setValue } = useFormContext();
   const [notesDrawer, setNotesDrawer] = React.useState(false);
   const [recurringDrawer, setRecurringDrawer] = useState(false);
+  const [duration, setDuration] = useState('');
 
   const shiftValues = watch(`shifts[${index}]`);
+
+  const calculateTotalTime = (start: any, end: any, breakMinutes: any) => {
+    const diffMs = end.getTime() - start.getTime();
+    const diffMins = diffMs / (1000 * 60);
+    const totalTimeMins = diffMins - breakMinutes;
+
+    const hours = Math.floor(totalTimeMins / 60);
+    const minutes = Math.floor(totalTimeMins % 60);
+    return `${hours}hrs ${minutes}min`;
+  };
+
+  const findUnpaidBreak = (start: any, end: any) => {
+    const diffMs = end.getTime() - start.getTime();
+    const diffMins = diffMs / (1000 * 60);
+
+    scheduleSettings?.default_unpaid_breaks?.sort(
+      (a: any, b: any) =>
+        a.for_shifts_over_or_exact - b.for_shifts_over_or_exact
+    );
+
+    for (
+      let i = scheduleSettings?.default_unpaid_breaks?.length - 1;
+      i >= 0;
+      i--
+    ) {
+      if (
+        diffMins >=
+        scheduleSettings?.default_unpaid_breaks[i]?.for_shifts_over_or_exact
+      ) {
+        return scheduleSettings?.default_unpaid_breaks[i]
+          ?.default_unpaid_break_to;
+      }
+    }
+    return 0; // or any default value if no match is found
+  };
+
+  useEffect(() => {
+    setDuration(
+      calculateTotalTime(
+        shiftValues.start_time,
+        shiftValues.end_time,
+        shiftValues?.unpaid_break
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    shiftValues.start_time,
+    shiftValues.end_time,
+    shiftValues?.unpaid_break,
+    scheduleSettings?.default_unpaid_breaks,
+  ]);
+
+  useEffect(() => {
+    const unpaidBreak = findUnpaidBreak(
+      shiftValues.start_time,
+      shiftValues.end_time
+    );
+    console.log(unpaidBreak, 'unpaidBreak');
+    setValue(`shifts[${index}].unpaid_break`, unpaidBreak);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    shiftValues.start_time,
+    shiftValues.end_time,
+    scheduleSettings?.default_unpaid_breaks,
+  ]);
 
   return (
     <div className="space-y-3">
@@ -190,6 +258,10 @@ const CreateShiftCard2 = ({
               </div>
             )}
           </div>
+        </div>
+        <div className="mt-1 flex w-full items-center justify-center gap-1.5">
+          <p className="text-xs font-medium">Duration: </p>
+          <p className="text-xs font-medium">{duration}</p>
         </div>
         <hr className="my-3 border-t border-gray-300" />
         <div className="flex w-full gap-3">

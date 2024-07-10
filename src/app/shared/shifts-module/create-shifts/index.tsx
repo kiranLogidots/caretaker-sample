@@ -40,6 +40,7 @@ const CreateShiftsIndex = () => {
           setOpenSummary={setOpenSummary}
           setSummaryData={setSummaryData}
           summaryData={summaryData}
+          scheduleSettings={scheduleSettings}
         />
       )}
     </div>

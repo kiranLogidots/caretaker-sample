@@ -70,6 +70,11 @@ const RecentShifts = ({
                     Agency
                   </div>
                 )}
+                {shifts?.recurrenceGroup && (
+                  <div className="flex items-center justify-center bg-slate-600 px-1 text-center text-xs font-medium text-white">
+                    Recurring
+                  </div>
+                )}
               </div>
               <p className="text-sm font-medium">{shifts?.position?.name}</p>
             </div>
