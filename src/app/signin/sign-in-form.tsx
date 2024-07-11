@@ -46,6 +46,7 @@ interface SALoginInterface {
   email: string;
   is_active: boolean;
   roles: UserRole[];
+  is_agency_admin?: boolean;
   organizationUsers: OrganizationUser[];
 }
 
@@ -93,10 +94,20 @@ export default function SignInForm() {
 
       sessionStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('userId', userId);
-      console.log("USER ID", userId);
-      sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
+      console.log('USER ID', userId);
+      // const roleObject = user_roles[0];
+      // roleObject.name = 'agency_admin';
+      // sessionStorage.setItem('userRoles', JSON.stringify([roleObject]));
 
-      console.log('User roles array', user_roles);
+      if (resultData?.is_agency_admin) {
+        const roleObject = user_roles[0];
+        roleObject.name = 'agency_admin';
+        sessionStorage.setItem('userRoles', JSON.stringify([roleObject]));
+      } else {
+        sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
+      }
+
+      // console.log('User roles array', user_roles);
 
       // Redirect based on role
       const userRole = user_roles[0].name;
@@ -182,11 +193,11 @@ export default function SignInForm() {
               {...register('password')}
               error={errors.password?.message}
             />
-               {errorMessage && (
-                <div className="col-span-full text-sm font-semibold text-red-500">
-                  {errorMessage}
-                </div>
-              )}
+            {errorMessage && (
+              <div className="col-span-full text-sm font-semibold text-red-500">
+                {errorMessage}
+              </div>
+            )}
             <div className="flex items-center justify-between pb-2">
               {/* <Checkbox
                 {...register('rememberMe')}
@@ -204,7 +215,11 @@ export default function SignInForm() {
               <span>Sign in</span>{' '}
               <PiArrowRightBold className="ms-2 mt-0.5 h-5 w-5" />
             </Button> */}
-            <Button className="w-full bg-[#6c5ce7] hover:bg-[#4c40ae]" type="submit" size="lg">
+            <Button
+              className="w-full bg-[#6c5ce7] hover:bg-[#4c40ae]"
+              type="submit"
+              size="lg"
+            >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
                   <IoMdRefresh

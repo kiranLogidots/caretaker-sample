@@ -307,6 +307,19 @@ export const menuItemsForBranchAdmin = [
   },
 ];
 
+export const menuItemsAgencyAdmin = [
+  {
+    name: 'Dashboard',
+    href: '/',
+    icon: <GoHome />,
+  },
+  {
+    name: 'Request Shift',
+    href: routes.requestShifts,
+    icon: <CiCalendarDate />,
+  },
+];
+
 export const getUserRoles = () => {
   const roles = sessionStorage.getItem('userRoles');
   return roles ? JSON.parse(roles) : [];

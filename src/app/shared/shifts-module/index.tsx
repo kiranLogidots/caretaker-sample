@@ -62,7 +62,7 @@ const ShiftsModule = () => {
     setLoading(true);
     const params = {
       branchId: branchId,
-      status: 'open',
+      // status: 'open',
     };
     try {
       const resp = await getOpenShifts(params);
