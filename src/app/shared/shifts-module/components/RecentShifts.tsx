@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { IoPersonSharp } from 'react-icons/io5';
 import SendAgencyDrawer from './SendAgencyDrawer';
 import Spinner from '@/components/ui/spinner';
+import ShiftSelectStaffDrawer from './ShiftSelectStaffDrawer';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -20,6 +21,7 @@ const RecentShifts = ({
 }) => {
   const [agencyDrawer, setAgencyDrawer] = useState(false);
   const [selectedAgency, setSelectedAgency] = useState<any>();
+  const [cardDrawer, setCardDrawer] = useState(false);
 
   const formatDateTime = (start: any, end: any) => {
     const startTime = new Date(start);
@@ -47,8 +49,15 @@ const RecentShifts = ({
     <div className="space-y-5">
       {shiftsDataArray?.map((shifts: any) => (
         <div
-          className="flex w-full justify-between rounded-md border p-4 shadow-md"
+          className={`flex w-full justify-between rounded-md border p-4 shadow-md ${
+            shifts?.agency_shift ? 'cursor-pointer' : ''
+          }`}
           key={shifts?.id}
+          onClick={() => {
+            if (shifts?.agency_shift) {
+              setCardDrawer(true);
+            }
+          }}
         >
           <div className="flex w-[50%] items-center gap-4">
             <div className="flex flex-col gap-1">
@@ -87,7 +96,9 @@ const RecentShifts = ({
               <p className="text-sm font-medium">
                 {formatDateTime(shifts?.start_time, shifts.end_time)}
               </p>
-              <p className="text-sm font-medium">BookJane Training</p>
+              <p className="text-sm font-medium">
+                {shifts?.organizationBranch?.organization?.company_name}
+              </p>
             </div>
             {!shifts?.agency_shift && (
               <button
@@ -111,6 +122,18 @@ const RecentShifts = ({
       >
         <SendAgencyDrawer
           setDrawer={setAgencyDrawer}
+          selectedAgency={selectedAgency}
+          fetchShifts={fetchShifts}
+        />
+      </Drawer>
+      <Drawer
+        size="md"
+        isOpen={cardDrawer ?? false}
+        onClose={() => setCardDrawer(false)}
+        className="z-[99]"
+      >
+        <ShiftSelectStaffDrawer
+          setDrawer={setCardDrawer}
           selectedAgency={selectedAgency}
           fetchShifts={fetchShifts}
         />

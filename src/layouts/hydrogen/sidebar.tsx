@@ -12,6 +12,7 @@ import {
   menuItemsForSuperAdmin,
   menuItemsForOrgSuperAdmin,
   menuItemsForBranchAdmin,
+  menuItemsAgencyAdmin,
 } from '@/layouts/hydrogen/menu-items';
 // import { menuItems } from '@/layouts/hydrogen/menu-items';
 import Logo from '@/components/logo';
@@ -56,6 +57,8 @@ export default function Sidebar({ className }: { className?: string }) {
     menuItems = menuItemsForOrgSuperAdmin;
   } else if (userRole === 'branch_admin') {
     menuItems = menuItemsForBranchAdmin;
+  } else if (userRole === 'agency_admin') {
+    menuItems = menuItemsAgencyAdmin;
   }
   return (
     <aside
