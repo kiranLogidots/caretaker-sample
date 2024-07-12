@@ -4,6 +4,7 @@ import { IoPersonSharp } from 'react-icons/io5';
 import SendAgencyDrawer from './SendAgencyDrawer';
 import Spinner from '@/components/ui/spinner';
 import ShiftSelectStaffDrawer from './ShiftSelectStaffDrawer';
+import { Pagination } from '@mui/material';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -14,10 +15,16 @@ const RecentShifts = ({
   shiftsDataArray,
   fetchShifts,
   loading,
+  currentPage,
+  onPageChange,
+  paginationMeta,
 }: {
   shiftsDataArray: any;
   fetchShifts: any;
   loading: boolean;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+  paginationMeta: any;
 }) => {
   const [agencyDrawer, setAgencyDrawer] = useState(false);
   const [selectedAgency, setSelectedAgency] = useState<any>();
@@ -114,6 +121,20 @@ const RecentShifts = ({
           </div>
         </div>
       ))}
+
+      {shiftsDataArray?.length > 0 && (
+        <div className="mt-6 flex justify-center">
+          <Pagination
+            count={paginationMeta.totalPages}
+            page={currentPage}
+            onChange={(event, page) => onPageChange(page)}
+            variant="outlined"
+            shape="rounded"
+            siblingCount={1}
+            boundaryCount={1}
+          />
+        </div>
+      )}
       <Drawer
         size="md"
         isOpen={agencyDrawer ?? false}
@@ -123,7 +144,7 @@ const RecentShifts = ({
         <SendAgencyDrawer
           setDrawer={setAgencyDrawer}
           selectedAgency={selectedAgency}
-          fetchShifts={fetchShifts}
+          fetchShifts={() => fetchShifts(currentPage)}
         />
       </Drawer>
       <Drawer

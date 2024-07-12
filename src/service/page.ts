@@ -926,6 +926,8 @@ export const getOpenShifts = async (params: any) => {
   const filters = {
     'filter.organizations.organization_branch_id': params.branchId,
     ...(params.status && { 'filter.shift_status': params.status }),
+    page: params.page,
+    limit: params.perPage,
   };
   const response = await axios.get(`${apiBaseUrl}/v1/shifts?`, {
     headers: {

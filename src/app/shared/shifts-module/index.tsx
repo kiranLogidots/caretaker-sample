@@ -33,6 +33,9 @@ const ShiftsModule = () => {
   const [tabValue, setTabValue] = React.useState(2);
   const [shiftsDataArray, setShiftsDataArray] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationMeta, setPaginationMeta] = useState();
+  const perPage = 10;
 
   const handleTabChange = (event: any, newValue: any) => {
     setTabValue(newValue);
@@ -58,15 +61,18 @@ const ShiftsModule = () => {
     );
   };
 
-  const fetchShifts = async () => {
+  const fetchShifts = async (page: number = 1) => {
     setLoading(true);
     const params = {
       branchId: branchId,
+      page: page,
+      perPage: perPage,
       // status: 'open',
     };
     try {
       const resp = await getOpenShifts(params);
       setShiftsDataArray(resp?.data);
+      setPaginationMeta(resp?.meta);
       console.log(resp);
     } catch (error: any) {
       console.log(error?.response?.data?.message);
@@ -75,10 +81,15 @@ const ShiftsModule = () => {
     }
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    fetchShifts(page);
+  };
+
   useEffect(() => {
-    fetchShifts();
+    fetchShifts(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [branchId]);
+  }, [branchId, currentPage]);
 
   return (
     <div className="mt-4">
@@ -120,6 +131,9 @@ const ShiftsModule = () => {
           shiftsDataArray={shiftsDataArray}
           fetchShifts={fetchShifts}
           loading={loading}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          paginationMeta={paginationMeta}
         />
       </TabPanel>
     </div>
