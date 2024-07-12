@@ -1225,3 +1225,7 @@ div[style='z-index: 1000001;'],
   span.swiper-pagination-bullet-active {
   @apply !w-4 !bg-gray-400;
 }
+
+.rizzui-drawer-container {
+  overflow-y: auto;
+}

@@ -25,17 +25,39 @@ import {
   CreateBranchesInput,
   createBranchesSchema,
 } from '@/utils/validators/create-branches.schema';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+
+interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+interface MarkerState {
+  coords: LatLng;
+}
 
 export default function CreateUser() {
-  const { getValues, setValue, control } = useForm();
+  const { getValues, setValue, control, watch } = useForm();
   // const { closeModal } = useModal();
   const { closeDrawer } = useDrawer();
   const [reset, setReset] = useState({});
-  const [isLoading, setLoading] = useState(false);
+  const [isLoadingData, setLoadingData] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [organizations, setOrganizations] = useState<
     { value: number; label: string }[]
   >([]);
+
+  // Google maps  states
+  const [myMap, setMyMap] = useState<google.maps.Map | null>(null);
+  const [center, setCenter] = useState<LatLng>({
+    lat: 29.972065,
+    lng: -90.111533,
+  });
+  const [marker, setMarker] = useState<MarkerState | null>(null);
+  const [drawMarker, setDrawMarker] = useState<boolean>(true);
+  const [address, setAddress] = useState<string>('');
+
+  const googleMapsApiKey: any = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY;
 
   useEffect(() => {
     const fetchAccountTypes = async () => {
@@ -76,15 +98,17 @@ export default function CreateUser() {
       country: data.country,
       postal_code: data.postal_code,
       organization_id: Number(organizationId), // take from the session storage
+      ...(address && { geo_address: address }),
+      ...(marker && { geo_coordinates: marker.coords }),
     };
 
-    setLoading(true);
+    console.log(formattedData, 'formattedData');
+
+    setLoadingData(true);
 
     try {
       const response = await createBranches(formattedData);
       const resultData = response.data as CreatePositionCatResponse[];
-
-      console.log('API Response:', resultData);
 
       if (resultData) {
         setReset({
@@ -110,18 +134,136 @@ export default function CreateUser() {
       }
     } finally {
       // signOut();
-      setLoading(false);
+      setLoadingData(false);
     }
   };
 
+  // google map functions
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey,
+  });
+
+  const getAddress = async (coords: any) => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.lng}&key=${googleMapsApiKey}`
+      );
+      const data: any = await response.json();
+
+      if (data.results && data.results.length > 0) {
+        setAddress(data.results[0].formatted_address);
+
+        const addressComponents = data.results[0].address_components;
+        let postalCode = '';
+        let country = '';
+        let addressWithoutPostalCodeAndCountry = '';
+
+        addressComponents.forEach((component: any) => {
+          if (component.types.includes('postal_code')) {
+            postalCode = component.long_name;
+          }
+          if (component.types.includes('country')) {
+            country = component.long_name;
+          }
+        });
+
+        addressWithoutPostalCodeAndCountry = data.results[0].formatted_address;
+        if (postalCode) {
+          addressWithoutPostalCodeAndCountry =
+            addressWithoutPostalCodeAndCountry.replace(postalCode, '').trim();
+        }
+        if (country) {
+          addressWithoutPostalCodeAndCountry =
+            addressWithoutPostalCodeAndCountry.replace(country, '').trim();
+        }
+
+        console.log(addressWithoutPostalCodeAndCountry);
+
+        // setValue('postal_code', postalCode);
+        // setValue('country', country);
+      } else {
+        setAddress('Address not found');
+      }
+    } catch (error) {
+      console.error('Error fetching address:', error);
+    }
+  };
+
+  const setSingleMarker = (coords: any) => {
+    setMarker({ coords });
+    getAddress(coords);
+  };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        () => {
+          console.error('Error getting user location');
+        }
+      );
+    }
+  }, []);
+
+  const renderMap = () => (
+    <div>
+      {address && (
+        <div className="pb-2">
+          <h6>Selected Address:</h6>
+          <p>{address}</p>
+        </div>
+      )}
+      <GoogleMap
+        onClick={(e) =>
+          //@ts-ignore
+          drawMarker ? setSingleMarker(e.latLng.toJSON()) : null
+        }
+        mapContainerStyle={{
+          height: '230px',
+          width: '100%', // Adjust width as needed to fit within the drawer
+        }}
+        zoom={10}
+        center={center}
+        onLoad={(map) => setMyMap(map)}
+      >
+        {marker && (
+          <Marker
+            draggable={drawMarker}
+            position={marker.coords}
+            //@ts-ignore
+            onDragEnd={(e) => setMarker({ coords: e.latLng.toJSON() })}
+          />
+        )}
+      </GoogleMap>
+
+      {/* <button
+        type="button"
+        className="mt-2 rounded-md bg-blue-400 p-2"
+        onClick={() => setMarker(null)}
+      >
+        CLEAR MAP
+      </button> */}
+    </div>
+  );
+
+  // const watchAddressLineOne = watch('location_address_line_one');
+  // const watchPostalCode = watch('postal_code');
+  // const watchCountry = watch('country');
+
   return (
-    <>
+    <div className="mb-4 overflow-y-auto px-2">
       <Toaster position="top-right" />
       <Form<CreateBranchesInput>
         resetValues={reset}
         onSubmit={onSubmit}
         validationSchema={createBranchesSchema}
-        className="grid grid-cols-2 gap-6 overflow-y-auto p-6 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
+        className="grid grid-cols-2 gap-6 overflow-y-auto p-3 @container md:grid-cols-2 [&_.rizzui-input-label]:font-medium [&_.rizzui-input-label]:text-gray-900"
       >
         {({ register, control, watch, formState: { errors } }) => {
           return (
@@ -188,6 +330,7 @@ export default function CreateUser() {
                 placeholder="Enter postal code "
                 {...register('postal_code')}
                 error={errors.postal_code?.message}
+                // value={watchPostalCode}
               />
 
               <Input
@@ -195,6 +338,7 @@ export default function CreateUser() {
                 placeholder="Enter your country"
                 {...register('country')}
                 error={errors.country?.message}
+                // value={watchCountry}
               />
 
               <Input
@@ -237,7 +381,7 @@ export default function CreateUser() {
                 </Button>
                 <Button
                   type="submit"
-                  isLoading={isLoading}
+                  isLoading={isLoadingData}
                   className="w-full text-white @xl:w-auto"
                 >
                   Create Location
@@ -247,6 +391,7 @@ export default function CreateUser() {
           );
         }}
       </Form>
-    </>
+      {isLoaded && renderMap()}
+    </div>
   );
 }
