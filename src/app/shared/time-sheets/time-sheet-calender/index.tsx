@@ -52,6 +52,18 @@ const TimeSheetCalender = () => {
   const [downloadStartDate, setDownloadStartDate] = useState<string>();
   const [downloadEndDate, setDownloadEndDate] = useState<string>();
   const [downloadLoading, setDownloadLoading] = useState(false);
+  const [sheetData, setSheetData] = useState();
+  const [leaveNumber, setLeaveNumber] = useState(0);
+
+  function countLeaveDays(data: any) {
+    let count = 0;
+    for (const key in data) {
+      if (data.hasOwnProperty(key) && data[key].on_leave === true) {
+        count++;
+      }
+    }
+    return count;
+  }
 
   const fetchData = async (startDate: string, endDate: string) => {
     setIsLoading(true);
@@ -67,6 +79,9 @@ const TimeSheetCalender = () => {
       const dataValue = response.data[0];
       const useName = dataValue?.first_name + ' ' + dataValue?.last_name;
       setName(useName);
+      setSheetData(dataValue);
+      const leaveCount = countLeaveDays(dataValue?.mappedShiftAttendence);
+      setLeaveNumber(leaveCount);
 
       const eventsValue =
         dataValue &&
@@ -198,7 +213,17 @@ const TimeSheetCalender = () => {
         >
           <FaArrowLeft size={20} />
         </Button>
-        <h3>Time Sheet - {name}</h3>
+        <h3>
+          Time Sheet - {name}{' '}
+          <span className="text-xs">
+            (Total hours:{' '}
+            {
+              //@ts-ignore
+              sheetData?.mappedShiftAttendence?.total_working_hours
+            }
+            , Total leave: {leaveNumber})
+          </span>
+        </h3>
       </div>
       <CustomToolbar label={format(currentMonth, 'MMM yyyy')} />
 

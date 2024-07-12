@@ -20,6 +20,7 @@ const CustomTab = styled(Tab)(({ theme }) => ({
   border: '.5px outset',
   '&.Mui-selected': {
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+    color: '#6c5ce7',
   },
   marginLeft: 0,
   marginRight: theme.spacing(1),
@@ -109,11 +110,15 @@ const ShiftsModule = () => {
           value={tabValue}
           onChange={handleTabChange}
           aria-label="shift tabs"
-          indicatorColor="primary"
-          textColor="primary"
           variant="scrollable"
           scrollButtons="auto"
-          sx={{ display: 'flex', gap: '10px' }}
+          sx={{
+            display: 'flex',
+            gap: '10px',
+            '& .MuiTabs-indicator': {
+              backgroundColor: '#6c5ce7',
+            },
+          }}
         >
           <CustomTab label="Upcoming Shifts" />
           <CustomTab label="Past Shifts" />

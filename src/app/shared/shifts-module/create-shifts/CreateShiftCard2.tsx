@@ -194,6 +194,7 @@ const CreateShiftCard2 = ({
                 name={`shifts[${index}].end_time`}
                 control={control}
                 render={({ field }) => (
+                  //@ts-ignore
                   <DatePicker
                     {...field}
                     className="h-[32px] w-full rounded-md border-gray-200 text-sm placeholder:text-sm"
@@ -205,6 +206,12 @@ const CreateShiftCard2 = ({
                     timeCaption="Time"
                     dateFormat="h:mm aa"
                     placeholderText="Select end time"
+                    minTime={
+                      shiftValues.start_time
+                        ? new Date(shiftValues.start_time.getTime() + 60000)
+                        : new Date().setHours(0, 0, 0, 0)
+                    }
+                    maxTime={new Date().setHours(23, 59, 59, 999)}
                   />
                 )}
               />
