@@ -191,12 +191,12 @@ const TimeSheetsModule: React.FC = () => {
       dataIndex: 'member',
       key: 'member',
       width: 300,
-      className: ' !p-0',
+      className: 'text-center !py-0 !pl-3',
       render: (_: any, record: DataItem) => (
         <Link
           href={`/time-sheets/${record.id}?positionId=${selectedPositionId}`}
         >
-          <p className="h-full  w-full py-4 pl-3">{`${record.first_name} ${record.last_name}`}</p>
+          <p className="h-full  w-full py-4">{`${record.first_name} ${record.last_name}`}</p>
         </Link>
       ),
     },
@@ -205,8 +205,9 @@ const TimeSheetsModule: React.FC = () => {
       dataIndex: 'total_working_hours',
       key: 'total_working_hours',
       width: 150,
+      className: 'text-center',
       render: (_: any, record: DataItem) => (
-        <p className="pl-4">
+        <p className="">
           {`${record.mappedShiftAttendence.total_working_hours}` || 0}
         </p>
       ),
@@ -218,6 +219,7 @@ const TimeSheetsModule: React.FC = () => {
         dataIndex: date,
         key: date,
         width: 150,
+        className: 'text-center',
         render: (_: any, record: DataItem) =>
           record?.mappedShiftAttendence[date]?.on_leave
             ? 'Leave'
@@ -240,6 +242,26 @@ const TimeSheetsModule: React.FC = () => {
           }
           .react-datepicker__month {
             width: 300px;
+          }
+
+          .rc-table {
+            border-collapse: collapse;
+            width: 100%;
+          }
+
+          .rc-table th,
+          .rc-table td {
+            border: 1px solid #e0e0e0;
+            padding: 8px;
+          }
+
+          .rc-table th {
+            background-color: #f0f0f0;
+            text-align: left;
+          }
+
+          .rc-table-thead th {
+            text-align: center;
           }
         `}
       </style>

@@ -258,30 +258,18 @@ export default function EventForm({
                 render={({ field: { value, onChange } }) => (
                   <div>
                     <p className="mb-1 font-medium">Start Time</p>
-                    {/* <DatePicker
-                      title="Start time"
-                      selected={value}
-                      onChange={onChange}
-                      selectsStart
-                      startDate={value}
-                      endDate={endDate}
-                      minDate={new Date()}
-                      showTimeSelect
-                      dateFormat=" h:mm aa"
-                      selectsRange={false}
-                    /> */}
                     <DatePicker
                       selected={value}
                       onChange={onChange}
                       showTimeSelect
                       showTimeSelectOnly
-                      timeIntervals={15} // Adjust the intervals as needed
+                      timeIntervals={15}
                       timeCaption="Time"
                       dateFormat="h:mm aa"
                       //@ts-ignore
-                      minTime={new Date().setHours(0, 0, 0, 0)} // Min time set to midnight
+                      minTime={new Date().setHours(0, 0, 0, 0)}
                       //@ts-ignore
-                      maxTime={new Date().setHours(23, 59, 59, 999)} // Max time set to one minute before midnight
+                      maxTime={new Date().setHours(23, 59, 59, 999)}
                     />
                   </div>
                 )}
@@ -292,17 +280,6 @@ export default function EventForm({
                 render={({ field: { value, onChange } }) => (
                   <div>
                     <p className="mb-1 font-medium">End Time</p>
-                    {/* <DatePicker
-                      selected={value}
-                      onChange={onChange}
-                      selectsEnd
-                      minDate={startDate}
-                      startDate={startDate}
-                      endDate={value}
-                      showTimeSelect
-                      dateFormat=" h:mm aa"
-                      selectsRange={false}
-                    /> */}
                     <DatePicker
                       selected={value}
                       onChange={onChange}
@@ -312,7 +289,11 @@ export default function EventForm({
                       timeCaption="Time"
                       dateFormat="h:mm aa"
                       //@ts-ignore
-                      minTime={new Date().setHours(0, 0, 0, 0)}
+                      minTime={
+                        watchedStartDate
+                          ? new Date(watchedStartDate.getTime() + 60000)
+                          : new Date().setHours(0, 0, 0, 0)
+                      } // Min time set to one minute after the start time
                       //@ts-ignore
                       maxTime={new Date().setHours(23, 59, 59, 999)}
                     />
