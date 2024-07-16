@@ -1027,7 +1027,7 @@ export const downloadTimeSheet = async (params: any) => {
 
 export const getSpecificAgency = async () => {
   const response = await axios.get(
-    `${apiBaseUrl}/v1/organizations?filter.accountType.name=agency`,
+    `${apiBaseUrl}/v1/organizations?filter.accountType.name=agency&filter.organizationBranches.id=$not:$null`,
     {
       headers: {
         'Content-Type': 'application/json',
