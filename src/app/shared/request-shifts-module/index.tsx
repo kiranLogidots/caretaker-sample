@@ -61,6 +61,8 @@ const RequestShiftsModule = () => {
 
     let response = await listOrgPositions(Number(branchId));
 
+    if (response == undefined) return;
+
     const transformedArray = response?.map((item: any) => ({
       label: item?.position?.name,
       value: item?.position?.id,
@@ -92,7 +94,6 @@ const RequestShiftsModule = () => {
       const resp = await getOpenShifts(params);
       setShiftsDataArray(resp?.data);
       setPaginationMeta(resp?.meta);
-      console.log(resp);
     } catch (error: any) {
       console.log(error?.response?.data?.message);
     } finally {

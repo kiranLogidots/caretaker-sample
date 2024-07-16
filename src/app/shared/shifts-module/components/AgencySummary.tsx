@@ -18,6 +18,7 @@ const AgencySummary = ({
   selectedPublish,
   fetchShifts,
   selectedRequestMember,
+  selectedSpecificAgency,
 }: {
   setDrawer: React.Dispatch<React.SetStateAction<boolean>>;
   setSummaryPage: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,6 +27,7 @@ const AgencySummary = ({
   selectedPublish: string;
   fetchShifts: any;
   selectedRequestMember: any;
+  selectedSpecificAgency: any;
 }) => {
   const handleSend = async () => {
     let params;
@@ -43,9 +45,19 @@ const AgencySummary = ({
         publishable_option: 'now',
         agency_member_id: selectedRequestMember?.id,
       };
+    } else if (selectedOption === 'specific_agencies') {
+      params = {
+        agency_send_options: selectedOption,
+        shift_id: selectedAgency?.id,
+        publishable_option: selectedPublish,
+        selected_agencies: selectedSpecificAgency?.organizationBranches?.map(
+          (agency: any) => ({
+            organization_branch_id: agency.id,
+            organization_id: agency.organization_id,
+          })
+        ),
+      };
     }
-
-    console.log(params);
 
     try {
       await sendToAgencies(params);
@@ -90,13 +102,21 @@ const AgencySummary = ({
       </div>
 
       <hr className="my-3 border-t border-gray-300" />
-      {selectedOption === 'all_agencies' && (
+      {(selectedOption === 'all_agencies' ||
+        selectedOption === 'specific_agencies') && (
         <div className="space-y-3">
           <p className="text-sm font-semibold">Open shift</p>
           <div className="w-full space-y-1 rounded-md bg-sky-50 p-3">
             <div className="flex items-center space-x-2">
               <p className="text-xs font-semibold">Send to:</p>
-              <p className="text-xs">Only Dedicated team members</p>
+              {selectedOption === 'all_agencies' && (
+                <p className="text-xs">Only Dedicated team members</p>
+              )}
+              {selectedOption === 'specific_agencies' && (
+                <p className="text-xs">
+                  {selectedSpecificAgency?.company_name}
+                </p>
+              )}
             </div>
             <div className="flex items-center">
               <p className="text-xs font-semibold">Send out:</p>

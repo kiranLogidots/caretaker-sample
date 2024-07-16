@@ -1023,6 +1023,21 @@ export const downloadTimeSheet = async (params: any) => {
   return url;
 };
 
+//Agency list for send to shifts
+
+export const getSpecificAgency = async () => {
+  const response = await axios.get(
+    `${apiBaseUrl}/v1/organizations?filter.accountType.name=agency`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
 // export const viewEventDetail = (id: number) => {

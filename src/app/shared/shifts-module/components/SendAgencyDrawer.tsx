@@ -136,6 +136,7 @@ const SendAgencyDrawer = ({
   const [agencyMember, setAgencyMember] = useState(false);
 
   const [selectedRequestMember, setSelectedRequestMember] = useState(null);
+  const [selectedSpecificAgency, setSelectedSpecificAgency] = useState(null);
 
   const handleRadioChange = (value: string) => {
     setSelectedOption(value);
@@ -178,6 +179,7 @@ const SendAgencyDrawer = ({
           selectedPublish={selectedPublish}
           fetchShifts={fetchShifts}
           selectedRequestMember={selectedRequestMember}
+          selectedSpecificAgency={selectedSpecificAgency}
         />
       ) : (
         <>
@@ -206,6 +208,8 @@ const SendAgencyDrawer = ({
           {specificAgency ? (
             <AgencySpecific
               handleSpecificAgencyNext={handleSpecificAgencyNext}
+              setSelectedSpecificAgency={setSelectedSpecificAgency}
+              selectedSpecificAgency={selectedSpecificAgency}
             />
           ) : agencyMember ? (
             <RequestAgencyMember
