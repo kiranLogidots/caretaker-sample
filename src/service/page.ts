@@ -928,8 +928,12 @@ export const getOpenShifts = async (params: any) => {
     ...(params.status && { 'filter.shift_status': params.status }),
     page: params.page,
     limit: params.perPage,
+    ...(params?.is_owner && {
+      'filter.organizations.is_owner': false,
+    }),
+    ...(params?.positionId && { 'filter.position_id': params?.positionId }),
   };
-  const response = await axios.get(`${apiBaseUrl}/v1/shifts?`, {
+  const response = await axios.get(`${apiBaseUrl}/v1/shifts`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,

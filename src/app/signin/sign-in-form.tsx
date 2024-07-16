@@ -77,6 +77,7 @@ export default function SignInForm() {
   const handleFocus = () => {
     setErrorMessage('');
   };
+
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     const formattedData = {
       email: data.email,
@@ -91,32 +92,35 @@ export default function SignInForm() {
       const accessToken = resultData.access_token;
       const user_roles = resultData.roles;
       const userId = resultData.id;
+      const userRole = user_roles[0].name;
 
       sessionStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('userId', userId);
       console.log('USER ID', userId);
-      // const roleObject = user_roles[0];
-      // roleObject.name = 'agency_admin';
-      // sessionStorage.setItem('userRoles', JSON.stringify([roleObject]));
 
-      if (resultData?.is_agency_admin) {
-        const roleObject = user_roles[0];
-        roleObject.name = 'agency_admin';
-        sessionStorage.setItem('userRoles', JSON.stringify([roleObject]));
-      } else {
-        sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
-      }
-
-      // console.log('User roles array', user_roles);
+      // if (resultData?.is_agency_admin) {
+      //   const roleObject = user_roles[0];
+      //   roleObject.name = 'agency_admin';
+      //   sessionStorage.setItem('userRoles', JSON.stringify([roleObject]));
+      // } else {
+      //   sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
+      // }
 
       // Redirect based on role
-      const userRole = user_roles[0].name;
+      sessionStorage.setItem('userRoles', JSON.stringify(user_roles));
 
-      if (userRole === 'organization_super_admin') {
+      if (
+        userRole === 'organization_super_admin' ||
+        userRole === 'organization_admin'
+      ) {
         const organizationUsers = resultData.organizationUsers;
         const organizationId = organizationUsers[0].organization_id;
         sessionStorage.setItem('organizationId', organizationId.toString());
-        console.log('Organization ID', organizationId);
+        if (resultData?.is_agency_admin) {
+          const roleObject = user_roles[0];
+          roleObject.name = 'agency_admin';
+          sessionStorage.setItem('userRoles', JSON.stringify([roleObject]));
+        }
       } else if (userRole === 'branch_admin') {
         const organizationUsers = resultData.organizationUsers;
         const organizationId = organizationUsers[0].organization_id;
