@@ -1024,10 +1024,40 @@ export const downloadTimeSheet = async (params: any) => {
 };
 
 //Agency list for send to shifts
-
 export const getSpecificAgency = async () => {
   const response = await axios.get(
     `${apiBaseUrl}/v1/organizations?filter.accountType.name=agency&filter.organizationBranches.id=$not:$null`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+//Selected agency members (agency admin shift)
+export const selectedAgencyMembers = async (shiftId: number) => {
+  const ordId = sessionStorage.getItem('organizationId');
+
+  const response = await axios.get(
+    `${apiBaseUrl}/v1/shift-organization-users/agency-users?filter.shiftOrganizationUsers.shiftOrganization.shift_id=${shiftId}&filter.organizationUsers.organization_id=${ordId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+//Available agency members (agency admin shift)
+export const availableAgencyMembers = async (shiftId: number) => {
+  const ordId = sessionStorage.getItem('organizationId');
+  const response = await axios.get(
+    `${apiBaseUrl}/v1/shift-organization-users/agency-users?filter.shiftOrganizationUsers.shiftOrganization.shift_id=$not:${shiftId}&filter.shiftOrganizationUsers.shiftOrganization.shift_id=$or:$null&filter.organizationUsers.organization_id=${ordId}`,
     {
       headers: {
         'Content-Type': 'application/json',

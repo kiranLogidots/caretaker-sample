@@ -50,12 +50,13 @@ const AgencySummary = ({
         agency_send_options: selectedOption,
         shift_id: selectedAgency?.id,
         publishable_option: selectedPublish,
-        selected_agencies: selectedSpecificAgency?.organizationBranches?.map(
-          (agency: any) => ({
-            organization_branch_id: agency.id,
-            organization_id: agency.organization_id,
-          })
-        ),
+        selected_agencies: [{ organization_id: selectedSpecificAgency?.id }],
+        // selected_agencies: selectedSpecificAgency?.organizationBranches?.map(
+        //   (agency: any) => ({
+        //     organization_branch_id: agency.id,
+        //     organization_id: agency.organization_id,
+        //   })
+        // ),
       };
     }
 

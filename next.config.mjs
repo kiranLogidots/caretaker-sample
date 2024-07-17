@@ -45,6 +45,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'isomorphic-furyroad.s3.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.nexsysi.alpha2.logidots.com',
+      },
     ],
   },
   reactStrictMode: false,

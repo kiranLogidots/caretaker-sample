@@ -13,7 +13,6 @@ const ShiftProceedDrawer = ({
   selectedShifts: any;
 }) => {
   const [proceedPage, setProceedPage] = useState(false);
-  console.log(selectedShifts, 'selectedShifts');
 
   const durationCalculator = (
     startTime: string,
@@ -67,7 +66,7 @@ const ShiftProceedDrawer = ({
               <PiXBold className="h-auto w-5" />
             </ActionIcon>
           </div>
-          <AcceptShift />
+          <AcceptShift selectedShifts={selectedShifts} />
         </>
       ) : (
         <>
