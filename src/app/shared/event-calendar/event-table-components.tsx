@@ -61,22 +61,9 @@ export const ShiftDataCell = ({
   cellKey,
   handlePasteData = (cellKey: any, id: any) => {},
   deleteShift = (id: number) => {},
+  disableAddButton = false,
 }) => {
   const { isCopy } = useCopy();
-
-  // const handleShiftDelete = async (shiftId: number) => {
-  //   try {
-  //     await deleteAssignShift(Number(shiftId));
-  //     toast.success('Shift removed', {
-  //       position: 'top-right',
-  //     });
-  //   } catch (error) {
-  //     toast.error('Failed to delete the shift', {
-  //       position: 'top-right',
-  //     });
-  //     console.error('Delete position failed:', error);
-  //   }
-  // };
 
   return (
     <div className="flex cursor-pointer flex-col items-center gap-1 px-2 py-2">
@@ -119,35 +106,15 @@ export const ShiftDataCell = ({
                     </button>
                   </div>
                 </div>
-                {/* <Button
-                    className="disabled relative w-full border-green-400 text-xs"
-                    variant="outline"
-                  >
-                    {moment(s.shift.start_time).format('HH:mm')}-
-                    {moment(s.shift.end_time).format('HH:mm')}
-                  </Button>
-                  <div className="absolute inset-y-0 -right-2 flex items-center pr-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCopy(s);
-                      }}
-                      className="text-gray-500 hover:text-gray-700 focus:outline-none"
-                    >
-                      <BiCopy className="h-5 w-5" />
-                    </button>
-                  </div> */}
-                {/* </div> */}
               </div>
             ))}
-            {/* <Button className="w-full" variant="outline" onClick={createShift}>
-              +
-            </Button> */}
+
             <div className="group relative w-full">
               <Button
                 className="w-full"
                 variant="outline"
                 onClick={createShift}
+                disabled={disableAddButton}
               >
                 +
               </Button>
@@ -168,7 +135,12 @@ export const ShiftDataCell = ({
           </>
         ) : (
           <div className="group relative w-full">
-            <Button className="w-full" variant="outline" onClick={createShift}>
+            <Button
+              className="w-full"
+              variant="outline"
+              onClick={createShift}
+              disabled={disableAddButton}
+            >
               +
             </Button>
             {isCopy && (

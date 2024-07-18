@@ -276,6 +276,7 @@ export default function UsersTable() {
       );
 
       console.log('Response:', response.data);
+      toast.success('Successfully saved');
       location.reload();
     } catch (error: any) {
       console.error('Error saving data:', error);

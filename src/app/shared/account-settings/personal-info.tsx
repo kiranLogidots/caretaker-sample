@@ -132,6 +132,7 @@ export default function PersonalInfoView() {
               >
                 <Input
                   className="col-span-full"
+                  disabled
                   prefix={
                     <PiEnvelopeSimple className="h-6 w-6 text-gray-500" />
                   }

@@ -41,6 +41,7 @@ import { CgTemplate } from 'react-icons/cg';
 import TemplateDrawer from './TemplateDrawer';
 import toast from 'react-hot-toast';
 import { useCopy } from '@/store/quick-cart/copy.context';
+import { isBefore, startOfDay } from 'date-fns';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -401,11 +402,16 @@ export default function EventCalendarView() {
         title: <TableHeaderCell date={d} />,
         width: 150,
         render: (data: any) => {
+          const disableAddButton = isBefore(
+            new Date(d),
+            startOfDay(new Date())
+          );
           return data?.totalMinutes ? (
             <PositionHoursDataCell data={data} />
           ) : (
             <ShiftDataCell
               data={data}
+              disableAddButton={disableAddButton}
               createShift={() => {
                 let startDate = new Date(moment(d, 'YYYY-MM-DD').format());
                 let endDate = new Date(moment(d, 'YYYY-MM-DD').format());
