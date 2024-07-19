@@ -8,11 +8,15 @@ import { formatDuration, intervalToDuration, parseISO, format } from 'date-fns';
 const ShiftProceedDrawer = ({
   setDrawer,
   selectedShifts,
+  fetchShifts,
 }: {
   setDrawer: React.Dispatch<React.SetStateAction<boolean>>;
   selectedShifts: any;
+  fetchShifts: any;
 }) => {
-  const [proceedPage, setProceedPage] = useState(false);
+  const [proceedPage, setProceedPage] = useState(
+    selectedShifts?.organizations[0]?.user_count > 0 ? true : false
+  );
 
   const durationCalculator = (
     startTime: string,
@@ -48,16 +52,18 @@ const ShiftProceedDrawer = ({
       {proceedPage ? (
         <>
           <div className="mb-5 mt-4 flex items-center justify-between ">
-            <ActionIcon
-              size="sm"
-              variant="text"
-              onClick={() => {
-                setProceedPage(false);
-              }}
-            >
-              <TiArrowLeft className="h-auto w-5" />
-            </ActionIcon>
-            <h6 className=" flex-1 text-center">Send to Agencies</h6>
+            {!(selectedShifts?.organizations[0]?.user_count > 0) && (
+              <ActionIcon
+                size="sm"
+                variant="text"
+                onClick={() => {
+                  setProceedPage(false);
+                }}
+              >
+                <TiArrowLeft className="h-auto w-5" />
+              </ActionIcon>
+            )}
+            <h6 className=" flex-1 text-center">Assign staff to shift</h6>
             <ActionIcon
               size="sm"
               variant="text"
@@ -66,7 +72,11 @@ const ShiftProceedDrawer = ({
               <PiXBold className="h-auto w-5" />
             </ActionIcon>
           </div>
-          <AcceptShift selectedShifts={selectedShifts} />
+          <AcceptShift
+            selectedShifts={selectedShifts}
+            setDrawer={setDrawer}
+            fetchShifts={fetchShifts}
+          />
         </>
       ) : (
         <>

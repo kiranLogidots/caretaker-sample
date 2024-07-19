@@ -1,14 +1,31 @@
 import Spinner from '@/components/ui/spinner';
-import { availableAgencyMembers, selectedAgencyMembers } from '@/service/page';
+import {
+  addUsersToShift,
+  availableAgencyMembers,
+  removeUsersFromShifts,
+  selectedAgencyMembers,
+} from '@/service/page';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { IoRemoveCircle } from 'react-icons/io5';
 
-const AcceptShift = ({ selectedShifts }: { selectedShifts: any }) => {
+const AcceptShift = ({
+  selectedShifts,
+  setDrawer,
+  fetchShifts,
+}: {
+  selectedShifts: any;
+  fetchShifts: any;
+  setDrawer: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [availableLoading, setAvailableLoading] = useState(false);
   const [selectedMembers, setSelectedMembers] = useState<number[]>([]);
   const [availableUsers, setAvailableUsers] = useState<any[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
+
+  const organizationId = sessionStorage.getItem('organizationId');
 
   const handleCardClick = (user: any) => {
     setSelectedMembers((prevSelected) =>
@@ -18,9 +35,53 @@ const AcceptShift = ({ selectedShifts }: { selectedShifts: any }) => {
     );
   };
 
-  const handleSubmit = () => {
-    console.log('Selected Members:', selectedMembers);
-    //  submit logic here
+  const handleSubmit = async () => {
+    const shiftId = selectedShifts?.id;
+
+    const result = selectedMembers.map((uuid) => ({
+      organization_id: organizationId,
+      shift_id: shiftId,
+      user_id: uuid,
+    }));
+
+    try {
+      await addUsersToShift(result);
+
+      toast.success('Successfully added users to the shift', {
+        duration: 4000,
+      });
+      fetchShifts();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message, { duration: 4000 });
+    } finally {
+      setDrawer(false);
+    }
+  };
+
+  const handleRemove = async (user: any) => {
+    const shiftId = selectedShifts?.id;
+    const removeParams = {
+      organization_id: organizationId,
+      shift_id: shiftId,
+      user_id: user?.id,
+    };
+
+    try {
+      await removeUsersFromShifts([removeParams]);
+
+      setSelectedUsers((prevSelected) =>
+        prevSelected.filter((u) => u.id !== user.id)
+      );
+      setAvailableUsers((prevAvailable) => [...prevAvailable, user]);
+      toast.success('Successfully removed users', {
+        duration: 4000,
+      });
+      // fetchSelectedUsers();
+      // fetchAvailableUsers();
+      fetchShifts();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message, { duration: 4000 });
+    }
   };
 
   const fetchSelectedUsers = async () => {
@@ -89,6 +150,13 @@ const AcceptShift = ({ selectedShifts }: { selectedShifts: any }) => {
                           user?.first_name.slice(1).toLowerCase()}{' '}
                         {user?.last_name}
                       </p>
+                    </div>
+                    <div
+                      className="flex items-center gap-4 bg-gray-50 p-2"
+                      onClick={() => handleRemove(user)}
+                    >
+                      <IoRemoveCircle />
+                      <p>Remove</p>
                     </div>
                   </div>
                 ))}

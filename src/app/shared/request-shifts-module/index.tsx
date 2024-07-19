@@ -80,13 +80,15 @@ const RequestShiftsModule = () => {
   };
 
   const fetchShifts = async (page: number = 1) => {
+    const organizationId = sessionStorage.getItem('organizationId');
     setLoading(true);
     const params = {
-      branchId: branchId,
       is_owner: true,
       page: page,
       perPage: perPage,
       positionId: selectedPositionId,
+      organizationId: organizationId,
+      // branchId: branchId,
       // status: 'open',
     };
 
@@ -107,9 +109,10 @@ const RequestShiftsModule = () => {
   };
 
   useEffect(() => {
+    console.log('hello', branchId, selectedPositionId);
     fetchShifts(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [branchId, currentPage, selectedPositionId]);
+  }, [branchId, selectedPositionId]);
 
   useEffect(() => {
     fetchPositions();
@@ -148,7 +151,7 @@ const RequestShiftsModule = () => {
                   setProceedDrawer(true);
                   setSelectedShifts(shifts);
                 }}
-                className="flex w-full cursor-pointer justify-between rounded-md border p-4 shadow-md"
+                className="relative flex w-full cursor-pointer justify-between rounded-md border p-4 shadow-md"
               >
                 <div className="flex w-[50%] items-center gap-4">
                   <div className="flex flex-col gap-1">
@@ -170,6 +173,13 @@ const RequestShiftsModule = () => {
                     </p>
                   </div>
                 </div>
+                {shifts?.organizations[0]?.user_count > 0 && (
+                  <div className="absolute bottom-2 right-2 flex items-center justify-center ">
+                    <p className="text-xs font-medium">
+                      {shifts?.organizations[0]?.user_count + ' members'}
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -198,6 +208,7 @@ const RequestShiftsModule = () => {
         <ShiftProceedDrawer
           setDrawer={setProceedDrawer}
           selectedShifts={selectedShifts}
+          fetchShifts={() => fetchShifts(currentPage)}
         />
       </Drawer>
     </div>

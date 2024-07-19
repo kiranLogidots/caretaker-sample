@@ -924,7 +924,9 @@ export const createOpenShift = async (data: any) => {
 export const getOpenShifts = async (params: any) => {
   if (params.branchId == 0) return;
   const filters = {
-    'filter.organizations.organization_branch_id': params.branchId,
+    ...(params.branchId && {
+      'filter.organization_branch_id': params.branchId,
+    }),
     ...(params.status && { 'filter.shift_status': params.status }),
     page: params.page,
     limit: params.perPage,
@@ -932,6 +934,9 @@ export const getOpenShifts = async (params: any) => {
       'filter.organizations.is_owner': false,
     }),
     ...(params?.positionId && { 'filter.position_id': params?.positionId }),
+    ...(params.organizationId && {
+      'filter.organizations.organization_id': params.organizationId,
+    }),
   };
   const response = await axios.get(`${apiBaseUrl}/v1/shifts`, {
     headers: {
@@ -1045,7 +1050,7 @@ export const selectedAgencyMembers = async (shiftId: number) => {
   const ordId = sessionStorage.getItem('organizationId');
 
   const response = await axios.get(
-    `${apiBaseUrl}/v1/shift-organization-users/agency-users?filter.shiftOrganizationUsers.shiftOrganization.shift_id=${shiftId}&filter.organizationUsers.organization_id=${ordId}`,
+    `${apiBaseUrl}/v1/shift-organization-users/agency-users?filter.shiftOrganizationUsers.shiftOrganization.shift_id=${shiftId}&filter.organizationUsers.organization_id=${ordId}&limit=100`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -1060,7 +1065,7 @@ export const selectedAgencyMembers = async (shiftId: number) => {
 export const availableAgencyMembers = async (shiftId: number) => {
   const ordId = sessionStorage.getItem('organizationId');
   const response = await axios.get(
-    `${apiBaseUrl}/v1/shift-organization-users/agency-users?filter.shiftOrganizationUsers.shiftOrganization.shift_id=$not:${shiftId}&filter.shiftOrganizationUsers.shiftOrganization.shift_id=$or:$null&filter.organizationUsers.organization_id=${ordId}`,
+    `${apiBaseUrl}/v1/shift-organization-users/agency-users?filter.shiftOrganizationUsers.shiftOrganization.shift_id=$not:${shiftId}&filter.shiftOrganizationUsers.shiftOrganization.shift_id=$or:$null&filter.organizationUsers.organization_id=${ordId}&limit=100`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -1090,6 +1095,36 @@ export const openShiftsUserApply = async (appliedId: number) => {
     {
       status: 'accepted',
     },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// Add user to shifts (Agency admin)
+export const addUsersToShift = async (payload: any) => {
+  const response = await axios.post(
+    `${apiBaseUrl}/v1/shift-organization-users/add `,
+    payload,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// Remove users from shifts (Agency admin)
+export const removeUsersFromShifts = async (payload: any) => {
+  const response = await axios.post(
+    `${apiBaseUrl}/v1/shift-organization-users/remove `,
+    payload,
     {
       headers: {
         'Content-Type': 'application/json',
