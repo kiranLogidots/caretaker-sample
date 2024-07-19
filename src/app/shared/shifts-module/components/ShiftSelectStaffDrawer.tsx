@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { shiftArrayType } from './SendAgencyDrawer';
+import { calculateTimeDifference, shiftArrayType } from './SendAgencyDrawer';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { PiXBold } from 'react-icons/pi';
 import { TiArrowLeft } from 'react-icons/ti';
 import AcceptStaff from './AcceptStaff';
+import { openShiftsUserApply } from '@/service/page';
+import toast from 'react-hot-toast';
 
 const ShiftSelectStaffDrawer = ({
   setDrawer,
@@ -14,36 +16,46 @@ const ShiftSelectStaffDrawer = ({
   selectedAgency: shiftArrayType;
   fetchShifts: any;
 }) => {
-  const [selectStaff, setSelectStaff] = useState(false);
-  const [selectedStaffData, setSelectedStaffData] = useState();
+  // const [selectStaff, setSelectStaff] = useState(false);
+  const [selectedStaffData, setSelectedStaffData] = useState<any>();
 
-  const handleSubmit = () => {
-    console.log(selectedStaffData, 'selectedStaffData');
+  const handleSubmit = async () => {
+    try {
+      await openShiftsUserApply(selectedStaffData?.id);
+      setDrawer(false);
+      toast.success('Selected user for the shift');
+      fetchShifts();
+    } catch (error: any) {
+      console.log(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
+    }
   };
 
   return (
     <div className="relative flex h-full w-full flex-col space-y-5 overflow-y-auto px-5">
-      {!selectStaff ? (
-        <>
-          <div className="mb-5 mt-4 flex items-center justify-between ">
-            <h6 className=" flex-1 text-center">Select Staff</h6>
-            <ActionIcon
-              size="sm"
-              variant="text"
-              onClick={() => setDrawer(false)}
-            >
-              <PiXBold className="h-auto w-5" />
-            </ActionIcon>
-          </div>
-          <AcceptStaff
-            setSelectedStaffData={setSelectedStaffData}
-            selectedStaffData={selectedStaffData}
-            setSelectStaff={setSelectStaff}
-            setDrawer={setDrawer}
-          />
-        </>
-      ) : (
-        <>
+      {/* {!selectStaff ? ( */}
+      <>
+        <div className=" mt-4 flex items-center justify-between ">
+          <h6 className=" flex-1 text-center">Select Agency member</h6>
+          <ActionIcon size="sm" variant="text" onClick={() => setDrawer(false)}>
+            <PiXBold className="h-auto w-5" />
+          </ActionIcon>
+        </div>
+        <AcceptStaff
+          setSelectedStaffData={setSelectedStaffData}
+          selectedStaffData={selectedStaffData}
+          // setSelectStaff={setSelectStaff}
+          handleSubmit={handleSubmit}
+          setDrawer={setDrawer}
+          selectedAgency={selectedAgency}
+          totalHours={calculateTimeDifference(
+            selectedAgency?.start_time,
+            selectedAgency?.end_time
+          )}
+        />
+      </>
+      {/* ) : ( */}
+      {/* <>
           <div className="mb-5 mt-4 flex items-center justify-between ">
             <ActionIcon
               size="sm"
@@ -98,8 +110,8 @@ const ShiftSelectStaffDrawer = ({
               Submit
             </button>
           </div>
-        </>
-      )}
+        </> */}
+      {/* )} */}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import Spinner from '@/components/ui/spinner';
 import { getRequestAgencyMember } from '@/service/page';
 import { Switch } from '@headlessui/react';
+import { Pagination } from '@mui/material';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -20,6 +21,8 @@ const RequestAgencyMember = ({
 }) => {
   // const [enabled, setEnabled] = useState(false);
   const [agencyMemberArray, setAgencyMemberArray] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationMeta, setPaginationMeta] = useState<any>();
   const [buttonDisable, setButtonDisable] = useState(
     !selectedRequestMember?.id ?? true
   );
@@ -37,23 +40,34 @@ const RequestAgencyMember = ({
     return totalHours * estimateAmount[0];
   };
 
-  useEffect(() => {
-    const fetchRequestAgency = async () => {
-      setLoading(true);
-      try {
-        const resp = await getRequestAgencyMember({ position_id: positionId });
-        setAgencyMemberArray(resp?.data);
-        console.log(resp);
-      } catch (error: any) {
-        console.log(error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchRequestAgency = async (page: number = 1) => {
+    setLoading(true);
+    try {
+      const resp = await getRequestAgencyMember({
+        position_id: positionId,
+        page: page,
+        limit: 12,
+      });
+      setAgencyMemberArray(resp?.data);
+      setPaginationMeta(resp?.meta);
+      console.log(resp);
+    } catch (error: any) {
+      console.log(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchRequestAgency();
-  }, [positionId]);
+  useEffect(() => {
+    fetchRequestAgency(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [positionId, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    fetchRequestAgency(page);
+  };
 
   return (
     <div className="relative flex h-full flex-col">
@@ -83,70 +97,87 @@ const RequestAgencyMember = ({
         {loading ? (
           <Spinner />
         ) : (
-          <div className="grid grid-cols-3 gap-2">
+          <div className="w-full">
             {agencyMemberArray.length > 0 ? (
-              agencyMemberArray.map((member: any) => (
-                <div
-                  className="flex cursor-pointer flex-col rounded-md border border-gray-100 shadow-md"
-                  key={member?.id}
-                  onClick={() => {
-                    setSelectedRequestMember(member);
-                    setButtonDisable(false);
-                  }}
-                >
-                  <div className="relative h-24 w-full">
-                    <Image
-                      src={
-                        member.profile_pic
-                          ? member.profile_pic
-                          : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
-                      }
-                      alt="memberImage"
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-t-md"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2 px-2 pb-6 pt-3">
-                    <p className="text-xs font-bold text-black">
-                      {member?.first_name?.charAt(0).toUpperCase() +
-                        member?.first_name.slice(1).toLowerCase()}{' '}
-                      {member?.last_name}
-                    </p>
-
-                    <p className="text-xs text-gray-500">
-                      {member?.organizationUsers[0]?.branch?.branch_name}
-                    </p>
-
-                    {member?.userPositions.map((position: any) =>
-                      position?.position_id == positionId ? (
-                        <p
-                          key={position?.id}
-                          className="text-xs font-medium text-black "
-                        >
-                          ${position.hourly_rate}/hr
-                        </p>
-                      ) : (
-                        ''
-                      )
-                    )}
-                  </div>
-                  <div className="flex items-center gap-4 bg-gray-50 p-2">
-                    <input
-                      type="radio"
-                      name="requestMember"
-                      value={selectedRequestMember?.id}
-                      checked={selectedRequestMember?.id === member?.id}
-                      onChange={(e) => {
-                        e.stopPropagation();
+              <>
+                <div className="grid grid-cols-3 gap-2">
+                  {agencyMemberArray.map((member: any) => (
+                    <div
+                      className="flex cursor-pointer flex-col rounded-md border border-gray-100 shadow-md"
+                      key={member?.id}
+                      onClick={() => {
                         setSelectedRequestMember(member);
                         setButtonDisable(false);
                       }}
-                    />
-                    <p className="text-sm font-semibold">Request</p>
-                  </div>
+                    >
+                      <div className="relative h-24 w-full">
+                        <Image
+                          src={
+                            member.profile_pic
+                              ? member.profile_pic
+                              : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
+                          }
+                          alt="memberImage"
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-t-md"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2 px-2 pb-6 pt-3">
+                        <p className="text-xs font-bold text-black">
+                          {member?.first_name?.charAt(0).toUpperCase() +
+                            member?.first_name.slice(1).toLowerCase()}{' '}
+                          {member?.last_name}
+                        </p>
+
+                        <p className="text-xs text-gray-500">
+                          {member?.organizationUsers[0]?.branch?.branch_name}
+                        </p>
+
+                        {member?.userPositions.map((position: any) =>
+                          position?.position_id == positionId ? (
+                            <p
+                              key={position?.id}
+                              className="text-xs font-medium text-black "
+                            >
+                              ${position.hourly_rate}/hr
+                            </p>
+                          ) : (
+                            ''
+                          )
+                        )}
+                      </div>
+                      <div className="flex items-center gap-4 bg-gray-50 p-2">
+                        <input
+                          type="radio"
+                          name="requestMember"
+                          value={selectedRequestMember?.id}
+                          checked={selectedRequestMember?.id === member?.id}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            setSelectedRequestMember(member);
+                            setButtonDisable(false);
+                          }}
+                        />
+                        <p className="text-sm font-semibold">Request</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))
+                {agencyMemberArray?.length > 12 && (
+                  <div className="mt-6 flex justify-center">
+                    <Pagination
+                      count={paginationMeta?.totalPages}
+                      page={currentPage}
+                      onChange={(event, page) => handlePageChange(page)}
+                      variant="outlined"
+                      shape="rounded"
+                      siblingCount={1}
+                      boundaryCount={1}
+                    />
+                  </div>
+                )}
+              </>
             ) : (
               <div className="col-span-3 text-center text-gray-500">
                 No agency member found

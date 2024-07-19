@@ -964,6 +964,8 @@ export const sendToAgencies = async (data: any) => {
 export const getRequestAgencyMember = async (params: any) => {
   const filters = {
     'filter.userPositions.position_id ': params.position_id,
+    limit: params.limit,
+    page: params.page,
   };
   const response = await axios.get(
     `${apiBaseUrl}/v1/organization-users/agency/branch-staffs`,
@@ -1024,7 +1026,7 @@ export const downloadTimeSheet = async (params: any) => {
 };
 
 //Agency list for send to shifts
-export const getSpecificAgency = async () => {
+export const getSpecificAgency = async (params: any) => {
   const response = await axios.get(
     `${apiBaseUrl}/v1/organizations?filter.accountType.name=agency&filter.organizationBranches.id=$not:$null`,
     {
@@ -1032,6 +1034,7 @@ export const getSpecificAgency = async () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
+      params: params,
     }
   );
   return response.data;
@@ -1058,6 +1061,35 @@ export const availableAgencyMembers = async (shiftId: number) => {
   const ordId = sessionStorage.getItem('organizationId');
   const response = await axios.get(
     `${apiBaseUrl}/v1/shift-organization-users/agency-users?filter.shiftOrganizationUsers.shiftOrganization.shift_id=$not:${shiftId}&filter.shiftOrganizationUsers.shiftOrganization.shift_id=$or:$null&filter.organizationUsers.organization_id=${ordId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+// List open shift apply staff list
+export const getOpenShiftApplyUsers = async (params: any) => {
+  const response = await axios.get(`${apiBaseUrl}/v1/shift-applications`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params: params,
+  });
+  return response.data;
+};
+
+// Apply user to open shifts
+export const openShiftsUserApply = async (appliedId: number) => {
+  const response = await axios.post(
+    `${apiBaseUrl}/v1/shift-applications/${appliedId}/accept-or-reject`,
+    {
+      status: 'accepted',
+    },
     {
       headers: {
         'Content-Type': 'application/json',

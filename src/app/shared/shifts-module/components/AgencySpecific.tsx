@@ -1,5 +1,6 @@
 import Spinner from '@/components/ui/spinner';
 import { getSpecificAgency } from '@/service/page';
+import { Pagination } from '@mui/material';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -15,27 +16,39 @@ const AgencySpecific = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [agencyArray, setAgencyArray] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationMeta, setPaginationMeta] = useState<any>();
   const [buttonDisable, setButtonDisable] = useState(
     !selectedSpecificAgency?.id ?? true
   );
 
-  useEffect(() => {
-    const fetchAgency = async () => {
-      setLoading(true);
-      try {
-        const resp = await getSpecificAgency();
-        setAgencyArray(resp?.data);
-        console.log(resp);
-      } catch (error: any) {
-        console.log(error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
-      } finally {
-        setLoading(false);
-      }
+  const fetchAgency = async (page: number = 1) => {
+    setLoading(true);
+    const params = {
+      page: page,
+      limit: 12,
     };
+    try {
+      const resp = await getSpecificAgency(params);
+      setAgencyArray(resp?.data);
+      setPaginationMeta(resp?.meta);
+      console.log(resp);
+    } catch (error: any) {
+      console.log(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchAgency();
-  }, []);
+  useEffect(() => {
+    fetchAgency(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    fetchAgency(page);
+  };
 
   return (
     <div className="relative flex h-full flex-col">
@@ -46,50 +59,67 @@ const AgencySpecific = ({
         {loading ? (
           <Spinner />
         ) : (
-          <div className="grid grid-cols-3 gap-2">
+          <div className="w-full">
             {agencyArray.length > 0 ? (
-              agencyArray.map((agency: any) => (
-                <div
-                  className="flex cursor-pointer flex-col rounded-md border border-gray-100 shadow-md"
-                  key={agency?.id}
-                  onClick={() => {
-                    setSelectedSpecificAgency(agency);
-                    setButtonDisable(false);
-                  }}
-                >
-                  <div className="relative h-24 w-full">
-                    <Image
-                      src={
-                        agency.profile_pic
-                          ? agency.profile_pic
-                          : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
-                      }
-                      alt="memberImage"
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-t-md"
-                    />
-                  </div>
-                  <div className="flex flex-grow flex-col gap-2 px-1 py-3">
-                    <p className="text-xs font-bold text-black">
-                      {agency?.company_name}
-                    </p>
-                  </div>
-                  <div className="flex items-center bg-gray-50 p-2">
-                    <input
-                      type="radio"
-                      name="agencyName"
-                      value={selectedSpecificAgency?.id}
-                      checked={selectedSpecificAgency?.id === agency?.id}
-                      onChange={(e) => {
-                        e.stopPropagation();
+              <>
+                <div className="grid grid-cols-3 gap-2">
+                  {agencyArray.map((agency: any) => (
+                    <div
+                      className="flex cursor-pointer flex-col rounded-md border border-gray-100 shadow-md"
+                      key={agency?.id}
+                      onClick={() => {
                         setSelectedSpecificAgency(agency);
                         setButtonDisable(false);
                       }}
+                    >
+                      <div className="relative h-24 w-full">
+                        <Image
+                          src={
+                            agency.profile_pic
+                              ? agency.profile_pic
+                              : 'https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp'
+                          }
+                          alt="memberImage"
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-t-md"
+                        />
+                      </div>
+                      <div className="flex flex-grow flex-col gap-2 px-1 py-3">
+                        <p className="text-xs font-bold text-black">
+                          {agency?.company_name}
+                        </p>
+                      </div>
+                      <div className="flex items-center bg-gray-50 p-2">
+                        <input
+                          type="radio"
+                          name="agencyName"
+                          value={selectedSpecificAgency?.id}
+                          checked={selectedSpecificAgency?.id === agency?.id}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            setSelectedSpecificAgency(agency);
+                            setButtonDisable(false);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {agencyArray?.length > 12 && (
+                  <div className="mt-6 flex justify-center">
+                    <Pagination
+                      count={paginationMeta?.totalPages}
+                      page={currentPage}
+                      onChange={(event, page) => handlePageChange(page)}
+                      variant="outlined"
+                      shape="rounded"
+                      siblingCount={1}
+                      boundaryCount={1}
                     />
                   </div>
-                </div>
-              ))
+                )}
+              </>
             ) : (
               <div className="col-span-3 text-center text-gray-500">
                 No agency found

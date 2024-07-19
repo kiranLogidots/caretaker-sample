@@ -57,12 +57,15 @@ const RecentShifts = ({
       {shiftsDataArray?.map((shifts: any) => (
         <div
           className={`flex w-full justify-between rounded-md border p-4 shadow-md ${
-            shifts?.agency_shift ? 'cursor-pointer' : ''
+            shifts?.shift_status == 'open' && shifts?.agency_shift
+              ? 'cursor-pointer'
+              : ''
           }`}
           key={shifts?.id}
           onClick={() => {
-            if (shifts?.agency_shift) {
+            if (shifts?.shift_status == 'open' && shifts?.agency_shift) {
               setCardDrawer(true);
+              setSelectedAgency(shifts);
             }
           }}
         >
@@ -107,7 +110,7 @@ const RecentShifts = ({
                 {shifts?.organizationBranch?.organization?.company_name}
               </p>
             </div>
-            {!shifts?.agency_shift && (
+            {shifts?.shift_status == 'open' && !shifts?.agency_shift && (
               <button
                 onClick={() => {
                   setAgencyDrawer(true);
@@ -156,7 +159,7 @@ const RecentShifts = ({
         <ShiftSelectStaffDrawer
           setDrawer={setCardDrawer}
           selectedAgency={selectedAgency}
-          fetchShifts={fetchShifts}
+          fetchShifts={() => fetchShifts(currentPage)}
         />
       </Drawer>
     </div>

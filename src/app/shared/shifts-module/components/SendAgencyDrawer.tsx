@@ -118,6 +118,17 @@ export interface shiftArrayType {
   position: Position;
 }
 
+export const calculateTimeDifference = (start: any, end: any) => {
+  console.log(start, end);
+  const startTime = new Date(start);
+  const endTime = new Date(end);
+
+  const differenceInMs = endTime.getTime() - startTime.getTime();
+  const differenceInHours = differenceInMs / (1000 * 60 * 60);
+
+  return differenceInHours;
+};
+
 const SendAgencyDrawer = ({
   setDrawer,
   selectedAgency,
@@ -155,17 +166,6 @@ const SendAgencyDrawer = ({
 
   const handleSpecificAgencyNext = () => {
     setSummaryPage(true);
-  };
-
-  const calculateTimeDifference = (start: any, end: any) => {
-    console.log(start, end);
-    const startTime = new Date(start);
-    const endTime = new Date(end);
-
-    const differenceInMs = endTime.getTime() - startTime.getTime();
-    const differenceInHours = differenceInMs / (1000 * 60 * 60);
-
-    return differenceInHours;
   };
 
   return (
