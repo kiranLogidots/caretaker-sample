@@ -100,7 +100,7 @@ export function BillingForm({ register, control, errors }: any) {
           month = '12';
         }
       }
-      return isMask ? format(`${month}${year}`) : `${month}/${year}`;
+      return isMask ? `${month}${year}` : `${month}/${year}`;
     };
     return <NumberInput {...props} format={_format} />;
   }
