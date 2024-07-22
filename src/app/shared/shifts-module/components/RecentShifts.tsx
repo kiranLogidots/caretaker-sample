@@ -5,6 +5,7 @@ import SendAgencyDrawer from './SendAgencyDrawer';
 import Spinner from '@/components/ui/spinner';
 import ShiftSelectStaffDrawer from './ShiftSelectStaffDrawer';
 import { Pagination } from '@mui/material';
+import { capitalizeWords } from '@/lib/helperFunctions';
 
 const Drawer = dynamic(
   () => import('@/components/ui/drawer').then((module) => module.Drawer),
@@ -73,7 +74,7 @@ const RecentShifts = ({
             <div className="flex flex-col gap-1">
               <p className="text-sm font-bold">Shift #{shifts?.id}</p>
               <div className="flex items-center justify-center rounded-2xl bg-orange-400 text-xs font-medium text-black">
-                {shifts?.shift_status}
+                {capitalizeWords(shifts?.shift_status)}
               </div>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-full  bg-orange-300 text-white">
@@ -82,7 +83,7 @@ const RecentShifts = ({
             <div className="flex flex-col gap-1">
               <div className="flex gap-2">
                 <p className="text-sm font-bold">
-                  {shifts?.shift_status} shift
+                  {capitalizeWords(shifts?.shift_status)} shift
                 </p>
                 {shifts?.agency_shift && (
                   <div className="flex items-center justify-center bg-slate-600 px-1 text-center text-xs font-medium text-white">

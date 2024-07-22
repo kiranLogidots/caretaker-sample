@@ -15,6 +15,8 @@ import DeletePopover from '@/app/shared/delete-popover';
 import { HKSEvents } from '@/types';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
+import { TiTick } from 'react-icons/ti';
+import { IoClose } from 'react-icons/io5';
 
 function getStatusBadge(status: User['status']) {
   switch (status) {
@@ -54,6 +56,7 @@ type Columns = {
   data: any[];
   sortConfig?: any;
   handleSelectAll: any;
+  handleActiveDisable: any;
   checkedItems: string[];
   onDeleteItem: (id: number) => void;
   onHeaderCellClick: (value: string) => void;
@@ -68,6 +71,7 @@ export const getColumns = ({
   onHeaderCellClick,
   handleSelectAll,
   onChecked,
+  handleActiveDisable,
 }: Columns) => [
   // {
   //   title: (
@@ -101,7 +105,8 @@ export const getColumns = ({
     dataIndex: 'user',
     key: 'user.first_name',
     width: 150,
-    render: (user: { first_name: string }) => user.first_name,
+    render: (user: { first_name: string; last_name: string }) =>
+      user.first_name + ' ' + user?.last_name,
   },
   // {
   //   title: <HeaderCell title="Position" />,
@@ -154,41 +159,80 @@ export const getColumns = ({
 
   // },
 
-  // {
-  //   title: <HeaderCell title="Actions" />,
-  //   dataIndex: 'action',
-  //   key: 'action',
-  //   width: 140,
-  //   render: (_: string, event: HKSEvents) => (
-  //     <div className="justify-en flex items-center gap-3 pe-3">
-  //       {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">
-  //         <ActionIcon
-  //           as="span"
-  //           size="sm"
-  //           variant="outline"
-  //           className="hover:!border-gray-900 hover:text-gray-700"
-  //         >
-  //           <PencilIcon className="h-4 w-4" />
-  //         </ActionIcon>
-  //       </Tooltip> */}
-  //       <Tooltip size="sm" content={'View Staff Details'} placement="top" color="invert">
-  //         <Link href={routes.eventsHKS.eventDetails(event.id)}>
-  //         <ActionIcon
-  //           as="span"
-  //           size="sm"
-  //           variant="outline"
-  //           className="hover:!border-gray-900 hover:text-gray-700"
-  //         >
-  //           <EyeIcon className="h-4 w-4" />
-  //         </ActionIcon>
-  //         </Link>
-  //       </Tooltip>
-  //       <DeletePopover
-  //         title={`Delete`}
-  //         description={`Are you sure you want to delete this staff ?`}
-  //         onDelete={() => onDeleteItem(event.id)}
-  //       />
-  //     </div>
-  //   ),
-  // },
+  {
+    title: <HeaderCell title="Actions" />,
+    dataIndex: 'action',
+    key: 'action',
+    width: 140,
+    render: (_: string, user: any) => {
+      const active = user?.user?.is_active;
+      return (
+        <div className="justify-en flex items-center gap-3 pe-3">
+          {active ? (
+            <Tooltip
+              size="sm"
+              content={'Deactivate user'}
+              placement="top"
+              color="invert"
+            >
+              <ActionIcon
+                as="span"
+                size="sm"
+                variant="outline"
+                className="cursor-pointer border-none text-red  hover:text-red-500"
+                onClick={() => handleActiveDisable(user)}
+              >
+                <IoClose className="h-6 w-6" />
+              </ActionIcon>
+            </Tooltip>
+          ) : (
+            <Tooltip
+              size="sm"
+              content={'Activate user'}
+              placement="top"
+              color="invert"
+            >
+              <ActionIcon
+                as="span"
+                size="sm"
+                variant="outline"
+                className="cursor-pointer border-none text-green  hover:text-green-700"
+                onClick={() => handleActiveDisable(user)}
+              >
+                <TiTick className="h-6 w-6" />
+              </ActionIcon>
+            </Tooltip>
+          )}
+
+          {/* <Tooltip size="sm" content={'Edit Event'} placement="top" color="invert">
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            className="hover:!border-gray-900 hover:text-gray-700"
+          >
+            <PencilIcon className="h-4 w-4" />
+          </ActionIcon>
+        </Tooltip> */}
+          {/* <Tooltip size="sm" content={'View Staff Details'} placement="top" color="invert">
+          <Link href={routes.eventsHKS.eventDetails(event.id)}>
+          <ActionIcon
+            as="span"
+            size="sm"
+            variant="outline"
+            className="hover:!border-gray-900 hover:text-gray-700"
+          >
+            <EyeIcon className="h-4 w-4" />
+          </ActionIcon>
+          </Link>
+        </Tooltip> */}
+          {/* <DeletePopover
+          title={`Delete`}
+          description={`Are you sure you want to delete this staff ?`}
+          onDelete={() => onDeleteItem(event.id)}
+        /> */}
+        </div>
+      );
+    },
+  },
 ];

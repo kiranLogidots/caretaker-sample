@@ -21,6 +21,7 @@ import Image from 'next/image';
 import GWLogo from '../../../public/sidebarlogo.png';
 // import { useRouter } from 'next/router';
 import { useActiveMenu } from './ActiveMenuContext';
+import { getUserRoles } from '@/lib/helperFunctions';
 
 interface MenuItem {
   name: string;
@@ -32,15 +33,6 @@ interface DropdownItem {
   name: string;
   href: string;
 }
-interface UserRole {
-  id: number;
-  name: string;
-  created_at: string;
-}
-const getUserRoles = (): UserRole[] => {
-  const roles = sessionStorage.getItem('userRoles');
-  return roles ? (JSON.parse(roles) as UserRole[]) : [];
-};
 
 export default function Sidebar({ className }: { className?: string }) {
   const { setActiveMenuName } = useActiveMenu();

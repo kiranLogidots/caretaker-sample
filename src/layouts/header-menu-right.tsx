@@ -16,11 +16,14 @@ import { useEffect, useState } from 'react';
 import { listUserBranches } from '@/service/page';
 import { useAtom } from 'jotai';
 import { selectedBranchAtom } from '@/store/checkout';
+import { getUserRoles } from '@/lib/helperFunctions';
 
 export default function HeaderMenuRight() {
   const [selectedUserBranch, setSelectedUserBranch] = useState([]);
   const [userBranches, setUserBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useAtom(selectedBranchAtom);
+  const userRoles = getUserRoles();
+  const userRole = userRoles.length ? userRoles[0].name : null;
 
   const theme = {
     colors: {
@@ -104,7 +107,11 @@ export default function HeaderMenuRight() {
           />
         </ActionIcon>
       </NotificationDropdown> */}
-      <div className="flex w-full gap-3">
+      <div
+        className={`flex  gap-3 ${
+          userRole === 'agency_admin' ? 'w-[50%]' : 'w-full'
+        }`}
+      >
         <Select
           value={selectedUserBranch}
           // onChange={setSelectedUserBranch}
@@ -117,11 +124,16 @@ export default function HeaderMenuRight() {
           optionClassName="z-[100]"
           style={{ width: '50%', zIndex: 100 }}
         />
-        <Link href={`/event-calendar`} className="flex w-[50%]">
-          <Button as="span" className="w-full bg-[#6c5ce7] text-xs text-white">
-            Create shift
-          </Button>
-        </Link>
+        {!(userRole === 'agency_admin') && (
+          <Link href={`/event-calendar`} className="flex w-[50%]">
+            <Button
+              as="span"
+              className="w-full bg-[#6c5ce7] text-xs text-white"
+            >
+              Create shift
+            </Button>
+          </Link>
+        )}
       </div>
       <Engagespot
         apiKey="b1vxvkz6m5txxwsas37nr"

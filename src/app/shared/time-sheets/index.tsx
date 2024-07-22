@@ -318,7 +318,7 @@ const TimeSheetsModule: React.FC = () => {
         data={tableData}
         columns={columns as any}
         rowKey="id"
-        scroll={2000}
+        scroll={tableData.length > 0 ? 2000 : 1000}
       />
     </div>
   );

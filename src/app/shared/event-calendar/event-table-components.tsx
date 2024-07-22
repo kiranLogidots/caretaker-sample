@@ -7,6 +7,7 @@ import { Fragment, useEffect } from 'react';
 import { BiCopy, BiSolidPaste, BiTrash } from 'react-icons/bi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import DeletePopover from '../delete-popover';
+import { capitalizeWords } from '@/lib/helperFunctions';
 
 export const MemberProfile = ({
   data = {
@@ -26,7 +27,9 @@ export const MemberProfile = ({
       />
       <div className="flex w-full flex-col">
         <div className="mb-1 flex capitalize">{data.name}</div>
-        <p className="text-gray text-xs font-light">{data.employment_status}</p>
+        <p className="text-gray text-xs font-light">
+          {capitalizeWords(data.employment_status)}
+        </p>
         <small className="flex justify-end">
           <b>{data.totalHours !== 0 ? data.totalHours.toFixed(2) : '0'} hrs</b>
         </small>

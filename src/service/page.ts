@@ -590,6 +590,21 @@ export const listApprovedStaffs = (branchId: number) => {
     });
 };
 
+// Active deActive staffs
+export const staffStatusChange = async (payload: any) => {
+  const response = await axios.post(
+    `${apiBaseUrl}/auth/user/toggle-activation`,
+    payload,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return response.data;
+};
+
 //DELETE STAFFS API
 export const deleteStaffs = async (staffId: string) => {
   try {

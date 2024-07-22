@@ -101,7 +101,8 @@ export const getColumns = ({
     dataIndex: 'user_data',
     key: 'user_data.first_name',
     width: 150,
-    render: (user_data: { first_name: string }) => user_data.first_name,
+    render: (user_data: { first_name: string; last_name: string }) =>
+      user_data.first_name + ' ' + user_data?.last_name,
   },
   // {
   //   title: <HeaderCell title="Position" />,

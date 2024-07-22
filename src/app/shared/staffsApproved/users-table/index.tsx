@@ -12,6 +12,7 @@ import {
   listPositionCat,
   listPositions,
   listStaffs,
+  staffStatusChange,
 } from '@/service/page';
 import {
   CreatePositionCatResponse,
@@ -68,6 +69,25 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
     [tableData]
   );
 
+  const handleActiveDisable = async (user: any) => {
+    try {
+      await staffStatusChange({
+        user_id: user?.user_id,
+        organization_id: user?.organization_id,
+      });
+
+      toast.success('Staff status changed', {
+        duration: 3000,
+      });
+      fetchData();
+    } catch (error: any) {
+      console.log(error);
+      toast.success(error.response.data.message, {
+        duration: 3000,
+      });
+    }
+  };
+
   const {
     isLoading,
     isFiltered,
@@ -99,6 +119,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
         onDeleteItem,
         onChecked: handleRowSelect,
         handleSelectAll,
+        handleActiveDisable,
       }),
     [
       selectedRowKeys,
@@ -108,6 +129,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
       onDeleteItem,
       handleRowSelect,
       handleSelectAll,
+      handleActiveDisable,
     ]
   );
 
@@ -130,6 +152,7 @@ export default function UsersTable({ data = [] }: { data: any[] }) {
   useEffect(() => {
     fetchData(); // Call fetchData when the component mounts
   }, [currentPage, pageSize, branchId]);
+
   function handlePaginate(pageNumber: number) {
     setCurrentPage(pageNumber);
   }

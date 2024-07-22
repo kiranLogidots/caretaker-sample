@@ -39,7 +39,7 @@ function DropdownMenu({ user }: { user: any }) {
           <Title as="h6" className="font-semibold">
             {`${user.first_name} ${user.last_name}`}
           </Title>
-          <Text className="text-gray-600">{`${user.email}`}</Text>
+          <Text className="flex flex-wrap text-gray-600">{`${user.email}`}</Text>
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">

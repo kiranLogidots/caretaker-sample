@@ -318,12 +318,69 @@ export const menuItemsAgencyAdmin = [
     href: routes.requestShifts,
     icon: <CiCalendarDate />,
   },
-];
 
-export const getUserRoles = () => {
-  const roles = sessionStorage.getItem('userRoles');
-  return roles ? JSON.parse(roles) : [];
-};
+  {
+    name: 'Timesheet',
+    href: routes.timeSheets,
+    icon: <IoMdTime />,
+  },
+  {
+    name: 'Team members',
+    href: '#',
+    icon: <FiUsers />,
+    dropdownItems: [
+      {
+        name: 'Staffs',
+        href: routes.staffs.staffsApproved,
+      },
+      {
+        name: 'Invited Staffs',
+        href: routes.staffs.invitedStaffs,
+      },
+    ],
+  },
+  {
+    name: 'Communication',
+    href: routes.executive.dashboard,
+    icon: <RiMessage2Line />,
+  },
+  {
+    name: 'Settings',
+    href: '#',
+    icon: <IoSettingsOutline />,
+    dropdownItems: [
+      {
+        name: 'Organization Profile',
+        href: routes.org_profile,
+        icon: <PiUserCircleDuotone />,
+      },
+      {
+        name: 'My Profile',
+        href: routes.forms.profileSettings,
+        icon: <PiUserCircleDuotone />,
+      },
+      {
+        name: 'Locations',
+        href: routes.branches,
+        icon: <FaLocationCrosshairs />,
+      },
+      {
+        name: 'Positions',
+        href: routes.positions_under_org,
+        icon: <PiBriefcaseDuotone />,
+      },
+      {
+        name: 'Administrators',
+        href: routes.administrators,
+        icon: <FaLocationCrosshairs />,
+      },
+      {
+        name: 'Departments',
+        href: routes.departments,
+      },
+    ],
+  },
+];
 
 export const menuItems = [
   // label start
